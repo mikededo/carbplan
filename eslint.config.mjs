@@ -25,7 +25,7 @@ export default antfu(
       'tsconfig.tsbuildinfo'
     ],
     isInEditor: false,
-    jsonc: false,
+    jsonc: true,
     lessOpinionated: true,
     markdown: false,
     name: 'mikededo/base',
