@@ -1,10 +1,32 @@
 <script lang="ts">
-    import './layout.css'
+    import './root.css'
 
-    import favicon from '$lib/assets/favicon.svg'
+    import { onMount } from 'svelte'
 
-    const { children } = $props()
+    import { invalidate } from '$app/navigation'
+
+    const { children, data } = $props()
+    const { session, supabase } = $derived(data)
+
+    onMount(() => {
+        const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
+            if (newSession?.expires_at === session?.expires_at) {
+                return
+            }
+
+            invalidate('supabase:auth')
+        })
+
+        return () => {
+            data.subscription.unsubscribe()
+        }
+    })
 </script>
 
-<svelte:head><link href={favicon} rel="icon" /></svelte:head>
-{@render children()}
+<svelte:head>
+    <title>CarbPlan</title>
+</svelte:head>
+
+<div class="container" style="padding: 50px 0 100px 0">
+    {@render children()}
+</div>
