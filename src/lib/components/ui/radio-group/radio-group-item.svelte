@@ -26,7 +26,7 @@
         <div class="relative flex items-center justify-center" data-slot="radio-group-indicator">
             {#if checked}
                 <CircleIcon
-                    class="fill-primary absolute start-1/2 top-1/2 size-2 -translate-x-1/2 -translate-y-1/2"
+                    class="absolute start-1/2 top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 fill-primary"
                 />
             {/if}
         </div>

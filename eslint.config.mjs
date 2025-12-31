@@ -128,11 +128,14 @@ export default antfu(
           type: 'alphabetical'
         }
       ],
-      'svelte-tailwindcss/sort-classes': ['error', {
-        callees: ['tv'],
-        config: './src/app.css',
-        removeDuplicates: true
-      }]
+      'svelte-tailwindcss/sort-classes': [
+        'error',
+        {
+          callees: ['tv'],
+          config: './src/routes/root.css',
+          removeDuplicates: true
+        }
+      ]
     }
   }
 )
