@@ -14,7 +14,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@lucide/svelte": "0.562.0",
+    "@lucide/svelte": "^0.561.0",
     "@supabase/ssr": "0.8.0",
     "@supabase/supabase-js": "2.89.0",
     "clsx": "2.1.1",
@@ -23,10 +23,12 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "6.7.3",
+    "@internationalized/date": "^3.10.0",
     "@sveltejs/adapter-auto": "7.0.0",
     "@sveltejs/kit": "2.49.2",
     "@sveltejs/vite-plugin-svelte": "6.2.1",
     "@tailwindcss/vite": "4.1.18",
+    "bits-ui": "^2.14.4",
     "eslint": "9.39.2",
     "eslint-plugin-format": "1.1.0",
     "eslint-plugin-import": "2.32.0",
