@@ -1,12 +1,12 @@
 <script lang="ts">
     import type { CurrentAthlete } from '$lib/database/types.g'
 
-    import { MoonIcon } from '@lucide/svelte'
     import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down'
     import LogOutIcon from '@lucide/svelte/icons/log-out'
     import SettingsIcon from '@lucide/svelte/icons/settings'
 
     import { ROUTES } from '$lib/constants/routes'
+    import { ThemeToggle } from '$lib/domain/theme'
     import * as Avatar from '$lib/domain/ui/avatar'
     import { Button } from '$lib/domain/ui/button'
     import * as DropdownMenu from '$lib/domain/ui/dropdown-menu'
@@ -51,17 +51,13 @@
                 {/snippet}
             </DropdownMenu.Trigger>
             <DropdownMenu.Content
-                class="w-(--bits-dropdown-menu-anchor-width) min-w-56 rounded-lg"
+                class="w-(--bits-dropdown-menu-anchor-width) min-w-56"
                 align="end"
                 side={sidebar.isMobile ? 'bottom' : 'top'}
                 sideOffset={4}
             >
                 <DropdownMenu.Group>
-                    <DropdownMenu.Item>
-                        <!-- TODO: -->
-                        <MoonIcon />
-                        Toggle theme
-                    </DropdownMenu.Item>
+                    <ThemeToggle />
                 </DropdownMenu.Group>
                 <DropdownMenu.Group>
                     <DropdownMenu.Item>

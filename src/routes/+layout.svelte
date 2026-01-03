@@ -4,9 +4,12 @@
     import { onMount } from 'svelte'
 
     import { invalidate } from '$app/navigation'
+    import { createThemeContext } from '$lib/domain/theme'
 
     const { children, data } = $props()
     const { session, supabase } = $derived(data)
+
+    const theme = createThemeContext()
 
     onMount(() => {
         const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
@@ -17,8 +20,11 @@
             invalidate('supabase:auth')
         })
 
+        const cleanupThemeListener = theme.setupSystemListener()
+
         return () => {
             data.subscription.unsubscribe()
+            cleanupThemeListener()
         }
     })
 </script>

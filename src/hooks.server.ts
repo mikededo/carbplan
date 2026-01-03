@@ -44,9 +44,12 @@ export const handle: Handle = async ({ event, resolve }) => {
     return { session, user }
   }
 
+  const theme = event.cookies.get('theme') ?? 'light'
+
   return resolve(event, {
     filterSerializedResponseHeaders(name: string) {
       return name === 'content-range' || name === 'x-supabase-api-version'
-    }
+    },
+    transformPageChunk: ({ html }) => html.replace('%theme%', theme)
   })
 }
