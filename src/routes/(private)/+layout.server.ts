@@ -11,7 +11,9 @@ export const load: LayoutServerLoad = async ({ locals: { supabase }, parent, url
     return redirect(300, ROUTES.auth.signup)
   }
 
-  if (isOnboardingRoute(url.pathname) && await isOnboardingComplete(supabase, user.id)) {
-    redirect(303, ROUTES.dashboard)
+  const completedOnboarding = await isOnboardingComplete(supabase, user.id)
+  const onboardingRoute = isOnboardingRoute(url.pathname)
+  if (onboardingRoute === completedOnboarding) {
+    redirect(303, onboardingRoute ? ROUTES.dashboard : ROUTES.onboarding)
   }
 }
