@@ -13,8 +13,11 @@
     import * as Sidebar from '$lib/domain/ui/sidebar'
     import { useSidebar } from '$lib/domain/ui/sidebar'
 
-    type Props = { athlete: CurrentAthlete }
-    const { athlete }: Props = $props()
+    type Props = {
+        athlete: CurrentAthlete
+        onLogOut: () => void
+    }
+    const { athlete, onLogOut }: Props = $props()
 
     const sidebar = useSidebar()
     const initials = $derived(
@@ -77,6 +80,7 @@
                             class="flex w-full items-center justify-start gap-2"
                             size="sm"
                             variant="destructive-ghost"
+                            onclick={onLogOut}
                         >
                             <LogOutIcon />
                             Log out

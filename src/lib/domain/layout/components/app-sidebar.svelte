@@ -9,8 +9,11 @@
     import SidebarNav from './sidebar-nav.svelte'
     import SidebarUser from './sidebar-user.svelte'
 
-    type Props = { athlete: CurrentAthlete } & ComponentProps<typeof Sidebar.Root>
-    const { athlete, ...restProps }: Props = $props()
+    type Props = {
+        athlete: CurrentAthlete
+        onLogOut: () => void
+    } & ComponentProps<typeof Sidebar.Root>
+    const { athlete, onLogOut, ...restProps }: Props = $props()
 </script>
 
 <Sidebar.Root collapsible="icon" {...restProps}>
@@ -28,7 +31,7 @@
         <SidebarNav />
     </Sidebar.Content>
     <Sidebar.Footer>
-        <SidebarUser {athlete} />
+        <SidebarUser {athlete} {onLogOut} />
     </Sidebar.Footer>
     <Sidebar.Rail />
 </Sidebar.Root>
