@@ -4,16 +4,16 @@ import { ONBOARDING_VALUES } from '$lib/domain/onboarding/constants'
 
 export const StepOneSchema = v.object({
   fullName: v.pipe(v.string(), v.minLength(1, 'Full name is required')),
-  heightCm: v.pipe(
+  height: v.pipe(
     v.number(),
-    v.minValue(ONBOARDING_VALUES.heightCm.min, `Height must be at least ${ONBOARDING_VALUES.heightCm.min}cm`),
-    v.maxValue(ONBOARDING_VALUES.heightCm.max, `Height must be at most ${ONBOARDING_VALUES.heightCm.max}cm`)
+    v.minValue(ONBOARDING_VALUES.height.min, `Height must be at least ${ONBOARDING_VALUES.height.min}cm`),
+    v.maxValue(ONBOARDING_VALUES.height.max, `Height must be at most ${ONBOARDING_VALUES.height.max}cm`)
   ),
   sex: v.picklist(['male', 'female'], 'Please select your sex'),
-  weightKg: v.pipe(
+  weight: v.pipe(
     v.number(),
-    v.minValue(ONBOARDING_VALUES.weightKg.min, `Weight must be at least ${ONBOARDING_VALUES.weightKg.min}kg`),
-    v.maxValue(ONBOARDING_VALUES.weightKg.max, `Weight must be at most ${ONBOARDING_VALUES.weightKg.max}kg`)
+    v.minValue(ONBOARDING_VALUES.weight.min, `Weight must be at least ${ONBOARDING_VALUES.weight.min}kg`),
+    v.maxValue(ONBOARDING_VALUES.weight.max, `Weight must be at most ${ONBOARDING_VALUES.weight.max}kg`)
   )
 })
 export const StepTwoSchema = v.object({

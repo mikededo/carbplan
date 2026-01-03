@@ -12,9 +12,9 @@
     } & Omit<Partial<StepOneData>, 'sex'>
     let {
         fullName = $bindable(),
-        heightCm = $bindable(),
+        height = $bindable(),
         sex = $bindable(''),
-        weightKg = $bindable()
+        weight = $bindable()
     }: Props = $props()
 </script>
 
@@ -48,20 +48,20 @@
 
     <div class="grid grid-cols-2 gap-4">
         <div class="flex flex-col gap-2">
-            <Label for="heightCm">Height (cm)</Label>
+            <Label for="height">Height (cm)</Label>
             <Input
-                bind:value={heightCm}
-                id="heightCm"
+                bind:value={height}
+                id="height"
                 placeholder="175"
                 type="number"
                 required
             />
         </div>
         <div class="flex flex-col gap-2">
-            <Label for="weightKg">Weight (kg)</Label>
+            <Label for="weight">Weight (kg)</Label>
             <Input
-                bind:value={weightKg}
-                id="weightKg"
+                bind:value={weight}
+                id="weight"
                 placeholder="70"
                 step="0.1"
                 type="number"

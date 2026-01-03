@@ -6,29 +6,10 @@ import { fail, redirect } from '@sveltejs/kit'
 import * as v from 'valibot'
 
 import { ROUTES } from '$lib/constants/routes'
-import { SavedOnboardingSchema } from '$lib/domain/onboarding'
+import { OnboardingSchema, SavedOnboardingSchema } from '$lib/domain/onboarding'
 
 const ONBOARDING_COOKIE = 'onboarding_data'
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7
-
-const OnboardingSchema = v.object({
-  ftp: v.optional(v.pipe(v.number(), v.minValue(50), v.maxValue(750))),
-  fullName: v.pipe(v.string(), v.minLength(1, 'Full name is required')),
-  heightCm: v.pipe(
-    v.number(),
-    v.minValue(100, 'Height must be at least 100cm'),
-    v.maxValue(250, 'Height must be at most 250cm')
-  ),
-  hrMax: v.optional(v.pipe(v.number(), v.minValue(100), v.maxValue(220))),
-  hrRest: v.optional(v.pipe(v.number(), v.minValue(30), v.maxValue(200))),
-  maxCarbIntake: v.optional(v.pipe(v.number(), v.minValue(20), v.maxValue(150))),
-  sex: v.picklist(['male', 'female'], 'Please select your sex'),
-  weightKg: v.pipe(
-    v.number(),
-    v.minValue(30, 'Weight must be at least 30kg'),
-    v.maxValue(200, 'Weight must be at most 200kg')
-  )
-})
 
 export const load: PageServerLoad = async ({ cookies }) => {
   // TODO: enable auth checks when athletes table exists
@@ -89,12 +70,12 @@ export const actions = {
     const result = v.safeParse(OnboardingSchema, {
       ftp: rawData.ftp ? Number(rawData.ftp) : undefined,
       fullName: rawData.fullName,
-      heightCm: rawData.heightCm ? Number(rawData.heightCm) : undefined,
+      height: rawData.height ? Number(rawData.height) : undefined,
       hrMax: rawData.hrMax ? Number(rawData.hrMax) : undefined,
       hrRest: rawData.hrRest ? Number(rawData.hrRest) : undefined,
       maxCarbIntake: rawData.maxCarbIntake ? Number(rawData.maxCarbIntake) : undefined,
       sex: rawData.sex,
-      weightKg: rawData.weightKg ? Number(rawData.weightKg) : undefined
+      weight: rawData.weight ? Number(rawData.weight) : undefined
     })
 
     if (!result.success) {
@@ -107,12 +88,12 @@ export const actions = {
       .update({
         ftp: result.output.ftp,
         full_name: result.output.fullName,
-        height_cm: result.output.heightCm,
+        height_cm: result.output.height,
         hr_max: result.output.hrMax,
         hr_rest: result.output.hrRest,
         max_carb_intake_g_per_hr: result.output.maxCarbIntake,
         sex: result.output.sex,
-        weight_kg: result.output.weightKg
+        weight_kg: result.output.weight
       })
       .eq('id', user.id)
 

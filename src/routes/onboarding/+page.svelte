@@ -26,19 +26,19 @@
     const formData = $state({
         ftp: data.previous?.ftp,
         fullName: data.previous?.fullName,
-        heightCm: data.previous?.heightCm,
+        height: data.previous?.height,
         hrMax: data.previous?.hrMax,
         hrRest: data.previous?.hrRest,
         maxCarbIntake: data.previous?.maxCarbIntake ?? ONBOARDING_VALUES.maxCarbIntake.default,
         sex: data.previous?.sex ?? ('' as const),
-        weightKg: data.previous?.weightKg
+        weight: data.previous?.weight
     })
 
     const canProceedStepZero = $derived(
         formData.fullName?.trim() !== '' &&
         formData.sex &&
-        formData.heightCm &&
-        formData.weightKg
+        formData.height &&
+        formData.weight
     )
 
     const stepDescriptions = [
@@ -95,9 +95,9 @@
     {#if step === 0}
         <StepAbout
             bind:fullName={formData.fullName}
-            bind:heightCm={formData.heightCm}
+            bind:height={formData.height}
             bind:sex={formData.sex}
-            bind:weightKg={formData.weightKg}
+            bind:weight={formData.weight}
         />
     {:else if step === 1}
         <StepTraining
