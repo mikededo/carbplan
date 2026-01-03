@@ -2,11 +2,11 @@
     import type { ActionData } from './$types'
 
     import { enhance } from '$app/forms'
-    import { Button } from '$lib/components/ui/button'
-    import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/components/ui/card'
-    import { Input } from '$lib/components/ui/input'
-    import { Label } from '$lib/components/ui/label'
     import { ROUTES } from '$lib/constants/routes'
+    import { Button } from '$lib/domain/ui/button'
+    import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/domain/ui/card'
+    import { Input } from '$lib/domain/ui/input'
+    import { Label } from '$lib/domain/ui/label'
 
     type Props = { form: ActionData }
     const { form }: Props = $props()
