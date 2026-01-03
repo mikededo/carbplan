@@ -8,7 +8,7 @@ import { isOnboardingComplete } from '$lib/domain/onboarding/helpers'
 export const load: LayoutServerLoad = async ({ locals: { supabase }, parent, url }) => {
   const { user } = await parent()
   if (!user) {
-    return redirect(300, ROUTES.auth.signup)
+    redirect(303, ROUTES.auth.signup)
   }
 
   const completedOnboarding = await isOnboardingComplete(supabase, user.id)

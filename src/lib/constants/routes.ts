@@ -11,7 +11,8 @@ export const ROUTES = {
   },
   dashboard: route('/dashboard'),
   landing: route('/'),
-  onboarding: route('/onboarding')
+  onboarding: route('/onboarding'),
+  settings: route('/settings')
 } as const
 
 export const isOnboardingRoute = (pathname: string) => pathname.startsWith(ROUTES.onboarding)
