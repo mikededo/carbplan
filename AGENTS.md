@@ -45,7 +45,7 @@ If there's anything that's shared within the app, that's not a UI component, it 
 
 ## Code Style and Conventions
 
-We should aim for a modular/atomic approach, minimizing shared logic, ensuring state exists only where it makes sense.
+We should aim for a modular/atomic approach, minimizing shared logic, ensuring state exists only where it makes sense. Avoid barrel files.
 
 ### Formatting and Linting
 - **Always run** `bun lint` after making changes
