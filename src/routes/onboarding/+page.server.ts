@@ -11,22 +11,22 @@ import { OnboardingSchema, SavedOnboardingSchema } from '$lib/domain/onboarding'
 const ONBOARDING_COOKIE = 'onboarding_data'
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 
-export const load: PageServerLoad = async ({ cookies }) => {
-  // TODO: enable auth checks when athletes table exists
-  // const { user } = await safeGetSession()
-  // if (!user) {
-  //   redirect(303, ROUTES.auth.signup)
-  // }
-  //
-  // const { data: athlete } = await supabase
-  //   .from('athletes')
-  //   .select('full_name')
-  //   .eq('id', user.id)
-  //   .single()
-  //
-  // if (athlete?.full_name) {
-  //   redirect(303, ROUTES.home)
-  // }
+export const load: PageServerLoad = async ({ cookies, locals: { safeGetSession, supabase } }) => {
+  const { user } = await safeGetSession()
+  console.log(user)
+  if (!user) {
+    redirect(303, ROUTES.auth.signup)
+  }
+
+  const { data: athlete } = await supabase
+    .from('athletes')
+    .select('full_name')
+    .eq('id', user.id)
+    .single()
+
+  if (athlete?.full_name) {
+    redirect(303, ROUTES.home)
+  }
 
   const maybeData = v.safeParse(
     SavedOnboardingSchema,

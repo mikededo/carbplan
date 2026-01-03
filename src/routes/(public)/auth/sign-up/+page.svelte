@@ -17,7 +17,7 @@
         <CardTitle>Sign up</CardTitle>
         <CardDescription>Create your account to get started</CardDescription>
     </CardHeader>
-    <CardContent>
+    <CardContent class="space-y-4">
         <form class="flex flex-col gap-4" use:enhance method="POST">
             {#if form?.message}
                 <p class="text-sm text-destructive">{form.message}</p>
@@ -53,11 +53,11 @@
             </div>
 
             <Button class="mt-2" type="submit">Sign up</Button>
-
-            <p class="text-sm">
-                Already with an account?
-                <a href={ROUTES.auth.login}>Log in</a>
-            </p>
         </form>
+
+        <p class="text-center text-sm">
+            Already with an account?
+            <a class="text-primary hover:underline" href={ROUTES.auth.login}>Log in</a>
+        </p>
     </CardContent>
 </Card>

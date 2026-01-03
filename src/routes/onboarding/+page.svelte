@@ -22,6 +22,12 @@
     type Props = { data: PageData, form: ActionData }
     const { data, form }: Props = $props()
 
+    const STEP_DESCRIPTIONS = [
+        'Let\'s start with some basic information',
+        'These help us estimate your energy needs (optional)',
+        'Set your nutrition preferences (optional)'
+    ] as const
+
     let step = $state(data.previous?.step ?? 0)
     const formData = $state({
         ftp: data.previous?.ftp,
@@ -40,12 +46,6 @@
         formData.height &&
         formData.weight
     )
-
-    const stepDescriptions = [
-        'Let\'s start with some basic information',
-        'These help us estimate your energy needs (optional)',
-        'Set your nutrition preferences (optional)'
-    ] as const
 
     const onBack = () => {
         step--
@@ -67,7 +67,7 @@
                 {#key step}
                     <div in:fade={{ duration: 250, easing: sineOut }}>
                         <CardTitle>{ONBOARDING_STEPS[step]}</CardTitle>
-                        <CardDescription>{stepDescriptions[step]}</CardDescription>
+                        <CardDescription>{STEP_DESCRIPTIONS[step]}</CardDescription>
                     </div>
                 {/key}
             </CardHeader>
@@ -79,7 +79,6 @@
                         {/if}
 
                         {@render content()}
-
                     </CardContent>
                 </div>
             {/key}

@@ -1,17 +1,9 @@
 <script lang="ts">
     import type { LayoutProps } from './$types'
 
-    import { sineOut } from 'svelte/easing'
-    import { fade } from 'svelte/transition'
-
-    const { children, data }: LayoutProps = $props()
+    const { children }: LayoutProps = $props()
 </script>
 
-{#key data.pathname}
-    <main
-        class="flex h-screen items-center justify-center overflow-y-hidden bg-muted"
-        in:fade={{ duration: 150, easing: sineOut }}
-    >
-        {@render children()}
-    </main>
-{/key}
+<main class="flex h-screen w-full items-center justify-center bg-muted">
+    {@render children()}
+</main>
