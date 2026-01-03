@@ -3,7 +3,7 @@
 
     import type { LayoutData } from './$types'
 
-    import { AppSidebar } from '$lib/domain/layout'
+    import { AppSidebar } from '$lib/domain/layout/components'
     import * as Sidebar from '$lib/domain/ui/sidebar'
 
     type Props = { children: Snippet, data: LayoutData }

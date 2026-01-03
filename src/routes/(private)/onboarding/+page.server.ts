@@ -1,4 +1,4 @@
-import type { SavedOnboardingFormData } from '$lib/domain/onboarding'
+import type { SavedOnboardingFormData } from '$lib/domain/onboarding/types'
 
 import type { Actions, PageServerLoad } from './$types'
 
@@ -6,8 +6,8 @@ import { fail, redirect } from '@sveltejs/kit'
 import * as v from 'valibot'
 
 import { ROUTES } from '$lib/constants/routes'
-import { OnboardingSchema, SavedOnboardingSchema } from '$lib/domain/onboarding'
 import { isOnboardingComplete } from '$lib/domain/onboarding/helpers'
+import { OnboardingSchema, SavedOnboardingSchema } from '$lib/domain/onboarding/schemas'
 
 const ONBOARDING_COOKIE = 'onboarding_data'
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7

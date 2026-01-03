@@ -9,13 +9,13 @@
 
     import { enhance } from '$app/forms'
     import {
-        ONBOARDING_STEPS,
-        ONBOARDING_VALUES,
         StepAbout,
         StepNutrition,
         StepProgress,
         StepTraining
-    } from '$lib/domain/onboarding'
+    } from '$lib/domain/onboarding/components'
+    import { ONBOARDING_VALUES } from '$lib/domain/onboarding/constants'
+    import { ONBOARDING_STEPS } from '$lib/domain/onboarding/types'
     import { Button } from '$lib/domain/ui/button'
     import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$lib/domain/ui/card'
 

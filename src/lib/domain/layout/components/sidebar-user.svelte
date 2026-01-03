@@ -6,7 +6,7 @@
     import SettingsIcon from '@lucide/svelte/icons/settings'
 
     import { ROUTES } from '$lib/constants/routes'
-    import { ThemeToggle } from '$lib/domain/theme'
+    import { ThemeToggle } from '$lib/domain/theme/components'
     import * as Avatar from '$lib/domain/ui/avatar'
     import { Button } from '$lib/domain/ui/button'
     import * as DropdownMenu from '$lib/domain/ui/dropdown-menu'
