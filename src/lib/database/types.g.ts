@@ -45,13 +45,172 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      sex: 'female' | 'male'
     }
     Tables: {
-      [_ in never]: never
+      coaching_relationships: {
+        Relationships: [
+          {
+            columns: ['athlete_id']
+            foreignKeyName: 'coaching_relationships_athlete_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'athletes'
+          },
+          {
+            columns: ['athlete_id']
+            foreignKeyName: 'coaching_relationships_athlete_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'current_athlete'
+          },
+          {
+            columns: ['coach_id']
+            foreignKeyName: 'coaching_relationships_coach_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'athletes'
+          },
+          {
+            columns: ['coach_id']
+            foreignKeyName: 'coaching_relationships_coach_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'current_athlete'
+          }
+        ]
+        Row: {
+          accepted_at: null | string
+          athlete_id: string
+          created_at: string
+          id: string
+          coach_id: string
+        }
+        Insert: {
+          athlete_id: string
+          coach_id: string
+          accepted_at?: null | string
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          accepted_at?: null | string
+          athlete_id?: string
+          created_at?: string
+          id?: string
+          coach_id?: string
+        }
+      }
+      athletes: {
+        Relationships: []
+        Row: {
+          avatar_url: null | string
+          created_at: string
+          email: string
+          ftp: null | number
+          full_name: null | string
+          height_cm: null | number
+          hr_max: null | number
+          hr_rest: null | number
+          id: string
+          max_carb_intake_g_per_hr: null | number
+          sex: Database['public']['Enums']['sex'] | null
+          updated_at: string
+          weight_kg: null | number
+          hr_zones: Json | null
+          power_zones: Json | null
+        }
+        Insert: {
+          email: string
+          id: string
+          avatar_url?: null | string
+          created_at?: string
+          ftp?: null | number
+          full_name?: null | string
+          height_cm?: null | number
+          hr_max?: null | number
+          hr_rest?: null | number
+          max_carb_intake_g_per_hr?: null | number
+          sex?: Database['public']['Enums']['sex'] | null
+          updated_at?: string
+          weight_kg?: null | number
+          hr_zones?: Json | null
+          power_zones?: Json | null
+        }
+        Update: {
+          avatar_url?: null | string
+          created_at?: string
+          email?: string
+          ftp?: null | number
+          full_name?: null | string
+          height_cm?: null | number
+          hr_max?: null | number
+          hr_rest?: null | number
+          id?: string
+          max_carb_intake_g_per_hr?: null | number
+          sex?: Database['public']['Enums']['sex'] | null
+          updated_at?: string
+          weight_kg?: null | number
+          hr_zones?: Json | null
+          power_zones?: Json | null
+        }
+      }
     }
     Views: {
-      [_ in never]: never
+      current_athlete: {
+        Relationships: []
+        Row: {
+          avatar_url: null | string
+          created_at: null | string
+          email: null | string
+          ftp: null | number
+          full_name: null | string
+          height_cm: null | number
+          hr_max: null | number
+          hr_rest: null | number
+          id: null | string
+          max_carb_intake_g_per_hr: null | number
+          sex: Database['public']['Enums']['sex'] | null
+          updated_at: null | string
+          weight_kg: null | number
+          hr_zones: Json | null
+          power_zones: Json | null
+        }
+        Insert: {
+          avatar_url?: null | string
+          created_at?: null | string
+          email?: null | string
+          ftp?: null | number
+          full_name?: null | string
+          height_cm?: null | number
+          hr_max?: null | number
+          hr_rest?: null | number
+          id?: null | string
+          max_carb_intake_g_per_hr?: null | number
+          sex?: Database['public']['Enums']['sex'] | null
+          updated_at?: null | string
+          weight_kg?: null | number
+          hr_zones?: Json | null
+          power_zones?: Json | null
+        }
+        Update: {
+          avatar_url?: null | string
+          created_at?: null | string
+          email?: null | string
+          ftp?: null | number
+          full_name?: null | string
+          height_cm?: null | number
+          hr_max?: null | number
+          hr_rest?: null | number
+          id?: null | string
+          max_carb_intake_g_per_hr?: null | number
+          sex?: Database['public']['Enums']['sex'] | null
+          updated_at?: null | string
+          weight_kg?: null | number
+          hr_zones?: Json | null
+          power_zones?: Json | null
+        }
+      }
     }
   }
 }
@@ -178,6 +337,8 @@ export const Constants = {
     Enums: {}
   },
   public: {
-    Enums: {}
+    Enums: {
+      sex: ['male', 'female']
+    }
   }
 } as const
