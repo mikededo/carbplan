@@ -28,7 +28,7 @@
         heightCm: data.previous?.heightCm,
         hrMax: data.previous?.hrMax,
         hrRest: data.previous?.hrRest,
-        maxCarbIntake: data.previous?.maxCarbIntake,
+        maxCarbIntake: data.previous?.maxCarbIntake ?? 60,
         sex: data.previous?.sex ?? ('' as const),
         weightKg: data.previous?.weightKg
     })
@@ -105,7 +105,9 @@
             bind:hrRest={formData.hrRest}
         />
     {:else}
-        <StepNutrition bind:maxCarbIntake={formData.maxCarbIntake} />
+        <StepNutrition
+            bind:maxCarbIntake={formData.maxCarbIntake}
+        />
     {/if}
 {/snippet}
 

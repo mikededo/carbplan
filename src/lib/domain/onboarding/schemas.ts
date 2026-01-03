@@ -20,7 +20,7 @@ export const StepTwoSchema = v.object({
   hrRest: v.optional(v.pipe(v.number(), v.minValue(30), v.maxValue(200)))
 })
 export const StepThreeSchema = v.object({
-  maxCarbIntake: v.optional(v.pipe(v.number(), v.minValue(20), v.maxValue(150)))
+  maxCarbIntake: v.optional(v.pipe(v.number(), v.minValue(30), v.maxValue(210)))
 })
 
 export const OnboardingSchema = v.object({

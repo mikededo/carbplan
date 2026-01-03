@@ -1,21 +1,26 @@
 <script lang="ts">
     import type { StepThreeData } from '$lib/domain/onboarding/types'
 
-    import { Input } from '$lib/domain/ui/input'
     import { Label } from '$lib/domain/ui/label'
+    import { Slider } from '$lib/domain/ui/slider'
 
     type Props = Partial<StepThreeData>
     let { maxCarbIntake = $bindable() }: Props = $props()
 </script>
 
 <div class="flex flex-col gap-4">
-    <div class="flex flex-col gap-2">
-        <Label for="maxCarbIntake">Max carb intake (g/hr)</Label>
-        <Input
+    <div class="flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+            <Label for="maxCarbIntake">Max carb intake</Label>
+            <span class="text-sm font-medium">{maxCarbIntake} g/hr</span>
+        </div>
+        <Slider
             bind:value={maxCarbIntake}
             id="maxCarbIntake"
-            placeholder="60"
-            type="number"
+            max={210}
+            min={30}
+            step={5}
+            type="single"
         />
         <p class="text-xs text-muted-foreground">
             Most athletes tolerate 60-90g/hr. Start lower if unsure.
