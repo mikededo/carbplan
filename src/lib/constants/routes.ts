@@ -9,6 +9,9 @@ export const ROUTES = {
     login: route('/auth/log-in'),
     signup: route('/auth/sign-up')
   },
-  home: route('/'),
+  dashboard: route('/dashboard'),
+  landing: route('/'),
   onboarding: route('/onboarding')
 } as const
+
+export const isOnboardingRoute = (pathname: string) => pathname.startsWith(ROUTES.onboarding)

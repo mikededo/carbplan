@@ -38,7 +38,7 @@ export const actions = {
       return fail(400, { message: error.message, values: { email } })
     }
 
-    redirect(303, ROUTES.home)
+    redirect(303, ROUTES.dashboard)
   }
 } satisfies Actions
 

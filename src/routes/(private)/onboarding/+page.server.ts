@@ -7,25 +7,19 @@ import * as v from 'valibot'
 
 import { ROUTES } from '$lib/constants/routes'
 import { OnboardingSchema, SavedOnboardingSchema } from '$lib/domain/onboarding'
+import { isOnboardingComplete } from '$lib/domain/onboarding/helpers'
 
 const ONBOARDING_COOKIE = 'onboarding_data'
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 
 export const load: PageServerLoad = async ({ cookies, locals: { safeGetSession, supabase } }) => {
   const { user } = await safeGetSession()
-  console.log(user)
   if (!user) {
     redirect(303, ROUTES.auth.signup)
   }
 
-  const { data: athlete } = await supabase
-    .from('athletes')
-    .select('full_name')
-    .eq('id', user.id)
-    .single()
-
-  if (athlete?.full_name) {
-    redirect(303, ROUTES.home)
+  if (await isOnboardingComplete(supabase, user.id)) {
+    redirect(303, ROUTES.dashboard)
   }
 
   const maybeData = v.safeParse(
@@ -40,24 +34,6 @@ export const load: PageServerLoad = async ({ cookies, locals: { safeGetSession, 
 }
 
 export const actions = {
-  save: async ({ cookies, request }) => {
-    const formData = await request.formData()
-    const step = Number(formData.get('step'))
-    const data = JSON.parse(formData.get('data')?.toString() ?? '{}')
-
-    const savedData = cookies.get(ONBOARDING_COOKIE)
-    const existing = savedData ? JSON.parse(savedData) : {}
-
-    cookies.set(ONBOARDING_COOKIE, JSON.stringify({ ...existing, ...data, step }), {
-      httpOnly: true,
-      maxAge: COOKIE_MAX_AGE,
-      path: '/',
-      sameSite: 'lax'
-    })
-
-    return { success: true }
-  },
-
   complete: async ({ cookies, locals: { safeGetSession, supabase }, request }) => {
     const { user } = await safeGetSession()
     if (!user) {
@@ -102,7 +78,24 @@ export const actions = {
     }
 
     cookies.delete(ONBOARDING_COOKIE, { path: '/' })
-    redirect(303, ROUTES.home)
+    redirect(303, ROUTES.dashboard)
+  },
+  save: async ({ cookies, request }) => {
+    const formData = await request.formData()
+    const step = Number(formData.get('step'))
+    const data = JSON.parse(formData.get('data')?.toString() ?? '{}')
+
+    const savedData = cookies.get(ONBOARDING_COOKIE)
+    const existing = savedData ? JSON.parse(savedData) : {}
+
+    cookies.set(ONBOARDING_COOKIE, JSON.stringify({ ...existing, ...data, step }), {
+      httpOnly: true,
+      maxAge: COOKIE_MAX_AGE,
+      path: '/',
+      sameSite: 'lax'
+    })
+
+    return { success: true }
   }
 } satisfies Actions
 

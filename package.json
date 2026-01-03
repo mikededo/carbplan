@@ -10,7 +10,7 @@
     "prepare": "svelte-kit sync || echo ''",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "db:types": "supabase gen types --lang typescript --linked > ./src/lib/database/types.g.ts && eslint ./src/lib/database/types.g.ts --fix",
+    "db:types": "bun scripts/db-types.ts",
     "lint": "eslint ."
   },
   "dependencies": {
@@ -29,6 +29,7 @@
     "@sveltejs/kit": "2.49.2",
     "@sveltejs/vite-plugin-svelte": "6.2.1",
     "@tailwindcss/vite": "4.1.18",
+    "@types/bun": "1.3.5",
     "bits-ui": "^2.14.4",
     "eslint": "9.39.2",
     "eslint-plugin-format": "1.1.0",
