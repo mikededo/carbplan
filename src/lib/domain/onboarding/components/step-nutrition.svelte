@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { StepThreeData } from '$lib/domain/onboarding/types'
 
-    import { ONBOARDING_VALUES } from '$lib/domain/onboarding/constants'
+    import { PROFILE_VALUES } from '$lib/domain/settings/constants'
     import { Label } from '$lib/domain/ui/label'
     import { Slider } from '$lib/domain/ui/slider'
 
@@ -18,9 +18,9 @@
         <Slider
             bind:value={maxCarbIntake}
             id="maxCarbIntake"
-            max={ONBOARDING_VALUES.maxCarbIntake.max}
-            min={ONBOARDING_VALUES.maxCarbIntake.min}
-            step={ONBOARDING_VALUES.maxCarbIntake.step}
+            max={PROFILE_VALUES.maxCarbIntake.max}
+            min={PROFILE_VALUES.maxCarbIntake.min}
+            step={PROFILE_VALUES.maxCarbIntake.step}
             type="single"
         />
         <p class="text-xs text-muted-foreground">

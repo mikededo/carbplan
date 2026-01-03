@@ -14,8 +14,8 @@
         StepProgress,
         StepTraining
     } from '$lib/domain/onboarding/components'
-    import { ONBOARDING_VALUES } from '$lib/domain/onboarding/constants'
     import { ONBOARDING_STEPS } from '$lib/domain/onboarding/types'
+    import { PROFILE_VALUES } from '$lib/domain/settings/constants'
     import { Button } from '$lib/domain/ui/button'
     import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$lib/domain/ui/card'
 
@@ -35,7 +35,7 @@
         height: data.previous?.height,
         hrMax: data.previous?.hrMax,
         hrRest: data.previous?.hrRest,
-        maxCarbIntake: data.previous?.maxCarbIntake ?? ONBOARDING_VALUES.maxCarbIntake.default,
+        maxCarbIntake: data.previous?.maxCarbIntake ?? PROFILE_VALUES.maxCarbIntake.default,
         sex: data.previous?.sex ?? ('' as const),
         weight: data.previous?.weight
     })

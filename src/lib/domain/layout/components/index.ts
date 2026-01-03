@@ -1,5 +1,6 @@
 export { default as AppSidebar } from './app-sidebar.svelte'
 export { default as AppTopbar } from './app-topbar.svelte'
 export { default as PageHeader } from './page-header.svelte'
+export { default as PageScrollarea } from './page-scrollarea.svelte'
 export { default as SidebarNav } from './sidebar-nav.svelte'
 export { default as SidebarUser } from './sidebar-user.svelte'

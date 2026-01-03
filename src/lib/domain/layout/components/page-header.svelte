@@ -4,6 +4,8 @@
 </script>
 
 <script lang="ts">
+    import type { Snippet } from 'svelte'
+
     import {
         Breadcrumb,
         BreadcrumbItem,
@@ -15,14 +17,19 @@
     import { Separator } from '$lib/domain/ui/separator'
     import * as Sidebar from '$lib/domain/ui/sidebar'
 
-    type Props = { crumbs: Crumb[] }
-    const { crumbs }: Props = $props()
+    type Props = {
+        crumbs: Crumb[]
+        children?: Snippet
+    }
+    const { children, crumbs }: Props = $props()
 
     const isLink = (crumb: Crumb): crumb is LinkCrumb => typeof crumb !== 'string'
 </script>
 
-<header class="flex h-16 shrink-0 items-center gap-2 border-b transition-[width,height] ease-out group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-    <div class="flex items-center gap-2 px-4">
+<header
+    class="flex h-16 w-full shrink-0 items-center gap-2 border-b transition-[width,height] ease-out group-has-data-[collapsible=icon]/sidebar-wrapper:h-12"
+>
+    <div class="flex w-full items-center gap-2 px-4">
         <Sidebar.Trigger class="-ms-1" />
         <Separator class="me-2 data-[orientation=vertical]:h-4" orientation="vertical" />
         <Breadcrumb>
@@ -43,6 +50,8 @@
                 {/each}
             </BreadcrumbList>
         </Breadcrumb>
+
+        {@render children?.()}
     </div>
 </header>
 

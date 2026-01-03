@@ -126,6 +126,12 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
+  --text-tiny: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-lg: 1.125rem;
+
   /* computed shadow variables below - do not modify */
   --shadow-2xs: var(--shadow-x) var(--shadow-y)
     color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
