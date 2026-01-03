@@ -10,6 +10,7 @@
     import { enhance } from '$app/forms'
     import {
         ONBOARDING_STEPS,
+        ONBOARDING_VALUES,
         StepAbout,
         StepNutrition,
         StepProgress,
@@ -28,7 +29,7 @@
         heightCm: data.previous?.heightCm,
         hrMax: data.previous?.hrMax,
         hrRest: data.previous?.hrRest,
-        maxCarbIntake: data.previous?.maxCarbIntake ?? 60,
+        maxCarbIntake: data.previous?.maxCarbIntake ?? ONBOARDING_VALUES.maxCarbIntake.default,
         sex: data.previous?.sex ?? ('' as const),
         weightKg: data.previous?.weightKg
     })
