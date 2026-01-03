@@ -342,3 +342,14 @@ export const Constants = {
     }
   }
 } as const
+
+// Auto-generated table types
+export type Athlete = Tables<'athletes'>
+export type AthleteInsert = TablesInsert<'athletes'>
+export type AthleteUpdate = TablesUpdate<'athletes'>
+
+export type CoachingRelationship = Tables<'coaching_relationships'>
+export type CoachingRelationshipInsert = TablesInsert<'coaching_relationships'>
+export type CoachingRelationshipUpdate = TablesUpdate<'coaching_relationships'>
+
+export type CurrentAthlete = Tables<'current_athlete'>
