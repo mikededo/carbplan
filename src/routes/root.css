@@ -43,6 +43,8 @@
   --shadow-spread: 0px;
   --shadow-opacity: 0;
   --shadow-color: #000000;
+
+  --scrollbar-thumb: #9c9c9e;
 }
 
 .dark {
@@ -84,6 +86,8 @@
   --shadow-spread: 0px;
   --shadow-opacity: 0.05;
   --shadow-color: #000000;
+
+  --scrollbar-thumb: #5a5b5d;
 }
 
 @theme inline {
@@ -162,6 +166,9 @@
 
 @layer base {
   * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+
     @apply border-border outline-ring/50;
   }
   body {

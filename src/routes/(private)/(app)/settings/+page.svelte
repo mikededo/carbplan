@@ -1,9 +1,9 @@
 <script lang="ts">
     import type { SubmitFunction } from '@sveltejs/kit'
 
-    import type { ActionData, PageData } from './$types'
+    import type { PageData } from './$types'
 
-    import { BatteryFullIcon, BatteryLowIcon, Clock2Icon, Clock3Icon, Clock6Icon, HeartPlusIcon, HeartPulseIcon, ZapIcon } from '@lucide/svelte'
+    import { BatteryFullIcon, BatteryLowIcon, Clock2Icon, Clock3Icon, Clock6Icon, HeartPlusIcon, HeartPulseIcon, InfoIcon, ZapIcon } from '@lucide/svelte'
     import ActivityIcon from '@lucide/svelte/icons/activity'
     import HeartIcon from '@lucide/svelte/icons/heart'
     import SaveIcon from '@lucide/svelte/icons/save'
@@ -14,14 +14,15 @@
     import { MetricCard, SettingsSection, ZonesPlaceholder } from '$lib/domain/settings/components'
     import SettingsSectionGroup from '$lib/domain/settings/components/settings-section-group.svelte'
     import { PROFILE_VALUES } from '$lib/domain/settings/constants'
+    import { Alert, AlertDescription, AlertTitle } from '$lib/domain/ui/alert'
     import { Button } from '$lib/domain/ui/button'
     import { Input } from '$lib/domain/ui/input'
     import { Label } from '$lib/domain/ui/label'
     import * as RadioGroup from '$lib/domain/ui/radio-group'
     import { Slider } from '$lib/domain/ui/slider'
 
-    type Props = { data: PageData, form: ActionData }
-    const { data, form }: Props = $props()
+    type Props = { data: PageData }
+    const { data }: Props = $props()
 
     const FORM_ID = 'settings'
 
@@ -66,19 +67,11 @@
         id={FORM_ID}
         method="POST"
     >
-        <div class="sticky top-0 z-10 flex items-center justify-between border-b bg-background px-4 py-2">
-            <h2 class="text-lg font-medium">Profile Settings</h2>
+        <div class="sticky top-0 z-10 flex items-center justify-between border-b bg-background px-6 py-4">
+            <h2 class="font-medium">Profile settings</h2>
         </div>
 
         <div class="divide-y divide-border px-6">
-            {#if form?.message}
-                <div class="py-6">
-                    <div class={form.success ? 'rounded-lg bg-green-500/10 p-4 text-sm text-green-600 dark:text-green-400' : 'rounded-lg bg-destructive/10 p-4 text-sm text-destructive'}>
-                        {form.message}
-                    </div>
-                </div>
-            {/if}
-
             <SettingsSection
                 description="Your basic profile details used across the platform."
                 title="Personal Information"
@@ -279,12 +272,13 @@
                     </div>
                 </div>
 
-                <div class="rounded-lg border bg-primary/5 p-4">
-                    <h4 class="text-sm font-medium text-primary">About Gut Training</h4>
-                    <p class="mt-1.5 text-xs leading-relaxed text-muted-foreground">
+                <Alert variant="info">
+                    <InfoIcon />
+                    <AlertTitle>About gut training</AlertTitle>
+                    <AlertDescription>
                         The gut can be trained to tolerate and absorb more carbohydrates. Elite athletes handle 90-120g/hr using a glucose-fructose mix. Start conservatively.
-                    </p>
-                </div>
+                    </AlertDescription>
+                </Alert>
 
                 <div class="grid grid-cols-3 gap-4">
                     <MetricCard

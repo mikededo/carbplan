@@ -13,7 +13,7 @@
 
 <div class={cn('rounded-lg bg-accent p-0.5', className)}>
     <p class="px-2 py-1 text-xs text-muted-foreground">{label}</p>
-    <div class="flex items-center gap-2 rounded-md bg-white p-2">
+    <div class="flex items-center gap-2 rounded-md bg-background p-2">
         {#if Icon}
             <Icon class="size-5 shrink-0" />
         {/if}
