@@ -25,7 +25,7 @@
 
 <SettingsSection
     description="Your basic profile details used across the platform."
-    title="Personal Information"
+    title="Personal information"
 >
     <SettingsSectionGroup>
         <div class="space-y-2">

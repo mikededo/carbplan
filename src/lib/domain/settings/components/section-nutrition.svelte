@@ -17,15 +17,15 @@
 
 <SettingsSection
     description="Configure your fueling limits and ride targets."
-    title="Nutrition Settings"
+    title="Nutrition"
 >
     <div class="space-y-4">
         <div class="flex items-center justify-between">
             <div class="space-y-0.5">
-                <Label>Max Carbohydrate Intake</Label>
-                <p class="text-xs text-muted-foreground">Based on your gut training level.</p>
+                <Label>Max carbohydrate intake</Label>
+                <p class="text-sm text-muted-foreground">Based on your gut training level.</p>
             </div>
-            <span class="rounded-md px-2.5 py-1 text-sm font-bold text-primary tabular-nums">
+            <span class="rounded-md bg-accent px-2.5 py-1 text-sm font-medium text-muted-foreground tabular-nums">
                 {maxCarbIntake}g/hr
             </span>
         </div>
@@ -37,12 +37,12 @@
             step={PROFILE_VALUES.maxCarbIntake.step}
             type="single"
         />
-        <div class="flex justify-between text-tiny font-medium tracking-tight text-muted-foreground uppercase">
-            <span>Beginner</span>
-            <span>Trained</span>
-            <span>Well-trained</span>
-            <span>Elite</span>
-        </div>
+        <ul class="flex justify-between font-mono text-tiny font-medium text-muted-foreground uppercase">
+            <li>Beginner</li>
+            <li>Trained</li>
+            <li>Well-trained</li>
+            <li>Elite</li>
+        </ul>
     </div>
 
     <Alert variant="info">

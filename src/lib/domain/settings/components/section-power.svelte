@@ -20,7 +20,7 @@
 
 <SettingsSection
     description="Your cycling power metrics for intensity calculations."
-    title="Power Data"
+    title="Power data"
 >
     <div class="space-y-2">
         <div class="flex items-center justify-between">

@@ -10,6 +10,6 @@
     const { children, class: className }: Props = $props()
 </script>
 
-<div class={cn('grid gap-4 sm:grid-cols-2', className)}>
+<article class={cn('grid gap-4 sm:grid-cols-2', className)}>
     {@render children()}
-</div>
+</article>

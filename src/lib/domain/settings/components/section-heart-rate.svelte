@@ -20,7 +20,7 @@
 
 <SettingsSection
     description="Used for estimating training stress and recovery."
-    title="Heart Rate Data"
+    title="Heart rate data"
 >
     <SettingsSectionGroup>
         <div class="space-y-2">

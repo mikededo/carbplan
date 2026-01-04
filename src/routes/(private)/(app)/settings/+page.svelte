@@ -86,11 +86,11 @@
 
 <PageScrollarea>
     <div class="relative mx-auto flex flex-col">
-        <div class="sticky top-0 z-10 flex items-center justify-between border-b bg-background px-6 py-4">
-            <h2 class="font-medium">Profile settings</h2>
+        <div class="sticky top-0 z-10 flex items-center justify-between border-b bg-background px-8 py-4">
+            <h2 class="font-semibold">Profile settings</h2>
         </div>
 
-        <div class="divide-y divide-border px-6">
+        <div class="divide-y divide-border px-8">
             <SectionPersonal
                 bind:fullName
                 bind:height
