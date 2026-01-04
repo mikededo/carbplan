@@ -1,14 +1,24 @@
 <script lang="ts">
-    import { LogInIcon } from '@lucide/svelte'
+    import type { PageData } from './$types'
+
+    import { LogInIcon, MoveRightIcon } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'
     import { Button } from '$lib/domain/ui/button'
     import { Logo } from '$lib/domain/ui/logo'
+
+    type Props = { data: PageData }
+    const { data }: Props = $props()
+
+    const isLoggedIn = $derived(!!data?.session?.user.id)
 </script>
 
 <svelte:head>
     <title>CarbPlan — Athlete Nutrition Planning</title>
-    <meta content="Plan your nutrition for every workout. Build custom fueling strategies based on your power, duration, and personal tolerance." name="description" />
+    <meta
+        content="Plan your nutrition for every workout. Build custom fueling strategies based on your power, duration, and personal tolerance."
+        name="description"
+    />
 </svelte:head>
 
 <div class="min-h-screen bg-linear-to-b from-background to-muted/30">
@@ -19,10 +29,17 @@
                 <span>CarbPlan</span>
             </a>
 
-            <Button href={ROUTES.auth.login} size="sm">
-                Log in
-                <LogInIcon />
-            </Button>
+            {#if isLoggedIn}
+                <Button href={ROUTES.dashboard} size="sm">
+                    Go to app
+                    <MoveRightIcon />
+                </Button>
+            {:else}
+                <Button href={ROUTES.auth.login} size="sm">
+                    Log in
+                    <LogInIcon />
+                </Button>
+            {/if}
         </nav>
     </header>
 
