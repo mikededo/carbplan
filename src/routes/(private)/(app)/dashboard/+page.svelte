@@ -2,6 +2,10 @@
     import { PageHeader } from '$lib/domain/layout/components'
 </script>
 
+<svelte:head>
+    <title>Dashboard — CarbPlan</title>
+</svelte:head>
+
 <PageHeader crumbs={['Dashboard']} />
 
 <div class="flex flex-1 flex-col gap-4 p-4 pt-0">

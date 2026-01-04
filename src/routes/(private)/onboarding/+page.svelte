@@ -57,6 +57,17 @@
     }
 </script>
 
+<svelte:head>
+    {#if step === 0}
+        <title>Complete your profile — CarbPlan</title>
+    {:else if step === 1}
+        <title>Performance information — CarbPlan</title>
+    {:else}
+        <title>Nutrition information — CarbPlan</title>
+    {/if}
+
+</svelte:head>
+
 <main class="mx-auto flex min-h-screen justify-center bg-muted px-4">
     <div class="flex w-full max-w-lg flex-col items-center justify-center gap-4">
         <h1 class="text-2xl font-semibold">Welcome!</h1>
@@ -105,9 +116,7 @@
             bind:hrRest={formData.hrRest}
         />
     {:else}
-        <StepNutrition
-            bind:maxCarbIntake={formData.maxCarbIntake}
-        />
+        <StepNutrition bind:maxCarbIntake={formData.maxCarbIntake} />
     {/if}
 {/snippet}
 

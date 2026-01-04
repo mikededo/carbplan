@@ -6,6 +6,11 @@
     import { Logo } from '$lib/domain/ui/logo'
 </script>
 
+<svelte:head>
+    <title>CarbPlan — Athlete Nutrition Planning</title>
+    <meta content="Plan your nutrition for every workout. Build custom fueling strategies based on your power, duration, and personal tolerance." name="description" />
+</svelte:head>
+
 <div class="min-h-screen bg-linear-to-b from-background to-muted/30">
     <header class="fixed inset-x-0 top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-sm">
         <nav class="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">

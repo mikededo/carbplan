@@ -12,6 +12,10 @@
     const { form }: Props = $props()
 </script>
 
+<svelte:head>
+    <title>Log In — CarbPlan</title>
+</svelte:head>
+
 <Card class="w-full max-w-md">
     <CardHeader>
         <CardTitle>Log in</CardTitle>

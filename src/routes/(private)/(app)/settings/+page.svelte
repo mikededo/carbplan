@@ -67,6 +67,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>Settings — CarbPlan</title>
+</svelte:head>
+
 <PageHeader crumbs={['Settings']}>
     <Button
         class="ml-auto"
