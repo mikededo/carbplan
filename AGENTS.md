@@ -15,6 +15,7 @@ CarbPlan is an athlete nutrition planning web app where athletes and coaches con
 - **Validation**: Valibot
 - **Error handling**: Neverthrow
 - **Icons**: @lucide/svelte
+- **Data fetching**: TanStack Query (svelte-query)
 
 ## Setup and Development
 
@@ -27,6 +28,7 @@ CarbPlan is an athlete nutrition planning web app where athletes and coaches con
 
 ### Core Directories
 - `src/lib/domain/ui/` — UI components (shadcn-svelte style)
+- `src/lib/domain/query/` — TanStack Query utilities (client, keys, provider)
 - `src/lib/constants/` — App constants (routes, etc.)
 - `src/lib/database/` — Supabase types and client helpers, which are generated from the database
 - `src/lib/hooks/` — Shared Svelte hooks
@@ -37,6 +39,7 @@ CarbPlan is an athlete nutrition planning web app where athletes and coaches con
 The repository follows a domain driven architecture. Each domain is stored under `src/lib/domain`. Each domain can contain:
 
 - `components` folder (domain coupled components)
+- `queries` folder (TanStack Query hooks and options)
 - `context` file (context specific for that domain)
 - `types` file (types for that domain)
 - `schemas` file (valibot schemas for that domain)
@@ -85,6 +88,118 @@ We should aim for a modular/atomic approach, minimizing shared logic, ensuring s
 ### Error handling
 
 Prefer `neverthrow` over `try-catch` pattern
+
+## TanStack Query
+
+### Structure
+- `src/lib/domain/query/` — Core utilities (client, keys, provider)
+- Each domain has a `queries/` folder with its query hooks
+
+### Naming Conventions
+- Query hooks: `useX` (e.g., `useAthlete`, `useSupplements`)
+- Mutation hooks: `useMutateX` (e.g., `useMutateAthlete`)
+- Query options: `xOptions` (e.g., `athleteOptions`)
+
+### Query Keys
+Define all keys in `src/lib/domain/query/keys.ts`:
+```ts
+export const queryKeys = {
+  athlete: {
+    all: ['athlete'] as const,
+    current: () => [...queryKeys.athlete.all, 'current'] as const
+  }
+} as const
+```
+
+### Query Options Pattern
+Use `queryOptions` for type-safe queries:
+```ts
+import { queryOptions } from '@tanstack/svelte-query'
+import { queryKeys } from '$lib/domain/query/keys'
+
+export const athleteOptions = (supabase: Client) =>
+  queryOptions({
+    queryKey: queryKeys.athlete.current(),
+    queryFn: async () => {
+      const { data, error } = await supabase.from('table').select('*').single()
+      if (error) throw error
+      return data
+    }
+  })
+```
+
+### Query Hook Pattern
+```ts
+import { createQuery } from '@tanstack/svelte-query'
+import { athleteOptions } from './athlete'
+
+export const useAthlete = () => {
+  const supabaseResult = useSupabaseClient()
+  if (supabaseResult.isErr()) {
+    return null
+  }
+
+  return createQuery(() => athleteOptions(supabaseResult.value))
+}
+```
+
+### Mutation with Optimistic Updates
+```ts
+import { createMutation, useQueryClient } from '@tanstack/svelte-query'
+import { athleteOptions } from './athlete'
+
+export const useMutateAthlete = (athleteId?: string) => {
+  const queryClient = useQueryClient()
+  const supabaseResult = useSupabaseClient()
+  
+  if (supabaseResult.isErr()) {
+    return null
+  }
+
+  const supabase = supabaseResult.value
+  const options = athleteOptions(supabase)
+  return createMutation({
+    mutationFn: async (input) => {
+      const { data, error } = await supabase.from('table').update(input).eq('id', athleteId).select().single()
+      if (error) throw error
+      return data
+    },
+    onMutate: async (input) => {
+      await queryClient.cancelQueries({ queryKey: options.queryKey })
+      const previous = queryClient.getQueryData(options.queryKey)
+      queryClient.setQueryData(options.queryKey, (old) => ({ ...old, ...input }))
+      return { previous }
+    },
+    onError: (_, __, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(options.queryKey, context.previous)
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: options.queryKey })
+    }
+  })
+}
+```
+
+### SSR with SvelteKit
+Prefetch data in `+layout.ts` or `+page.ts`:
+```ts
+export const load: LayoutLoad = async ({ parent }) => {
+  const { queryClient, supabase } = await parent()
+  await queryClient.prefetchQuery(athleteOptions(supabase))
+}
+```
+
+### Usage in Components
+```svelte
+<script lang="ts">
+    const { data, isLoading, error } = useAthlete(data.supabase)
+    const mutation = useMutateAthlete(data.supabase, data.user.id)
+
+    mutation.mutate({ ... })
+</script>
+```
 
 ## Common Patterns
 
@@ -136,6 +251,7 @@ export const actions = {
 
 ### Supabase Access
 - **Server**: `locals.supabase` (from hooks.server.ts)
+- **Client**: `data.supabase` (from layout load)
 - **Safe session**: `locals.safeGetSession()` (validates JWT)
 - **Client type**: `Client` from `$lib/database/types`
 - **Query result helper**: `Result<T>` for typing query results

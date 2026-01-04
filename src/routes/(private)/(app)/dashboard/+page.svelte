@@ -1,13 +1,14 @@
 <script lang="ts">
-    import type { PageData } from './$types'
-
     import { PageHeader } from '$lib/domain/layout/components'
-
-    type Props = { data: PageData }
-
-    const { data }: Props = $props()
 </script>
 
 <PageHeader crumbs={['Dashboard']} />
 
-<p>{JSON.stringify(data.athlete)}</p>
+<div class="flex flex-1 flex-col gap-4 p-4 pt-0">
+    <div class="grid auto-rows-min gap-4 md:grid-cols-3">
+        <div class="aspect-video rounded-xl bg-muted/50"></div>
+        <div class="aspect-video rounded-xl bg-muted/50"></div>
+        <div class="aspect-video rounded-xl bg-muted/50"></div>
+    </div>
+    <div class="min-h-screen flex-1 rounded-xl bg-muted/50 md:min-h-min"></div>
+</div>

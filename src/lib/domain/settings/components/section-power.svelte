@@ -16,7 +16,7 @@
         weight: number | undefined
     }
     let { ftp = $bindable(), weight = $bindable() }: Props = $props()
-</script> 
+</script>
 
 <SettingsSection
     description="Your cycling power metrics for intensity calculations."

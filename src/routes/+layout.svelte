@@ -4,12 +4,16 @@
     import { onMount } from 'svelte'
 
     import { invalidate } from '$app/navigation'
+    import { setSupabaseClient } from '$lib/database/context'
+    import QueryProvider from '$lib/domain/query/provider.svelte'
     import { createThemeContext } from '$lib/domain/theme'
 
     const { children, data } = $props()
-    const { session, supabase } = $derived(data)
+    const { queryClient, session, supabase } = $derived(data)
 
     const theme = createThemeContext()
+
+    setSupabaseClient(() => supabase)
 
     onMount(() => {
         const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
@@ -33,4 +37,6 @@
     <title>CarbPlan</title>
 </svelte:head>
 
-{@render children()}
+<QueryProvider {queryClient}>
+    {@render children()}
+</QueryProvider>
