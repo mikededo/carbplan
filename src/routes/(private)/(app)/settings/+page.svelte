@@ -3,6 +3,7 @@
 
     import type { PageData } from './$types'
 
+    import { LoaderCircleIcon } from '@lucide/svelte'
     import SaveIcon from '@lucide/svelte/icons/save'
 
     import { enhance } from '$app/forms'
@@ -22,7 +23,7 @@
 
     const FORM_ID = 'settings'
 
-    let saving = $state(false)
+    let isSaving = $state(false)
     // svelte-ignore state_referenced_locally
     let fullName = $state(data.athlete.full_name ?? '')
     // svelte-ignore state_referenced_locally
@@ -43,11 +44,21 @@
     // svelte-ignore state_referenced_locally
     let maxCarbIntake = $state(data.athlete.max_carb_intake_g_per_hr ?? PROFILE_VALUES.maxCarbIntake.default)
 
+    const hasChanged = $derived(
+        ftp !== data.athlete.ftp ||
+        fullName !== data.athlete.full_name ||
+        height !== data.athlete.height_cm ||
+        hrMax !== data.athlete.hr_max ||
+        hrRest !== data.athlete.hr_rest ||
+        maxCarbIntake !== data.athlete.max_carb_intake_g_per_hr ||
+        sex !== data.athlete.sex ||
+        weight !== data.athlete.weight_kg
+    )
+
     const onSubmitForm: SubmitFunction = () => {
-        saving = true
-        return async ({ update }) => {
-            await update()
-            saving = false
+        isSaving = true
+        return () => {
+            isSaving = false
         }
     }
 </script>
@@ -55,12 +66,17 @@
 <PageHeader crumbs={['Settings']}>
     <Button
         class="ml-auto"
-        disabled={saving}
+        disabled={isSaving || !hasChanged}
         form={FORM_ID}
         size="sm"
+        type="submit"
     >
-        <SaveIcon />
-        {saving ? 'Saving...' : 'Save changes'}
+        {#if isSaving}
+            <LoaderCircleIcon class="animate-spin" />
+        {:else}
+            <SaveIcon />
+        {/if}
+        {isSaving ? 'Saving' : 'Save changes'}
     </Button>
 </PageHeader>
 

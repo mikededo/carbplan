@@ -5,6 +5,7 @@ import { redirect } from '@sveltejs/kit'
 import { ROUTES } from '$lib/constants/routes'
 
 export const load: LayoutServerLoad = async ({ locals: { supabase } }) => {
+  console.log('run')
   const { data: athlete } = await supabase
     .from('current_athlete')
     .select('*')
