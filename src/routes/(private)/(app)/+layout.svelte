@@ -28,9 +28,7 @@
 </script>
 
 <Sidebar.Provider>
-    {#if athlete?.data}
-        <AppSidebar athlete={athlete.data} {onLogOut} />
-    {/if}
+    <AppSidebar athlete={athlete?.data} {onLogOut} />
     <Sidebar.Inset>
         {@render children()}
     </Sidebar.Inset>

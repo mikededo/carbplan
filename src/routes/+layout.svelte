@@ -5,6 +5,7 @@
 
     import { invalidate } from '$app/navigation'
     import { setSupabaseClient } from '$lib/database/context'
+    import { setAuthContext } from '$lib/domain/auth/context'
     import QueryProvider from '$lib/domain/query/provider.svelte'
     import { createThemeContext } from '$lib/domain/theme'
 
@@ -14,6 +15,7 @@
     const theme = createThemeContext()
 
     setSupabaseClient(() => supabase)
+    setAuthContext(() => data.session?.user ?? null)
 
     onMount(() => {
         const { data } = supabase.auth.onAuthStateChange((_, newSession) => {

@@ -10,8 +10,8 @@
     import SidebarUser from './sidebar-user.svelte'
 
     type Props = {
-        athlete: CurrentAthlete
         onLogOut: () => void
+        athlete?: CurrentAthlete
     } & ComponentProps<typeof Sidebar.Root>
     const { athlete, onLogOut, ...restProps }: Props = $props()
 </script>
@@ -31,7 +31,9 @@
         <SidebarNav />
     </Sidebar.Content>
     <Sidebar.Footer>
-        <SidebarUser {athlete} {onLogOut} />
+        {#if athlete}
+            <SidebarUser {athlete} {onLogOut} />
+        {/if}
     </Sidebar.Footer>
     <Sidebar.Rail />
 </Sidebar.Root>

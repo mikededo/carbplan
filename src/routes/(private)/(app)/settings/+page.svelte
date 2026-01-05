@@ -1,4 +1,5 @@
 <script lang="ts">
+
     import type { PageData } from './$types'
 
     import { LoaderCircleIcon } from '@lucide/svelte'
@@ -23,14 +24,15 @@
     const mutation = $derived(useMutateAthlete(data.session?.user.id))
     const isPending = $derived(!!mutation?.isPending)
 
-    let fullName = $state(athlete?.data?.full_name ?? '')
-    let sex = $state<'' | 'female' | 'male'>(athlete?.data?.sex ?? '')
-    let height = $state(athlete?.data?.height_cm ?? undefined)
-    let weight = $state(athlete?.data?.weight_kg ?? undefined)
-    let ftp = $state(athlete?.data?.ftp ?? undefined)
-    let hrRest = $state(athlete?.data?.hr_rest ?? undefined)
-    let hrMax = $state(athlete?.data?.hr_max ?? undefined)
-    let maxCarbIntake = $state(athlete?.data?.max_carb_intake_g_per_hr ?? PROFILE_VALUES.maxCarbIntake.default)
+    let fullName = $derived(athlete?.data?.full_name ?? '')
+    let sex = $derived<'' | 'female' | 'male'>(athlete?.data?.sex ?? '')
+    let height = $derived(athlete?.data?.height_cm ?? undefined)
+    let weight = $derived(athlete?.data?.weight_kg ?? undefined)
+    let ftp = $derived(athlete?.data?.ftp ?? undefined)
+    let hrRest = $derived(athlete?.data?.hr_rest ?? undefined)
+    let hrMax = $derived(athlete?.data?.hr_max ?? undefined)
+    const hrZones = $derived(athlete?.data?.hr_zones)
+    let maxCarbIntake = $derived(athlete?.data?.max_carb_intake_g_per_hr ?? PROFILE_VALUES.maxCarbIntake.default)
 
     const hasChanged = $derived.by(() => {
         const data = athlete?.data
@@ -105,7 +107,12 @@
 
             <SectionPower bind:ftp bind:weight />
 
-            <SectionHeartRate bind:hrMax bind:hrRest />
+            <SectionHeartRate
+                bind:hrMax
+                bind:hrRest
+                athleteId={athlete?.data?.id ?? undefined}
+                {hrZones}
+            />
 
             <SectionNutrition bind:maxCarbIntake />
         </div>

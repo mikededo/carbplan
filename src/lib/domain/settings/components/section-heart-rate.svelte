@@ -1,21 +1,55 @@
 <script lang="ts">
-    import { HeartPlusIcon, HeartPulseIcon } from '@lucide/svelte'
-    import HeartIcon from '@lucide/svelte/icons/heart'
+
+    import type { Athlete } from '$lib/database/types.g'
+    import type { HRZoneModel, HRZonesData } from '$lib/domain/zones/hr/schemas'
+
+    import { HeartIcon, HeartPlusIcon, HeartPulseIcon, LoaderCircleIcon } from '@lucide/svelte'
 
     import { PROFILE_VALUES } from '$lib/domain/settings/constants'
+    import { Button } from '$lib/domain/ui/button'
     import { Input } from '$lib/domain/ui/input'
     import { Label } from '$lib/domain/ui/label'
+    import { HRZonesCard } from '$lib/domain/zones/hr/components'
+    import { useMutateAthleteHRZones } from '$lib/domain/zones/hr/queries'
 
     import MetricCard from './metric-card.svelte'
     import SettingsSectionGroup from './settings-section-group.svelte'
     import SettingsSection from './settings-section.svelte'
-    import ZonesPlaceholder from './zones-placeholder.svelte'
 
     type Props = {
-        hrMax: number | undefined
-        hrRest: number | undefined
+        athleteId?: Athlete['id']
+        hrMax?: number
+        hrRest?: number
+        hrZones?: HRZonesData
     }
-    let { hrMax = $bindable(), hrRest = $bindable() }: Props = $props()
+    let {
+        athleteId,
+        hrMax = $bindable(),
+        hrRest = $bindable(),
+        hrZones: initialHRZones
+    }: Props = $props()
+
+    // svelte-ignore state_referenced_locally
+    let hrZones = $state<HRZonesData | undefined>(initialHRZones)
+
+    const mutate = $derived(useMutateAthleteHRZones(athleteId))
+
+    const onModelChange = (data: HRZonesData) => {
+        hrZones = data
+    }
+
+    const onSaveZones = () => {
+        if (!hrZones || !mutate) {
+            return
+        }
+
+        // TODO: Show confirmation/toast
+        mutate.mutate(hrZones)
+    }
+
+    $effect(() => {
+        hrZones = initialHRZones
+    })
 </script>
 
 <SettingsSection
@@ -64,10 +98,30 @@
         />
     </SettingsSectionGroup>
 
-    <ZonesPlaceholder
-        description="Derived from your resting and max HR."
-        icon={HeartIcon}
-        title="Heart Rate Zones"
-    />
-</SettingsSection>
+    <hr class="bg-muted" />
 
+    <!-- TODO: Cleanup custom model -->
+    <!-- TODO: Add pending state when no athleteId -->
+    <HRZonesCard
+        model={hrZones?.model as Exclude<HRZoneModel, 'custom'> | undefined}
+        {hrMax}
+        {hrRest}
+        onHRZonesChange={onModelChange}
+    />
+
+    <div class="-mt-2 flex">
+        <Button
+            class="ml-auto"
+            disabled={mutate?.isPending}
+            size="sm"
+            onclick={onSaveZones}
+        >
+            {#if mutate?.isPending}
+                <LoaderCircleIcon class="animate-spin" />
+            {:else}
+                <HeartIcon />
+            {/if}
+            Save zones
+        </Button>
+    </div>
+</SettingsSection>
