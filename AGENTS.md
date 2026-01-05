@@ -61,6 +61,15 @@ We should aim for a modular/atomic approach, minimizing shared logic, ensuring s
 - Prefix unused vars with `_`, or simply name them `_`, `__`, ...
 - Use arrow function expressions
 - Prefer `satisfies` over `as`
+- Prefer object as parameters over positional parameters
+- Prefer absolute imports
+
+### Testing
+- Use `vitest` for unit tests
+- Unit test should reside next to the file being tested with the same name but with `.test.ts` suffix
+- Fix any test until the whole suite is green
+- Keep tests focused and small. 
+- Avoid duplicating code within the tests
 
 ### Svelte 5
 - **You must use runes**: `$props()`, `$state()`, `$derived()`, `$effect()`
