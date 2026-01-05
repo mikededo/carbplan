@@ -42,10 +42,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_slug: { Args: { input: string }, Returns: string }
     }
     Enums: {
       sex: 'female' | 'male'
+      product_form:
+        | 'bar' |
+        'capsule' |
+        'chew' |
+        'drink_mix' |
+        'gel' |
+        'liquid' |
+        'powder' |
+        'solid'
     }
     Tables: {
       coaching_relationships: {
@@ -101,6 +110,191 @@ export type Database = {
           coach_id?: string
         }
       }
+      favorite_brands: {
+        Relationships: [
+          {
+            columns: ['athlete_id']
+            foreignKeyName: 'favorite_brands_athlete_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'athletes'
+          },
+          {
+            columns: ['athlete_id']
+            foreignKeyName: 'favorite_brands_athlete_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'current_athlete'
+          },
+          {
+            columns: ['brand_id']
+            foreignKeyName: 'favorite_brands_brand_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'brands'
+          },
+          {
+            columns: ['brand_id']
+            foreignKeyName: 'favorite_brands_brand_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'catalog_brands'
+          }
+        ]
+        Row: {
+          athlete_id: string
+          brand_id: string
+          created_at: string
+        }
+        Insert: {
+          athlete_id: string
+          brand_id: string
+          created_at?: string
+        }
+        Update: {
+          athlete_id?: string
+          brand_id?: string
+          created_at?: string
+        }
+      }
+      favorite_products: {
+        Relationships: [
+          {
+            columns: ['athlete_id']
+            foreignKeyName: 'favorite_products_athlete_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'athletes'
+          },
+          {
+            columns: ['athlete_id']
+            foreignKeyName: 'favorite_products_athlete_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'current_athlete'
+          },
+          {
+            columns: ['product_id']
+            foreignKeyName: 'favorite_products_product_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'catalog_products'
+          },
+          {
+            columns: ['product_id']
+            foreignKeyName: 'favorite_products_product_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'products'
+          },
+          {
+            columns: ['product_id']
+            foreignKeyName: 'favorite_products_product_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'products_with_brand'
+          }
+        ]
+        Row: {
+          athlete_id: string
+          created_at: string
+          product_id: string
+        }
+        Insert: {
+          athlete_id: string
+          product_id: string
+          created_at?: string
+        }
+        Update: {
+          athlete_id?: string
+          created_at?: string
+          product_id?: string
+        }
+      }
+      products: {
+        Relationships: [
+          {
+            columns: ['brand_id']
+            foreignKeyName: 'products_brand_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'brands'
+          },
+          {
+            columns: ['brand_id']
+            foreignKeyName: 'products_brand_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'catalog_brands'
+          }
+        ]
+        Row: {
+          brand_id: string
+          caffeine_mg: null | number
+          carbs_g: null | number
+          created_at: string
+          fat_g: null | number
+          id: string
+          is_active: boolean
+          name: string
+          serving_size: number
+          serving_unit: string
+          servings_per_package: null | number
+          slug: string
+          sugar_g: null | number
+          updated_at: string
+          calories: null | number
+          flavor: null | string
+          form: Database['public']['Enums']['product_form']
+          notes: null | string
+          protein_g: null | number
+          sodium_mg: null | number
+        }
+        Insert: {
+          brand_id: string
+          name: string
+          serving_size: number
+          slug: string
+          form: Database['public']['Enums']['product_form']
+          caffeine_mg?: null | number
+          carbs_g?: null | number
+          created_at?: string
+          fat_g?: null | number
+          id?: string
+          is_active?: boolean
+          serving_unit?: string
+          servings_per_package?: null | number
+          sugar_g?: null | number
+          updated_at?: string
+          calories?: null | number
+          flavor?: null | string
+          notes?: null | string
+          protein_g?: null | number
+          sodium_mg?: null | number
+        }
+        Update: {
+          brand_id?: string
+          caffeine_mg?: null | number
+          carbs_g?: null | number
+          created_at?: string
+          fat_g?: null | number
+          id?: string
+          is_active?: boolean
+          name?: string
+          serving_size?: number
+          serving_unit?: string
+          servings_per_package?: null | number
+          slug?: string
+          sugar_g?: null | number
+          updated_at?: string
+          calories?: null | number
+          flavor?: null | string
+          form?: Database['public']['Enums']['product_form']
+          notes?: null | string
+          protein_g?: null | number
+          sodium_mg?: null | number
+        }
+      }
       athletes: {
         Relationships: []
         Row: {
@@ -113,6 +307,7 @@ export type Database = {
           hr_max: null | number
           hr_rest: null | number
           id: string
+          is_admin: boolean
           max_carb_intake_g_per_hr: null | number
           sex: Database['public']['Enums']['sex'] | null
           updated_at: string
@@ -130,6 +325,7 @@ export type Database = {
           height_cm?: null | number
           hr_max?: null | number
           hr_rest?: null | number
+          is_admin?: boolean
           max_carb_intake_g_per_hr?: null | number
           sex?: Database['public']['Enums']['sex'] | null
           updated_at?: string
@@ -147,6 +343,7 @@ export type Database = {
           hr_max?: null | number
           hr_rest?: null | number
           id?: string
+          is_admin?: boolean
           max_carb_intake_g_per_hr?: null | number
           sex?: Database['public']['Enums']['sex'] | null
           updated_at?: string
@@ -155,8 +352,173 @@ export type Database = {
           power_zones?: Json | null
         }
       }
+      brands: {
+        Relationships: []
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          slug: string
+          updated_at: string
+          website: null | string
+          description: null | string
+          logo_url: null | string
+        }
+        Insert: {
+          name: string
+          slug: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          updated_at?: string
+          website?: null | string
+          description?: null | string
+          logo_url?: null | string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          slug?: string
+          updated_at?: string
+          website?: null | string
+          description?: null | string
+          logo_url?: null | string
+        }
+      }
     }
     Views: {
+      catalog_brands: {
+        Relationships: []
+        Row: {
+          created_at: null | string
+          id: null | string
+          is_active: boolean | null
+          name: null | string
+          slug: null | string
+          updated_at: null | string
+          website: null | string
+          description: null | string
+          is_favorite: boolean | null
+          logo_url: null | string
+          product_count: null | number
+        }
+        Insert: {
+          created_at?: null | string
+          id?: null | string
+          is_active?: boolean | null
+          name?: null | string
+          slug?: null | string
+          updated_at?: null | string
+          website?: null | string
+          description?: null | string
+          is_favorite?: never
+          logo_url?: null | string
+          product_count?: never
+        }
+        Update: {
+          created_at?: null | string
+          id?: null | string
+          is_active?: boolean | null
+          name?: null | string
+          slug?: null | string
+          updated_at?: null | string
+          website?: null | string
+          description?: null | string
+          is_favorite?: never
+          logo_url?: null | string
+          product_count?: never
+        }
+      }
+      catalog_products: {
+        Relationships: [
+          {
+            columns: ['brand_id']
+            foreignKeyName: 'products_brand_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'brands'
+          },
+          {
+            columns: ['brand_id']
+            foreignKeyName: 'products_brand_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'catalog_brands'
+          }
+        ]
+        Row: {
+          brand_id: null | string
+          brand_name: null | string
+          brand_slug: null | string
+          caffeine_mg: null | number
+          carbs_g: null | number
+          created_at: null | string
+          fat_g: null | number
+          id: null | string
+          is_active: boolean | null
+          name: null | string
+          serving_size: null | number
+          serving_unit: null | string
+          servings_per_package: null | number
+          slug: null | string
+          sugar_g: null | number
+          updated_at: null | string
+          brand_logo_url: null | string
+          calories: null | number
+          flavor: null | string
+          form: Database['public']['Enums']['product_form'] | null
+          is_favorite: boolean | null
+          notes: null | string
+          protein_g: null | number
+          sodium_mg: null | number
+        }
+      }
+      products_with_brand: {
+        Relationships: [
+          {
+            columns: ['brand_id']
+            foreignKeyName: 'products_brand_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'brands'
+          },
+          {
+            columns: ['brand_id']
+            foreignKeyName: 'products_brand_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'catalog_brands'
+          }
+        ]
+        Row: {
+          brand_id: null | string
+          brand_name: null | string
+          brand_slug: null | string
+          caffeine_mg: null | number
+          carbs_g: null | number
+          created_at: null | string
+          fat_g: null | number
+          id: null | string
+          is_active: boolean | null
+          name: null | string
+          serving_size: null | number
+          serving_unit: null | string
+          servings_per_package: null | number
+          slug: null | string
+          sugar_g: null | number
+          updated_at: null | string
+          brand_logo_url: null | string
+          calories: null | number
+          flavor: null | string
+          form: Database['public']['Enums']['product_form'] | null
+          notes: null | string
+          protein_g: null | number
+          sodium_mg: null | number
+        }
+      }
       current_athlete: {
         Relationships: []
         Row: {
@@ -169,6 +531,7 @@ export type Database = {
           hr_max: null | number
           hr_rest: null | number
           id: null | string
+          is_admin: boolean | null
           max_carb_intake_g_per_hr: null | number
           sex: Database['public']['Enums']['sex'] | null
           updated_at: null | string
@@ -186,6 +549,7 @@ export type Database = {
           hr_max?: null | number
           hr_rest?: null | number
           id?: null | string
+          is_admin?: boolean | null
           max_carb_intake_g_per_hr?: null | number
           sex?: Database['public']['Enums']['sex'] | null
           updated_at?: null | string
@@ -203,6 +567,7 @@ export type Database = {
           hr_max?: null | number
           hr_rest?: null | number
           id?: null | string
+          is_admin?: boolean | null
           max_carb_intake_g_per_hr?: null | number
           sex?: Database['public']['Enums']['sex'] | null
           updated_at?: null | string
@@ -338,6 +703,16 @@ export const Constants = {
   },
   public: {
     Enums: {
+      product_form: [
+        'gel',
+        'bar',
+        'chew',
+        'drink_mix',
+        'powder',
+        'capsule',
+        'liquid',
+        'solid'
+      ],
       sex: ['male', 'female']
     }
   }
@@ -348,8 +723,30 @@ export type Athlete = Tables<'athletes'>
 export type AthleteInsert = TablesInsert<'athletes'>
 export type AthleteUpdate = TablesUpdate<'athletes'>
 
+export type Brand = Tables<'brands'>
+export type BrandInsert = TablesInsert<'brands'>
+export type BrandUpdate = TablesUpdate<'brands'>
+
 export type CoachingRelationship = Tables<'coaching_relationships'>
 export type CoachingRelationshipInsert = TablesInsert<'coaching_relationships'>
 export type CoachingRelationshipUpdate = TablesUpdate<'coaching_relationships'>
 
+export type FavoriteBrand = Tables<'favorite_brands'>
+export type FavoriteBrandInsert = TablesInsert<'favorite_brands'>
+export type FavoriteBrandUpdate = TablesUpdate<'favorite_brands'>
+
+export type FavoriteProduct = Tables<'favorite_products'>
+export type FavoriteProductInsert = TablesInsert<'favorite_products'>
+export type FavoriteProductUpdate = TablesUpdate<'favorite_products'>
+
+export type Product = Tables<'products'>
+export type ProductInsert = TablesInsert<'products'>
+export type ProductUpdate = TablesUpdate<'products'>
+
+export type CatalogBrand = Tables<'catalog_brands'>
+
+export type CatalogProduct = Tables<'catalog_products'>
+
 export type CurrentAthlete = Tables<'current_athlete'>
+
+export type ProductWithBrand = Tables<'products_with_brand'>

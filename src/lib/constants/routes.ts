@@ -5,6 +5,9 @@ type Route = Exclude<Pathname, `/api${string}`>
 const route = <T extends Route>(path: T): T => path
 
 export const ROUTES = {
+  admin: {
+    supplements: route('/supplements')
+  },
   auth: {
     login: route('/auth/log-in'),
     signup: route('/auth/sign-up')

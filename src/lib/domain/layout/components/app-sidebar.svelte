@@ -24,7 +24,7 @@
             <span class="truncate font-semibold">CarbPlan</span>
         </div>
     </Sidebar.Header>
-    <Sidebar.Content>
+    <Sidebar.Content class="gap-0">
         <SidebarNav />
     </Sidebar.Content>
     <Sidebar.Footer>
