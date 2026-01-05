@@ -1,12 +1,13 @@
 <script lang="ts">
     import type { PowerZoneModel, PowerZonesData } from '../schemas'
 
-    import { ZapIcon } from '@lucide/svelte'
+    import { ExternalLinkIcon, InfoIcon, ZapIcon } from '@lucide/svelte'
 
     import * as Select from '$lib/domain/ui/select'
+    import * as Tooltip from '$lib/domain/ui/tooltip'
     import { ZoneBar, ZoneListItem, ZonePlaceholder } from '$lib/domain/zones/zone/components'
 
-    import { POWER_MODEL_LABELS } from '../presets'
+    import { POWER_MODEL_INFO, POWER_MODEL_LABELS, POWER_ZONE_PRESETS } from '../presets'
     import { isPowerPresetZoneModel } from '../schemas'
     import { calculatePowerZones, formatPowerRange } from '../utils'
 
@@ -24,6 +25,9 @@
     const modelOptions = Object.entries(POWER_MODEL_LABELS)
         .filter(([key]) => key !== 'custom')
         .map(([value, label]) => ({ label, value }))
+
+    const currentModelInfo = $derived(POWER_MODEL_INFO[model])
+    const currentPreset = $derived(POWER_ZONE_PRESETS[model])
 
     const zones: null | PowerZonesData = $derived.by(() => {
         if (!ftp) {
@@ -56,20 +60,40 @@
             <p class="text-sm text-muted-foreground">Define the power zones that will be used to plan your nutrition</p>
         </div>
 
-        <Select.Root type="single" value={model} onValueChange={onPowerZonesChange}>
-            <Select.Trigger class="ml-auto w-48">
-                {POWER_MODEL_LABELS[model]}
-            </Select.Trigger>
-            <Select.Portal>
-                <Select.Content>
-                    {#each modelOptions as option}
-                        <Select.Item value={option.value}>
-                            {option.label}
-                        </Select.Item>
-                    {/each}
-                </Select.Content>
-            </Select.Portal>
-        </Select.Root>
+        <div class="flex items-center gap-2">
+            <Tooltip.Root>
+                <Tooltip.Trigger class="text-muted-foreground hover:text-foreground">
+                    <InfoIcon class="size-4" />
+                </Tooltip.Trigger>
+                <Tooltip.Content class="max-w-xs">
+                    <p class="mb-2">{currentModelInfo.description}</p>
+                    {#if currentModelInfo.referenceUrl}
+                        <a
+                            class="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                            href={currentModelInfo.referenceUrl}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                        >
+                            Learn more <ExternalLinkIcon class="size-3" />
+                        </a>
+                    {/if}
+                </Tooltip.Content>
+            </Tooltip.Root>
+            <Select.Root type="single" value={model} onValueChange={onPowerZonesChange}>
+                <Select.Trigger class="w-48">
+                    {POWER_MODEL_LABELS[model]}
+                </Select.Trigger>
+                <Select.Portal>
+                    <Select.Content>
+                        {#each modelOptions as option}
+                            <Select.Item value={option.value}>
+                                {option.label}
+                            </Select.Item>
+                        {/each}
+                    </Select.Content>
+                </Select.Portal>
+            </Select.Root>
+        </div>
     </div>
 
     {#if zones}
@@ -79,6 +103,7 @@
             {#each zones.zones as zone, i}
                 <ZoneListItem
                     color={zone.color}
+                    description={currentPreset[i]?.description}
                     index={i}
                     maxPercent={zone.maxPercent}
                     minPercent={zone.minPercent}

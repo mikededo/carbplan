@@ -115,6 +115,7 @@
             class="ml-auto"
             disabled={mutate?.isPending}
             size="sm"
+            variant="secondary"
             onclick={onSaveZones}
         >
             {#if mutate?.isPending}

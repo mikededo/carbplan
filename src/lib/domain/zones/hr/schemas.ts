@@ -1,6 +1,6 @@
 import * as v from 'valibot'
 
-export const HRZoneModelSchema = v.picklist(['5-zone', 'karvonen', 'custom'])
+export const HRZoneModelSchema = v.picklist(['5-zone', 'friel', 'karvonen', 'custom'])
 export type HRZoneModel = v.InferOutput<typeof HRZoneModelSchema>
 
 export const HRZoneSchema = v.object({

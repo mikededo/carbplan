@@ -1,6 +1,6 @@
 import * as v from 'valibot'
 
-export const PowerZoneModelSchema = v.picklist(['coggan', 'polarized', 'sweet-spot', 'custom'])
+export const PowerZoneModelSchema = v.picklist(['coggan', 'friel', 'polarized', 'sweet-spot', 'custom'])
 export type PowerZoneModel = v.InferOutput<typeof PowerZoneModelSchema>
 
 export const PowerZoneSchema = v.object({

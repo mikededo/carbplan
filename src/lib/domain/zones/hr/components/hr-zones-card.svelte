@@ -1,12 +1,13 @@
 <script lang="ts">
     import type { HRZoneModel, HRZonesData } from '../schemas'
 
-    import { HeartIcon } from '@lucide/svelte'
+    import { ExternalLinkIcon, HeartIcon, InfoIcon } from '@lucide/svelte'
 
     import * as Select from '$lib/domain/ui/select'
+    import * as Tooltip from '$lib/domain/ui/tooltip'
     import { ZoneBar, ZoneListItem, ZonePlaceholder } from '$lib/domain/zones/zone/components'
 
-    import { HR_MODEL_LABELS } from '../presets'
+    import { HR_MODEL_INFO, HR_MODEL_LABELS, HR_ZONE_PRESETS } from '../presets'
     import { isHRPresetZoneModel } from '../schemas'
     import { calculateHRZones, formatHRRange } from '../utils'
 
@@ -26,6 +27,9 @@
     const modelOptions = Object.entries(HR_MODEL_LABELS)
         .filter(([key]) => key !== 'custom')
         .map(([value, label]) => ({ label, value }))
+
+    const currentModelInfo = $derived(HR_MODEL_INFO[model])
+    const currentPreset = $derived(HR_ZONE_PRESETS[model])
 
     const zones: HRZonesData | null = $derived.by(() => {
         if (!hrMax) {
@@ -58,20 +62,40 @@
             <p class="text-sm text-muted-foreground">Define the heart rate zones that will be used to plan your nutrition</p>
         </div>
 
-        <Select.Root type="single" value={model} onValueChange={onHRZonesChange}>
-            <Select.Trigger class="ml-auto w-48">
-                {HR_MODEL_LABELS[model]}
-            </Select.Trigger>
-            <Select.Portal>
-                <Select.Content>
-                    {#each modelOptions as option}
-                        <Select.Item value={option.value}>
-                            {option.label}
-                        </Select.Item>
-                    {/each}
-                </Select.Content>
-            </Select.Portal>
-        </Select.Root>
+        <div class="flex items-center gap-2">
+            <Tooltip.Root open>
+                <Tooltip.Trigger class="text-muted-foreground hover:text-foreground">
+                    <InfoIcon class="size-4" />
+                </Tooltip.Trigger>
+                <Tooltip.Content class="max-w-xs">
+                    <p class="mb-2">{currentModelInfo.description}</p>
+                    {#if currentModelInfo.referenceUrl}
+                        <a
+                            class="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                            href={currentModelInfo.referenceUrl}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                        >
+                            Learn more <ExternalLinkIcon class="size-3" />
+                        </a>
+                    {/if}
+                </Tooltip.Content>
+            </Tooltip.Root>
+            <Select.Root type="single" value={model} onValueChange={onHRZonesChange}>
+                <Select.Trigger class="w-48">
+                    {HR_MODEL_LABELS[model]}
+                </Select.Trigger>
+                <Select.Portal>
+                    <Select.Content>
+                        {#each modelOptions as option}
+                            <Select.Item value={option.value}>
+                                {option.label}
+                            </Select.Item>
+                        {/each}
+                    </Select.Content>
+                </Select.Portal>
+            </Select.Root>
+        </div>
     </div>
 
     {#if zones}
@@ -81,6 +105,7 @@
             {#each zones.zones as zone, i}
                 <ZoneListItem
                     color={zone.color}
+                    description={currentPreset[i]?.description}
                     index={i}
                     maxPercent={zone.maxPercent}
                     minPercent={zone.minPercent}
