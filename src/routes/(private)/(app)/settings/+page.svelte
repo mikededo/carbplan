@@ -20,23 +20,23 @@
     type Props = { data: PageData }
     const { data }: Props = $props()
 
-    const athlete = useAthlete()
+    const athleteQuery = useAthlete()
     const mutation = $derived(useMutateAthlete(data.session?.user.id))
     const isPending = $derived(!!mutation?.isPending)
 
-    let fullName = $derived(athlete?.data?.full_name ?? '')
-    let sex = $derived<'' | 'female' | 'male'>(athlete?.data?.sex ?? '')
-    let height = $derived(athlete?.data?.height_cm ?? undefined)
-    let weight = $derived(athlete?.data?.weight_kg ?? undefined)
-    let ftp = $derived(athlete?.data?.ftp ?? undefined)
-    let hrRest = $derived(athlete?.data?.hr_rest ?? undefined)
-    let hrMax = $derived(athlete?.data?.hr_max ?? undefined)
-    const hrZones = $derived(athlete?.data?.hr_zones)
-    const powerZones = $derived(athlete?.data?.power_zones)
-    let maxCarbIntake = $derived(athlete?.data?.max_carb_intake_g_per_hr ?? PROFILE_VALUES.maxCarbIntake.default)
+    let fullName = $derived(athleteQuery.data?.full_name ?? '')
+    let sex = $derived<'' | 'female' | 'male'>(athleteQuery?.data?.sex ?? '')
+    let height = $derived(athleteQuery.data?.height_cm ?? undefined)
+    let weight = $derived(athleteQuery.data?.weight_kg ?? undefined)
+    let ftp = $derived(athleteQuery.data?.ftp ?? undefined)
+    let hrRest = $derived(athleteQuery.data?.hr_rest ?? undefined)
+    let hrMax = $derived(athleteQuery.data?.hr_max ?? undefined)
+    const hrZones = $derived(athleteQuery.data?.hr_zones)
+    const powerZones = $derived(athleteQuery.data?.power_zones)
+    let maxCarbIntake = $derived(athleteQuery.data?.max_carb_intake_g_per_hr ?? PROFILE_VALUES.maxCarbIntake.default)
 
     const hasChanged = $derived.by(() => {
-        const data = athlete?.data
+        const data = athleteQuery.data
         if (!data) {
             return false
         }
@@ -103,20 +103,20 @@
                 bind:height
                 bind:sex
                 bind:weight
-                email={athlete?.data?.email ?? ''}
+                email={athleteQuery.data?.email ?? ''}
             />
 
             <SectionPower
                 bind:ftp
                 bind:weight
-                athleteId={athlete?.data?.id ?? undefined}
+                athleteId={athleteQuery.data?.id ?? undefined}
                 {powerZones}
             />
 
             <SectionHeartRate
                 bind:hrMax
                 bind:hrRest
-                athleteId={athlete?.data?.id ?? undefined}
+                athleteId={athleteQuery.data?.id ?? undefined}
                 {hrZones}
             />
 

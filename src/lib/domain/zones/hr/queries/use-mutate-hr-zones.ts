@@ -12,16 +12,17 @@ type MutateContext = { previous?: CurrentAthlete }
 export const useMutateAthleteHRZones = (athleteId?: Athlete['id']) => {
   const supabaseResult = useSupabaseClient()
   const queryClient = useQueryClient()
+  const options = athleteOptions()
 
-  if (supabaseResult.isErr() || !athleteId) {
-    return null
-  }
-
-  const supabase = supabaseResult.value
-  const options = athleteOptions(supabase)
+  const isEnabled = supabaseResult.isOk() && !!athleteId
+  const supabase = isEnabled ? supabaseResult.value : null
 
   return createMutation(() => ({
     mutationFn: async (input: HRZonesData) => {
+      if (!supabase || !athleteId) {
+        throw new Error('Supabase client or athlete id not available')
+      }
+
       const { data, error } = await supabase
         .from('athletes')
         .update({ hr_zones: JSON.stringify(input) })

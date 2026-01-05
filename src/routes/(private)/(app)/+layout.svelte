@@ -7,14 +7,12 @@
     import { ROUTES } from '$lib/constants/routes'
     import { useSupabaseClient } from '$lib/database/context'
     import { AppSidebar } from '$lib/domain/layout/components'
-    import { useAthlete } from '$lib/domain/settings/queries'
     import * as Sidebar from '$lib/domain/ui/sidebar'
 
     type Props = { children: Snippet, data: LayoutData }
     const { children }: Props = $props()
 
     const supabaseResult = useSupabaseClient()
-    const athlete = useAthlete()
 
     const onLogOut = () => {
         if (supabaseResult.isErr()) {
@@ -28,7 +26,7 @@
 </script>
 
 <Sidebar.Provider>
-    <AppSidebar athlete={athlete?.data} {onLogOut} />
+    <AppSidebar {onLogOut} />
     <Sidebar.Inset>
         {@render children()}
     </Sidebar.Inset>

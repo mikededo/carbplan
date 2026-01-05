@@ -1,8 +1,6 @@
 <script lang="ts">
     import type { ComponentProps } from 'svelte'
 
-    import type { ParsedCurrentAthlete } from '$lib/database/types'
-
     import { Logo } from '$lib/domain/ui/logo'
     import * as Sidebar from '$lib/domain/ui/sidebar'
 
@@ -11,9 +9,8 @@
 
     type Props = {
         onLogOut: () => void
-        athlete?: ParsedCurrentAthlete
     } & ComponentProps<typeof Sidebar.Root>
-    const { athlete, onLogOut, ...restProps }: Props = $props()
+    const { onLogOut, ...restProps }: Props = $props()
 </script>
 
 <Sidebar.Root collapsible="icon" {...restProps}>
@@ -31,9 +28,7 @@
         <SidebarNav />
     </Sidebar.Content>
     <Sidebar.Footer>
-        {#if athlete}
-            <SidebarUser {athlete} {onLogOut} />
-        {/if}
+        <SidebarUser {onLogOut} />
     </Sidebar.Footer>
     <Sidebar.Rail />
 </Sidebar.Root>
