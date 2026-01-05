@@ -5,14 +5,14 @@
 
     import { goto } from '$app/navigation'
     import { ROUTES } from '$lib/constants/routes'
-    import { useSupabaseClient } from '$lib/database/context'
+    import { getSupabaseClient } from '$lib/database/context'
     import { AppSidebar } from '$lib/domain/layout/components'
     import * as Sidebar from '$lib/domain/ui/sidebar'
 
     type Props = { children: Snippet, data: LayoutData }
     const { children }: Props = $props()
 
-    const supabaseResult = useSupabaseClient()
+    const supabaseResult = getSupabaseClient()
 
     const onLogOut = () => {
         if (supabaseResult.isErr()) {

@@ -14,14 +14,14 @@
         SectionPower
     } from '$lib/domain/settings/components'
     import { PROFILE_VALUES } from '$lib/domain/settings/constants'
-    import { useAthlete, useMutateAthlete } from '$lib/domain/settings/queries'
+    import { createAthleteMutation, useAthleteQuery } from '$lib/domain/settings/queries'
     import { Button } from '$lib/domain/ui/button'
 
     type Props = { data: PageData }
     const { data }: Props = $props()
 
-    const athleteQuery = useAthlete()
-    const mutation = $derived(useMutateAthlete(data.session?.user.id))
+    const athleteQuery = useAthleteQuery()
+    const mutation = $derived(createAthleteMutation(data.session?.user.id))
     const isPending = $derived(!!mutation?.isPending)
 
     let fullName = $derived(athleteQuery.data?.full_name ?? '')

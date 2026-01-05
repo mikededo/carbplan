@@ -10,7 +10,7 @@
     import { Input } from '$lib/domain/ui/input'
     import { Label } from '$lib/domain/ui/label'
     import { HRZonesCard } from '$lib/domain/zones/hr/components'
-    import { useMutateAthleteHRZones } from '$lib/domain/zones/hr/queries'
+    import { createAthleteHRZonesMutation } from '$lib/domain/zones/hr/queries'
 
     import MetricCard from './metric-card.svelte'
     import SettingsSectionGroup from './settings-section-group.svelte'
@@ -32,7 +32,7 @@
     // svelte-ignore state_referenced_locally
     let hrZones = $state<HRZonesData | undefined>(initialHRZones)
 
-    const mutate = $derived(useMutateAthleteHRZones(athleteId))
+    const mutate = $derived(createAthleteHRZonesMutation(athleteId))
 
     const onModelChange = (data: HRZonesData) => {
         hrZones = data

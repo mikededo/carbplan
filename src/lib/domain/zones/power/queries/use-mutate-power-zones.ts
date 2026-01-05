@@ -4,13 +4,13 @@ import type { PowerZonesData } from '../schemas'
 
 import { createMutation, useQueryClient } from '@tanstack/svelte-query'
 
-import { useSupabaseClient } from '$lib/database/context'
+import { getSupabaseClient } from '$lib/database/context'
 import { athleteOptions } from '$lib/domain/settings/queries'
 
 type MutateContext = { previous?: CurrentAthlete }
 
-export const useMutateAthletePowerZones = (athleteId?: Athlete['id']) => {
-  const supabaseResult = useSupabaseClient()
+export const createAthletePowerZonesMutation = (athleteId?: Athlete['id']) => {
+  const supabaseResult = getSupabaseClient()
   const queryClient = useQueryClient()
   const options = athleteOptions()
 

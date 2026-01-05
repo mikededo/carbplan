@@ -4,13 +4,13 @@ import type { Client } from '$lib/database/types'
 import { queryOptions, skipToken } from '@tanstack/svelte-query'
 import { ok } from 'neverthrow'
 
-import { useSupabaseClient } from '$lib/database/context'
+import { getSupabaseClient } from '$lib/database/context'
 import { queryKeys } from '$lib/domain/query/keys'
 import { parseHRZones } from '$lib/domain/zones/hr/schemas'
 import { parsePowerZones } from '$lib/domain/zones/power/schemas'
 
 export const athleteOptions = (supabaseClient?: Client) => {
-  const supabase = supabaseClient ? ok(supabaseClient) : useSupabaseClient()
+  const supabase = supabaseClient ? ok(supabaseClient) : getSupabaseClient()
 
   return queryOptions({
     queryFn: supabase.isOk()

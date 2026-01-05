@@ -1,1 +1,1 @@
-export { useMutateAthleteHRZones } from './use-mutate-hr-zones'
+export { createAthleteHRZonesMutation } from './use-mutate-hr-zones'

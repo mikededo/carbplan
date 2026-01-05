@@ -105,9 +105,10 @@ Prefer `neverthrow` over `try-catch` pattern
 - Each domain has a `queries/` folder with its query hooks
 
 ### Naming Conventions
-- Query hooks: `useX` (e.g., `useAthlete`, `useSupplements`)
-- Mutation hooks: `useMutateX` (e.g., `useMutateAthlete`)
+- Query hooks: `useXQuery` (e.g., `useAthleteQuery`, `useSupplementsQuery`)
+- Mutation hooks: `createXMutation` (e.g., `createAthleteMutation`)
 - Query options: `xOptions` (e.g., `athleteOptions`)
+- Context getters: `getX` (e.g., `getSupabaseClient`) — not `useX`
 
 ### Query Keys
 Define all keys in `src/lib/domain/query/keys.ts`:
@@ -142,8 +143,8 @@ export const athleteOptions = (supabase: Client) =>
 import { createQuery } from '@tanstack/svelte-query'
 import { athleteOptions } from './athlete'
 
-export const useAthlete = () => {
-  const supabaseResult = useSupabaseClient()
+export const useAthleteQuery = () => {
+  const supabaseResult = getSupabaseClient()
   if (supabaseResult.isErr()) {
     return null
   }
@@ -157,9 +158,9 @@ export const useAthlete = () => {
 import { createMutation, useQueryClient } from '@tanstack/svelte-query'
 import { athleteOptions } from './athlete'
 
-export const useMutateAthlete = (athleteId?: string) => {
+export const createAthleteMutation = (athleteId?: string) => {
   const queryClient = useQueryClient()
-  const supabaseResult = useSupabaseClient()
+  const supabaseResult = getSupabaseClient()
   
   if (supabaseResult.isErr()) {
     return null
@@ -203,8 +204,8 @@ export const load: LayoutLoad = async ({ parent }) => {
 ### Usage in Components
 ```svelte
 <script lang="ts">
-    const { data, isLoading, error } = useAthlete(data.supabase)
-    const mutation = useMutateAthlete(data.supabase, data.user.id)
+    const athleteQuery = useAthleteQuery()
+    const mutation = $derived(createAthleteMutation(data.session?.user.id))
 
     mutation.mutate({ ... })
 </script>

@@ -3,17 +3,17 @@ import type { ProfileSchemaOutput } from '$lib/domain/settings/schemas'
 
 import { createMutation, createQuery, useQueryClient } from '@tanstack/svelte-query'
 
-import { useSupabaseClient } from '$lib/database/context'
+import { getSupabaseClient } from '$lib/database/context'
 
 import { athleteOptions } from './athlete'
 
-export const useAthlete = () => createQuery(() => athleteOptions())
+export const useAthleteQuery = () => createQuery(() => athleteOptions())
 
 export type MutateAthleteInput = ProfileSchemaOutput
 type MutateContext = { previous?: CurrentAthlete }
 
-export const useMutateAthlete = (athleteId?: string) => {
-  const supabaseResult = useSupabaseClient()
+export const createAthleteMutation = (athleteId?: string) => {
+  const supabaseResult = getSupabaseClient()
   const queryClient = useQueryClient()
   const options = athleteOptions()
 

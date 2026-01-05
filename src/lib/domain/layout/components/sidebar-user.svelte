@@ -4,7 +4,7 @@
     import SettingsIcon from '@lucide/svelte/icons/settings'
 
     import { ROUTES } from '$lib/constants/routes'
-    import { useAthlete } from '$lib/domain/settings/queries'
+    import { useAthleteQuery } from '$lib/domain/settings/queries'
     import { ThemeToggle } from '$lib/domain/theme/components'
     import * as Avatar from '$lib/domain/ui/avatar'
     import { Button } from '$lib/domain/ui/button'
@@ -17,7 +17,7 @@
     }
     const { onLogOut }: Props = $props()
 
-    const athleteQuery = useAthlete()
+    const athleteQuery = useAthleteQuery()
     const athlete = $derived(athleteQuery?.data)
 
     const sidebar = useSidebar()

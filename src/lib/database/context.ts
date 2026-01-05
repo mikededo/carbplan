@@ -11,7 +11,7 @@ export const setSupabaseClient = (getter: () => Client) => {
   setContext(CLIENT_CONTEXT_KEY, getter())
 }
 
-export const useSupabaseClient = (): Result<Client, void> => {
+export const getSupabaseClient = (): Result<Client, void> => {
   const context = getContext<Client | null>(CLIENT_CONTEXT_KEY)
   if (!context) {
     console.error(

@@ -10,7 +10,7 @@
     import { Input } from '$lib/domain/ui/input'
     import { Label } from '$lib/domain/ui/label'
     import { PowerZonesCard } from '$lib/domain/zones/power/components'
-    import { useMutateAthletePowerZones } from '$lib/domain/zones/power/queries'
+    import { createAthletePowerZonesMutation } from '$lib/domain/zones/power/queries'
 
     import MetricCard from './metric-card.svelte'
     import SettingsSectionGroup from './settings-section-group.svelte'
@@ -32,7 +32,7 @@
     // svelte-ignore state_referenced_locally
     let powerZones = $state<PowerZonesData | undefined>(initialPowerZones)
 
-    const mutate = $derived(useMutateAthletePowerZones(athleteId))
+    const mutate = $derived(createAthletePowerZonesMutation(athleteId))
 
     const onModelChange = (data: PowerZonesData) => {
         powerZones = data
