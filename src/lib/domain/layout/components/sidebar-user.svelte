@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { CurrentAthlete } from '$lib/database/types.g'
+    import type { ParsedCurrentAthlete } from '$lib/database/types'
 
     import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down'
     import LogOutIcon from '@lucide/svelte/icons/log-out'
@@ -14,7 +14,7 @@
     import { useSidebar } from '$lib/domain/ui/sidebar'
 
     type Props = {
-        athlete: CurrentAthlete
+        athlete: ParsedCurrentAthlete
         onLogOut: () => void
     }
     const { athlete, onLogOut }: Props = $props()

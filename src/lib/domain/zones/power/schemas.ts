@@ -19,5 +19,7 @@ export const PowerZonesDataSchema = v.object({
 })
 export type PowerZonesData = v.InferOutput<typeof PowerZonesDataSchema>
 
+export const isPowerPresetZoneModel = (value: unknown): value is PowerZoneModel =>
+  v.safeParse(PowerZoneModelSchema, value).success
 export const parsePowerZones = (data: unknown) => v.safeParse(PowerZonesDataSchema, data)
 

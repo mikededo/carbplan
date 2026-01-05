@@ -1,8 +1,10 @@
 <script lang="ts">
     import type { HRZoneModel, HRZonesData } from '../schemas'
 
+    import { HeartIcon } from '@lucide/svelte'
+
     import * as Select from '$lib/domain/ui/select'
-    import { ZoneBar, ZoneListItem } from '$lib/domain/zones/zone/components'
+    import { ZoneBar, ZoneListItem, ZonePlaceholder } from '$lib/domain/zones/zone/components'
 
     import { HR_MODEL_LABELS } from '../presets'
     import { isHRPresetZoneModel } from '../schemas'
@@ -98,11 +100,10 @@
             </p>
         {/if}
     {:else}
-        <div class="rounded-lg border border-dashed p-6 text-center">
-            <p class="text-sm text-muted-foreground">
-                Enter your maximum heart rate to see zones
-            </p>
-        </div>
+        <ZonePlaceholder
+            description="Enter your maximum heart rate to see zones"
+            Icon={HeartIcon}
+        />
     {/if}
 </div>
 

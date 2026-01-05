@@ -1,21 +1,55 @@
 <script lang="ts">
-    import { BatteryFullIcon, BatteryLowIcon, ZapIcon } from '@lucide/svelte'
+    import type { Athlete } from '$lib/database/types.g'
+    import type { PowerZoneModel, PowerZonesData } from '$lib/domain/zones/power/schemas'
+
+    import { BatteryFullIcon, BatteryLowIcon, LoaderCircleIcon, ZapIcon } from '@lucide/svelte'
     import ActivityIcon from '@lucide/svelte/icons/activity'
 
     import { PROFILE_VALUES } from '$lib/domain/settings/constants'
+    import { Button } from '$lib/domain/ui/button'
     import { Input } from '$lib/domain/ui/input'
     import { Label } from '$lib/domain/ui/label'
+    import { PowerZonesCard } from '$lib/domain/zones/power/components'
+    import { useMutateAthletePowerZones } from '$lib/domain/zones/power/queries'
 
     import MetricCard from './metric-card.svelte'
     import SettingsSectionGroup from './settings-section-group.svelte'
     import SettingsSection from './settings-section.svelte'
-    import ZonesPlaceholder from './zones-placeholder.svelte'
 
     type Props = {
-        ftp: number | undefined
-        weight: number | undefined
+        athleteId?: Athlete['id']
+        ftp?: number
+        weight?: number
+        powerZones?: PowerZonesData
     }
-    let { ftp = $bindable(), weight = $bindable() }: Props = $props()
+    let {
+        athleteId,
+        ftp = $bindable(),
+        powerZones: initialPowerZones,
+        weight = $bindable()
+    }: Props = $props()
+
+    // svelte-ignore state_referenced_locally
+    let powerZones = $state<PowerZonesData | undefined>(initialPowerZones)
+
+    const mutate = $derived(useMutateAthletePowerZones(athleteId))
+
+    const onModelChange = (data: PowerZonesData) => {
+        powerZones = data
+    }
+
+    const onSaveZones = () => {
+        if (!powerZones || !mutate) {
+            return
+        }
+
+        // TODO: Show confirmation/toast
+        mutate.mutate(powerZones)
+    }
+
+    $effect(() => {
+        powerZones = initialPowerZones
+    })
 </script>
 
 <SettingsSection
@@ -66,10 +100,30 @@
         />
     </SettingsSectionGroup>
 
-    <ZonesPlaceholder
-        description="Automatically calculated based on your FTP."
-        icon={ActivityIcon}
-        title="Power Zones"
+    <hr class="bg-muted" />
+
+    <!-- TODO: Cleanup custom model -->
+    <!-- TODO: Add pending state when no athleteId -->
+    <PowerZonesCard
+        model={powerZones?.model as Exclude<PowerZoneModel, 'custom'> | undefined}
+        {ftp}
+        onPowerZonesChange={onModelChange}
     />
+
+    <div class="-mt-2 flex">
+        <Button
+            class="ml-auto"
+            disabled={mutate?.isPending}
+            size="sm"
+            onclick={onSaveZones}
+        >
+            {#if mutate?.isPending}
+                <LoaderCircleIcon class="animate-spin" />
+            {:else}
+                <ActivityIcon />
+            {/if}
+            Save zones
+        </Button>
+    </div>
 </SettingsSection>
 

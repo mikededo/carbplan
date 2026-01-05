@@ -4,6 +4,7 @@ import { queryOptions } from '@tanstack/svelte-query'
 
 import { queryKeys } from '$lib/domain/query/keys'
 import { parseHRZones } from '$lib/domain/zones/hr/schemas'
+import { parsePowerZones } from '$lib/domain/zones/power/schemas'
 
 export const athleteOptions = (supabase: Client) =>
   queryOptions({
@@ -26,11 +27,12 @@ export const athleteOptions = (supabase: Client) =>
       }
 
       const parsedHRZones = parseHRZones(JSON.parse(data.hr_zones as string ?? '{}'))
+      const parsedPowerZones = parsePowerZones(JSON.parse(data.power_zones as string ?? '{}'))
       return {
         ...data,
-        hr_zones: parsedHRZones.success ? parsedHRZones.output : undefined
+        hr_zones: parsedHRZones.success ? parsedHRZones.output : undefined,
+        power_zones: parsedPowerZones.success ? parsedPowerZones.output : undefined
       }
     },
     staleTime: Infinity
   })
-

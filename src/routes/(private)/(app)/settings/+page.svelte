@@ -32,6 +32,7 @@
     let hrRest = $derived(athlete?.data?.hr_rest ?? undefined)
     let hrMax = $derived(athlete?.data?.hr_max ?? undefined)
     const hrZones = $derived(athlete?.data?.hr_zones)
+    const powerZones = $derived(athlete?.data?.power_zones)
     let maxCarbIntake = $derived(athlete?.data?.max_carb_intake_g_per_hr ?? PROFILE_VALUES.maxCarbIntake.default)
 
     const hasChanged = $derived.by(() => {
@@ -105,7 +106,12 @@
                 email={athlete?.data?.email ?? ''}
             />
 
-            <SectionPower bind:ftp bind:weight />
+            <SectionPower
+                bind:ftp
+                bind:weight
+                athleteId={athlete?.data?.id ?? undefined}
+                {powerZones}
+            />
 
             <SectionHeartRate
                 bind:hrMax

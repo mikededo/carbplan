@@ -1,0 +1,1 @@
+export { useMutateAthletePowerZones } from './use-mutate-power-zones'

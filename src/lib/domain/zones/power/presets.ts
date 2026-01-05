@@ -10,7 +10,7 @@ export const POWER_ZONE_PRESETS: Record<Exclude<PowerZoneModel, 'custom'>, ZoneP
     { color: '#f97316', maxPercent: 105, minPercent: 90, name: 'Threshold' },
     { color: '#ef4444', maxPercent: 120, minPercent: 105, name: 'VO2max' },
     { color: '#dc2626', maxPercent: 150, minPercent: 120, name: 'Anaerobic' },
-    { color: '#7c2d12', maxPercent: null, minPercent: 150, name: 'Neuromuscular' }
+    { color: '#a020f0', maxPercent: null, minPercent: 150, name: 'Neuromuscular' }
   ],
   polarized: [
     { color: '#22c55e', maxPercent: 80, minPercent: 0, name: 'Low Intensity' },

@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { ComponentProps } from 'svelte'
 
-    import type { CurrentAthlete } from '$lib/database/types.g'
+    import type { ParsedCurrentAthlete } from '$lib/database/types'
 
     import { Logo } from '$lib/domain/ui/logo'
     import * as Sidebar from '$lib/domain/ui/sidebar'
@@ -11,7 +11,7 @@
 
     type Props = {
         onLogOut: () => void
-        athlete?: CurrentAthlete
+        athlete?: ParsedCurrentAthlete
     } & ComponentProps<typeof Sidebar.Root>
     const { athlete, onLogOut, ...restProps }: Props = $props()
 </script>
