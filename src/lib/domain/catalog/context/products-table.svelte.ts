@@ -27,8 +27,8 @@ export const TABLE_COLUMNS: TableColumn[] = [
 ]
 
 type TableState = {
-  collapsedBrands: SvelteSet<string>
-  formFilter: '' | ProductForm
+  collapsedBrands: Set<string>
+  formFilter: Set<'' | ProductForm>
   globalFilter: string
   sortColumn: SortColumn
   sortDirection: SortDirection
@@ -40,7 +40,7 @@ const createProductsTableState = (getBrands: () => CatalogResult) => {
   const brands = $derived(getBrands())
   const state = $state<TableState>({
     collapsedBrands: new SvelteSet(),
-    formFilter: '',
+    formFilter: new SvelteSet(),
     globalFilter: '',
     sortColumn: 'name',
     sortDirection: 'asc'
@@ -50,7 +50,7 @@ const createProductsTableState = (getBrands: () => CatalogResult) => {
     brands.reduce<CatalogResult>((acc, brand) => {
       const filteredProducts = brand.products
         .filter((product) => {
-          if (state.formFilter && product.form !== state.formFilter) {
+          if (state.formFilter.size > 0 && !state.formFilter.has(product.form)) {
             return false
           }
 
@@ -94,8 +94,16 @@ const createProductsTableState = (getBrands: () => CatalogResult) => {
   const totalProducts = $derived(brands.reduce((acc, b) => acc + b.products.length, 0))
   const filteredProductsCount = $derived(filteredBrands.reduce((acc, b) => acc + b.products.length, 0))
 
-  const onFormFilterChange = (value: string | undefined) => {
-    state.formFilter = (value as '' | ProductForm) ?? ''
+  const onProductFormChange = (value: string[]) => {
+    state.formFilter = new SvelteSet(value as ('' | ProductForm)[])
+  }
+
+  const onToggleProductForm = (form: '' | ProductForm) => {
+    if (state.formFilter.has(form)) {
+      state.formFilter.delete(form)
+    } else {
+      state.formFilter.add(form)
+    }
   }
 
   const onSortColumn = (column: SortColumn) => () => {
@@ -129,18 +137,16 @@ const createProductsTableState = (getBrands: () => CatalogResult) => {
     get formFilter() {
       return state.formFilter
     },
-    set formFilter(value: '' | ProductForm) {
-      state.formFilter = value
-    },
     get globalFilter() {
       return state.globalFilter
     },
     set globalFilter(value: string) {
       state.globalFilter = value
     },
-    onFormFilterChange,
+    onProductFormChange,
     onSortColumn,
     onToggleCollapseBrand,
+    onToggleProductForm,
     get sortColumn() {
       return state.sortColumn
     },

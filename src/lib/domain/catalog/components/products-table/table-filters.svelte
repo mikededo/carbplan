@@ -1,40 +1,20 @@
 <script lang="ts">
     import {
-        BoxIcon,
-        CandyIcon,
         ComponentIcon,
-        CookieIcon,
-        DropletIcon,
-        DropletsIcon,
-        FlaskConicalIcon,
-        GlassWaterIcon,
-        PillIcon,
-        SearchIcon,
-        SlidersHorizontalIcon
+        SearchIcon
     } from '@lucide/svelte'
 
     import { Input } from '$lib/domain/ui/input'
     import * as Select from '$lib/domain/ui/select'
 
     import { getProductsTableContext } from '../../context'
-    import { formatProductForm } from '../../schemas'
+    import AllFilters, { ALL_TYPES_OPTION, formOptions } from './all-filters.svelte'
 
     const table = getProductsTableContext()
-
-    const formOptions = [
-        { Icon: ComponentIcon, label: 'All types', value: '' },
-        { Icon: DropletsIcon, label: formatProductForm('gel'), value: 'gel' },
-        { Icon: CookieIcon, label: formatProductForm('bar'), value: 'bar' },
-        { Icon: CandyIcon, label: formatProductForm('chew'), value: 'chew' },
-        { Icon: GlassWaterIcon, label: formatProductForm('drink_mix'), value: 'drink_mix' },
-        { Icon: FlaskConicalIcon, label: formatProductForm('powder'), value: 'powder' },
-        { Icon: BoxIcon, label: formatProductForm('solid'), value: 'solid' },
-        { Icon: PillIcon, label: formatProductForm('capsule'), value: 'capsule' },
-        { Icon: DropletIcon, label: formatProductForm('liquid'), value: 'liquid' }
-    ] as const
+    const selectedProductForms = $derived([...table.formFilter])
 </script>
 
-<div class="flex shrink-0 items-center gap-4">
+<div class="flex shrink-0 items-center gap-2">
     <div class="relative w-full">
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center justify-center pl-2.5 text-muted-foreground peer-disabled:opacity-50">
             <SearchIcon class="size-4 text-muted-foreground" />
@@ -46,22 +26,31 @@
             type="search"
         />
     </div>
-    <Select.Root type="single" value={table.formFilter} onValueChange={table.onFormFilterChange}>
-        <Select.Trigger class="w-40">
-            <span class="flex items-center gap-2">
-                {#if table.formFilter}
-                    {@const option = formOptions.find(({ value }) => table.formFilter === value)}
-                    {#if option}
-                        <option.Icon class="size-3.5" />
-                        {option.label}
-                    {/if}
-                {:else}
-                    <SlidersHorizontalIcon class="size-3.5" />
+    <Select.Root
+        type="multiple"
+        value={selectedProductForms}
+        onValueChange={table.onProductFormChange}
+    >
+        <Select.Trigger class="w-36 shrink-0">
+            {#if selectedProductForms.length > 0}
+                <span class="w-28 truncate text-left">
+                    {selectedProductForms
+                        .map((filter) => formOptions.find((option) => option.value === filter)?.label)
+                        . filter(Boolean)
+                        .join(', ')}
+                </span>
+            {:else}
+                <span class="flex items-center gap-2">
+                    <ComponentIcon class="size-3.5" />
                     All types
-                {/if}
-            </span>
+                </span>
+            {/if}
         </Select.Trigger>
         <Select.Content>
+            <Select.Item value={ALL_TYPES_OPTION.value}>
+                <ALL_TYPES_OPTION.Icon class="size-3.5" />
+                {ALL_TYPES_OPTION.label}
+            </Select.Item>
             {#each formOptions as option (option.value)}
                 <Select.Item value={option.value}>
                     <option.Icon class="size-3.5" />
@@ -70,4 +59,5 @@
             {/each}
         </Select.Content>
     </Select.Root>
+    <AllFilters />
 </div>
