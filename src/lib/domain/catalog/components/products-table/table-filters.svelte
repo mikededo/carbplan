@@ -5,13 +5,40 @@
     } from '@lucide/svelte'
 
     import { Input } from '$lib/domain/ui/input'
+    import { Kbd, KbdGroup } from '$lib/domain/ui/kbd'
     import * as Select from '$lib/domain/ui/select'
 
     import { getProductsTableContext } from '../../context'
     import AllFilters, { ALL_TYPES_OPTION, formOptions } from './all-filters.svelte'
 
+    let inputRef = $state<HTMLInputElement | null>(null)
     const table = getProductsTableContext()
     const selectedProductForms = $derived([...table.formFilter])
+
+    $effect(() => {
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (!inputRef) {
+                return
+            }
+
+            const isFocusShortcut = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'l'
+            if (!isFocusShortcut) {
+                return
+            }
+
+            event.preventDefault()
+            if (document.activeElement === inputRef) {
+                inputRef.blur()
+            } else {
+                inputRef.focus()
+            }
+        }
+
+        document.addEventListener('keydown', onKeyDown)
+        return () => {
+            document.removeEventListener('keydown', onKeyDown)
+        }
+    })
 </script>
 
 <div class="flex shrink-0 items-center gap-2">
@@ -20,18 +47,22 @@
             <SearchIcon class="size-4 text-muted-foreground" />
         </div>
         <Input
-            class="peer pl-8"
+            class="peer pl-8 text-sm"
+            bind:ref={inputRef}
             bind:value={table.globalFilter}
             placeholder="Search products..."
-            type="search"
         />
+        <KbdGroup class="absolute end-2 top-2 gap-1">
+            <Kbd>⌘</Kbd>
+            <Kbd>L</Kbd>
+        </KbdGroup>
     </div>
     <Select.Root
         type="multiple"
         value={selectedProductForms}
         onValueChange={table.onProductFormChange}
     >
-        <Select.Trigger class="w-36 shrink-0">
+        <Select.Trigger class="hidden w-36 shrink-0 @xl/page-content:inline-flex">
             {#if selectedProductForms.length > 0}
                 <span class="w-28 truncate text-left">
                     {selectedProductForms
