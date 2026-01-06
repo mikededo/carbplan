@@ -26,10 +26,22 @@ export const TABLE_COLUMNS: TableColumn[] = [
   { key: 'caffeine_mg', label: 'Caffeine', sortable: true }
 ]
 
+export const CAFFEINE_MAX = 200
+export const CALORIES_MAX = 1000
+
 type TableState = {
+  brandFilter: Set<string>
+  maxCaffeine: null | number
+  maxCarbs: null | number
+  minCaffeine: null | number
+  minCarbs: null | number
   collapsedBrands: Set<string>
   formFilter: Set<'' | ProductForm>
   globalFilter: string
+  maxCalories: null | number
+  maxSodium: null | number
+  minCalories: null | number
+  minSodium: null | number
   sortColumn: SortColumn
   sortDirection: SortDirection
 }
@@ -39,21 +51,57 @@ const PRODUCTS_TABLE_KEY = Symbol('products-table')
 const createProductsTableState = (getBrands: () => CatalogResult) => {
   const brands = $derived(getBrands())
   const state = $state<TableState>({
+    brandFilter: new SvelteSet(),
     collapsedBrands: new SvelteSet(),
     formFilter: new SvelteSet(),
     globalFilter: '',
+    maxCaffeine: null,
+    maxCalories: null,
+    maxCarbs: null,
+    maxSodium: null,
+    minCaffeine: null,
+    minCalories: null,
+    minCarbs: null,
+    minSodium: null,
     sortColumn: 'name',
     sortDirection: 'asc'
   })
 
   const filteredBrands = $derived(
     brands.reduce<CatalogResult>((acc, brand) => {
+      if (state.brandFilter.size > 0 && !state.brandFilter.has(brand.id)) {
+        return acc
+      }
+
       const filteredProducts = brand.products
         .filter((product) => {
           if (state.formFilter.size > 0 && !state.formFilter.has(product.form)) {
             return false
           }
-
+          if (state.minCaffeine !== null && (product.caffeine_mg === null || product.caffeine_mg < state.minCaffeine)) {
+            return false
+          }
+          if (state.maxCaffeine !== null && (product.caffeine_mg === null || product.caffeine_mg > state.maxCaffeine)) {
+            return false
+          }
+          if (state.minCalories !== null && (product.calories === null || product.calories < state.minCalories)) {
+            return false
+          }
+          if (state.maxCalories !== null && (product.calories === null || product.calories > state.maxCalories)) {
+            return false
+          }
+          if (state.minCarbs !== null && (product.carbs_g === null || product.carbs_g < state.minCarbs)) {
+            return false
+          }
+          if (state.maxCarbs !== null && (product.carbs_g === null || product.carbs_g > state.maxCarbs)) {
+            return false
+          }
+          if (state.minSodium !== null && (product.sodium_mg === null || product.sodium_mg < state.minSodium)) {
+            return false
+          }
+          if (state.maxSodium !== null && (product.sodium_mg === null || product.sodium_mg > state.maxSodium)) {
+            return false
+          }
           if (state.globalFilter) {
             const searchLower = state.globalFilter.toLowerCase()
             const matchesBrand = brand.name.toLowerCase().includes(searchLower)
@@ -106,6 +154,52 @@ const createProductsTableState = (getBrands: () => CatalogResult) => {
     }
   }
 
+  const onCaffeineChange = (min: null | number, max: null | number) => {
+    state.minCaffeine = min
+    state.maxCaffeine = max
+  }
+
+  const onBrandFilterChange = (value: string[]) => {
+    state.brandFilter = new SvelteSet(value)
+  }
+
+  const onCaloriesChange = (min: null | number, max: null | number) => {
+    state.minCalories = min
+    state.maxCalories = max
+  }
+
+  const onCarbsChange = (min: null | number, max: null | number) => {
+    state.minCarbs = min
+    state.maxCarbs = max
+  }
+
+  const onSodiumChange = (min: null | number, max: null | number) => {
+    state.minSodium = min
+    state.maxSodium = max
+  }
+
+  const onResetFilters = () => {
+    state.brandFilter = new SvelteSet()
+    state.formFilter = new SvelteSet()
+    state.maxCaffeine = null
+    state.maxCalories = null
+    state.maxCarbs = null
+    state.maxSodium = null
+    state.minCaffeine = null
+    state.minCalories = null
+    state.minCarbs = null
+    state.minSodium = null
+  }
+
+  const activeFiltersCount = $derived(
+    (state.formFilter.size > 0 ? 1 : 0) +
+    (state.minCaffeine !== null || state.maxCaffeine !== null ? 1 : 0) +
+    (state.brandFilter.size > 0 ? 1 : 0) +
+    (state.minCalories !== null || state.maxCalories !== null ? 1 : 0) +
+    (state.minCarbs !== null || state.maxCarbs !== null ? 1 : 0) +
+    (state.minSodium !== null || state.maxSodium !== null ? 1 : 0)
+  )
+
   const onSortColumn = (column: SortColumn) => () => {
     if (state.sortColumn === column) {
       state.sortDirection = state.sortDirection === 'asc' ? 'desc' : 'asc'
@@ -125,6 +219,15 @@ const createProductsTableState = (getBrands: () => CatalogResult) => {
   }
 
   return {
+    get activeFiltersCount() {
+      return activeFiltersCount
+    },
+    get brandFilter() {
+      return state.brandFilter
+    },
+    get brands() {
+      return brands
+    },
     get collapsedBrands() {
       return state.collapsedBrands
     },
@@ -143,7 +246,37 @@ const createProductsTableState = (getBrands: () => CatalogResult) => {
     set globalFilter(value: string) {
       state.globalFilter = value
     },
+    get maxCaffeine() {
+      return state.maxCaffeine
+    },
+    get maxCalories() {
+      return state.maxCalories
+    },
+    get maxCarbs() {
+      return state.maxCarbs
+    },
+    get maxSodium() {
+      return state.maxSodium
+    },
+    get minCaffeine() {
+      return state.minCaffeine
+    },
+    get minCalories() {
+      return state.minCalories
+    },
+    get minCarbs() {
+      return state.minCarbs
+    },
+    get minSodium() {
+      return state.minSodium
+    },
+    onBrandFilterChange,
+    onCaffeineChange,
+    onCaloriesChange,
+    onCarbsChange,
     onProductFormChange,
+    onResetFilters,
+    onSodiumChange,
     onSortColumn,
     onToggleCollapseBrand,
     onToggleProductForm,

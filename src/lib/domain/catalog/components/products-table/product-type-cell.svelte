@@ -1,5 +1,4 @@
 <script lang="ts">
-
     import type { ProductForm } from '$lib/database/types.g'
 
     import {

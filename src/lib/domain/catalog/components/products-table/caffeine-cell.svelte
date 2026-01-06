@@ -30,4 +30,3 @@
 {:else}
     <span class="text-muted-foreground">{label}</span>
 {/if}
-
