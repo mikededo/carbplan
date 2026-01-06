@@ -102,7 +102,7 @@
                                     <ProductTypeCell form={product.form} />
                                 </Table.Cell>
                                 <Table.Cell>{formatServing(product)}</Table.Cell>
-                                <Table.Cell>{product.calories ?? '-'}</Table.Cell>
+                                <Table.Cell>{formatValue(product.calories, 'kcal') ?? '-'}</Table.Cell>
                                 <Table.Cell>{formatValue(product.carbs_g, 'g')}</Table.Cell>
                                 <Table.Cell>{formatValue(product.sugar_g, 'g')}</Table.Cell>
                                 <Table.Cell>{formatValue(product.sodium_mg, 'mg')}</Table.Cell>
