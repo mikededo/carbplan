@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Brand, Product, ProductForm } from '$lib/database/types.g'
+    import type { Product } from '$lib/database/types.g'
 
     import type { CatalogResult } from '../queries'
 
@@ -20,13 +20,13 @@
         SearchIcon,
         SlidersHorizontalIcon
     } from '@lucide/svelte'
-    import { SvelteSet } from 'svelte/reactivity'
 
     import { Input } from '$lib/domain/ui/input'
     import * as Select from '$lib/domain/ui/select'
     import * as Table from '$lib/domain/ui/table'
     import { cn } from '$lib/utils'
 
+    import { TABLE_COLUMNS, useProductsTable } from '../hooks/use-products-table.svelte'
     import { formatProductForm } from '../schemas'
     import CaffeineCell from './caffeine-cell.svelte'
     import ProductTypeCell from './product-type-cell.svelte'
@@ -34,11 +34,7 @@
     type Props = { brands: CatalogResult }
     const { brands }: Props = $props()
 
-    let globalFilter = $state('')
-    let formFilter = $state<'' | ProductForm>('')
-    let sortColumn = $state<'serving' | keyof Product>('name')
-    let sortDirection = $state<'asc' | 'desc'>('asc')
-    const collapsedBrands = new SvelteSet<string>()
+    const table = useProductsTable(() => brands)
 
     const formOptions = [
         { Icon: SlidersHorizontalIcon, label: 'All types', value: '' },
@@ -51,96 +47,6 @@
         { Icon: PillIcon, label: formatProductForm('capsule'), value: 'capsule' },
         { Icon: DropletIcon, label: formatProductForm('liquid'), value: 'liquid' }
     ] as const
-
-    type Column = {
-        key: 'serving' | keyof Product
-        label: string
-        minSize?: number
-        sortable?: boolean
-    }
-
-    const TABLE_COLUMNS: Column[] = [
-        { key: 'name', label: 'Name', minSize: 480, sortable: true },
-        { key: 'form', label: 'Type', minSize: 96, sortable: true },
-        { key: 'serving', label: 'Serving', sortable: false },
-        { key: 'calories', label: 'Calories', sortable: true },
-        { key: 'carbs_g', label: 'Carbs', sortable: true },
-        { key: 'sugar_g', label: 'Sugar', sortable: true },
-        { key: 'sodium_mg', label: 'Sodium', sortable: true },
-        { key: 'caffeine_mg', label: 'Caffeine', sortable: true }
-    ]
-
-    const filteredBrands = $derived.by(() => {
-        const searchLower = globalFilter.toLowerCase()
-
-        return brands.map((brand) => {
-            let products = brand.products
-
-            if (formFilter) {
-                products = products.filter((p) => p.form === formFilter)
-            }
-
-            if (globalFilter) {
-                const matchesBrand = brand.name.toLowerCase().includes(searchLower)
-                products = products.filter((p) =>
-                    matchesBrand || p.name.toLowerCase().includes(searchLower)
-                )
-            }
-
-            products = [...products].sort((a, b) => {
-                let aVal: boolean | null | number | string
-                let bVal: boolean | null | number | string
-
-                if (sortColumn === 'serving') {
-                    aVal = `${a.serving_size}${a.serving_unit}`
-                    bVal = `${b.serving_size}${b.serving_unit}`
-                } else {
-                    aVal = a[sortColumn]
-                    bVal = b[sortColumn]
-                }
-
-                if (aVal === null && bVal === null) {
-                    return 0
-                }
-                if (aVal === null) {
-                    return 1
-                }
-                if (bVal === null) {
-                    return -1
-                }
-
-                const cmp = aVal < bVal ? -1 : aVal > bVal ? 1 : 0
-                return sortDirection === 'asc' ? cmp : -cmp
-            })
-
-            return { ...brand, products }
-        }).filter((brand) => brand.products.length > 0)
-    })
-
-    const totalProducts = $derived(brands.reduce((acc, b) => acc + b.products.length, 0))
-    const filteredProductsCount = $derived(filteredBrands.reduce((acc, b) => acc + b.products.length, 0))
-
-    const onFormFilterChange = (value: string | undefined) => {
-        formFilter = (value as '' | ProductForm) ?? ''
-    }
-
-    const onSortColumn = (column: 'serving' | keyof Product) => () => {
-        if (sortColumn === column) {
-            sortDirection = sortDirection === 'asc' ? 'desc' : 'asc'
-            return
-        }
-
-        sortColumn = column
-        sortDirection = 'asc'
-    }
-
-    const onToggleCollapseBrand = (id: Brand['id']) => () => {
-        if (collapsedBrands.has(id)) {
-            collapsedBrands.delete(id)
-        } else {
-            collapsedBrands.add(id)
-        }
-    }
 
     const formatServing = (product: Product) =>
         `${product.serving_size}${product.serving_unit}`
@@ -157,16 +63,16 @@
             </div>
             <Input
                 class="peer pl-8"
-                bind:value={globalFilter}
+                bind:value={table.globalFilter}
                 placeholder="Search products..."
                 type="search"
             />
         </div>
-        <Select.Root type="single" value={formFilter} onValueChange={onFormFilterChange}>
+        <Select.Root type="single" value={table.formFilter} onValueChange={table.onFormFilterChange}>
             <Select.Trigger class="w-40">
                 <span class="flex items-center gap-2">
-                    {#if formFilter}
-                        {@const option = formOptions.find(({ value }) => formFilter === value)}
+                    {#if table.formFilter}
+                        {@const option = formOptions.find(({ value }) => table.formFilter === value)}
                         {#if option}
                             <option.Icon class="size-3.5" />
                             {option.label}
@@ -191,18 +97,18 @@
     <div class="max-h-[calc(100vh-14rem)] overflow-auto rounded-md border" style="scrollbar-gutter: stable">
         <Table.Root>
             <Table.Header class="sticky top-0 z-10 bg-background">
-                <Table.Row class="hover:bg-background">
+                <Table.Row>
                     {#each TABLE_COLUMNS as column (column.key)}
                         <Table.Head style={column.minSize ? `min-width: ${column.minSize}px` : undefined}>
                             {#if column.sortable}
                                 <button
                                     class={cn('flex items-center gap-1.5 hover:text-foreground', column.key === 'name' && 'pl-6')}
                                     type="button"
-                                    onclick={onSortColumn(column.key)}
+                                    onclick={table.onSortColumn(column.key)}
                                 >
                                     {column.label}
-                                    {#if sortColumn === column.key}
-                                        {#if sortDirection === 'asc'}
+                                    {#if table.sortColumn === column.key}
+                                        {#if table.sortDirection === 'asc'}
                                             <ArrowUpIcon class="size-3.5" />
                                         {:else}
                                             <ArrowDownIcon class="size-3.5" />
@@ -220,14 +126,14 @@
             </Table.Header>
 
             <Table.Body>
-                {#each filteredBrands as brand (brand.id)}
-                    {@const isCollapsed = collapsedBrands.has(brand.id)}
+                {#each table.filteredBrands as brand (brand.id)}
+                    {@const isCollapsed = table.collapsedBrands.has(brand.id)}
                     <Table.Row class="bg-muted hover:bg-muted">
                         <Table.Cell colspan={TABLE_COLUMNS.length}>
                             <button
                                 class="flex items-center gap-2 font-medium"
                                 type="button"
-                                onclick={onToggleCollapseBrand(brand.id)}
+                                onclick={table.onToggleCollapseBrand(brand.id)}
                             >
                                 {#if isCollapsed}
                                     <PlusIcon class="size-3.5" />
@@ -278,6 +184,6 @@
     </div>
 
     <p class="text-sm text-muted-foreground">
-        Showing {filteredProductsCount} of {totalProducts} products
+        Showing {table.filteredProductsCount} of {table.totalProducts} products
     </p>
 </div>
