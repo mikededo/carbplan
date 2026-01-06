@@ -718,7 +718,7 @@ export const Constants = {
   }
 } as const
 
-// Auto-generated table types
+/** Auto-generated table types */
 export type Athlete = Tables<'athletes'>
 export type AthleteInsert = TablesInsert<'athletes'>
 export type AthleteUpdate = TablesUpdate<'athletes'>
@@ -750,3 +750,7 @@ export type CatalogProduct = Tables<'catalog_products'>
 export type CurrentAthlete = Tables<'current_athlete'>
 
 export type ProductWithBrand = Tables<'products_with_brand'>
+
+export type ProductForm = Enums<'product_form'>
+
+export type Sex = Enums<'sex'>

@@ -55,6 +55,7 @@ const snakeToPascal = (str: string): string =>
     .join('')
 
 type ExtractedEntities = {
+  enums: string[]
   tables: string[]
   views: string[]
 }
@@ -82,6 +83,7 @@ const extractEntities = (content: string): ExtractedEntities => {
   const sourceFile = ts.createSourceFile('types.ts', content, ts.ScriptTarget.Latest, true)
   const tables: string[] = []
   const views: string[] = []
+  const enums: string[] = []
 
   const visit = (node: ts.Node) => {
     if (
@@ -100,6 +102,7 @@ const extractEntities = (content: string): ExtractedEntities => {
         ) {
           tables.push(...getPropertyKeys(member.type, 'Tables'))
           views.push(...getPropertyKeys(member.type, 'Views'))
+          enums.push(...getPropertyKeys(member.type, 'Enums'))
         }
       }
     }
@@ -107,13 +110,13 @@ const extractEntities = (content: string): ExtractedEntities => {
   }
 
   visit(sourceFile)
-  return { tables, views }
+  return { enums, tables, views }
 }
 
-const generateTableTypes = ({ tables, views }: ExtractedEntities): string => {
+const generateTableTypes = ({ enums, tables, views }: ExtractedEntities): string => {
   const lines: string[] = []
 
-  for (const name of tables) {
+  tables.forEach((name) => {
     const pascalName = snakeToPascal(name)
     lines.push(
       `export type ${pascalName} = Tables<'${name}'>`,
@@ -121,18 +124,20 @@ const generateTableTypes = ({ tables, views }: ExtractedEntities): string => {
       `export type ${pascalName}Update = TablesUpdate<'${name}'>`,
       ''
     )
-  }
-
-  for (const name of views) {
+  })
+  views.forEach((name) => {
     const pascalName = snakeToPascal(name)
     lines.push(`export type ${pascalName} = Tables<'${name}'>`, '')
-  }
+  })
+  enums.forEach((name) => {
+    lines.push(`export type ${snakeToPascal(name)} = Enums<'${name}'>`, '')
+  })
 
   if (lines.length === 0) {
     return ''
   }
 
-  return `\n// Auto-generated table types\n${lines.join('\n')}`
+  return `\n/** Auto-generated table types */\n${lines.join('\n')}`
 }
 
 const main = async () => {
@@ -148,7 +153,8 @@ const main = async () => {
   spinner.stop()
 
   console.log(`  ${COLORS.dim}├${COLORS.reset} Tables: ${COLORS.green}${entities.tables.map((t) => snakeToPascal(t)).join(', ')}${COLORS.reset}`)
-  console.log(`  ${COLORS.dim}└${COLORS.reset} Views:  ${COLORS.green}${entities.views.map((v) => snakeToPascal(v)).join(', ')}${COLORS.reset}`)
+  console.log(`  ${COLORS.dim}├${COLORS.reset} Views:  ${COLORS.green}${entities.views.map((v) => snakeToPascal(v)).join(', ')}${COLORS.reset}`)
+  console.log(`  ${COLORS.dim}└${COLORS.reset} Enums:  ${COLORS.green}${entities.enums.map((v) => snakeToPascal(v)).join(', ')}${COLORS.reset}`)
 
   spinner.start('Generating types')
   const tableTypes = generateTableTypes(entities)

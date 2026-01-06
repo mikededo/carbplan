@@ -20,8 +20,9 @@
     type Props = {
         crumbs: Crumb[]
         children?: Snippet
+        actions?: Snippet
     }
-    const { children, crumbs }: Props = $props()
+    const { actions, children, crumbs }: Props = $props()
 
     const isLink = (crumb: Crumb): crumb is LinkCrumb => typeof crumb !== 'string'
 </script>
@@ -50,6 +51,12 @@
                 {/each}
             </BreadcrumbList>
         </Breadcrumb>
+
+        {#if actions}
+            <div class="ml-auto flex items-center gap-2">
+                {@render actions()}
+            </div>
+        {/if}
 
         {@render children?.()}
     </div>
