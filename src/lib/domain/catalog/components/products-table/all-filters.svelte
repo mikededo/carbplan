@@ -11,8 +11,9 @@
         PillIcon
     } from '@lucide/svelte'
 
+    import { formatProductForm } from '$lib/domain/product/components/product-form-badge.svelte'
+
     import { CAFFEINE_MAX, CALORIES_MAX } from '../../context'
-    import { formatProductForm } from '../../schemas'
 
     export const ALL_TYPES_OPTION = { Icon: ComponentIcon, label: 'All types', value: '' }
     export const formOptions = [

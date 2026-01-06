@@ -11,12 +11,12 @@
         PlusIcon
     } from '@lucide/svelte'
 
+    import { ProductFormBadge } from '$lib/domain/product/components'
     import * as Table from '$lib/domain/ui/table'
     import { cn } from '$lib/utils'
 
     import { createProductsTableContext, TABLE_COLUMNS } from '../../context'
     import CaffeineCell from './caffeine-cell.svelte'
-    import ProductTypeCell from './product-type-cell.svelte'
     import TableFilters from './table-filters.svelte'
 
     type Props = { brands: CatalogResult }
@@ -99,7 +99,7 @@
                                     {/if}
                                 </Table.Cell>
                                 <Table.Cell style="min-width: 96px">
-                                    <ProductTypeCell form={product.form} />
+                                    <ProductFormBadge form={product.form} />
                                 </Table.Cell>
                                 <Table.Cell>{formatServing(product)}</Table.Cell>
                                 <Table.Cell>{formatValue(product.calories, 'kcal') ?? '-'}</Table.Cell>
