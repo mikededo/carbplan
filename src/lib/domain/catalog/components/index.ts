@@ -1,2 +1,1 @@
-export { default as ProductsTable } from './products-table.svelte'
-
+export * from './products-table'

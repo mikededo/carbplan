@@ -13,7 +13,7 @@
         PillIcon
     } from '@lucide/svelte'
 
-    import { formatProductForm } from '../schemas'
+    import { formatProductForm } from '../../schemas'
 
     type Props = { form: null | ProductForm }
     const { form }: Props = $props()
