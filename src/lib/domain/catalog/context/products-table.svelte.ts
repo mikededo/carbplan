@@ -2,12 +2,13 @@ import type { Brand, Product, ProductForm } from '$lib/database/types.g'
 
 import type { CatalogResult } from '../queries'
 
+import { getContext, setContext } from 'svelte'
 import { SvelteSet } from 'svelte/reactivity'
 
 export type SortColumn = 'serving' | keyof Product
-export type SortDirection = 'asc' | 'desc'
+type SortDirection = 'asc' | 'desc'
 
-export type TableColumn = {
+type TableColumn = {
   key: SortColumn
   label: string
   minSize?: number
@@ -33,7 +34,10 @@ type TableState = {
   sortDirection: SortDirection
 }
 
-export const useProductsTable = (getBrands: () => CatalogResult) => {
+const PRODUCTS_TABLE_KEY = Symbol('products-table')
+
+const createProductsTableState = (getBrands: () => CatalogResult) => {
+  const brands = $derived(getBrands())
   const state = $state<TableState>({
     collapsedBrands: new SvelteSet(),
     formFilter: '',
@@ -42,41 +46,38 @@ export const useProductsTable = (getBrands: () => CatalogResult) => {
     sortDirection: 'asc'
   })
 
-  const filteredBrands = $derived.by(() => {
-    const brands = getBrands()
-    const searchLower = state.globalFilter.toLowerCase()
+  const filteredBrands = $derived(
+    brands.reduce<CatalogResult>((acc, brand) => {
+      const filteredProducts = brand.products
+        .filter((product) => {
+          if (state.formFilter && product.form !== state.formFilter) {
+            return false
+          }
 
-    return brands.map((brand) => {
-      let products = brand.products
+          if (state.globalFilter) {
+            const searchLower = state.globalFilter.toLowerCase()
+            const matchesBrand = brand.name.toLowerCase().includes(searchLower)
+            return matchesBrand || product.name.toLowerCase().includes(searchLower)
+          }
 
-      if (state.formFilter) {
-        products = products.filter((p) => p.form === state.formFilter)
+          return true
+        })
+
+      if (filteredProducts.length === 0) {
+        return acc
       }
 
-      if (state.globalFilter) {
-        const matchesBrand = brand.name.toLowerCase().includes(searchLower)
-        products = products.filter((p) =>
-          matchesBrand || p.name.toLowerCase().includes(searchLower)
-        )
-      }
+      const sortedProducts = filteredProducts.toSorted((a, b) => {
+        const aVal = state.sortColumn === 'serving'
+          ? `${a.serving_size}${a.serving_unit}`
+          : a[state.sortColumn]
 
-      products = [...products].sort((a, b) => {
-        let aVal: boolean | null | number | string
-        let bVal: boolean | null | number | string
+        const bVal = state.sortColumn === 'serving'
+          ? `${b.serving_size}${b.serving_unit}`
+          : b[state.sortColumn]
 
-        if (state.sortColumn === 'serving') {
-          aVal = `${a.serving_size}${a.serving_unit}`
-          bVal = `${b.serving_size}${b.serving_unit}`
-        } else {
-          aVal = a[state.sortColumn]
-          bVal = b[state.sortColumn]
-        }
-
-        if (aVal === null && bVal === null) {
-          return 0
-        }
         if (aVal === null) {
-          return 1
+          return bVal === null ? 0 : 1
         }
         if (bVal === null) {
           return -1
@@ -86,11 +87,11 @@ export const useProductsTable = (getBrands: () => CatalogResult) => {
         return state.sortDirection === 'asc' ? cmp : -cmp
       })
 
-      return { ...brand, products }
-    }).filter((brand) => brand.products.length > 0)
-  })
+      return [...acc, { ...brand, products: sortedProducts }]
+    }, [])
+  )
 
-  const totalProducts = $derived(getBrands().reduce((acc, b) => acc + b.products.length, 0))
+  const totalProducts = $derived(brands.reduce((acc, b) => acc + b.products.length, 0))
   const filteredProductsCount = $derived(filteredBrands.reduce((acc, b) => acc + b.products.length, 0))
 
   const onFormFilterChange = (value: string | undefined) => {
@@ -151,3 +152,20 @@ export const useProductsTable = (getBrands: () => CatalogResult) => {
     }
   }
 }
+
+export type ProductsTableContext = ReturnType<typeof createProductsTableState>
+
+export const createProductsTableContext = (getBrands: () => CatalogResult) => {
+  const state = createProductsTableState(getBrands)
+  setContext(PRODUCTS_TABLE_KEY, state)
+  return state
+}
+
+export const getProductsTableContext = () => {
+  const ctx = getContext<ProductsTableContext | undefined>(PRODUCTS_TABLE_KEY)
+  if (!ctx) {
+    throw new Error('getProductsTableContext must be called within a component tree with createProductsTableContext')
+  }
+  return ctx
+}
+

@@ -9,6 +9,7 @@
         ArrowUpIcon,
         BoxIcon,
         CandyIcon,
+        ComponentIcon,
         CookieIcon,
         DropletIcon,
         DropletsIcon,
@@ -26,7 +27,7 @@
     import * as Table from '$lib/domain/ui/table'
     import { cn } from '$lib/utils'
 
-    import { TABLE_COLUMNS, useProductsTable } from '../hooks/use-products-table.svelte'
+    import { createProductsTableContext, TABLE_COLUMNS } from '../context'
     import { formatProductForm } from '../schemas'
     import CaffeineCell from './caffeine-cell.svelte'
     import ProductTypeCell from './product-type-cell.svelte'
@@ -34,10 +35,10 @@
     type Props = { brands: CatalogResult }
     const { brands }: Props = $props()
 
-    const table = useProductsTable(() => brands)
+    const table = createProductsTableContext(() => brands)
 
     const formOptions = [
-        { Icon: SlidersHorizontalIcon, label: 'All types', value: '' },
+        { Icon: ComponentIcon, label: 'All types', value: '' },
         { Icon: DropletsIcon, label: formatProductForm('gel'), value: 'gel' },
         { Icon: CookieIcon, label: formatProductForm('bar'), value: 'bar' },
         { Icon: CandyIcon, label: formatProductForm('chew'), value: 'chew' },
