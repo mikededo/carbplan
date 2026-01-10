@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Product } from '$lib/database/types.g'
 
-    import type { CatalogResult } from '../../queries'
+    import type { CatalogBrand, CatalogResult } from '../../queries'
 
     import {
         ArrowDownIcon,
@@ -19,8 +19,11 @@
     import CaffeineCell from './caffeine-cell.svelte'
     import TableFilters from './table-filters.svelte'
 
-    type Props = { brands: CatalogResult }
-    const { brands }: Props = $props()
+    type Props = {
+        brands: CatalogResult
+        onEditBrand?: (brand: CatalogBrand) => void
+    }
+    const { brands, onEditBrand }: Props = $props()
 
     const table = createProductsTableContext(() => brands)
 
@@ -29,6 +32,11 @@
 
     const formatValue = (value: null | number, unit: string) =>
         value !== null ? `${value}${unit}` : '-'
+
+    const handleEditBrand = (brand: CatalogBrand) => (e: MouseEvent) => {
+        e.stopPropagation()
+        onEditBrand?.(brand)
+    }
 </script>
 
 <div class="flex flex-col gap-4">
@@ -38,53 +46,35 @@
         <Table.Root>
             <Table.Header class="sticky top-0 z-10 bg-background">
                 <Table.Row>
-                    {#each TABLE_COLUMNS as column (column.key)}
-                        <Table.Head style={column.minSize ? `min-width: ${column.minSize}px` : undefined}>
-                            {#if column.sortable}
-                                <button
-                                    class={cn('flex items-center gap-1.5 hover:text-foreground', column.key === 'name' && 'pl-6')}
-                                    type="button"
-                                    onclick={table.onSortColumn(column.key)}
-                                >
-                                    {column.label}
-                                    {#if table.sortColumn === column.key}
-                                        {#if table.sortDirection === 'asc'}
-                                            <ArrowUpIcon class="size-3.5" />
-                                        {:else}
-                                            <ArrowDownIcon class="size-3.5" />
-                                        {/if}
-                                    {:else}
-                                        <ArrowUpDownIcon class="size-3.5 text-muted-foreground" />
-                                    {/if}
-                                </button>
-                            {:else}
-                                {column.label}
-                            {/if}
-                        </Table.Head>
-                    {/each}
+                    {@render table_header()}
                 </Table.Row>
             </Table.Header>
 
             <Table.Body>
                 {#each table.filteredBrands as brand (brand.id)}
                     {@const isCollapsed = table.collapsedBrands.has(brand.id)}
-                    <Table.Row class="bg-muted hover:bg-muted">
+                    <Table.Row
+                        class="cursor-pointer bg-muted hover:bg-muted/80"
+                        onclick={table.onToggleCollapseBrand(brand.id)}
+                    >
                         <Table.Cell colspan={TABLE_COLUMNS.length}>
-                            <button
-                                class="flex items-center gap-2 font-medium"
-                                type="button"
-                                onclick={table.onToggleCollapseBrand(brand.id)}
-                            >
+                            <div class="flex items-center gap-2 font-medium">
                                 {#if isCollapsed}
-                                    <PlusIcon class="size-3.5" />
+                                    <PlusIcon class="size-3.5 shrink-0" />
                                 {:else}
-                                    <MinusIcon class="size-3.5" />
+                                    <MinusIcon class="size-3.5 shrink-0" />
                                 {/if}
-                                {brand.name}
+                                <button
+                                    class="hover:underline"
+                                    type="button"
+                                    onclick={handleEditBrand(brand)}
+                                >
+                                    {brand.name}
+                                </button>
                                 <span class="font-normal text-muted-foreground">
                                     ({brand.products.length} products)
                                 </span>
-                            </button>
+                            </div>
                         </Table.Cell>
                     </Table.Row>
                     {#if !isCollapsed}
@@ -127,3 +117,30 @@
         Showing {table.filteredProductsCount} of {table.totalProducts} products
     </p>
 </div>
+
+{#snippet table_header()}
+    {#each TABLE_COLUMNS as column (column.key)}
+        <Table.Head style={column.minSize ? `min-width: ${column.minSize}px` : undefined}>
+            {#if column.sortable}
+                <button
+                    class={cn('flex items-center gap-1.5 hover:text-foreground', column.key === 'name' && 'pl-6')}
+                    type="button"
+                    onclick={table.onSortColumn(column.key)}
+                >
+                    {column.label}
+                    {#if table.sortColumn === column.key}
+                        {#if table.sortDirection === 'asc'}
+                            <ArrowUpIcon class="size-3.5" />
+                        {:else}
+                            <ArrowDownIcon class="size-3.5" />
+                        {/if}
+                    {:else}
+                        <ArrowUpDownIcon class="size-3.5 text-muted-foreground" />
+                    {/if}
+                </button>
+            {:else}
+                {column.label}
+            {/if}
+        </Table.Head>
+    {/each}
+{/snippet}

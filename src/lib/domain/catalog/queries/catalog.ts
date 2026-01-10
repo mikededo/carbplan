@@ -13,6 +13,8 @@ const getCatalogQuery = (supabase: Client) => supabase
     name,
     slug,
     logo_url,
+    website,
+    description,
     products (*)
   `)
   .eq('is_active', true)
@@ -41,4 +43,6 @@ export const catalogOptions = (supabaseClient?: Client) => {
     staleTime: 1000 * 60 * 5 // 5 minutes
   })
 }
+
 export type CatalogResult = Result<typeof getCatalogQuery>
+export type CatalogBrand = CatalogResult[number]
