@@ -204,8 +204,7 @@
         </form>
 
         <Dialog.Footer>
-            <Button disabled={isPending} variant="outline" onclick={onClose}>
-                Cancel
+            <Button disabled={isPending} variant="ghost" onclick={onClose}>
                 Cancel
             </Button>
             <Button
