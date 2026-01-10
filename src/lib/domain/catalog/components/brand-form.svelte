@@ -9,8 +9,8 @@
     import { Alert, AlertDescription } from '$lib/domain/ui/alert'
     import { Button } from '$lib/domain/ui/button'
     import * as Dialog from '$lib/domain/ui/dialog'
+    import * as Field from '$lib/domain/ui/field'
     import { Input } from '$lib/domain/ui/input'
-    import { Label } from '$lib/domain/ui/label'
 
     type Props = {
         onOpenChange: (open: boolean) => void
@@ -121,21 +121,19 @@
         </Dialog.Header>
 
         <form class="flex max-h-[60vh] flex-col gap-4" onsubmit={onSubmit}>
-            <div class="space-y-2">
-                <Label for="name">Name *</Label>
+            <Field.Field data-invalid={!!errors.name || undefined}>
+                <Field.Label for="name">Name *</Field.Label>
                 <Input
                     bind:value={name}
                     id="name"
                     placeholder="e.g. Science in Sport"
                     aria-invalid={!!errors.name}
                 />
-                {#if errors.name}
-                    <p class="text-sm text-destructive">{errors.name}</p>
-                {/if}
-            </div>
+                <Field.Error errors={errors.name ? [{ message: errors.name }] : undefined} />
+            </Field.Field>
 
-            <div class="space-y-2">
-                <Label for="slug">Slug *</Label>
+            <Field.Field data-invalid={!!errors.slug || undefined}>
+                <Field.Label for="slug">Slug *</Field.Label>
                 <Input
                     bind:value={slug}
                     id="slug"
@@ -143,16 +141,14 @@
                     oninput={onSlugInput}
                     aria-invalid={!!errors.slug}
                 />
-                <p class="text-xs text-muted-foreground">
+                <Field.Description>
                     URL-friendly identifier. Auto-generated from name.
-                </p>
-                {#if errors.slug}
-                    <p class="text-sm text-destructive">{errors.slug}</p>
-                {/if}
-            </div>
+                </Field.Description>
+                <Field.Error errors={errors.slug ? [{ message: errors.slug }] : undefined} />
+            </Field.Field>
 
-            <div class="space-y-2">
-                <Label for="website">Website</Label>
+            <Field.Field data-invalid={!!errors.website || undefined}>
+                <Field.Label for="website">Website</Field.Label>
                 <Input
                     bind:value={website}
                     id="website"
@@ -160,13 +156,11 @@
                     type="url"
                     aria-invalid={!!errors.website}
                 />
-                {#if errors.website}
-                    <p class="text-sm text-destructive">{errors.website}</p>
-                {/if}
-            </div>
+                <Field.Error errors={errors.website ? [{ message: errors.website }] : undefined} />
+            </Field.Field>
 
-            <div class="space-y-2">
-                <Label for="logoUrl">Logo URL</Label>
+            <Field.Field data-invalid={!!errors.logoUrl || undefined}>
+                <Field.Label for="logoUrl">Logo URL</Field.Label>
                 <Input
                     bind:value={logoUrl}
                     id="logoUrl"
@@ -174,13 +168,11 @@
                     type="url"
                     aria-invalid={!!errors.logoUrl}
                 />
-                {#if errors.logoUrl}
-                    <p class="text-sm text-destructive">{errors.logoUrl}</p>
-                {/if}
-            </div>
+                <Field.Error errors={errors.logoUrl ? [{ message: errors.logoUrl }] : undefined} />
+            </Field.Field>
 
-            <div class="space-y-2">
-                <Label for="description">Description</Label>
+            <Field.Field data-invalid={!!errors.description || undefined}>
+                <Field.Label for="description">Description</Field.Label>
                 <textarea
                     class="flex min-h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50"
                     bind:value={description}
@@ -189,10 +181,8 @@
                     rows="3"
                     aria-invalid={!!errors.description}
                 ></textarea>
-                {#if errors.description}
-                    <p class="text-sm text-destructive">{errors.description}</p>
-                {/if}
-            </div>
+                <Field.Error errors={errors.description ? [{ message: errors.description }] : undefined} />
+            </Field.Field>
 
             {#if mutation.error}
                 <Alert variant="destructive">
