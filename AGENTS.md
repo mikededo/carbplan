@@ -123,11 +123,12 @@ export const queryKeys = {
 
 ### Query Options Pattern
 Use `queryOptions` for type-safe queries:
+
 ```ts
 import { queryOptions } from '@tanstack/svelte-query'
 import { queryKeys } from '$lib/domain/query/keys'
 
-export const athleteOptions = (supabase: Client) =>
+export const getAthleteOptions = (supabase: Client) =>
   queryOptions({
     queryKey: queryKeys.athlete.current(),
     queryFn: async () => {
@@ -139,9 +140,10 @@ export const athleteOptions = (supabase: Client) =>
 ```
 
 ### Query Hook Pattern
+
 ```ts
 import { createQuery } from '@tanstack/svelte-query'
-import { athleteOptions } from './athlete'
+import { getAthleteOptions } from './athlete'
 
 export const useAthleteQuery = () => {
   const supabaseResult = getSupabaseClient()
@@ -149,11 +151,12 @@ export const useAthleteQuery = () => {
     return null
   }
 
-  return createQuery(() => athleteOptions(supabaseResult.value))
+  return createQuery(() => getAthleteOptions(supabaseResult.value))
 }
 ```
 
 ### Mutation with Optimistic Updates
+
 ```ts
 import { createMutation, useQueryClient } from '@tanstack/svelte-query'
 import { athleteOptions } from './athlete'
@@ -167,7 +170,7 @@ export const createAthleteMutation = (athleteId?: string) => {
   }
 
   const supabase = supabaseResult.value
-  const options = athleteOptions(supabase)
+  const options = getAthleteOptions(supabase)
   return createMutation({
     mutationFn: async (input) => {
       const { data, error } = await supabase.from('table').update(input).eq('id', athleteId).select().single()
