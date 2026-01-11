@@ -1,11 +1,13 @@
 import type { Product, ProductFormType } from '$lib/database/types.g'
 import type { CatalogBrand } from '$lib/domain/catalog/queries'
 
+import { ResultAsync } from 'neverthrow'
 import { getContext, setContext } from 'svelte'
 import * as v from 'valibot'
 
 import { createProductMutation, updateProductMutation, useCatalogQuery } from '$lib/domain/catalog/queries'
 import { generateSlug, ProductSchema } from '$lib/domain/catalog/schemas'
+import { noop } from '$lib/utils'
 
 const PRODUCT_FORM_CONTEXT_KEY = Symbol('product-form')
 
@@ -129,8 +131,8 @@ export const createProductFormContext = (getter: CreateProductFormContextArgs): 
       return
     }
 
-    try {
-      await mutation.mutateAsync({
+    await ResultAsync.fromPromise(
+      mutation.mutateAsync({
         brand_id: data.brandId,
         caffeine_mg: data.caffeineGm ?? null,
         calories: data.calories ?? null,
@@ -147,11 +149,12 @@ export const createProductFormContext = (getter: CreateProductFormContextArgs): 
         slug: data.slug,
         sodium_mg: data.sodiumMg ?? null,
         sugar_g: data.sugarG ?? null
-      })
-      onOpenChange(false)
-    } catch (error) {
-      console.error('Failed to save product:', error)
-    }
+      }),
+      (error) => error as Error
+    ).match(
+      () => onOpenChange(false),
+      noop
+    )
   }
 
   const close = () => {
@@ -182,7 +185,7 @@ export const createProductFormContext = (getter: CreateProductFormContextArgs): 
     }
   })
 
-  const ctx: ProductFormContext = {
+  const value: ProductFormContext = {
     get autoSlug() {
       return autoSlug
     },
@@ -213,8 +216,8 @@ export const createProductFormContext = (getter: CreateProductFormContextArgs): 
     updateField
   }
 
-  setContext(PRODUCT_FORM_CONTEXT_KEY, ctx)
-  return ctx
+  setContext(PRODUCT_FORM_CONTEXT_KEY, value)
+  return value
 }
 
 export const getProductFormContext = (): ProductFormContext => {
