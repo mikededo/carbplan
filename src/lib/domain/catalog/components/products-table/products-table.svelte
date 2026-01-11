@@ -22,8 +22,9 @@
     type Props = {
         brands: CatalogResult
         onEditBrand?: (brand: CatalogBrand) => void
+        onEditProduct?: (product: Product) => void
     }
-    const { brands, onEditBrand }: Props = $props()
+    const { brands, onEditBrand, onEditProduct }: Props = $props()
 
     const table = createProductsTableContext(() => brands)
 
@@ -36,6 +37,10 @@
     const handleEditBrand = (brand: CatalogBrand) => (e: MouseEvent) => {
         e.stopPropagation()
         onEditBrand?.(brand)
+    }
+
+    const handleEditProduct = (product: Product) => () => {
+        onEditProduct?.(product)
     }
 </script>
 
@@ -81,7 +86,13 @@
                         {#each brand.products as product (product.id)}
                             <Table.Row>
                                 <Table.Cell class="min-w-120 pl-8">
-                                    {product.name}
+                                    <button
+                                        class="outline-none hover:underline"
+                                        type="button"
+                                        onclick={handleEditProduct(product)}
+                                    >
+                                        {product.name}
+                                    </button>
                                     {#if product.flavor}
                                         <span class="text-sm text-muted-foreground">
                                             ({product.flavor})

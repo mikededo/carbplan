@@ -44,6 +44,11 @@
         productFormState.open = true
     }
 
+    const onEditProduct = (product: Product) => {
+        productFormState.item = product
+        productFormState.open = true
+    }
+
     const onProductFormOpenChange = (open: boolean) => {
         productFormState.open = open
         if (!open) {
@@ -80,7 +85,7 @@
                 <p class="text-destructive">Failed to load supplements</p>
             </div>
         {:else if catalogQuery.data}
-            <ProductsTable brands={catalogQuery.data} {onEditBrand} />
+            <ProductsTable brands={catalogQuery.data} {onEditBrand} {onEditProduct} />
         {/if}
     </div>
 </PageScrollarea>
