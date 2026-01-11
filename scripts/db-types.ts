@@ -192,12 +192,17 @@ const snakeToPascalKey = (str: string): string =>
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join('')
 
-const generateEnumCode = ({ name, values }: EnumDefinition): string => {
+const generateEnumCode = ({ name, values }: EnumDefinition): string[] => {
   const pascalName = snakeToPascal(name)
   const enumMembers = values
     .map((value) => `  ${snakeToPascalKey(value)} = '${value}'`)
     .join(',\n')
-  return `export enum ${pascalName} {\n${enumMembers}\n}`
+  const valuesArray = values.map((v) => `'${v}'`).join(', ')
+
+  return [
+    `export enum ${pascalName} {\n${enumMembers}\n}`,
+    `export const ${pascalName}Values = [${valuesArray}] as const`
+  ]
 }
 
 const generateTableTypes = ({ enums, tables, views }: ExtractedEntities): string => {
@@ -218,7 +223,7 @@ const generateTableTypes = ({ enums, tables, views }: ExtractedEntities): string
   })
   enums.forEach((enumDef) => {
     lines.push(
-      generateEnumCode(enumDef),
+      ...generateEnumCode(enumDef),
       `export type ${snakeToPascal(enumDef.name)}Type = Enums<'${enumDef.name}'>`,
       ''
     )

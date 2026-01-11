@@ -709,10 +709,12 @@ export enum ProductForm {
   Powder = 'powder',
   Solid = 'solid'
 }
+export const ProductFormValues = ['gel', 'bar', 'chew', 'drink_mix', 'powder', 'capsule', 'liquid', 'solid'] as const
 export type ProductFormType = Enums<'product_form'>
 
 export enum Sex {
   Female = 'female',
   Male = 'male'
 }
+export const SexValues = ['male', 'female'] as const
 export type SexType = Enums<'sex'>
