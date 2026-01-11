@@ -221,9 +221,9 @@ export const createProductFormContext = (getter: CreateProductFormContextArgs): 
 }
 
 export const getProductFormContext = (): ProductFormContext => {
-  const ctx = getContext<ProductFormContext>(PRODUCT_FORM_CONTEXT_KEY)
-  if (!ctx) {
+  const context = getContext<ProductFormContext>(PRODUCT_FORM_CONTEXT_KEY)
+  if (!context) {
     throw new Error('ProductFormContext not found. Make sure to call createProductFormContext first.')
   }
-  return ctx
+  return context
 }

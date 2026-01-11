@@ -21,11 +21,11 @@
     }
     const { onOpenChange, open, product }: Props = $props()
 
-    const state = createProductFormContext(() => ({ onOpenChange, open, product }))
+    const context = createProductFormContext(() => ({ onOpenChange, open, product }))
 
     const onSubmit = (e: SubmitEvent) => {
         e.preventDefault()
-        state.submit()
+        context.submit()
     }
 </script>
 
@@ -33,10 +33,10 @@
     <Dialog.Content class="max-h-[90vh] sm:max-w-2xl">
         <Dialog.Header>
             <Dialog.Title>
-                {state.isEditing ? 'Edit Product' : 'Add Product'}
+                {context.isEditing ? 'Edit Product' : 'Add Product'}
             </Dialog.Title>
             <Dialog.Description>
-                {state.isEditing ? 'Update the product details below.' : 'Fill in the product details below.'}
+                {context.isEditing ? 'Update the product details below.' : 'Fill in the product details below.'}
             </Dialog.Description>
         </Dialog.Header>
 
@@ -47,10 +47,10 @@
                 <SectionNutrition />
                 <SectionNotes />
 
-                {#if state.error}
+                {#if context.error}
                     <Alert variant="destructive">
                         <AlertDescription>
-                            {state.error.message}
+                            {context.error.message}
                         </AlertDescription>
                     </Alert>
                 {/if}
@@ -58,20 +58,20 @@
         </ScrollArea>
 
         <Dialog.Footer class="flex-row justify-end">
-            <Button disabled={state.isPending} variant="ghost" onclick={state.close}>
+            <Button disabled={context.isPending} variant="ghost" onclick={context.close}>
                 Cancel
             </Button>
             <Button
-                disabled={state.isPending}
+                disabled={context.isPending}
                 type="submit"
-                onclick={state.submit}
+                onclick={context.submit}
             >
-                {#if state.isPending}
+                {#if context.isPending}
                     <LoaderCircleIcon class="animate-spin" />
                     Saving...
                 {:else}
                     <SaveIcon />
-                    {state.isEditing ? 'Update Product' : 'Add Product'}
+                    {context.isEditing ? 'Update Product' : 'Add Product'}
                 {/if}
             </Button>
         </Dialog.Footer>
