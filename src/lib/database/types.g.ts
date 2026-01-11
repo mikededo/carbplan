@@ -186,13 +186,6 @@ export type Database = {
             isOneToOne: false
             referencedColumns: ['id']
             referencedRelation: 'products'
-          },
-          {
-            columns: ['product_id']
-            foreignKeyName: 'favorite_products_product_id_fkey'
-            isOneToOne: false
-            referencedColumns: ['id']
-            referencedRelation: 'products_with_brand'
           }
         ]
         Row: {
@@ -476,49 +469,6 @@ export type Database = {
           sodium_mg: null | number
         }
       }
-      products_with_brand: {
-        Relationships: [
-          {
-            columns: ['brand_id']
-            foreignKeyName: 'products_brand_id_fkey'
-            isOneToOne: false
-            referencedColumns: ['id']
-            referencedRelation: 'brands'
-          },
-          {
-            columns: ['brand_id']
-            foreignKeyName: 'products_brand_id_fkey'
-            isOneToOne: false
-            referencedColumns: ['id']
-            referencedRelation: 'catalog_brands'
-          }
-        ]
-        Row: {
-          brand_id: null | string
-          brand_name: null | string
-          brand_slug: null | string
-          caffeine_mg: null | number
-          carbs_g: null | number
-          created_at: null | string
-          fat_g: null | number
-          id: null | string
-          is_active: boolean | null
-          name: null | string
-          serving_size: null | number
-          serving_unit: null | string
-          servings_per_package: null | number
-          slug: null | string
-          sugar_g: null | number
-          updated_at: null | string
-          brand_logo_url: null | string
-          calories: null | number
-          flavor: null | string
-          form: Database['public']['Enums']['product_form'] | null
-          notes: null | string
-          protein_g: null | number
-          sodium_mg: null | number
-        }
-      }
       current_athlete: {
         Relationships: []
         Row: {
@@ -749,8 +699,20 @@ export type CatalogProduct = Tables<'catalog_products'>
 
 export type CurrentAthlete = Tables<'current_athlete'>
 
-export type ProductWithBrand = Tables<'products_with_brand'>
+export enum ProductForm {
+  Bar = 'bar',
+  Capsule = 'capsule',
+  Chew = 'chew',
+  DrinkMix = 'drink_mix',
+  Gel = 'gel',
+  Liquid = 'liquid',
+  Powder = 'powder',
+  Solid = 'solid'
+}
+export type ProductFormType = Enums<'product_form'>
 
-export type ProductForm = Enums<'product_form'>
-
-export type Sex = Enums<'sex'>
+export enum Sex {
+  Female = 'female',
+  Male = 'male'
+}
+export type SexType = Enums<'sex'>

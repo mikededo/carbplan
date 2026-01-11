@@ -54,63 +54,150 @@ const snakeToPascal = (str: string): string =>
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join('')
 
+type EnumDefinition = {
+  name: string
+  values: string[]
+}
+
 type ExtractedEntities = {
-  enums: string[]
+  enums: EnumDefinition[]
   tables: string[]
   views: string[]
 }
 
 const getPropertyKeys = (node: ts.TypeLiteralNode, propertyName: string): string[] => {
-  for (const member of node.members) {
-    if (!ts.isPropertySignature(member) || !member.name) {
-      continue
+  const member = node.members.find((m) => {
+    if (!ts.isPropertySignature(m) || !m.name) {
+      return false
     }
+    const name = ts.isIdentifier(m.name) ? m.name.text : ''
+    return name === propertyName && m.type && ts.isTypeLiteralNode(m.type)
+  }) as ts.PropertySignature | undefined
 
-    const name = ts.isIdentifier(member.name) ? member.name.text : ''
-    if (name !== propertyName || !member.type || !ts.isTypeLiteralNode(member.type)) {
-      continue
-    }
-
-    return member.type.members
-      .filter((m): m is ts.PropertySignature => ts.isPropertySignature(m) && !!m.name)
-      .map((m) => ts.isIdentifier(m.name!) ? m.name!.text : '')
-      .filter((n) => n && n !== '_')
+  if (!member?.type || !ts.isTypeLiteralNode(member.type)) {
+    return []
   }
-  return []
+
+  return member.type.members
+    .filter((m): m is ts.PropertySignature => ts.isPropertySignature(m) && !!m.name)
+    .map((m) => ts.isIdentifier(m.name!) ? m.name!.text : '')
+    .filter((n) => n && n !== '_')
+}
+
+const extractEnumValues = (sourceFile: ts.SourceFile): Map<string, string[]> => {
+  const enumValues = new Map<string, string[]>()
+
+  const visit = (node: ts.Node) => {
+    ts.forEachChild(node, visit)
+
+    if (!ts.isVariableStatement(node) || node.declarationList.declarations.length === 0) {
+      return
+    }
+
+    const decl = node.declarationList.declarations[0]
+    const isConstantsDecl = ts.isIdentifier(decl.name) &&
+      decl.name.text === 'Constants' &&
+      decl.initializer &&
+      ts.isAsExpression(decl.initializer) &&
+      ts.isObjectLiteralExpression(decl.initializer.expression)
+
+    if (!isConstantsDecl) {
+      return
+    }
+
+    const constantsObj = (decl.initializer as ts.AsExpression).expression as ts.ObjectLiteralExpression
+    constantsObj.properties.forEach((prop) => {
+      if (!ts.isPropertyAssignment(prop) || !ts.isIdentifier(prop.name) || prop.name.text !== 'public') {
+        return
+      }
+      if (!ts.isObjectLiteralExpression(prop.initializer)) {
+        return
+      }
+
+      prop.initializer.properties.forEach((publicProp) => {
+        if (!ts.isPropertyAssignment(publicProp) || !ts.isIdentifier(publicProp.name) || publicProp.name.text !== 'Enums') {
+          return
+        }
+        if (!ts.isObjectLiteralExpression(publicProp.initializer)) {
+          return
+        }
+
+        publicProp.initializer.properties.forEach((enumProp) => {
+          if (!ts.isPropertyAssignment(enumProp) || !ts.isIdentifier(enumProp.name)) {
+            return
+          }
+          if (!ts.isArrayLiteralExpression(enumProp.initializer)) {
+            return
+          }
+
+          const values = enumProp.initializer.elements.reduce((acc: string[], element) => {
+            if (!ts.isStringLiteral(element)) {
+              return acc
+            }
+
+            return [...acc, element.text]
+          }, [])
+          enumValues.set(enumProp.name.text, values)
+        })
+      })
+    })
+  }
+
+  visit(sourceFile)
+  return enumValues
 }
 
 const extractEntities = (content: string): ExtractedEntities => {
   const sourceFile = ts.createSourceFile('types.ts', content, ts.ScriptTarget.Latest, true)
   const tables: string[] = []
   const views: string[] = []
-  const enums: string[] = []
+  const enumNames: string[] = []
 
   const visit = (node: ts.Node) => {
-    if (
-      ts.isTypeAliasDeclaration(node) &&
+    const shouldProcessNode = ts.isTypeAliasDeclaration(node) &&
       node.name.text === 'Database' &&
       ts.isTypeLiteralNode(node.type)
-    ) {
-      for (const member of node.type.members) {
-        if (
-          ts.isPropertySignature(member) &&
-          member.name &&
-          ts.isIdentifier(member.name) &&
-          member.name.text === 'public' &&
-          member.type &&
-          ts.isTypeLiteralNode(member.type)
-        ) {
-          tables.push(...getPropertyKeys(member.type, 'Tables'))
-          views.push(...getPropertyKeys(member.type, 'Views'))
-          enums.push(...getPropertyKeys(member.type, 'Enums'))
+
+    if (shouldProcessNode) {
+      node.type.members.forEach((member) => {
+        if (!ts.isPropertySignature(member) || !member.name || !ts.isIdentifier(member.name)) {
+          return
         }
-      }
+        if (member.name.text !== 'public' || !member.type || !ts.isTypeLiteralNode(member.type)) {
+          return
+        }
+
+        tables.push(...getPropertyKeys(member.type, 'Tables'))
+        views.push(...getPropertyKeys(member.type, 'Views'))
+        enumNames.push(...getPropertyKeys(member.type, 'Enums'))
+      })
     }
     ts.forEachChild(node, visit)
   }
 
   visit(sourceFile)
+
+  const enumValuesMap = extractEnumValues(sourceFile)
+  const enums: EnumDefinition[] = enumNames.map((name) => ({
+    name,
+    values: enumValuesMap.get(name) ?? []
+  }))
+
   return { enums, tables, views }
+}
+
+const snakeToPascalKey = (str: string): string =>
+  str
+    .split('_')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join('')
+
+const generateEnumCode = ({ name, values }: EnumDefinition): string => {
+  const pascalName = snakeToPascal(name)
+  const enumMembers = values
+    .map((value) => `  ${snakeToPascalKey(value)} = '${value}'`)
+    .join(',\n')
+  return `export enum ${pascalName} {\n${enumMembers}\n}`
 }
 
 const generateTableTypes = ({ enums, tables, views }: ExtractedEntities): string => {
@@ -129,8 +216,12 @@ const generateTableTypes = ({ enums, tables, views }: ExtractedEntities): string
     const pascalName = snakeToPascal(name)
     lines.push(`export type ${pascalName} = Tables<'${name}'>`, '')
   })
-  enums.forEach((name) => {
-    lines.push(`export type ${snakeToPascal(name)} = Enums<'${name}'>`, '')
+  enums.forEach((enumDef) => {
+    lines.push(
+      generateEnumCode(enumDef),
+      `export type ${snakeToPascal(enumDef.name)}Type = Enums<'${enumDef.name}'>`,
+      ''
+    )
   })
 
   if (lines.length === 0) {
@@ -154,7 +245,7 @@ const main = async () => {
 
   console.log(`  ${COLORS.dim}├${COLORS.reset} Tables: ${COLORS.green}${entities.tables.map((t) => snakeToPascal(t)).join(', ')}${COLORS.reset}`)
   console.log(`  ${COLORS.dim}├${COLORS.reset} Views:  ${COLORS.green}${entities.views.map((v) => snakeToPascal(v)).join(', ')}${COLORS.reset}`)
-  console.log(`  ${COLORS.dim}└${COLORS.reset} Enums:  ${COLORS.green}${entities.enums.map((v) => snakeToPascal(v)).join(', ')}${COLORS.reset}`)
+  console.log(`  ${COLORS.dim}└${COLORS.reset} Enums:  ${COLORS.green}${entities.enums.map((e) => snakeToPascal(e.name)).join(', ')}${COLORS.reset}`)
 
   spinner.start('Generating types')
   const tableTypes = generateTableTypes(entities)
