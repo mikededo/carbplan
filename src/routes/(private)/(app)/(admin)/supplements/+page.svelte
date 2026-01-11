@@ -4,7 +4,7 @@
 
     import { PackagePlusIcon, PlusIcon } from '@lucide/svelte'
 
-    import { BrandForm, ProductFormDialog, ProductsTable } from '$lib/domain/catalog/components'
+    import { BrandFormDialog, ProductFormDialog, ProductsTable } from '$lib/domain/catalog/components'
     import { useCatalogQuery } from '$lib/domain/catalog/queries'
     import { PageHeader, PageScrollarea } from '$lib/domain/layout/components'
     import { Button } from '$lib/domain/ui/button'
@@ -90,7 +90,7 @@
     </div>
 </PageScrollarea>
 
-<BrandForm
+<BrandFormDialog
     brand={brandFormState.item}
     open={brandFormState.open}
     onOpenChange={onBrandFormOpenChange}
