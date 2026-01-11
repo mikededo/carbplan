@@ -42,7 +42,39 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      deactivate_brand: { Args: { p_brand_id: string }, Returns: number }
       generate_slug: { Args: { input: string }, Returns: string }
+      deactivate_product: {
+        Args: { p_product_id: string }
+        SetofOptions: {
+          from: '*'
+          isOneToOne: true
+          isSetofReturn: false
+          to: 'products'
+        }
+        Returns: {
+          brand_id: string
+          caffeine_mg: null | number
+          carbs_g: null | number
+          created_at: string
+          fat_g: null | number
+          id: string
+          is_active: boolean
+          name: string
+          serving_size: number
+          serving_unit: string
+          servings_per_package: null | number
+          slug: string
+          sugar_g: null | number
+          updated_at: string
+          calories: null | number
+          flavor: null | string
+          form: Database['public']['Enums']['product_form']
+          notes: null | string
+          protein_g: null | number
+          sodium_mg: null | number
+        }
+      }
     }
     Enums: {
       sex: 'female' | 'male'
