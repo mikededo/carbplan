@@ -5,7 +5,7 @@ import { ResultAsync } from 'neverthrow'
 import { getContext, setContext } from 'svelte'
 import * as v from 'valibot'
 
-import { createProductMutation, updateProductMutation, useCatalogQuery } from '$lib/domain/catalog/queries'
+import { createProductMutation, deactivateProductMutation, updateProductMutation, useCatalogQuery } from '$lib/domain/catalog/queries'
 import { generateSlug, ProductSchema } from '$lib/domain/catalog/schemas'
 import { noop } from '$lib/utils'
 
@@ -32,6 +32,8 @@ export type ProductFormState = {
 
 export type ProductFormContext = {
   brands: CatalogBrand[]
+  deactivate: () => Promise<void>
+  isDeactivating: boolean
   isEditing: boolean
   isPending: boolean
   state: ProductFormState
@@ -84,6 +86,7 @@ export const createProductFormContext = (getter: CreateProductFormContextArgs): 
   const catalogQuery = useCatalogQuery()
   const createMutation = createProductMutation()
   const editMutation = $derived(updateProductMutation(product?.id))
+  const deactivateMutation = $derived(deactivateProductMutation(product?.id))
 
   const brands = $derived(catalogQuery.data ?? [])
   const isEditing = $derived(!!product)
@@ -161,6 +164,16 @@ export const createProductFormContext = (getter: CreateProductFormContextArgs): 
     onOpenChange(false)
   }
 
+  const deactivate = async () => {
+    await ResultAsync.fromPromise(
+      deactivateMutation.mutateAsync(),
+      (error) => error as Error
+    ).match(
+      () => onOpenChange(false),
+      noop
+    )
+  }
+
   const updateField = <K extends keyof ProductFormState>(key: K, value: ProductFormState[K]) => {
     state[key] = value
   }
@@ -193,12 +206,16 @@ export const createProductFormContext = (getter: CreateProductFormContextArgs): 
       return brands
     },
     close,
+    deactivate,
     disableAutoSlug,
     get error() {
       return mutation.error
     },
     get errors() {
       return errors
+    },
+    get isDeactivating() {
+      return deactivateMutation.isPending
     },
     get isEditing() {
       return isEditing

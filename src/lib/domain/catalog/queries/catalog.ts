@@ -18,6 +18,7 @@ const getCatalogQuery = (supabase: Client) => supabase
     products (*)
   `)
   .eq('is_active', true)
+  .eq('products.is_active', true)
   .order('name')
 
 export const catalogOptions = (supabaseClient?: Client) => {

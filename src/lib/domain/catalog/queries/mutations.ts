@@ -281,3 +281,56 @@ export const updateProductMutation = (productId?: Product['id']) => {
     }
   }))
 }
+
+export const deactivateProductMutation = (productId?: Product['id']) => {
+  const supabaseResult = getSupabaseClient()
+  const queryClient = useQueryClient()
+  const options = catalogOptions()
+
+  const isEnabled = supabaseResult.isOk() && !!productId
+  const supabase = isEnabled ? supabaseResult.value : null
+
+  return createMutation(() => ({
+    mutationFn: async () => {
+      if (!supabase || !productId) {
+        throw new Error('Supabase client or product ID not available')
+      }
+
+      const { data, error } = await supabase.rpc(
+        'deactivate_product',
+        { p_product_id: productId }
+      )
+
+      if (error) {
+        throw error
+      }
+
+      return data
+    },
+    onError: (_, __, context: CatalogMutateContext | undefined) => {
+      if (context?.previous) {
+        queryClient.setQueryData(options.queryKey, context.previous)
+      }
+    },
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: options.queryKey })
+
+      const previous = queryClient.getQueryData(options.queryKey)
+      queryClient.setQueryData(options.queryKey, (old) => {
+        if (!old) {
+          return old
+        }
+
+        return old.map((brand) => ({
+          ...brand,
+          products: brand.products.filter((product) => product.id !== productId)
+        }))
+      })
+
+      return { previous }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: options.queryKey })
+    }
+  }))
+}
