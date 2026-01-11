@@ -1,3 +1,3 @@
 export { default as BrandForm } from './brand-form.svelte'
-export { default as ProductDialog } from './product-dialog.svelte'
+export * from './product-form'
 export * from './products-table'
