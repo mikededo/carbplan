@@ -67,7 +67,7 @@
                 <span class="w-28 truncate text-left">
                     {selectedProductForms
                         .map((filter) => formOptions.find((option) => option.value === filter)?.label)
-                        . filter(Boolean)
+                        .filter(Boolean)
                         .join(', ')}
                 </span>
             {:else}

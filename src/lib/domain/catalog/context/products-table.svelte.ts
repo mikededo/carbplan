@@ -1,4 +1,4 @@
-import type { Brand, Product, ProductForm } from '$lib/database/types.g'
+import type { Brand, Product, ProductFormType } from '$lib/database/types.g'
 
 import type { CatalogResult } from '../queries'
 
@@ -36,7 +36,7 @@ type TableState = {
   minCaffeine: null | number
   minCarbs: null | number
   collapsedBrands: Set<string>
-  formFilter: Set<'' | ProductForm>
+  formFilter: Set<'' | ProductFormType>
   globalFilter: string
   maxCalories: null | number
   maxSodium: null | number
@@ -143,10 +143,10 @@ const createProductsTableState = (getBrands: () => CatalogResult) => {
   const filteredProductsCount = $derived(filteredBrands.reduce((acc, b) => acc + b.products.length, 0))
 
   const onProductFormChange = (value: string[]) => {
-    state.formFilter = new SvelteSet(value as ('' | ProductForm)[])
+    state.formFilter = new SvelteSet(value as ('' | ProductFormType)[])
   }
 
-  const onToggleProductForm = (form: '' | ProductForm) => {
+  const onToggleProductForm = (form: '' | ProductFormType) => {
     if (state.formFilter.has(form)) {
       state.formFilter.delete(form)
     } else {

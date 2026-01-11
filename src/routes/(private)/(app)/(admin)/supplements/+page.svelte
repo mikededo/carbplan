@@ -1,47 +1,68 @@
 <script lang="ts">
+    import type { Product } from '$lib/database/types.g'
     import type { CatalogBrand } from '$lib/domain/catalog/queries'
 
     import { PackagePlusIcon, PlusIcon } from '@lucide/svelte'
 
-    import { BrandForm, ProductsTable } from '$lib/domain/catalog/components'
+    import { BrandForm, ProductDialog, ProductsTable } from '$lib/domain/catalog/components'
     import { useCatalogQuery } from '$lib/domain/catalog/queries'
     import { PageHeader, PageScrollarea } from '$lib/domain/layout/components'
     import { Button } from '$lib/domain/ui/button'
 
+    type DialogState<T> = { item: T | undefined, open: boolean }
+
     const catalogQuery = useCatalogQuery()
 
-    let brandFormOpen = $state(false)
-    let editingBrand = $state<CatalogBrand | undefined>(undefined)
+    const brandFormState = $state<DialogState<CatalogBrand>>({
+        item: undefined,
+        open: false
+    })
+    const productFormState = $state<DialogState<Product>>({
+        item: undefined,
+        open: false
+    })
 
     const onAddBrand = () => {
-        editingBrand = undefined
-        brandFormOpen = true
+        brandFormState.item = undefined
+        brandFormState.open = true
     }
 
     const onEditBrand = (brand: CatalogBrand) => {
-        editingBrand = brand
-        brandFormOpen = true
+        brandFormState.item = brand
+        brandFormState.open = true
     }
 
     const onBrandFormOpenChange = (open: boolean) => {
-        brandFormOpen = open
+        brandFormState.open = open
         if (!open) {
-            editingBrand = undefined
+            brandFormState.item = undefined
+        }
+    }
+
+    const onAddProduct = () => {
+        productFormState.item = undefined
+        productFormState.open = true
+    }
+
+    const onProductFormOpenChange = (open: boolean) => {
+        productFormState.open = open
+        if (!open) {
+            productFormState.item = undefined
         }
     }
 </script>
 
 <svelte:head>
-    <title>Supplements — CarbPlan</title>
+    <title>Catalog — CarbPlan</title>
 </svelte:head>
 
-<PageHeader crumbs={['Admin', 'Supplements']}>
+<PageHeader crumbs={['Admin', 'Catalog']}>
     {#snippet actions()}
         <Button size="sm" variant="outline" onclick={onAddBrand}>
             <PlusIcon />
             Add Brand
         </Button>
-        <Button size="sm">
+        <Button size="sm" onclick={onAddProduct}>
             <PackagePlusIcon />
             Add Product
         </Button>
@@ -65,7 +86,13 @@
 </PageScrollarea>
 
 <BrandForm
-    brand={editingBrand}
-    open={brandFormOpen}
+    brand={brandFormState.item}
+    open={brandFormState.open}
     onOpenChange={onBrandFormOpenChange}
+/>
+
+<ProductDialog
+    open={productFormState.open}
+    product={productFormState.item}
+    onOpenChange={onProductFormOpenChange}
 />

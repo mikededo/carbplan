@@ -22,7 +22,7 @@
             {
                 href: ROUTES.admin.supplements,
                 icon: PillIcon,
-                title: 'Supplements'
+                title: 'Catalog'
             }
         ]
     })

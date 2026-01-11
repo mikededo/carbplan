@@ -32,7 +32,6 @@ export const catalogOptions = (supabaseClient?: Client) => {
           throw error
         }
 
-        // Sort products within each brand
         return data.map((brand) => ({
           ...brand,
           products: brand.products.sort((a, b) => a.name.localeCompare(b.name))
@@ -40,7 +39,7 @@ export const catalogOptions = (supabaseClient?: Client) => {
       }
       : skipToken,
     queryKey: queryKeys.catalog.all,
-    staleTime: 1000 * 60 * 5 // 5 minutes
+    staleTime: 1000 * 60 * 5
   })
 }
 

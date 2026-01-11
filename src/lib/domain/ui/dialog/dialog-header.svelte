@@ -14,7 +14,7 @@
 </script>
 
 <div
-    class={cn('flex flex-col gap-2 text-center sm:text-start', className)}
+    class={cn('flex flex-col gap-2 text-start', className)}
     bind:this={ref}
     data-slot="dialog-header"
     {...restProps}

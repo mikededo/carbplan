@@ -27,7 +27,7 @@
 
 <Sidebar.Provider>
     <AppSidebar {onLogOut} />
-    <Sidebar.Inset>
+    <Sidebar.Inset class="overflow-hidden">
         {@render children()}
     </Sidebar.Inset>
 </Sidebar.Provider>
