@@ -24,6 +24,14 @@ CarbPlan is an athlete nutrition planning web app where athletes and coaches con
 2. Run `bun dev` to start the dev server
 3. As of now, there's no local supabase instance
 
+Other helpful scripts:
+- Always make sure the project is linted: `bun lint`
+- There should not be type errors: `bun check`
+
+## Project development
+
+Focus only in one task, and the task should be developed using TDD. While tests should have maxium coverage, they should be concise, clear. Re-use code whenever possible.
+
 ## Project Structure
 
 ### Core Directories
@@ -45,6 +53,8 @@ The repository follows a domain driven architecture. Each domain is stored under
 - `schemas` file (valibot schemas for that domain)
 
 If there's anything that's shared within the app, that's not a UI component, it should exist under the `global` domain. Domains can also be really small/modular.
+
+## 
 
 ## Code Style and Conventions
 
@@ -277,35 +287,6 @@ redirect(303, ROUTES.home)
 href={ROUTES.auth.login}
 ```
 
-## Svelte MCP Tools
-
-You have access to the Svelte MCP server with these tools:
-
-### 1. list-sections
-Use this FIRST to discover available documentation sections. Returns titles, use_cases, and paths.
-
-### 2. get-documentation
-Retrieves full documentation for specific sections. Use after `list-sections` to fetch ALL relevant sections.
-
-### 3. svelte-autofixer
-**You must use this** whenever writing Svelte code. Keep calling until no issues are returned.
-
-### 4. playground-link
-Generates a Svelte Playground link. Only use after user confirmation and NEVER if code was written to project files.
-
-## Database
-
-### Types
-- **Generated**: `src/lib/database/types.g.ts` — Auto-generated, never edit
-- **Custom**: `src/lib/database/types.ts` — Custom helpers
-- **Regenerate**: `bun db:types`
-
-### Auth Flow
-1. `hooks.server.ts` creates Supabase client + `safeGetSession`
-2. Root `+layout.server.ts` loads session/user into page data
-3. Root `+layout.svelte` subscribes to auth state changes
-4. Public routes under `(public)/` don't require auth
-
 ## Troubleshooting
 
 ### Common Issues
@@ -315,4 +296,5 @@ Generates a Svelte Playground link. Only use after user confirmation and NEVER i
 ### Code Quality Checks
 - Run `bun lint` for linting errors
 - Run `bun check` for Svelte/TS type errors
+- Run `bun test` for tests
 - Error handling: Return `fail()` with structured errors, never throw in actions
