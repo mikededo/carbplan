@@ -1,5 +1,17 @@
 <script lang="ts">
+    import type { NutritionPlan, ScheduledEvent } from '$lib/domain/dashboard/types'
+
+    import {
+        QuickActions,
+        RecentPlansSection,
+        ScheduleSection
+    } from '$lib/domain/dashboard/components'
     import { PageHeader } from '$lib/domain/layout/components'
+
+    // Placeholder data - will be replaced with real queries once plans table exists
+    const recentPlans: NutritionPlan[] = []
+    const todayEvents: ScheduledEvent[] = []
+    const upcomingEvents: ScheduledEvent[] = []
 </script>
 
 <svelte:head>
@@ -8,11 +20,8 @@
 
 <PageHeader crumbs={['Dashboard']} />
 
-<div class="flex flex-1 flex-col gap-4 p-4 pt-0">
-    <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-        <div class="aspect-video rounded-xl bg-muted/50"></div>
-        <div class="aspect-video rounded-xl bg-muted/50"></div>
-        <div class="aspect-video rounded-xl bg-muted/50"></div>
-    </div>
-    <div class="min-h-screen flex-1 rounded-xl bg-muted/50 md:min-h-min"></div>
+<div class="flex flex-1 flex-col gap-6 p-4 pt-0">
+    <QuickActions />
+    <ScheduleSection {todayEvents} {upcomingEvents} />
+    <RecentPlansSection plans={recentPlans} />
 </div>
