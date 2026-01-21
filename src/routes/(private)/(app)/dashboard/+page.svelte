@@ -6,7 +6,7 @@
         RecentPlansSection,
         ScheduleSection
     } from '$lib/domain/dashboard/components'
-    import { PageHeader } from '$lib/domain/layout/components'
+    import { PageHeader, PageScrollarea } from '$lib/domain/layout/components'
 
     // Placeholder data - will be replaced with real queries once plans table exists
     const recentPlans: NutritionPlan[] = []
@@ -20,8 +20,10 @@
 
 <PageHeader crumbs={['Dashboard']} />
 
-<div class="flex flex-1 flex-col gap-6 p-4 pt-0">
-    <QuickActions />
-    <ScheduleSection {todayEvents} {upcomingEvents} />
-    <RecentPlansSection plans={recentPlans} />
-</div>
+<PageScrollarea>
+    <div class="flex flex-col gap-6 p-6">
+        <QuickActions />
+        <ScheduleSection {todayEvents} {upcomingEvents} />
+        <RecentPlansSection plans={recentPlans} />
+    </div>
+</PageScrollarea>

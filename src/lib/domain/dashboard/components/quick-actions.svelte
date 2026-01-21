@@ -7,7 +7,7 @@
 </script>
 
 <section class="grid gap-4 md:grid-cols-2">
-    <Card.Root class="gap-3 py-4">
+    <Card.Root class="gap-3 rounded-md py-4">
         <Card.Header class="px-4 pb-0">
             <Card.Title class="text-base font-medium">Create plan</Card.Title>
             <Card.Description>Build a new fueling plan for your next workout</Card.Description>
@@ -20,7 +20,7 @@
         </Card.Footer>
     </Card.Root>
 
-    <Card.Root class="gap-3 py-4">
+    <Card.Root class="gap-3 rounded-md py-4">
         <Card.Header class="px-4 pb-0">
             <Card.Title class="text-base font-medium">Browse supplements</Card.Title>
             <Card.Description>Explore the catalog of available products</Card.Description>

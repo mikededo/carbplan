@@ -29,7 +29,7 @@
     <h2 class="text-lg font-semibold">Recent nutrition plans</h2>
 
     {#if plans.length === 0}
-        <Card.Root class="gap-2 py-8">
+        <Card.Root class="gap-2 rounded-md py-8">
             <Card.Content class="flex flex-col items-center justify-center px-4 text-center">
                 <div class="mb-4 rounded-full bg-muted p-3">
                     <FileText class="size-6 text-muted-foreground" />
@@ -57,7 +57,7 @@
     {:else}
         <div class="space-y-2">
             {#each plans as plan (plan.id)}
-                <Card.Root class="gap-0 py-3">
+                <Card.Root class="gap-0 rounded-md py-3">
                     <Card.Content class="flex items-center justify-between px-4">
                         <div class="flex items-center gap-3">
                             <div class="rounded-md bg-muted p-2">

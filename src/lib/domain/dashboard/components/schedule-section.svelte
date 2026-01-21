@@ -25,7 +25,7 @@
     <h2 class="text-lg font-semibold">Schedule</h2>
 
     <div class="grid gap-4 md:grid-cols-2">
-        <Card.Root class="gap-3 py-4">
+        <Card.Root class="gap-3 rounded-md py-4">
             <Card.Header class="px-4 pb-0">
                 <Card.Title class="flex items-center gap-2 text-base font-medium">
                     <Clock class="size-4 text-muted-foreground" />
@@ -54,7 +54,7 @@
             </Card.Content>
         </Card.Root>
 
-        <Card.Root class="gap-3 py-4">
+        <Card.Root class="gap-3 rounded-md py-4">
             <Card.Header class="px-4 pb-0">
                 <Card.Title class="flex items-center gap-2 text-base font-medium">
                     <CalendarDays class="size-4 text-muted-foreground" />
