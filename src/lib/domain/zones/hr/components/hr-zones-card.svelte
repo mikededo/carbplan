@@ -63,7 +63,7 @@
         </div>
 
         <div class="flex items-center gap-2">
-            <Tooltip.Root open>
+            <Tooltip.Root>
                 <Tooltip.Trigger class="text-muted-foreground hover:text-foreground">
                     <InfoIcon class="size-4" />
                 </Tooltip.Trigger>
