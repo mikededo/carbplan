@@ -8,7 +8,6 @@
     } from '$lib/domain/dashboard/components'
     import { PageHeader, PageScrollarea } from '$lib/domain/layout/components'
 
-    // Placeholder data - will be replaced with real queries once plans table exists
     const recentPlans: NutritionPlan[] = []
     const todayEvents: ScheduledEvent[] = []
     const upcomingEvents: ScheduledEvent[] = []
