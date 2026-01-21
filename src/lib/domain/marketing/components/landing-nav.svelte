@@ -1,12 +1,24 @@
 <script lang="ts">
+    import { createBrowserClient } from '@supabase/ssr'
+    import { onMount } from 'svelte'
+
+    import { browser } from '$app/environment'
+    import { PUBLIC_SUPABASE_PUBLISHABLE_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public'
     import { ROUTES } from '$lib/constants/routes'
     import { Button } from '$lib/domain/ui/button'
     import { Logo } from '$lib/domain/ui/logo'
 
-    type Props = {
-        isLoggedIn?: boolean
-    }
-    const { isLoggedIn = false }: Props = $props()
+    let isLoggedIn = $state(false)
+
+    onMount(async () => {
+        if (!browser) {
+            return
+        }
+
+        const supabase = createBrowserClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY)
+        const { data } = await supabase.auth.getSession()
+        isLoggedIn = !!data.session?.user
+    })
 </script>
 
 <nav class="fixed inset-x-0 top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md">

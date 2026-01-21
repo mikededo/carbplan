@@ -1,6 +1,4 @@
 <script lang="ts">
-    import type { PageData } from './$types'
-
     import {
         LandingCta,
         LandingFeatures,
@@ -11,11 +9,6 @@
         LandingProductShowcase,
         LandingStats
     } from '$lib/domain/marketing/components'
-
-    type Props = { data: PageData }
-    const { data }: Props = $props()
-
-    const isLoggedIn = $derived(!!data?.session?.user.id)
 </script>
 
 <svelte:head>
@@ -27,7 +20,7 @@
 </svelte:head>
 
 <div class="min-h-screen bg-background">
-    <LandingNav {isLoggedIn} />
+    <LandingNav />
 
     <LandingHero />
 
