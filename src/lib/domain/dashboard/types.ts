@@ -1,15 +1,11 @@
-export type NutritionPlan = {
-  date: string
-  durationMinutes: number
-  id: string
-  name: string
-  targetCarbsPerHour: number
-}
+import type { PlanWithSummary } from '$lib/database/types.g'
 
-export type ScheduledEvent = {
-  durationMinutes: number
-  id: string
-  name: string
-  targetCarbsPerHour: number
-  time: string
-}
+export type DashboardPlan = {
+  items?: Array<{
+    brandName: string
+    id: string
+    productName: string
+    servings: number
+    timingMinutes: number
+  }>
+} & PlanWithSummary
