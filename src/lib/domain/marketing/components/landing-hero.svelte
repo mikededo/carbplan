@@ -1,41 +1,15 @@
 <script lang="ts">
-    import {
-        ArrowRightIcon,
-        ChartLineIcon,
-        ClipboardListIcon,
-        HistoryIcon,
-        PlayIcon,
-        SparklesIcon,
-        ZapIcon
-    } from '@lucide/svelte'
+    import { ArrowRightIcon, PlayIcon, ZapIcon } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'
     import { Badge } from '$lib/domain/ui/badge'
     import { Button } from '$lib/domain/ui/button'
     import { InView } from '$lib/hooks/in-view.svelte'
 
-    import { HeroProductVisualization } from './product-visualization'
+    import { HERO_FEATURES } from '../constants'
+    import HeroProductVisualization from './product-visualization/hero-product-visualization.svelte'
 
     const inView = new InView({ threshold: 0.1 })
-
-    const heroFeatures = [
-        {
-            description: 'Detailed nutrition schedules',
-            icon: ClipboardListIcon,
-            label: 'Pre-Ride Planning'
-        },
-        {
-            description: 'FTP & HR zone targeting',
-            icon: ChartLineIcon,
-            label: 'Zone-Based Calculations'
-        },
-        { description: 'Track & refine over time', icon: HistoryIcon, label: 'Historical Analysis' },
-        {
-            description: 'Progressive adaptation',
-            icon: SparklesIcon,
-            label: 'Gut Training Protocols'
-        }
-    ]
 </script>
 
 <section class="overflow-hidden px-6 pt-32 pb-24" bind:this={inView.ref}>
@@ -77,7 +51,7 @@
                         ? 0
                         : 20}px);"
                 >
-                    {#each heroFeatures as feature (feature.label)}
+                    {#each HERO_FEATURES as feature (feature.label)}
                         <div class="flex items-start gap-3 rounded-lg bg-muted/50 p-3">
                             <div
                                 class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10"

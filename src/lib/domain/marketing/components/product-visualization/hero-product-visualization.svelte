@@ -15,6 +15,7 @@
     } from '@lucide/svelte'
 
     import { Badge } from '$lib/domain/ui/badge'
+    import { cn } from '$lib/utils'
 
     type Props = {
         isVisible: boolean
@@ -202,7 +203,7 @@
                     {#each WORKOUT_BARS as h, i (i)}
                         {@const zoneColor = h < 50 ? 'bg-gray-200' : h < 60 ? 'bg-blue-300' : h < 70 ? 'bg-green-300' : h < 80 ? 'bg-yellow-300' : 'bg-orange-300'}
                         <div
-                            class="flex-1 rounded-t transition-all duration-700 {zoneColor}"
+                            class={cn('flex-1 rounded-t transition-all duration-700', zoneColor)}
                             style="height: {isVisible ? `${h}%` : '0%'}; transition-delay: {i * 40}ms;"
                         ></div>
                     {/each}

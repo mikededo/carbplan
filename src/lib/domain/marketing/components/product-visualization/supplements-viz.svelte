@@ -2,6 +2,7 @@
     import { ChevronRightIcon } from '@lucide/svelte'
 
     import { Badge } from '$lib/domain/ui/badge'
+    import { cn } from '$lib/utils'
 
     type Props = {
         isVisible: boolean
@@ -44,7 +45,7 @@
                     >
                         <div class="relative mb-2 h-20 w-full overflow-hidden rounded-lg bg-muted">
                             <div
-                                class="absolute inset-x-0 bottom-0 transition-all duration-1000 {stat.color}"
+                                class={cn('absolute inset-x-0 bottom-0 transition-all duration-1000', stat.color)}
                                 style="height: {isVisible
                                     ? `${(stat.value / stat.max) * 100}%`
                                     : '0%'}; transition-delay: {i * 150}ms;"
@@ -71,7 +72,7 @@
                     >
                         <div class="flex items-center gap-3">
                             <div
-                                class="flex size-10 items-center justify-center rounded-lg text-sm font-bold text-white shadow-sm {brand.color}"
+                                class={cn('flex size-10 items-center justify-center rounded-lg text-sm font-bold text-white shadow-sm', brand.color)}
                             >
                                 {brand.brand[0]}
                             </div>

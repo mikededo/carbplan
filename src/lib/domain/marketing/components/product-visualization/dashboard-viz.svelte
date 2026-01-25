@@ -112,10 +112,10 @@
                     <div class="flex gap-0.5">
                         {#each Array.from({ length: 5 }) as _, i (i)}
                             <div
-                                class="h-2 flex-1 rounded-sm transition-all duration-300 {i < 3
-                                    ? 'bg-red-500'
-                                    : 'bg-muted'}"
+                                class="h-2 flex-1 rounded-sm transition-all duration-300"
                                 style="transition-delay: {i * 100}ms;"
+                                class:bg-muted={i >= 3}
+                                class:bg-red-500={i < 3}
                             ></div>
                         {/each}
                     </div>

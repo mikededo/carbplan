@@ -11,6 +11,7 @@
     } from '@lucide/svelte'
 
     import { Badge } from '$lib/domain/ui/badge'
+    import { cn } from '$lib/utils'
 
     type Props = {
         isVisible: boolean
@@ -68,7 +69,7 @@
                 <div class="flex h-16 items-end gap-1">
                     {#each workoutBars as height, i (i)}
                         <div
-                            class="flex-1 rounded-t transition-all duration-500 {getBarColor(height)}"
+                            class={cn('flex-1 rounded-t transition-all duration-500', getBarColor(height))}
                             style="height: {isVisible ? `${height}%` : '0%'}; transition-delay: {i * 50}ms;"
                         ></div>
                     {/each}

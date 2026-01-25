@@ -4,9 +4,10 @@
     import { Badge } from '$lib/domain/ui/badge'
     import { Button } from '$lib/domain/ui/button'
     import { InView } from '$lib/hooks/in-view.svelte'
+    import { cn } from '$lib/utils'
 
     import { PRODUCT_SHOWCASES } from '../constants'
-    import { ProductVisualization } from './product-visualization'
+    import ProductVisualization from './product-visualization/product-visualization.svelte'
 
     type Props = {
         type: 'dashboard' | 'planner' | 'supplements'
@@ -21,13 +22,13 @@
 </script>
 
 <section
-    class="px-6 py-24 {className}"
+    class={cn('px-6 py-24', className)}
     bind:this={inView.ref}
     id={type === 'dashboard' ? 'product' : undefined}
 >
     <div class="mx-auto max-w-6xl">
         <div class="grid items-center gap-12 lg:grid-cols-2">
-            <div class={reverse ? 'lg:order-2' : ''}>
+            <div class:lg:order-2={reverse}>
                 <div class="space-y-6">
                     <Badge variant="outline">{data.badge}</Badge>
                     <h2 class="text-3xl font-bold md:text-4xl">{data.title}</h2>
@@ -51,7 +52,7 @@
                 </div>
             </div>
 
-            <div class={reverse ? 'lg:order-1 lg:pr-8' : 'lg:pl-8'}>
+            <div class:lg:order-1={reverse} class:lg:pl-8={!reverse} class:lg:pr-8={reverse}>
                 <ProductVisualization isVisible={inView.isInView} {type} />
             </div>
         </div>

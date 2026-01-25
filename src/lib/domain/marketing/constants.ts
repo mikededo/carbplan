@@ -5,8 +5,11 @@ import type { ButtonVariant } from '$lib/domain/ui/button'
 import {
   ActivityIcon,
   ChartColumnIcon,
-  ChevronRightIcon,
+  ChartLineIcon,
+  ClipboardListIcon,
+  HistoryIcon,
   PillIcon,
+  SparklesIcon,
   TargetIcon,
   TrendingUpIcon,
   ZapIcon
@@ -45,7 +48,7 @@ export const FEATURES: Feature[] = [
     title: 'Performance Tracking'
   },
   {
-    description: 'Generate nutrition strategies in seconds with our AI-powered engine.',
+    description: 'Generate nutrition strategies in seconds based on your workout profile.',
     icon: ZapIcon,
     title: 'Quick Plans'
   }
@@ -136,10 +139,10 @@ export type HeroFeature = {
 }
 
 export const HERO_FEATURES: HeroFeature[] = [
-  { description: 'Detailed nutrition schedules', icon: ChevronRightIcon, label: 'Pre-Ride Planning' },
-  { description: 'FTP & HR zone targeting', icon: ChevronRightIcon, label: 'Zone-Based Calculations' },
-  { description: 'Track & refine over time', icon: ChevronRightIcon, label: 'Historical Analysis' },
-  { description: 'Progressive adaptation', icon: ChevronRightIcon, label: 'Gut Training Protocols' }
+  { description: 'Detailed nutrition schedules', icon: ClipboardListIcon, label: 'Pre-Ride Planning' },
+  { description: 'FTP & HR zone targeting', icon: ChartLineIcon, label: 'Zone-Based Calculations' },
+  { description: 'Track & refine over time', icon: HistoryIcon, label: 'Historical Analysis' },
+  { description: 'Progressive adaptation', icon: SparklesIcon, label: 'Gut Training Protocols' }
 ]
 
 export type ProductShowcaseData = {
