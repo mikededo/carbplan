@@ -6,7 +6,8 @@
         FavoritesSection,
         NextPlanCard,
         QuickActions,
-        RecentPlansSection
+        RecentPlansSection,
+        WarningsPanel
     } from '$lib/domain/dashboard/components'
     import {
         favoriteProductsOptions,
@@ -14,10 +15,12 @@
         recentPlansOptions
     } from '$lib/domain/dashboard/queries'
     import { PageHeader, PageScrollarea } from '$lib/domain/layout/components'
+    import { useAthleteQuery } from '$lib/domain/settings/queries'
 
     const supabaseResult = getSupabaseClient()
     const supabase = supabaseResult.isOk() ? supabaseResult.value : undefined
 
+    const athleteQuery = useAthleteQuery()
     const nextPlanQuery = createQuery(() => nextPlanOptions(supabase))
     const recentPlansQuery = createQuery(() => recentPlansOptions(supabase, 5))
     const favoritesQuery = createQuery(() => favoriteProductsOptions(supabase, 6))
@@ -32,6 +35,10 @@
 <PageScrollarea>
     <div class="flex flex-col gap-6 p-6">
         <NextPlanCard plan={nextPlanQuery.data ?? null} />
+        <WarningsPanel
+            athlete={athleteQuery?.data ?? null}
+            plan={nextPlanQuery.data ?? null}
+        />
         <QuickActions />
         <div class="grid gap-6 lg:grid-cols-2">
             <RecentPlansSection plans={recentPlansQuery.data ?? []} />
