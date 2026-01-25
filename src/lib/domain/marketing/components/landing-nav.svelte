@@ -22,7 +22,7 @@
 </script>
 
 <nav class="fixed inset-x-0 top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md">
-    <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+    <div class="mx-auto grid h-16 max-w-6xl grid-cols-2 items-center justify-between px-6 md:grid-cols-3">
         <a class="flex items-center gap-2" href={ROUTES.landing}>
             <div class="flex size-8 items-center justify-center rounded-lg bg-primary">
                 <Logo class="size-5 text-primary-foreground" />
@@ -30,7 +30,7 @@
             <span class="text-lg font-bold">CarbPlan</span>
         </a>
 
-        <div class="hidden items-center gap-8 md:flex">
+        <div class="hidden items-center justify-center gap-8 md:flex">
             <a
                 class="text-sm text-muted-foreground transition-colors hover:text-foreground"
                 href="#features"
@@ -51,7 +51,7 @@
             </a>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center justify-end gap-3">
             {#if isLoggedIn}
                 <Button href={ROUTES.dashboard} size="sm">Go to app</Button>
             {:else}
