@@ -435,14 +435,14 @@ export type Database = {
             foreignKeyName: 'plan_items_product_id_fkey'
             isOneToOne: false
             referencedColumns: ['id']
-            referencedRelation: 'products'
+            referencedRelation: 'catalog_products'
           },
           {
             columns: ['product_id']
             foreignKeyName: 'plan_items_product_id_fkey'
             isOneToOne: false
             referencedColumns: ['id']
-            referencedRelation: 'catalog_products'
+            referencedRelation: 'products'
           }
         ]
         Row: {
@@ -696,6 +696,21 @@ export type Database = {
         }
       }
       plans_with_summary: {
+        Insert: {
+          athlete_id?: null | string
+          created_at?: null | string
+          date?: null | string
+          duration_minutes?: null | number
+          id?: null | string
+          is_active?: boolean | null
+          item_count?: never
+          name?: null | string
+          notes?: null | string
+          target_carbs_per_hour?: null | number
+          total_caffeine_mg?: never
+          total_carbs_g?: never
+          updated_at?: null | string
+        }
         Relationships: [
           {
             columns: ['athlete_id']
@@ -726,6 +741,21 @@ export type Database = {
           total_caffeine_mg: null | number
           total_carbs_g: null | number
           updated_at: null | string
+        }
+        Update: {
+          athlete_id?: null | string
+          created_at?: null | string
+          date?: null | string
+          duration_minutes?: null | number
+          id?: null | string
+          is_active?: boolean | null
+          item_count?: never
+          name?: null | string
+          notes?: null | string
+          target_carbs_per_hour?: null | number
+          total_caffeine_mg?: never
+          total_carbs_g?: never
+          updated_at?: null | string
         }
       }
     }
@@ -891,10 +921,6 @@ export type FavoriteProduct = Tables<'favorite_products'>
 export type FavoriteProductInsert = TablesInsert<'favorite_products'>
 export type FavoriteProductUpdate = TablesUpdate<'favorite_products'>
 
-export type Product = Tables<'products'>
-export type ProductInsert = TablesInsert<'products'>
-export type ProductUpdate = TablesUpdate<'products'>
-
 export type NutritionPlan = Tables<'nutrition_plans'>
 export type NutritionPlanInsert = TablesInsert<'nutrition_plans'>
 export type NutritionPlanUpdate = TablesUpdate<'nutrition_plans'>
@@ -902,6 +928,10 @@ export type NutritionPlanUpdate = TablesUpdate<'nutrition_plans'>
 export type PlanItem = Tables<'plan_items'>
 export type PlanItemInsert = TablesInsert<'plan_items'>
 export type PlanItemUpdate = TablesUpdate<'plan_items'>
+
+export type Product = Tables<'products'>
+export type ProductInsert = TablesInsert<'products'>
+export type ProductUpdate = TablesUpdate<'products'>
 
 export type CatalogBrand = Tables<'catalog_brands'>
 
