@@ -15,6 +15,12 @@ export const ROUTES = {
   dashboard: route('/dashboard'),
   landing: route('/'),
   onboarding: route('/onboarding'),
+  // Plans routes - not type-checked until routes exist
+  plans: {
+    edit: (id: string) => `/plans/${id}`,
+    list: '/plans',
+    new: '/plans/new'
+  },
   settings: route('/settings')
 } as const
 

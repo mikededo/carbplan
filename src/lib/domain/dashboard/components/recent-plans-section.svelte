@@ -45,7 +45,7 @@
                     Create your first fueling plan to start optimizing your nutrition strategy.
                 </p>
                 <div class="mt-4">
-                    <Button class="gap-2" href={ROUTES.dashboard} size="sm">
+                    <Button class="gap-2" href={ROUTES.plans.new} size="sm">
                         <Plus class="size-4" />
                         Create plan
                     </Button>

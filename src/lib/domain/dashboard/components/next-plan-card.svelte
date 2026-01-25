@@ -60,7 +60,7 @@
                         </span>
                     </div>
                 </div>
-                <Button href={ROUTES.dashboard} size="sm" variant="outline">
+                <Button href={plan.id ? ROUTES.plans.edit(plan.id) : ROUTES.plans.new} size="sm" variant="outline">
                     <Edit2Icon class="size-3.5" />
                     Edit
                 </Button>

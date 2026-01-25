@@ -13,7 +13,7 @@
             <Card.Description>Build a fueling strategy for your next session</Card.Description>
         </Card.Header>
         <Card.Footer class="px-4 pt-0">
-            <Button class="gap-2" href={ROUTES.dashboard} size="sm">
+            <Button class="gap-2" href={ROUTES.plans.new} size="sm">
                 <Plus class="size-4" />
                 New plan
             </Button>
