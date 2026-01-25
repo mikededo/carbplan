@@ -20,7 +20,6 @@
             return list
         }
 
-        // Check carbs per hour against max intake
         if (athlete.max_carb_intake_g_per_hr && plan.total_carbs_g && plan.duration_minutes) {
             const actualCarbsPerHour = (plan.total_carbs_g / plan.duration_minutes) * 60
             if (actualCarbsPerHour > athlete.max_carb_intake_g_per_hr) {
@@ -32,7 +31,6 @@
             }
         }
 
-        // Check caffeine (general warning above 400mg total)
         if (plan.total_caffeine_mg && plan.total_caffeine_mg > 400) {
             list.push({
                 icon: CoffeeIcon,
