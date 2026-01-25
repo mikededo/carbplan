@@ -7,6 +7,7 @@
     import { InView } from '$lib/hooks/in-view.svelte'
 
     import { HERO_FEATURES } from '../constants'
+    import { entryStyles } from '../helpers'
     import HeroProductVisualization from './product-visualization/hero-product-visualization.svelte'
 
     const inView = new InView({ threshold: 0.1 })
@@ -15,7 +16,6 @@
 <section class="overflow-hidden px-6 pt-32 pb-24" bind:this={inView.ref}>
     <div class="mx-auto max-w-6xl">
         <div class="grid items-center gap-12 lg:grid-cols-2">
-            <!-- Left column - Copy -->
             <div class="space-y-8">
                 <div class="space-y-4">
                     <Badge class="px-4 py-1.5" variant="secondary">
@@ -24,9 +24,7 @@
                     </Badge>
                     <h1
                         class="text-4xl font-bold tracking-tight transition-all duration-700 md:text-5xl lg:text-6xl"
-                        style="opacity: {inView.isInView ? 1 : 0}; transform: translateY({inView.isInView
-                            ? 0
-                            : 20}px);"
+                        style={entryStyles(inView.isInView)}
                     >
                         <span class="text-balance">
                             Plan your <span class="text-primary">race-day nutrition</span> with precision
@@ -36,9 +34,7 @@
 
                 <p
                     class="text-lg leading-relaxed text-muted-foreground transition-all delay-100 duration-700"
-                    style="opacity: {inView.isInView ? 1 : 0}; transform: translateY({inView.isInView
-                        ? 0
-                        : 20}px);"
+                    style={entryStyles(inView.isInView)}
                 >
                     CarbPlan helps you create detailed nutrition strategies before every workout. Calculate
                     exact carb and calorie needs based on your planned duration, power targets, and personal
@@ -47,9 +43,7 @@
 
                 <div
                     class="grid grid-cols-2 gap-4 transition-all delay-200 duration-700"
-                    style="opacity: {inView.isInView ? 1 : 0}; transform: translateY({inView.isInView
-                        ? 0
-                        : 20}px);"
+                    style={entryStyles(inView.isInView)}
                 >
                     {#each HERO_FEATURES as feature (feature.label)}
                         <div class="flex items-start gap-3 rounded-lg bg-muted/50 p-3">
@@ -68,9 +62,7 @@
 
                 <div
                     class="flex flex-col items-start gap-4 pt-2 transition-all delay-300 duration-700 sm:flex-row"
-                    style="opacity: {inView.isInView ? 1 : 0}; transform: translateY({inView.isInView
-                        ? 0
-                        : 20}px);"
+                    style={entryStyles(inView.isInView)}
                 >
                     <Button class="px-8" href={ROUTES.auth.signup} size="lg">
                         Start Free Trial
@@ -86,7 +78,7 @@
 
             <div
                 class="relative transition-all duration-1000 lg:pl-8"
-                style="opacity: {inView.isInView ? 1 : 0}; transform: translateX({inView.isInView ? 0 : 40}px);"
+                style={entryStyles(inView.isInView, { offset: 40, transform: 'translateX' })}
             >
                 <HeroProductVisualization isVisible={inView.isInView} />
             </div>

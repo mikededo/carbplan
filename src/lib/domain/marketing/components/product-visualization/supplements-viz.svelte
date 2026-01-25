@@ -4,25 +4,25 @@
     import { Badge } from '$lib/domain/ui/badge'
     import { cn } from '$lib/utils'
 
+    import { entryStyles } from '../../helpers'
+
     type Props = {
         isVisible: boolean
     }
     const { isVisible }: Props = $props()
 
-    const stats = [
+    const STATS = [
         { color: 'bg-blue-400/70', label: 'Carbs', max: 60, unit: 'g', value: 45 },
         { color: 'bg-amber-400/70', label: 'Sodium', max: 500, unit: 'mg', value: 320 },
         { color: 'bg-emerald-400/70', label: 'Caffeine', max: 200, unit: 'mg', value: 100 }
     ]
-
-    const brands = [
+    const BRANDS = [
         { brand: 'Maurten', color: 'bg-slate-500', products: 12, specialty: 'Hydrogel Tech' },
         { brand: 'SIS', color: 'bg-rose-400', products: 24, specialty: 'Electrolytes' },
         { brand: 'Precision Fuel', color: 'bg-sky-400', products: 18, specialty: 'Sweat Testing' },
         { brand: 'Skratch Labs', color: 'bg-emerald-400', products: 15, specialty: 'Real Food' }
     ]
-
-    const filters = ['Gels', 'Bars', 'Drinks', 'Chews', 'Caffeine']
+    const FILTERS = ['Gels', 'Bars', 'Drinks', 'Chews', 'Caffeine']
 </script>
 
 <div class="overflow-hidden rounded-xl bg-accent shadow-2xl">
@@ -36,12 +36,10 @@
             </div>
 
             <div class="grid grid-cols-3 gap-3">
-                {#each stats as stat, i (stat.label)}
+                {#each STATS as stat, i (stat.label)}
                     <div
                         class="text-center transition-all duration-500"
-                        style="opacity: {isVisible ? 1 : 0}; transform: translateY({isVisible
-                            ? 0
-                            : 10}px); transition-delay: {i * 100}ms;"
+                        style={entryStyles(isVisible, { delay: i * 100, offset: 10 })}
                     >
                         <div class="relative mb-2 h-20 w-full overflow-hidden rounded-lg bg-muted">
                             <div
@@ -63,12 +61,10 @@
             </div>
 
             <div class="space-y-2">
-                {#each brands as brand, i (brand.brand)}
+                {#each BRANDS as brand, i (brand.brand)}
                     <div
                         class="group flex cursor-pointer items-center justify-between rounded-lg bg-muted/50 p-3 transition-all duration-300 hover:bg-muted"
-                        style="opacity: {isVisible ? 1 : 0}; transform: translateX({isVisible
-                            ? 0
-                            : 20}px); transition-delay: {i * 100 + 200}ms;"
+                        style={entryStyles(isVisible, { delay: i * 100 + 200, offset: 20, transform: 'translateX' })}
                     >
                         <div class="flex items-center gap-3">
                             <div
@@ -92,10 +88,10 @@
             </div>
 
             <div class="flex flex-wrap gap-2">
-                {#each filters as filter, i (filter)}
+                {#each FILTERS as filter, i (filter)}
                     <Badge
                         class="cursor-pointer transition-all duration-300 hover:scale-105"
-                        style="opacity: {isVisible ? 1 : 0}; transition-delay: {i * 50 + 400}ms;"
+                        style={entryStyles(isVisible, { delay: i * 50 + 400, offset: 0 })}
                         variant={i === 0 ? 'default' : 'outline'}
                     >
                         {filter}

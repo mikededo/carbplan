@@ -8,6 +8,7 @@
     import { cn } from '$lib/utils'
 
     import { PRICING_TIERS } from '../constants'
+    import { entryStyles } from '../helpers'
 
     const inView = new InView({ threshold: 0.2 })
 </script>
@@ -16,7 +17,7 @@
     <div class="mx-auto max-w-6xl">
         <div
             class="mb-16 text-center transition-all duration-700"
-            style="opacity: {inView.isInView ? 1 : 0}; transform: translateY({inView.isInView ? 0 : 20}px);"
+            style={entryStyles(inView.isInView)}
         >
             <Badge class="mb-4" variant="outline">Pricing</Badge>
             <h2 class="mb-4 text-3xl font-bold md:text-4xl">Simple, transparent pricing</h2>
@@ -29,7 +30,7 @@
             {#each PRICING_TIERS as tier, i (tier.name)}
                 <div
                     class={cn('relative flex flex-col rounded-xl bg-accent transition-all duration-500', tier.popular && 'bg-primary lg:scale-105')}
-                    style="opacity: {inView.isInView ? 1 : 0}; transform: translateY({inView.isInView ? 0 : 30}px); transition-delay: {(i + 1) * 50}ms;"
+                    style={entryStyles(inView.isInView, { delay: (i + 1) * 50, offset: 30 })}
                 >
                     <h3 class="pt-2 pb-1.5 pl-3 text-sm font-semibold uppercase" class:text-primary-foreground={tier.popular}>
                         {tier.name}

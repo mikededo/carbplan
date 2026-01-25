@@ -2,6 +2,7 @@
     import { InView } from '$lib/hooks/in-view.svelte'
 
     import { FEATURES } from '../constants'
+    import { entryStyles } from '../helpers'
 
     const inView = new InView({ threshold: 0.2 })
 </script>
@@ -20,9 +21,7 @@
             {#each FEATURES as feature, i (feature.title)}
                 <div
                     class="rounded-xl border border-border bg-card p-6 transition-all duration-500"
-                    style="opacity: {inView.isInView ? 1 : 0}; transform: translateY({inView.isInView
-                        ? 0
-                        : 20}px); transition-delay: {i * 100}ms;"
+                    style={entryStyles(inView.isInView, { delay: i * 100 })}
                 >
                     <div class="mb-4 flex size-10 items-center justify-center rounded-lg bg-primary/10">
                         <feature.icon class="size-5 text-primary" />

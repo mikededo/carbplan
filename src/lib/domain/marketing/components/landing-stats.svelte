@@ -2,6 +2,7 @@
     import { InView } from '$lib/hooks/in-view.svelte'
 
     import { STATS } from '../constants'
+    import { entryStyles } from '../helpers'
     import AnimatedCounter from './animated-counter.svelte'
 
     const inView = new InView({ threshold: 0.3 })
@@ -13,9 +14,7 @@
             {#each STATS as stat, i (stat.label)}
                 <div
                     class="transition-all duration-500"
-                    style="opacity: {inView.isInView ? 1 : 0}; transform: translateY({inView.isInView
-                        ? 0
-                        : 20}px); transition-delay: {i * 100}ms;"
+                    style={entryStyles(inView.isInView, { delay: i * 100 })}
                 >
                     <p class="mb-2 text-4xl font-bold md:text-5xl">
                         <AnimatedCounter suffix={stat.suffix} value={stat.value} />

@@ -17,13 +17,12 @@
     import { Badge } from '$lib/domain/ui/badge'
     import { cn } from '$lib/utils'
 
-    type Props = {
-        isVisible: boolean
-    }
+    import { entryStyles } from '../../helpers'
+
+    type Props = { isVisible: boolean }
     const { isVisible }: Props = $props()
 
     let animatedProgress = $state(0)
-    let showInsight = $state(false)
 
     const PLANNED_WORKOUT = {
         duration: '4h',
@@ -47,7 +46,6 @@
     const totalPlannedCarbs = NUTRITION_PLAN.reduce((sum, item) => sum + item.carbs, 0)
 
     const WORKOUT_BARS = [72]
-
     const METRICS = [
         { icon: TrophyIcon, label: 'Target TSS', value: PLANNED_WORKOUT.targetTSS.toString() },
         { icon: GaugeIcon, label: 'Target IF', value: PLANNED_WORKOUT.targetIF.toString() },
@@ -58,6 +56,20 @@
         },
         { icon: PillIcon, label: 'Items', value: NUTRITION_PLAN.length.toString() }
     ]
+
+    const getZoneColor = (height: number) => {
+        if (height < 50) {
+            return 'bg-gray-200'
+        }
+        if (height < 60) {
+            return 'bg-blue-300'
+        }
+        if (height < 70) {
+            return 'bg-green-300'
+        }
+
+        return height < 80 ? 'bg-yellow-300' : 'bg-orange-300'
+    }
 
     $effect(() => {
         if (!isVisible) {
@@ -70,25 +82,17 @@
             }
         }, 30)
 
-        const insightTimeout = setTimeout(() => {
-            showInsight = true
-        }, 1200)
-
         return () => {
             clearInterval(progressInterval)
-            clearTimeout(insightTimeout)
         }
     })
 </script>
 
 <div class="relative">
-    <!-- Floating planning card - top left -->
-    <div class="absolute -top-4 -left-4 z-20">
+    <div class="absolute -top-8 -left-20 z-20">
         <div
             class="rounded-xl border border-border bg-card p-3 shadow-xl transition-all duration-500"
-            style="opacity: {isVisible ? 1 : 0}; transform: translateY({isVisible
-                ? 0
-                : -20}px); transition-delay: 200ms;"
+            style={entryStyles(isVisible, { delay: 200, offset: -20 })}
         >
             <div class="mb-1 flex items-center gap-2 text-xs text-muted-foreground">
                 <CalendarIcon class="size-3" />
@@ -102,13 +106,10 @@
         </div>
     </div>
 
-    <!-- Floating targets card - top right -->
-    <div class="absolute -top-4 -right-4 z-20">
+    <div class="absolute -top-8 -right-20 z-20">
         <div
             class="rounded-xl border border-border bg-card p-3 shadow-xl transition-all duration-500"
-            style="opacity: {isVisible ? 1 : 0}; transform: translateY({isVisible
-                ? 0
-                : -20}px); transition-delay: 400ms;"
+            style={entryStyles(isVisible, { delay: 400, offset: -20 })}
         >
             <div class="mb-1 flex items-center gap-2 text-xs text-muted-foreground">
                 <TargetIcon class="size-3 text-primary" />
@@ -125,10 +126,10 @@
         </div>
     </div>
 
-    <div class="absolute -bottom-4 -left-4 z-20">
+    <div class="absolute -bottom-8 -left-20 z-20">
         <div
             class="rounded-xl border border-border bg-card p-3 shadow-xl transition-all duration-500"
-            style="opacity: {isVisible ? 1 : 0}; transform: translateY({isVisible ? 0 : 20}px); transition-delay: 600ms;"
+            style={entryStyles(isVisible, { delay: 600, offset: 20 })}
         >
             <div class="mb-1 flex items-center gap-2 text-xs text-muted-foreground">
                 <FlameIcon class="size-3 text-orange-500" />
@@ -150,10 +151,27 @@
         </div>
     </div>
 
-    <!-- Main plan builder card -->
+    <div class="absolute -right-20 -bottom-8 z-20 max-w-50">
+        <div
+            class="rounded-xl border border-border bg-card p-3 shadow-xl transition-all duration-500"
+            style={entryStyles(isVisible, { delay: 800, offset: 20 })}
+        >
+            <div class="mb-2 flex items-center gap-2">
+                <div class="flex size-6 items-center justify-center rounded-full bg-primary/20">
+                    <BrainIcon class="size-3 text-primary" />
+                </div>
+                <span class="text-xs font-medium">Plan Recommendation</span>
+            </div>
+            <p class="text-xs text-muted-foreground">
+                Based on your <span class="font-medium text-primary">FTP of 250W</span>, your plan is
+                optimized for 90g/hr — ideal for this intensity.
+            </p>
+        </div>
+    </div>
+
     <div
         class="overflow-hidden rounded-2xl border border-border bg-card shadow-2xl transition-all duration-700"
-        style="opacity: {isVisible ? 1 : 0}; transform: scale({isVisible ? 1 : 0.95});"
+        style={entryStyles(isVisible, { transform: 'scale' })}
     >
         <div class="flex items-center justify-between border-b border-border bg-muted/50 px-4 py-3">
             <div class="flex items-center gap-3">
@@ -200,11 +218,10 @@
                 </div>
 
                 <div class="relative flex h-20 items-end gap-0.5">
-                    {#each WORKOUT_BARS as h, i (i)}
-                        {@const zoneColor = h < 50 ? 'bg-gray-200' : h < 60 ? 'bg-blue-300' : h < 70 ? 'bg-green-300' : h < 80 ? 'bg-yellow-300' : 'bg-orange-300'}
+                    {#each WORKOUT_BARS as height, i (i)}
                         <div
-                            class={cn('flex-1 rounded-t transition-all duration-700', zoneColor)}
-                            style="height: {isVisible ? `${h}%` : '0%'}; transition-delay: {i * 40}ms;"
+                            class={cn('flex-1 rounded-t transition-all duration-700', getZoneColor(height))}
+                            style="height: {isVisible ? `${height}%` : '0%'}; transition-delay: {i * 40}ms;"
                         ></div>
                     {/each}
                 </div>
@@ -225,7 +242,7 @@
                     {#each NUTRITION_PLAN.slice(0, 4) as item, i (item.time)}
                         <div
                             class="flex items-center gap-3 border-l-2 border-primary/50 bg-muted/50 px-3 py-2.5 transition-all duration-500"
-                            style="opacity: {isVisible ? 1 : 0}; transform: translateX({isVisible ? 0 : -20}px); transition-delay: {i * 100 + 500}ms;"
+                            style={entryStyles(isVisible, { delay: i * 100 + 500, offset: -20, transform: 'translateX' })}
                         >
                             <span class="w-10 font-mono text-xs text-muted-foreground">{item.time}</span>
                             <div class="flex-1">
@@ -237,7 +254,7 @@
                     {/each}
                     <div
                         class="py-2 text-center text-xs text-muted-foreground transition-all duration-500"
-                        style="opacity: {isVisible ? 1 : 0}; transition-delay: 900ms;"
+                        style={entryStyles(isVisible, { delay: 900, offset: 0 })}
                     >
                         + {NUTRITION_PLAN.length - 4} more planned items
                     </div>
@@ -248,9 +265,7 @@
                 {#each METRICS as metric, i (metric.label)}
                     <div
                         class="rounded-lg bg-muted/50 p-3 text-center transition-all duration-500"
-                        style="opacity: {isVisible ? 1 : 0}; transform: translateY({isVisible
-                            ? 0
-                            : 10}px); transition-delay: {i * 100 + 1000}ms;"
+                        style={entryStyles(isVisible, { delay: i * 100 + 1000, offset: 10 })}
                     >
                         <div
                             class="mb-1 flex items-center justify-center gap-1 text-xs text-muted-foreground"
@@ -265,23 +280,4 @@
         </div>
     </div>
 
-    <div
-        class="absolute -right-4 -bottom-4 z-20 max-w-50"
-        style="opacity: {showInsight ? 1 : 0}; transform: translateY({showInsight
-            ? 0
-            : 20}px); transition: all 0.5s ease-out;"
-    >
-        <div class="rounded-xl border border-primary/30 bg-card p-3 shadow-xl">
-            <div class="mb-2 flex items-center gap-2">
-                <div class="flex size-6 items-center justify-center rounded-full bg-primary/20">
-                    <BrainIcon class="size-3 text-primary" />
-                </div>
-                <span class="text-xs font-medium">Plan Recommendation</span>
-            </div>
-            <p class="text-xs text-muted-foreground">
-                Based on your <span class="font-medium text-primary">FTP of 250W</span>, your plan is
-                optimized for 90g/hr — ideal for this intensity.
-            </p>
-        </div>
-    </div>
 </div>

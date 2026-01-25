@@ -13,9 +13,9 @@
     import { Badge } from '$lib/domain/ui/badge'
     import { cn } from '$lib/utils'
 
-    type Props = {
-        isVisible: boolean
-    }
+    import { entryStyles } from '../../helpers'
+
+    type Props = { isVisible: boolean }
     const { isVisible }: Props = $props()
 
     const workoutBars = [40, 60, 55, 80, 95, 75, 85, 70, 90, 60, 75, 85, 55, 65, 45]
@@ -61,7 +61,7 @@
                 <Badge class="text-xs" variant="secondary">4hr Ride</Badge>
             </div>
 
-            <div class="rounded-xl border border-primary/20 bg-gradient-to-r from-primary/5 via-transparent to-transparent p-4">
+            <div class="rounded-xl border border-primary/20 bg-linear-to-r from-primary/5 via-transparent to-transparent p-4">
                 <div class="mb-3 flex items-center justify-between">
                     <span class="text-xs text-muted-foreground">Power distribution</span>
                     <span class="text-xs text-muted-foreground">IF: 0.85</span>
@@ -108,7 +108,7 @@
                 {#each NUTRITION_ITEMS as item, i (item.time)}
                     <div
                         class="flex items-center gap-3 border-l-2 border-primary/50 bg-muted/50 px-3 py-2.5 transition-all duration-500"
-                        style="opacity: {isVisible ? 1 : 0}; transform: translateX({isVisible ? 0 : -20}px); transition-delay: {i * 100 + 300}ms;"
+                        style={entryStyles(isVisible, { delay: i * 100 + 300, offset: -20, transform: 'translateX' })}
                     >
                         <span class="w-10 font-mono text-xs text-muted-foreground">{item.time}</span>
                         <item.icon class="size-4 text-muted-foreground" />
