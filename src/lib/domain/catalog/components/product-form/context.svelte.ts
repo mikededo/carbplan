@@ -14,43 +14,43 @@ const PRODUCT_FORM_CONTEXT_KEY = Symbol('product-form')
 export type ProductFormState = {
   brandId: string
   caffeineMg: string
+  calories: string
   carbsG: string
   fatG: string
+  flavor: string
+  form: '' | ProductFormType
   name: string
+  notes: string
+  proteinG: string
   servingSize: string
   servingsPerPackage: string
   servingUnit: string
   slug: string
-  sugarG: string
-  calories: string
-  flavor: string
-  form: '' | ProductFormType
-  notes: string
-  proteinG: string
   sodiumMg: string
+  sugarG: string
 }
 
 export type ProductFormContext = {
+  autoSlug: boolean
   brands: CatalogBrand[]
+  close: () => void
   deactivate: () => Promise<void>
+  disableAutoSlug: () => void
+  error: Error | null
+  errors: Record<string, string>
   isDeactivating: boolean
   isEditing: boolean
+  isLoadingBrands: boolean
   isPending: boolean
   state: ProductFormState
   submit: () => Promise<void>
   updateField: <K extends keyof ProductFormState>(key: K, value: ProductFormState[K]) => void
-  autoSlug: boolean
-  close: () => void
-  disableAutoSlug: () => void
-  error: Error | null
-  errors: Record<string, string>
-  isLoadingBrands: boolean
 }
 
 type CreateProductFormContextArgs = () => {
-  onOpenChange: (open: boolean) => void
   open: boolean
   product?: Product
+  onOpenChange: (open: boolean) => void
 }
 
 const parseNumber = (value: string): number | undefined => {

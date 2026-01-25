@@ -23,8 +23,8 @@
         style,
         ...restProps
     }: {
-        onOpenChange?: (open: boolean) => void
         open?: boolean
+        onOpenChange?: (open: boolean) => void
     } & WithElementRef<HTMLAttributes<HTMLDivElement>> = $props()
 
     const sidebar = setSidebar({

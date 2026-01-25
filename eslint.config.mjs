@@ -195,20 +195,18 @@ export default antfu(
           environment: 'bun',
           groups: [
             'style',
-            'type',
-            'internal-type',
-            ['parent-type', 'sibling-type', 'index-type'],
-
-            ['builtin', 'external'],
-            'internal',
-            ['parent', 'sibling', 'index'],
-            'object',
+            'type-import',
+            'type-internal',
+            ['type-parent', 'type-sibling', 'type-index'],
+            ['value-builtin', 'value-external'],
+            'value-internal',
+            ['value-parent', 'value-sibling', 'value-index'],
             'unknown'
           ],
           ignoreCase: true,
           internalPattern: ['\\$[^\\/]+\\/[^\\/]+'],
           maxLineLength: undefined,
-          newlinesBetween: 'always',
+          newlinesBetween: 1,
           order: 'asc',
           type: 'alphabetical'
         }
@@ -217,9 +215,10 @@ export default antfu(
       'perfectionist/sort-object-types': [
         'error',
         {
-          customGroups: { callbacks: 'on*' },
-          groupKind: 'required-first',
-          groups: ['unknown', 'callbacks', 'multiline'],
+          customGroups: [
+            { elementNamePattern: '^on', groupName: 'callbacks' }
+          ],
+          groups: ['required-member', 'optional-member', 'callbacks', 'multiline-member'],
           ignoreCase: true,
           order: 'asc',
           partitionByNewLine: true,

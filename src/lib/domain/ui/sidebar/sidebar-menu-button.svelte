@@ -57,9 +57,9 @@
         child?: Snippet<[{ props: Record<string, unknown> }]>
         isActive?: boolean
         size?: SidebarMenuButtonSize
-        variant?: SidebarMenuButtonVariant
         tooltipContent?: Snippet | string
         tooltipContentProps?: WithoutChildrenOrChild<ComponentProps<typeof Tooltip.Content>>
+        variant?: SidebarMenuButtonVariant
     } & WithElementRef<HTMLAttributes<HTMLButtonElement>, HTMLButtonElement> = $props()
 
     const sidebar = useSidebar()

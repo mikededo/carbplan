@@ -16,9 +16,9 @@
     import SectionServing from './section-serving.svelte'
 
     type Props = {
-        onOpenChange: (open: boolean) => void
         open: boolean
         product?: Product
+        onOpenChange: (open: boolean) => void
     }
     const { onOpenChange, open, product }: Props = $props()
 

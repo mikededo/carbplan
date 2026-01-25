@@ -1,6 +1,6 @@
 type InViewOptions = {
-  triggerOnce?: boolean
   threshold?: number
+  triggerOnce?: boolean
 }
 
 export class InView {

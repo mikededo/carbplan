@@ -2,9 +2,9 @@
     import type { Component } from 'svelte'
 
     type Props = {
-        title: string
         description: string
         icon: Component
+        title: string
     }
     const { description, icon: Icon, title }: Props = $props()
 </script>

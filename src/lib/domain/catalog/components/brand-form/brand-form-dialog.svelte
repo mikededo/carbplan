@@ -11,9 +11,9 @@
     import { createBrandFormContext } from './context.svelte'
 
     type Props = {
-        onOpenChange: (open: boolean) => void
         open: boolean
         brand?: CatalogBrand
+        onOpenChange: (open: boolean) => void
     }
     const { brand, onOpenChange, open }: Props = $props()
 

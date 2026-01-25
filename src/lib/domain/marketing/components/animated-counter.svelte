@@ -3,8 +3,8 @@
 
     type Props = {
         value: number
-        suffix?: string
         duration?: number
+        suffix?: string
     }
     const { duration = 2000, suffix = '', value }: Props = $props()
 

@@ -18,9 +18,9 @@
         variant = 'sidebar',
         ...restProps
     }: {
+        collapsible?: 'icon' | 'none' | 'offcanvas'
         side?: 'left' | 'right'
         variant?: 'floating' | 'inset' | 'sidebar'
-        collapsible?: 'icon' | 'none' | 'offcanvas'
     } & WithElementRef<HTMLAttributes<HTMLDivElement>> = $props()
 
     const sidebar = useSidebar()

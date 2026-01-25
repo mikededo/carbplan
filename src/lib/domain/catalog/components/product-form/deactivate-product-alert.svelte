@@ -7,8 +7,8 @@
     import { getProductFormContext } from './context.svelte'
 
     type Props = {
-        onConfirm: () => void
         open: boolean
+        onConfirm: () => void
     }
     let { onConfirm, open = $bindable(false) }: Props = $props()
 

@@ -3,8 +3,8 @@
 
     type Props = {
         children: Snippet
-        title: string
         description: string
+        title: string
     }
     const { children, description, title }: Props = $props()
 </script>

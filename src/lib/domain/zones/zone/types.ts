@@ -1,14 +1,14 @@
 export type ZonePreset = {
+  color: string
   maxPercent: null | number
   minPercent: number
   name: string
-  color: string
   description?: string
 }
 
 export type ZoneModelInfo = {
-  label: string
   description: string
+  label: string
   referenceUrl?: string
 }
 

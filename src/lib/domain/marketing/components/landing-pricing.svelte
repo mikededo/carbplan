@@ -12,8 +12,8 @@
     import { PRICING_TIERS } from '../constants'
 
     type PricinTierProps = {
-        tier: PricingTier
         position: number
+        tier: PricingTier
     }
 
     const inView = new InView({ threshold: 0.2 })

@@ -13,9 +13,9 @@ import {
 } from '@lucide/svelte'
 
 export type Feature = {
-  title: string
   description: string
   icon: typeof Icon
+  title: string
 }
 
 export const FEATURES: Feature[] = [
@@ -67,10 +67,10 @@ export const STATS: Stat[] = [
 export type PricingTier = {
   cta: string
   ctaVariant: ButtonVariant
+  description: string
   features: string[]
   name: string
   price: string
-  description: string
   popular?: boolean
   priceNote?: string
 }
@@ -130,9 +130,9 @@ export const PRICING_TIERS: PricingTier[] = [
 ]
 
 export type HeroFeature = {
-  label: string
   description: string
   icon: typeof Icon
+  label: string
 }
 
 export const HERO_FEATURES: HeroFeature[] = [
@@ -147,8 +147,8 @@ export type ProductShowcaseData = {
   bullets: string[]
   ctaHref: string
   ctaText: string
-  title: string
   description: string
+  title: string
 }
 
 export const PRODUCT_SHOWCASES: Record<'dashboard' | 'planner' | 'supplements', ProductShowcaseData> = {

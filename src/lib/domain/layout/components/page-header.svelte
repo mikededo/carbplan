@@ -19,8 +19,8 @@
 
     type Props = {
         crumbs: Crumb[]
-        children?: Snippet
         actions?: Snippet
+        children?: Snippet
     }
     const { actions, children, crumbs }: Props = $props()
 

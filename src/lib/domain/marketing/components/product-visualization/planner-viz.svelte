@@ -21,9 +21,9 @@
 
     type NutritionItem = {
         carbs: number
+        icon: typeof Icon
         name: string
         time: string
-        icon: typeof Icon
     }
 
     const NUTRITION_ITEMS: NutritionItem[] = [

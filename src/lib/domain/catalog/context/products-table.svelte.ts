@@ -31,16 +31,16 @@ export const CALORIES_MAX = 1000
 
 type TableState = {
   brandFilter: Set<string>
-  maxCaffeine: null | number
-  maxCarbs: null | number
-  minCaffeine: null | number
-  minCarbs: null | number
   collapsedBrands: Set<string>
   formFilter: Set<'' | ProductFormType>
   globalFilter: string
+  maxCaffeine: null | number
   maxCalories: null | number
+  maxCarbs: null | number
   maxSodium: null | number
+  minCaffeine: null | number
   minCalories: null | number
+  minCarbs: null | number
   minSodium: null | number
   sortColumn: SortColumn
   sortDirection: SortDirection

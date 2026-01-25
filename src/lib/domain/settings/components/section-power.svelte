@@ -19,8 +19,8 @@
     type Props = {
         athleteId?: Athlete['id']
         ftp?: number
-        weight?: number
         powerZones?: PowerZonesData
+        weight?: number
     }
     let {
         athleteId,

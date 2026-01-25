@@ -11,30 +11,30 @@ import { noop } from '$lib/utils'
 const BRAND_FORM_CONTEXT_KEY = Symbol('brand-form')
 
 export type BrandFormState = {
+  description: string
+  logoUrl: string
   name: string
   slug: string
   website: string
-  description: string
-  logoUrl: string
 }
 
 export type BrandFormContext = {
-  isEditing: boolean
-  isPending: boolean
-  state: BrandFormState
-  submit: () => Promise<void>
-  updateField: <K extends keyof BrandFormState>(key: K, value: BrandFormState[K]) => void
   autoSlug: boolean
   close: () => void
   disableAutoSlug: () => void
   error: Error | null
   errors: Record<string, string>
+  isEditing: boolean
+  isPending: boolean
+  state: BrandFormState
+  submit: () => Promise<void>
+  updateField: <K extends keyof BrandFormState>(key: K, value: BrandFormState[K]) => void
 }
 
 type CreateBrandFormContextArgs = () => {
-  onOpenChange: (open: boolean) => void
   open: boolean
   brand?: CatalogBrand
+  onOpenChange: (open: boolean) => void
 }
 
 const createInitialState = (brand?: CatalogBrand): BrandFormState => ({

@@ -4,12 +4,12 @@
     import { formatPercentRange } from '../types'
 
     type Props = {
+        color: string
         index: number
         maxPercent: null | number
         minPercent: number
         name: string
         range: string
-        color: string
         description?: string
     }
     const { color, description, index, maxPercent, minPercent, name, range }: Props = $props()

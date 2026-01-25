@@ -1,15 +1,15 @@
 export type NutritionPlan = {
   date: string
+  durationMinutes: number
   id: string
   name: string
-  durationMinutes: number
   targetCarbsPerHour: number
 }
 
 export type ScheduledEvent = {
+  durationMinutes: number
   id: string
   name: string
-  time: string
-  durationMinutes: number
   targetCarbsPerHour: number
+  time: string
 }
