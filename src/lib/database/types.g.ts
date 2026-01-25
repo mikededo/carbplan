@@ -56,6 +56,27 @@ export type Database = {
     Functions: {
       deactivate_brand: { Args: { p_brand_id: string }, Returns: number }
       generate_slug: { Args: { input: string }, Returns: string }
+      deactivate_plan: {
+        Args: { p_plan_id: string }
+        Returns: {
+          athlete_id: string
+          created_at: string
+          date: string
+          duration_minutes: number
+          id: string
+          is_active: boolean
+          name: string
+          notes: null | string
+          target_carbs_per_hour: null | number
+          updated_at: string
+        }
+        SetofOptions: {
+          from: '*'
+          isOneToOne: true
+          isSetofReturn: false
+          to: 'nutrition_plans'
+        }
+      }
       deactivate_product: {
         Args: { p_product_id: string }
         Returns: {
@@ -329,6 +350,122 @@ export type Database = {
           product_id?: string
         }
       }
+      nutrition_plans: {
+        Insert: {
+          athlete_id: string
+          date: string
+          duration_minutes: number
+          name: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          notes?: null | string
+          target_carbs_per_hour?: null | number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            columns: ['athlete_id']
+            foreignKeyName: 'nutrition_plans_athlete_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'athletes'
+          },
+          {
+            columns: ['athlete_id']
+            foreignKeyName: 'nutrition_plans_athlete_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'current_athlete'
+          }
+        ]
+        Row: {
+          athlete_id: string
+          created_at: string
+          date: string
+          duration_minutes: number
+          id: string
+          is_active: boolean
+          name: string
+          notes: null | string
+          target_carbs_per_hour: null | number
+          updated_at: string
+        }
+        Update: {
+          athlete_id?: string
+          created_at?: string
+          date?: string
+          duration_minutes?: number
+          id?: string
+          is_active?: boolean
+          name?: string
+          notes?: null | string
+          target_carbs_per_hour?: null | number
+          updated_at?: string
+        }
+      }
+      plan_items: {
+        Insert: {
+          plan_id: string
+          product_id: string
+          timing_minutes: number
+          created_at?: string
+          id?: string
+          notes?: null | string
+          servings?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            columns: ['plan_id']
+            foreignKeyName: 'plan_items_plan_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'nutrition_plans'
+          },
+          {
+            columns: ['plan_id']
+            foreignKeyName: 'plan_items_plan_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'plans_with_summary'
+          },
+          {
+            columns: ['product_id']
+            foreignKeyName: 'plan_items_product_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'products'
+          },
+          {
+            columns: ['product_id']
+            foreignKeyName: 'plan_items_product_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'catalog_products'
+          }
+        ]
+        Row: {
+          created_at: string
+          id: string
+          notes: null | string
+          plan_id: string
+          product_id: string
+          servings: number
+          timing_minutes: number
+          updated_at: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notes?: null | string
+          plan_id?: string
+          product_id?: string
+          servings?: number
+          timing_minutes?: number
+          updated_at?: string
+        }
+      }
       products: {
         Insert: {
           brand_id: string
@@ -558,6 +695,39 @@ export type Database = {
           weight_kg?: null | number
         }
       }
+      plans_with_summary: {
+        Relationships: [
+          {
+            columns: ['athlete_id']
+            foreignKeyName: 'nutrition_plans_athlete_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'athletes'
+          },
+          {
+            columns: ['athlete_id']
+            foreignKeyName: 'nutrition_plans_athlete_id_fkey'
+            isOneToOne: false
+            referencedColumns: ['id']
+            referencedRelation: 'current_athlete'
+          }
+        ]
+        Row: {
+          athlete_id: null | string
+          created_at: null | string
+          date: null | string
+          duration_minutes: null | number
+          id: null | string
+          is_active: boolean | null
+          item_count: null | number
+          name: null | string
+          notes: null | string
+          target_carbs_per_hour: null | number
+          total_caffeine_mg: null | number
+          total_carbs_g: null | number
+          updated_at: null | string
+        }
+      }
     }
   }
 }
@@ -725,11 +895,21 @@ export type Product = Tables<'products'>
 export type ProductInsert = TablesInsert<'products'>
 export type ProductUpdate = TablesUpdate<'products'>
 
+export type NutritionPlan = Tables<'nutrition_plans'>
+export type NutritionPlanInsert = TablesInsert<'nutrition_plans'>
+export type NutritionPlanUpdate = TablesUpdate<'nutrition_plans'>
+
+export type PlanItem = Tables<'plan_items'>
+export type PlanItemInsert = TablesInsert<'plan_items'>
+export type PlanItemUpdate = TablesUpdate<'plan_items'>
+
 export type CatalogBrand = Tables<'catalog_brands'>
 
 export type CatalogProduct = Tables<'catalog_products'>
 
 export type CurrentAthlete = Tables<'current_athlete'>
+
+export type PlanWithSummary = Tables<'plans_with_summary'>
 
 export enum ProductForm {
   Bar = 'bar',
