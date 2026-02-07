@@ -3,8 +3,6 @@ import type { SavedOnboardingFormData } from '$lib/domain/onboarding/types'
 import type { Actions, PageServerLoad } from './$types'
 
 import { fail, redirect } from '@sveltejs/kit'
-import * as v from 'valibot'
-
 import { ROUTES } from '$lib/constants/routes'
 import { isOnboardingComplete } from '$lib/domain/onboarding/helpers'
 import { OnboardingSchema, SavedOnboardingSchema } from '$lib/domain/onboarding/schemas'
@@ -22,13 +20,12 @@ export const load: PageServerLoad = async ({ cookies, locals: { safeGetSession, 
     redirect(303, ROUTES.dashboard)
   }
 
-  const maybeData = v.safeParse(
-    SavedOnboardingSchema,
+  const maybeData = SavedOnboardingSchema.safeParse(
     JSON.parse(cookies.get(ONBOARDING_COOKIE) ?? '{}')
   )
   const previous: SavedOnboardingFormData = {
     step: 0,
-    ...(maybeData.success ? maybeData.output : {})
+    ...(maybeData.success ? maybeData.data : {})
   }
   return { previous }
 }
@@ -43,7 +40,7 @@ export const actions = {
     const formData = await request.formData()
     const rawData = JSON.parse(formData.get('data')?.toString() ?? '{}')
 
-    const result = v.safeParse(OnboardingSchema, {
+    const result = OnboardingSchema.safeParse({
       ftp: rawData.ftp ? Number(rawData.ftp) : undefined,
       fullName: rawData.fullName,
       height: rawData.height ? Number(rawData.height) : undefined,
@@ -55,21 +52,21 @@ export const actions = {
     })
 
     if (!result.success) {
-      const errors = v.flatten(result.issues)
-      return fail(400, { errors: errors.nested })
+      const errors = result.error.flatten()
+      return fail(400, { errors: errors.fieldErrors })
     }
 
     const { error } = await supabase
       .from('athletes')
       .update({
-        ftp: result.output.ftp,
-        full_name: result.output.fullName,
-        height_cm: result.output.height,
-        hr_max: result.output.hrMax,
-        hr_rest: result.output.hrRest,
-        max_carb_intake_g_per_hr: result.output.maxCarbIntake,
-        sex: result.output.sex,
-        weight_kg: result.output.weight
+        ftp: result.data.ftp,
+        full_name: result.data.fullName,
+        height_cm: result.data.height,
+        hr_max: result.data.hrMax,
+        hr_rest: result.data.hrRest,
+        max_carb_intake_g_per_hr: result.data.maxCarbIntake,
+        sex: result.data.sex,
+        weight_kg: result.data.weight
       })
       .eq('id', user.id)
 

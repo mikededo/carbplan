@@ -1,4 +1,4 @@
-import type * as v from 'valibot'
+import type { z } from 'zod'
 
 import type {
   OnboardingSchema,
@@ -8,11 +8,11 @@ import type {
   StepTwoSchema
 } from './schemas'
 
-export type StepOneData = v.InferOutput<typeof StepOneSchema>
-export type StepTwoData = v.InferOutput<typeof StepTwoSchema>
-export type StepThreeData = v.InferOutput<typeof StepThreeSchema>
-export type OnboardingFormData = v.InferOutput<typeof OnboardingSchema>
-export type SavedOnboardingFormData = v.InferOutput<typeof SavedOnboardingSchema>
+export type StepOneData = z.infer<typeof StepOneSchema>
+export type StepTwoData = z.infer<typeof StepTwoSchema>
+export type StepThreeData = z.infer<typeof StepThreeSchema>
+export type OnboardingFormData = z.infer<typeof OnboardingSchema>
+export type SavedOnboardingFormData = z.infer<typeof SavedOnboardingSchema>
 
 export type OnboardingStep = 0 | 1 | 2
 
