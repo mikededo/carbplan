@@ -12,7 +12,7 @@ CarbPlan is an athlete nutrition planning web app where athletes and coaches con
 - **Database**: Supabase (Postgres + Auth)
 - **Styling**: Tailwind CSS 4.x + tailwind-variants
 - **Components**: bits-ui (shadcn-svelte pattern)
-- **Validation**: Valibot
+- **Validation**: Zod
 - **Error handling**: Neverthrow
 - **Icons**: @lucide/svelte
 - **Data fetching**: TanStack Query (svelte-query)
@@ -50,7 +50,7 @@ The repository follows a domain driven architecture. Each domain is stored under
 - `queries` folder (TanStack Query hooks and options)
 - `context` file (context specific for that domain)
 - `types` file (types for that domain)
-- `schemas` file (valibot schemas for that domain)
+- `schemas` file (zod schemas for that domain)
 
 If there's anything that's shared within the app, that's not a UI component, it should exist under the `global` domain. Domains can also be really small/modular.
 
@@ -228,17 +228,17 @@ export const load: LayoutLoad = async ({ parent }) => {
 
 ### Form Actions (SvelteKit)
 ```ts
-import * as v from 'valibot'
+import { z } from 'zod'
 
-const Schema = v.object({ ... })
+const Schema = z.object({ ... })
 
 export const actions = {
   default: async ({ locals: { supabase }, request }) => {
     const formData = await request.formData()
-    const result = v.safeParse(Schema, { ... })
+    const result = Schema.safeParse({ ... })
     
     if (!result.success) {
-      return fail(400, { errors: v.flatten(result.issues), values: { ... } })
+      return fail(400, { errors: result.error.flatten(), values: { ... } })
     }
     
     const { error } = await supabase...
