@@ -24,7 +24,7 @@
     "neverthrow": "8.2.0",
     "tailwind-merge": "3.4.0",
     "tailwind-variants": "3.2.2",
-    "valibot": "1.2.0"
+    "zod": "^4.1.11"
   },
   "devDependencies": {
     "@antfu/eslint-config": "7.2.0",
