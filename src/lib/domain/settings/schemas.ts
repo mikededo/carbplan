@@ -1,41 +1,38 @@
-import * as v from 'valibot'
+import { z } from 'zod'
 
 import { PROFILE_VALUES } from '$lib/domain/settings/constants'
 
-export const ProfileSchema = v.object({
-  ftp: v.optional(v.pipe(
-    v.number(),
-    v.minValue(PROFILE_VALUES.ftp.min),
-    v.maxValue(PROFILE_VALUES.ftp.max)
-  )),
-  fullName: v.pipe(v.string(), v.minLength(1, 'Full name is required')),
-  height: v.optional(v.pipe(
-    v.number(),
-    v.minValue(PROFILE_VALUES.height.min),
-    v.maxValue(PROFILE_VALUES.height.max)
-  )),
-  hrMax: v.optional(v.pipe(
-    v.number(),
-    v.minValue(PROFILE_VALUES.hrMax.min),
-    v.maxValue(PROFILE_VALUES.hrMax.max)
-  )),
-  hrRest: v.optional(v.pipe(
-    v.number(),
-    v.minValue(PROFILE_VALUES.hrRest.min),
-    v.maxValue(PROFILE_VALUES.hrRest.max)
-  )),
-  maxCarbIntake: v.optional(v.pipe(
-    v.number(),
-    v.minValue(PROFILE_VALUES.maxCarbIntake.min),
-    v.maxValue(PROFILE_VALUES.maxCarbIntake.max)
-  )),
-  sex: v.optional(v.picklist(['male', 'female'])),
-  weight: v.optional(v.pipe(
-    v.number(),
-    v.minValue(PROFILE_VALUES.weight.min),
-    v.maxValue(PROFILE_VALUES.weight.max)
-  ))
+export const SexSchema = z.enum(['male', 'female'])
+export const SexEnum = SexSchema.enum
+
+export const ProfileSchema = z.object({
+  ftp: z.number()
+    .min(PROFILE_VALUES.ftp.min)
+    .max(PROFILE_VALUES.ftp.max)
+    .optional(),
+  fullName: z.string().min(1, 'Full name is required'),
+  height: z.number()
+    .min(PROFILE_VALUES.height.min)
+    .max(PROFILE_VALUES.height.max)
+    .optional(),
+  hrMax: z.number()
+    .min(PROFILE_VALUES.hrMax.min)
+    .max(PROFILE_VALUES.hrMax.max)
+    .optional(),
+  hrRest: z.number()
+    .min(PROFILE_VALUES.hrRest.min)
+    .max(PROFILE_VALUES.hrRest.max)
+    .optional(),
+  maxCarbIntake: z.number()
+    .min(PROFILE_VALUES.maxCarbIntake.min)
+    .max(PROFILE_VALUES.maxCarbIntake.max)
+    .optional(),
+  sex: SexSchema.optional(),
+  weight: z.number()
+    .min(PROFILE_VALUES.weight.min)
+    .max(PROFILE_VALUES.weight.max)
+    .optional()
 })
 
-export type ProfileSchemaOutput = v.InferOutput<typeof ProfileSchema>
+export type ProfileSchemaOutput = z.infer<typeof ProfileSchema>
 
