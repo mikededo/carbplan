@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { PageHeader, PageScrollarea } from '$lib/domain/layout/components'
+    import { PageHeader, PageScrollarea, PageSection } from '$lib/domain/layout/components'
 </script>
 
 <svelte:head>
@@ -15,7 +15,7 @@
 />
 
 <PageScrollarea>
-    <div class="flex flex-col gap-6 p-6">
-        new plan
-    </div>
+    <PageSection header="New plan">
+        New plan form
+    </PageSection>
 </PageScrollarea>

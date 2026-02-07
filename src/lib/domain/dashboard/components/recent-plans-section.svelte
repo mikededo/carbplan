@@ -4,6 +4,7 @@
     import { FileText, Plus } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'
+    import { PageSection } from '$lib/domain/layout/components'
     import { Button } from '$lib/domain/ui/button'
     import * as Card from '$lib/domain/ui/card'
 
@@ -31,9 +32,7 @@
     }
 </script>
 
-<section class="space-y-4">
-    <h2 class="text-lg font-semibold">Recent plans</h2>
-
+<PageSection header="Recent plans">
     {#if plans.length === 0}
         <Card.Root class="gap-2 rounded-md py-8">
             <Card.Content class="flex flex-col items-center justify-center px-4 text-center">
@@ -77,4 +76,4 @@
             {/each}
         </div>
     {/if}
-</section>
+</PageSection>

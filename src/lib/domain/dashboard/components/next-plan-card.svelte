@@ -1,9 +1,10 @@
 <script lang="ts">
     import type { PlanWithSummary } from '$lib/database/types.g'
 
-    import { CalendarIcon, ClockIcon, Edit2Icon, ZapIcon } from '@lucide/svelte'
+    import { CalendarIcon, ClockIcon, PenIcon, ZapIcon } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'
+    import { PageSection } from '$lib/domain/layout/components'
     import { Button } from '$lib/domain/ui/button'
     import * as Card from '$lib/domain/ui/card'
 
@@ -41,9 +42,7 @@
     }
 </script>
 
-<section class="space-y-4">
-    <h2 class="text-lg font-semibold">Next plan</h2>
-
+<PageSection header="Next plan">
     {#if plan}
         <Card.Root class="gap-0 rounded-md border-primary/20 bg-primary/5 py-4">
             <Card.Header class="flex-row items-start justify-between space-y-0 px-4 pb-3">
@@ -61,7 +60,7 @@
                     </div>
                 </div>
                 <Button href={plan.id ? ROUTES.plans.edit(plan.id) : ROUTES.plans.new} size="sm" variant="outline">
-                    <Edit2Icon class="size-3.5" />
+                    <PenIcon class="size-3.5" />
                     Edit
                 </Button>
             </Card.Header>
@@ -104,4 +103,4 @@
             </Card.Content>
         </Card.Root>
     {/if}
-</section>
+</PageSection>

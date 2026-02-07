@@ -4,6 +4,7 @@
     import { HeartIcon } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'
+    import { PageSection } from '$lib/domain/layout/components'
     import { ProductFormBadge } from '$lib/domain/product/components'
     import { Button } from '$lib/domain/ui/button'
     import * as Card from '$lib/domain/ui/card'
@@ -12,15 +13,17 @@
     const { products }: Props = $props()
 </script>
 
-<section class="space-y-4">
-    <div class="flex items-center justify-between">
-        <h2 class="text-lg font-semibold">Favorites</h2>
-        {#if products.length > 0}
-            <Button href={ROUTES.admin.supplements} size="sm" variant="ghost">
-                View all
-            </Button>
-        {/if}
-    </div>
+<PageSection>
+    {#snippet header()}
+        <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold">Favorites</h2>
+            {#if products.length > 0}
+                <Button href={ROUTES.admin.supplements} size="sm" variant="ghost">
+                    View all
+                </Button>
+            {/if}
+        </div>
+    {/snippet}
 
     {#if products.length === 0}
         <Card.Root class="gap-2 rounded-md border-dashed py-6">
@@ -48,4 +51,4 @@
             {/each}
         </div>
     {/if}
-</section>
+</PageSection>
