@@ -1,5 +1,6 @@
 <script lang="ts">
     import { PROFILE_VALUES } from '$lib/domain/settings/constants'
+    import { SexEnum } from '$lib/domain/settings/schemas'
     import { Input } from '$lib/domain/ui/input'
     import { Label } from '$lib/domain/ui/label'
     import * as RadioGroup from '$lib/domain/ui/radio-group'
@@ -47,11 +48,11 @@
             <Label>Sex</Label>
             <RadioGroup.Root class="flex gap-4" bind:value={sex} name="sex">
                 <div class="flex items-center gap-2">
-                    <RadioGroup.Item id="male" value="male" />
+                    <RadioGroup.Item id="male" value={SexEnum.male} />
                     <Label class="cursor-pointer font-normal" for="male">Male</Label>
                 </div>
                 <div class="flex items-center gap-2">
-                    <RadioGroup.Item id="female" value="female" />
+                    <RadioGroup.Item id="female" value={SexEnum.female} />
                     <Label class="cursor-pointer font-normal" for="female">Female</Label>
                 </div>
             </RadioGroup.Root>
