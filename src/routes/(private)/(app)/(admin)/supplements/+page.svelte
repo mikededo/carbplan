@@ -75,19 +75,17 @@
 </PageHeader>
 
 <PageScrollarea>
-    <div class="p-6">
-        {#if catalogQuery.isPending}
-            <div class="flex items-center justify-center py-12">
-                <p class="text-muted-foreground">Loading supplements...</p>
-            </div>
-        {:else if catalogQuery.isError}
-            <div class="flex items-center justify-center py-12">
-                <p class="text-destructive">Failed to load supplements</p>
-            </div>
-        {:else if catalogQuery.data}
-            <ProductsTable brands={catalogQuery.data} {onEditBrand} {onEditProduct} />
-        {/if}
-    </div>
+    {#if catalogQuery.isPending}
+        <div class="flex items-center justify-center py-12">
+            <p class="text-muted-foreground">Loading supplements...</p>
+        </div>
+    {:else if catalogQuery.isError}
+        <div class="flex items-center justify-center py-12">
+            <p class="text-destructive">Failed to load supplements</p>
+        </div>
+    {:else if catalogQuery.data}
+        <ProductsTable brands={catalogQuery.data} {onEditBrand} {onEditProduct} />
+    {/if}
 </PageScrollarea>
 
 <BrandFormDialog
