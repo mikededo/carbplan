@@ -1,25 +1,26 @@
-import * as v from 'valibot'
+import { z } from 'zod'
 
-export const PowerZoneModelSchema = v.picklist(['coggan', 'friel', 'polarized', 'sweet-spot', 'custom'])
-export type PowerZoneModel = v.InferOutput<typeof PowerZoneModelSchema>
+export const PowerZoneModelSchema = z.enum(['coggan', 'friel', 'polarized', 'sweet-spot', 'custom'])
+export const PowerZoneModelEnum = PowerZoneModelSchema.enum
+export type PowerZoneModel = z.infer<typeof PowerZoneModelSchema>
 
-export const PowerZoneSchema = v.object({
-  color: v.string(),
-  maxPercent: v.nullable(v.pipe(v.number(), v.minValue(0))),
-  maxWatts: v.nullable(v.pipe(v.number(), v.minValue(0))),
-  minPercent: v.pipe(v.number(), v.minValue(0)),
-  minWatts: v.pipe(v.number(), v.minValue(0)),
-  name: v.string()
+export const PowerZoneSchema = z.object({
+  color: z.string(),
+  maxPercent: z.number().min(0).nullable(),
+  maxWatts: z.number().min(0).nullable(),
+  minPercent: z.number().min(0),
+  minWatts: z.number().min(0),
+  name: z.string()
 })
-export type PowerZone = v.InferOutput<typeof PowerZoneSchema>
+export type PowerZone = z.infer<typeof PowerZoneSchema>
 
-export const PowerZonesDataSchema = v.object({
+export const PowerZonesDataSchema = z.object({
   model: PowerZoneModelSchema,
-  zones: v.array(PowerZoneSchema)
+  zones: z.array(PowerZoneSchema)
 })
-export type PowerZonesData = v.InferOutput<typeof PowerZonesDataSchema>
+export type PowerZonesData = z.infer<typeof PowerZonesDataSchema>
 
 export const isPowerPresetZoneModel = (value: unknown): value is PowerZoneModel =>
-  v.safeParse(PowerZoneModelSchema, value).success
-export const parsePowerZones = (data: unknown) => v.safeParse(PowerZonesDataSchema, data)
+  PowerZoneModelSchema.safeParse(value).success
+export const parsePowerZones = (data: unknown) => PowerZonesDataSchema.safeParse(data)
 

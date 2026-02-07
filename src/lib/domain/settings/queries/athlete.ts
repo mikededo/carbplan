@@ -37,8 +37,8 @@ export const athleteOptions = (supabaseClient?: Client) => {
       const parsedPowerZones = parsePowerZones(JSON.parse(data.power_zones as string ?? '{}'))
       return {
         ...data,
-        hr_zones: parsedHRZones.success ? parsedHRZones.output : undefined,
-        power_zones: parsedPowerZones.success ? parsedPowerZones.output : undefined
+        hr_zones: parsedHRZones.success ? parsedHRZones.data : undefined,
+        power_zones: parsedPowerZones.success ? parsedPowerZones.data : undefined
       }
     },
     staleTime: Infinity

@@ -1,24 +1,25 @@
-import * as v from 'valibot'
+import { z } from 'zod'
 
-export const HRZoneModelSchema = v.picklist(['5-zone', 'friel', 'karvonen', 'custom'])
-export type HRZoneModel = v.InferOutput<typeof HRZoneModelSchema>
+export const HRZoneModelSchema = z.enum(['5-zone', 'friel', 'karvonen', 'custom'])
+export const HRZoneModelEnum = HRZoneModelSchema.enum
+export type HRZoneModel = z.infer<typeof HRZoneModelSchema>
 
-export const HRZoneSchema = v.object({
-  color: v.string(),
-  maxBpm: v.nullable(v.pipe(v.number(), v.minValue(0))),
-  maxPercent: v.nullable(v.pipe(v.number(), v.minValue(0), v.maxValue(100))),
-  minBpm: v.pipe(v.number(), v.minValue(0)),
-  minPercent: v.pipe(v.number(), v.minValue(0), v.maxValue(100)),
-  name: v.string()
+export const HRZoneSchema = z.object({
+  color: z.string(),
+  maxBpm: z.number().min(0).nullable(),
+  maxPercent: z.number().min(0).max(100).nullable(),
+  minBpm: z.number().min(0),
+  minPercent: z.number().min(0).max(100),
+  name: z.string()
 })
-export type HRZone = v.InferOutput<typeof HRZoneSchema>
+export type HRZone = z.infer<typeof HRZoneSchema>
 
-export const HRZonesDataSchema = v.object({
+export const HRZonesDataSchema = z.object({
   model: HRZoneModelSchema,
-  zones: v.array(HRZoneSchema)
+  zones: z.array(HRZoneSchema)
 })
-export type HRZonesData = v.InferOutput<typeof HRZonesDataSchema>
+export type HRZonesData = z.infer<typeof HRZonesDataSchema>
 
-export const isHRPresetZoneModel = (value: unknown): value is HRZoneModel => v.safeParse(HRZoneModelSchema, value).success
-export const parseHRZones = (data: unknown) => v.safeParse(HRZonesDataSchema, data)
+export const isHRPresetZoneModel = (value: unknown): value is HRZoneModel => HRZoneModelSchema.safeParse(value).success
+export const parseHRZones = (data: unknown) => HRZonesDataSchema.safeParse(data)
 
