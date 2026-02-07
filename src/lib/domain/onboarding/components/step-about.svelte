@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { StepOneData } from '$lib/domain/onboarding/types'
 
+    import { SexEnum } from '$lib/domain/onboarding/schemas'
     import { Input } from '$lib/domain/ui/input'
     import { Label } from '$lib/domain/ui/label'
     import { RadioGroup, RadioGroupItem } from '$lib/domain/ui/radio-group'
@@ -35,11 +36,11 @@
         <RadioGroup bind:value={sex}>
             <div class="flex gap-4">
                 <div class="flex items-center gap-2">
-                    <RadioGroupItem id="male" value="male" />
+                    <RadioGroupItem id="male" value={SexEnum.male} />
                     <Label class="font-normal" for="male">Male</Label>
                 </div>
                 <div class="flex items-center gap-2">
-                    <RadioGroupItem id="female" value="female" />
+                    <RadioGroupItem id="female" value={SexEnum.female} />
                     <Label class="font-normal" for="female">Female</Label>
                 </div>
             </div>
