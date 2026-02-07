@@ -1,6 +1,9 @@
 <script lang="ts" module>
-    type LinkCrumb = { href: string, label: string }
-    export type Crumb = LinkCrumb | string
+    type HrefCrumb = { href: NonApiRoutes }
+
+    type LinkCrumb = { label: string } & HrefCrumb
+    type IconCrumb = { Icon: LucideIcon } & HrefCrumb
+    export type Crumb = IconCrumb | LinkCrumb | string
 </script>
 
 <script lang="ts">
@@ -24,7 +27,9 @@
     }
     const { actions, children, crumbs }: Props = $props()
 
-    const isLink = (crumb: Crumb): crumb is LinkCrumb => typeof crumb !== 'string'
+    const isString = (crumb: Crumb): crumb is string => typeof crumb === 'string'
+    const isIcon = (crumb: Crumb): crumb is IconCrumb => !isString(crumb) && 'Icon' in crumb
+    const isLink = (crumb: Crumb): crumb is LinkCrumb => !isString(crumb) && !isIcon(crumb)
 </script>
 
 <header
@@ -42,6 +47,10 @@
                     <BreadcrumbItem class="hidden md:block">
                         {#if isLink(crumb)}
                             <BreadcrumbLink href={crumb.href}>{crumb.label}</BreadcrumbLink>
+                        {:else if isIcon(crumb)}
+                            <BreadcrumbLink href={crumb.href}>
+                                <crumb.Icon class="size-4" />
+                            </BreadcrumbLink>
                         {:else if i === crumbs.length - 1}
                             <BreadcrumbPage>{crumb}</BreadcrumbPage>
                         {:else}

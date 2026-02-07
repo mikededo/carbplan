@@ -2,11 +2,14 @@ import type { Icon as IconType } from '@lucide/svelte'
 import type { Session } from '@supabase/supabase-js'
 import type { ComponentProps } from 'svelte'
 
+import type { Pathname } from '$app/types'
 import type { Client } from '$lib/database/types'
 
 declare global {
   type LucideIcon = typeof IconType
   type LucideIconProps = { class?: string } & ComponentProps<LucideIcon>
+
+  type NonApiRoutes = Exclude<Pathname, `/api${string}`>
 
   type BaseQueryContext<F, U = F> = {
     fallback?: F
