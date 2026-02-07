@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { parseWorkoutText } from './parser'
+import { WorkoutTargetUnitsEnum } from './schemas'
 
 describe('parseWorkoutText', () => {
   it('parses intervals.icu style groups', () => {
@@ -9,7 +10,7 @@ describe('parseWorkoutText', () => {
 
     expect(result.duration_seconds).toBe(18000)
     expect(result.steps).toHaveLength(3)
-    expect(result.steps[0]?.target?.units).toBe('power_zone')
+    expect(result.steps[0]?.target?.units).toBe(WorkoutTargetUnitsEnum.power_zone)
     expect(result.steps[0]?.target?.value).toBe('Z2')
 
     const group = result.steps[1]
@@ -25,7 +26,7 @@ describe('parseWorkoutText', () => {
 
     expect(step?.duration_seconds).toBe(300)
     expect(step?.is_ramp).toBe(true)
-    expect(step?.target?.units).toBe('watts')
+    expect(step?.target?.units).toBe(WorkoutTargetUnitsEnum.watts)
     expect(step?.target?.min).toBe(100)
     expect(step?.target?.max).toBe(200)
   })
@@ -35,7 +36,7 @@ describe('parseWorkoutText', () => {
     const result = parseWorkoutText(text)
     const step = result.steps[0]
 
-    expect(step?.target?.units).toBe('percent_hr')
+    expect(step?.target?.units).toBe(WorkoutTargetUnitsEnum.percent_hr)
     expect(step?.target?.value).toBe(80)
   })
 })

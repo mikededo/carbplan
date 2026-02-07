@@ -1,5 +1,7 @@
 import type { ParsedWorkoutDoc, ParsedWorkoutStep, ParsedWorkoutTarget, WorkoutTargetUnits } from './types'
 
+import { WorkoutTargetUnitsEnum } from './schemas'
+
 const isGroupHeader = (line: string) => /^(\d+)x\b/i.exec(line.trim())
 
 const parseDurationToken = (token: string) => {
@@ -26,12 +28,12 @@ const parseDurationToken = (token: string) => {
 const getPercentUnits = (text: string): WorkoutTargetUnits => {
   const normalized = text.toLowerCase()
   if (normalized.includes('lthr')) {
-    return 'percent_lthr'
+    return WorkoutTargetUnitsEnum.percent_lthr
   }
   if (normalized.includes('hr')) {
-    return 'percent_hr'
+    return WorkoutTargetUnitsEnum.percent_hr
   }
-  return 'percent_ftp'
+  return WorkoutTargetUnitsEnum.percent_ftp
 }
 
 const parseTarget = (text: string): ParsedWorkoutTarget | undefined => {
@@ -46,10 +48,10 @@ const parseTarget = (text: string): ParsedWorkoutTarget | undefined => {
     const unit = rangeMatch[3]?.toLowerCase()
 
     if (unit === 'w') {
-      return { max, min, units: 'watts', value: min }
+      return { max, min, units: WorkoutTargetUnitsEnum.watts, value: min }
     }
     if (unit === 'rpm') {
-      return { max, min, units: 'cadence_rpm', value: min }
+      return { max, min, units: WorkoutTargetUnitsEnum.cadence_rpm, value: min }
     }
     if (unit === '%' || text.includes('%')) {
       return { max, min, units: getPercentUnits(text), value: min }
@@ -58,7 +60,7 @@ const parseTarget = (text: string): ParsedWorkoutTarget | undefined => {
 
   const zoneMatch = /\b(Z[1-7]|SS)\b/i.exec(text)
   if (zoneMatch) {
-    return { units: 'power_zone', value: zoneMatch[1].toUpperCase() }
+    return { units: WorkoutTargetUnitsEnum.power_zone, value: zoneMatch[1].toUpperCase() }
   }
 
   const percentMatch = /(\d+(?:\.\d+)?)\s*%/.exec(text)
@@ -68,12 +70,12 @@ const parseTarget = (text: string): ParsedWorkoutTarget | undefined => {
 
   const wattsMatch = /(\d+(?:\.\d+)?)\s*w\b/i.exec(text)
   if (wattsMatch) {
-    return { units: 'watts', value: Number(wattsMatch[1]) }
+    return { units: WorkoutTargetUnitsEnum.watts, value: Number(wattsMatch[1]) }
   }
 
   const cadenceMatch = /(\d+(?:\.\d+)?)\s*rpm\b/i.exec(text)
   if (cadenceMatch) {
-    return { units: 'cadence_rpm', value: Number(cadenceMatch[1]) }
+    return { units: WorkoutTargetUnitsEnum.cadence_rpm, value: Number(cadenceMatch[1]) }
   }
 
   return undefined
