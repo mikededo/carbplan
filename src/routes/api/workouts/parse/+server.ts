@@ -1,6 +1,7 @@
 import type { RequestHandler } from './$types'
 
 import { json } from '@sveltejs/kit'
+
 import { parseWorkoutText } from '$lib/domain/workouts/parser'
 import { ParsedWorkoutDocSchema, ParseWorkoutRequestSchema } from '$lib/domain/workouts/schemas'
 

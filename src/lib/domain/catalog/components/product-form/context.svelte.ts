@@ -3,6 +3,7 @@ import type { CatalogBrand } from '$lib/domain/catalog/queries'
 
 import { ResultAsync } from 'neverthrow'
 import { getContext, setContext } from 'svelte'
+
 import { createProductMutation, deactivateProductMutation, updateProductMutation, useCatalogQuery } from '$lib/domain/catalog/queries'
 import { generateSlug, ProductSchema } from '$lib/domain/catalog/schemas'
 import { noop } from '$lib/utils'

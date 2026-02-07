@@ -1,3 +1,5 @@
+import type { ParsedWorkoutStep } from './types'
+
 import { z } from 'zod'
 
 export const ParseWorkoutRequestSchema = z.object({
@@ -21,7 +23,7 @@ export const ParsedWorkoutTargetSchema = z.object({
   value: z.union([z.number(), z.string()])
 })
 
-export const ParsedWorkoutStepSchema = z.lazy(() =>
+export const ParsedWorkoutStepSchema: z.ZodType<ParsedWorkoutStep> = z.lazy(() =>
   z.object({
     duration_seconds: z.number().min(0),
     is_ramp: z.boolean().optional(),
