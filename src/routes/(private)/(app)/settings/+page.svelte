@@ -6,7 +6,6 @@
     import SaveIcon from '@lucide/svelte/icons/save'
 
     import { PageHeader } from '$lib/domain/layout/components'
-    import PageScrollarea from '$lib/domain/layout/components/page-scrollarea.svelte'
     import {
         SectionHeartRate,
         SectionNutrition,
@@ -91,7 +90,7 @@
     </Button>
 </PageHeader>
 
-<PageScrollarea>
+<section class="space-y-4">
     <div class="relative mx-auto flex flex-col">
         <div class="sticky top-0 z-10 flex items-center justify-between border-b bg-background px-8 py-4">
             <h2 class="font-semibold">Profile settings</h2>
@@ -123,4 +122,4 @@
             <SectionNutrition bind:maxCarbIntake />
         </div>
     </div>
-</PageScrollarea>
+</section>
