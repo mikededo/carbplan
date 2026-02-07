@@ -3,8 +3,6 @@ import type { CatalogBrand } from '$lib/domain/catalog/queries'
 
 import { ResultAsync } from 'neverthrow'
 import { getContext, setContext } from 'svelte'
-import * as v from 'valibot'
-
 import { createProductMutation, deactivateProductMutation, updateProductMutation, useCatalogQuery } from '$lib/domain/catalog/queries'
 import { generateSlug, ProductSchema } from '$lib/domain/catalog/schemas'
 import { noop } from '$lib/utils'
@@ -97,7 +95,7 @@ export const createProductFormContext = (getter: CreateProductFormContextArgs): 
   let autoSlug = $state(!product)
 
   const validate = () => {
-    const result = v.safeParse(ProductSchema, {
+    const result = ProductSchema.safeParse({
       brandId: state.brandId,
       caffeineGm: parseNumber(state.caffeineMg),
       calories: parseNumber(state.calories),
@@ -117,15 +115,15 @@ export const createProductFormContext = (getter: CreateProductFormContextArgs): 
     })
 
     if (!result.success) {
-      const flatErrors = v.flatten(result.issues)
+      const flatErrors = result.error.flatten()
       errors = Object.fromEntries(
-        Object.entries(flatErrors.nested ?? {}).map(([key, value]) => [key, value?.[0] ?? ''])
+        Object.entries(flatErrors.fieldErrors ?? {}).map(([key, value]) => [key, value?.[0] ?? ''])
       )
       return null
     }
 
     errors = {}
-    return result.output
+    return result.data
   }
 
   const submit = async () => {
