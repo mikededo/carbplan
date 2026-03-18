@@ -2,17 +2,29 @@ import type { ParsedWorkoutDoc, ParsedWorkoutStep, ParsedWorkoutTarget, WorkoutT
 
 import { WorkoutTargetUnitsEnum } from './schemas'
 
-const isGroupHeader = (line: string) => /^(\d+)x\b/i.exec(line.trim())
+const GROUP_HEADER_REGEX = /^(\d+)x\b/i
+const COMPACT_DURATION_REGEX = /^(\d+)m(\d+)$/
+const DURATION_TOKEN_REGEX = /^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/i
+const TARGET_RANGE_REGEX = /(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\s*(w|%|rpm)?/i
+const ZONE_REGEX = /\b(Z[1-7]|SS)\b/i
+const PERCENT_REGEX = /(\d+(?:\.\d+)?)\s*%/
+const WATTS_REGEX = /(\d+(?:\.\d+)?)\s*w\b/i
+const CADENCE_REGEX = /(\d+(?:\.\d+)?)\s*rpm\b/i
+const RAMP_PREFIX_REGEX = /^ramp\b/i
+const WHITESPACE_REGEX = /\s+/
+const LINE_SPLIT_REGEX = /\r?\n/
+
+const isGroupHeader = (line: string) => GROUP_HEADER_REGEX.exec(line.trim())
 
 const parseDurationToken = (token: string) => {
-  const compactMatch = /^(\d+)m(\d+)$/.exec(token)
+  const compactMatch = COMPACT_DURATION_REGEX.exec(token)
   if (compactMatch) {
     const minutes = Number(compactMatch[1])
     const seconds = Number(compactMatch[2])
     return minutes * 60 + seconds
   }
 
-  const match = /^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/i.exec(token)
+  const match = DURATION_TOKEN_REGEX.exec(token)
   if (!match) {
     return null
   }
@@ -41,7 +53,7 @@ const parseTarget = (text: string): ParsedWorkoutTarget | undefined => {
     return undefined
   }
 
-  const rangeMatch = /(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\s*(w|%|rpm)?/i.exec(text)
+  const rangeMatch = TARGET_RANGE_REGEX.exec(text)
   if (rangeMatch) {
     const min = Number(rangeMatch[1])
     const max = Number(rangeMatch[2])
@@ -58,22 +70,22 @@ const parseTarget = (text: string): ParsedWorkoutTarget | undefined => {
     }
   }
 
-  const zoneMatch = /\b(Z[1-7]|SS)\b/i.exec(text)
+  const zoneMatch = ZONE_REGEX.exec(text)
   if (zoneMatch) {
     return { units: WorkoutTargetUnitsEnum.power_zone, value: zoneMatch[1].toUpperCase() }
   }
 
-  const percentMatch = /(\d+(?:\.\d+)?)\s*%/.exec(text)
+  const percentMatch = PERCENT_REGEX.exec(text)
   if (percentMatch) {
     return { units: getPercentUnits(text), value: Number(percentMatch[1]) }
   }
 
-  const wattsMatch = /(\d+(?:\.\d+)?)\s*w\b/i.exec(text)
+  const wattsMatch = WATTS_REGEX.exec(text)
   if (wattsMatch) {
     return { units: WorkoutTargetUnitsEnum.watts, value: Number(wattsMatch[1]) }
   }
 
-  const cadenceMatch = /(\d+(?:\.\d+)?)\s*rpm\b/i.exec(text)
+  const cadenceMatch = CADENCE_REGEX.exec(text)
   if (cadenceMatch) {
     return { units: WorkoutTargetUnitsEnum.cadence_rpm, value: Number(cadenceMatch[1]) }
   }
@@ -92,18 +104,18 @@ const parseStepLine = (line: string, warnings: string[]): null | ParsedWorkoutSt
   }
 
   let isRamp = false
-  if (/^ramp\b/i.test(content)) {
+  if (RAMP_PREFIX_REGEX.test(content)) {
     isRamp = true
-    content = content.replace(/^ramp\b/i, '').trim()
+    content = content.replace(RAMP_PREFIX_REGEX, '').trim()
   }
 
-  const [durationToken] = content.split(/\s+/)
+  const [durationToken] = content.split(WHITESPACE_REGEX)
   const durationSeconds = durationToken ? parseDurationToken(durationToken) : null
   let remainder = durationToken ? content.slice(durationToken.length).trim() : content
 
-  if (/^ramp\b/i.test(remainder)) {
+  if (RAMP_PREFIX_REGEX.test(remainder)) {
     isRamp = true
-    remainder = remainder.replace(/^ramp\b/i, '').trim()
+    remainder = remainder.replace(RAMP_PREFIX_REGEX, '').trim()
   }
 
   if (durationSeconds === null) {
@@ -122,7 +134,7 @@ const sumDuration = (steps: ParsedWorkoutStep[]) =>
   steps.reduce((total, step) => total + step.duration_seconds, 0)
 
 export const parseWorkoutText = (text: string): ParsedWorkoutDoc => {
-  const lines = text.split(/\r?\n/)
+  const lines = text.split(LINE_SPLIT_REGEX)
   const warnings: string[] = []
   const steps: ParsedWorkoutStep[] = []
 

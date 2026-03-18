@@ -2,6 +2,11 @@ import { z } from 'zod'
 
 import { ProductForm, ProductFormValues } from '$lib/database/types.g'
 
+const SLUG_INVALID_CHARS_REGEX = /[^a-z0-9\s-]/g
+const SLUG_WHITESPACE_REGEX = /\s+/g
+const SLUG_DASHES_REGEX = /-+/g
+const SLUG_VALIDATION_REGEX = /^[a-z0-9-]+$/
+
 /**
  * Generates a URL-friendly slug from a string.
  * Converts to lowercase, removes special characters, and replaces spaces with hyphens.
@@ -9,9 +14,9 @@ import { ProductForm, ProductFormValues } from '$lib/database/types.g'
 export const generateSlug = (input: string): string =>
   input
     .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
+    .replace(SLUG_INVALID_CHARS_REGEX, '')
+    .replace(SLUG_WHITESPACE_REGEX, '-')
+    .replace(SLUG_DASHES_REGEX, '-')
     .trim()
 
 export const BrandSchema = z.object({
@@ -27,7 +32,7 @@ export const BrandSchema = z.object({
   slug: z.string()
     .min(1, 'Slug is required')
     .max(100, 'Slug must be at most 100 characters')
-    .regex(/^[a-z0-9-]+$/, 'Slug can only contain lowercase letters, numbers, and hyphens'),
+    .regex(SLUG_VALIDATION_REGEX, 'Slug can only contain lowercase letters, numbers, and hyphens'),
   website: z.string()
     .url('Please enter a valid URL')
     .optional()
@@ -84,7 +89,7 @@ export const ProductSchema = z.object({
   slug: z.string()
     .min(1, 'Slug is required')
     .max(200, 'Slug must be at most 200 characters')
-    .regex(/^[a-z0-9-]+$/, 'Slug can only contain lowercase letters, numbers, and hyphens'),
+    .regex(SLUG_VALIDATION_REGEX, 'Slug can only contain lowercase letters, numbers, and hyphens'),
   sodiumMg: z.number()
     .min(0, 'Sodium must be positive')
     .optional(),
