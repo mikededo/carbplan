@@ -1,7 +1,7 @@
 import antfu from '@antfu/eslint-config'
+import betterTailwindcss from 'eslint-plugin-better-tailwindcss'
 import perfectionist from 'eslint-plugin-perfectionist'
 import svelteSortAttributes from 'eslint-plugin-svelte-sort-attributes'
-import svelteTailwindcss from 'eslint-plugin-svelte-tailwindcss'
 
 export default antfu(
   {
@@ -28,7 +28,6 @@ export default antfu(
     jsonc: true,
     lessOpinionated: true,
     markdown: false,
-    name: 'mikededo/base',
     rules: {
       'arrow-body-style': ['error', 'as-needed'],
       'func-style': ['error', 'expression', { allowArrowFunctions: true }]
@@ -76,26 +75,15 @@ export default antfu(
           }
         ]
       }
-    },
-    vue: false,
-    yaml: false
+    }
   },
   {
     files: ['**/*.d.ts'],
-    name: 'mikededo/typescript',
     rules: { 'ts/consistent-type-definitions': ['off'] }
   },
   {
-    files: ['**/*.html'],
-    name: 'mikededo/html',
-    rules: { 'style/indent': ['error', 4] }
-  },
-  {
-    name: 'mikededo/svelte',
-    plugins: {
-      'svelte-sort-attributes': svelteSortAttributes,
-      'svelte-tailwindcss': svelteTailwindcss
-    },
+    files: ['./src/**/*.svelte'],
+    plugins: { 'svelte-sort-attributes': svelteSortAttributes },
     rules: {
       'svelte-sort-attributes/sort-attributes': [
         'error',
@@ -127,15 +115,33 @@ export default antfu(
           order: 'asc',
           type: 'alphabetical'
         }
-      ],
-      'svelte-tailwindcss/sort-classes': [
-        'error',
-        {
-          callees: ['tv'],
-          config: './src/routes/root.css',
-          removeDuplicates: true
-        }
       ]
+    }
+  },
+  {
+    files: ['./src/**/*.svelte'],
+    rules: {
+      'style/indent-binary-ops': ['error', 4],
+      'svelte/html-closing-bracket-new-line': ['error'],
+      'svelte/html-quotes': ['error', { prefer: 'double' }],
+      'svelte/indent': ['error', { indent: 4 }],
+      'svelte/max-attributes-per-line': [
+        'error',
+        { multiline: 1, singleline: 3 }
+      ],
+      'svelte/no-inspect': ['error']
+    }
+  },
+  {
+    ...betterTailwindcss.configs['stylistic-error'],
+    rules: {
+      'better-tailwindcss/enforce-consistent-line-wrapping': 'off'
+    },
+    settings: {
+      'better-tailwindcss': {
+        callees: ['tv'],
+        entryPoint: './src/app.css'
+      }
     }
   }
 )
@@ -195,16 +201,16 @@ export default antfu(
           environment: 'bun',
           groups: [
             'style',
-            'type-import',
+            ['type-builtin', 'type-external'],
             'type-internal',
             ['type-parent', 'type-sibling', 'type-index'],
-            ['value-builtin', 'value-external'],
-            'value-internal',
-            ['value-parent', 'value-sibling', 'value-index'],
+            ['builtin', 'external'],
+            'internal',
+            ['parent', 'sibling', 'index'],
             'unknown'
           ],
           ignoreCase: true,
-          internalPattern: ['\\$[^\\/]+\\/[^\\/]+'],
+          internalPattern: ['^\\$[^/]+(?:/.*)?$'],
           maxLineLength: undefined,
           newlinesBetween: 1,
           order: 'asc',
@@ -212,19 +218,7 @@ export default antfu(
         }
       ],
       'perfectionist/sort-modules': 'off',
-      'perfectionist/sort-object-types': [
-        'error',
-        {
-          customGroups: [
-            { elementNamePattern: '^on', groupName: 'callbacks' }
-          ],
-          groups: ['required-member', 'optional-member', 'callbacks', 'multiline-member'],
-          ignoreCase: true,
-          order: 'asc',
-          partitionByNewLine: true,
-          type: 'alphabetical'
-        }
-      ],
+      'perfectionist/sort-object-types': 'off',
       'perfectionist/sort-objects': [
         'error',
         {

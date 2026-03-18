@@ -54,7 +54,7 @@ The repository follows a domain driven architecture. Each domain is stored under
 
 If there's anything that's shared within the app, that's not a UI component, it should exist under the `global` domain. Domains can also be really small/modular.
 
-## 
+##
 
 ## Code Style and Conventions
 
@@ -78,7 +78,7 @@ We should aim for a modular/atomic approach, minimizing shared logic, ensuring s
 - Use `vitest` for unit tests
 - Unit test should reside next to the file being tested with the same name but with `.test.ts` suffix
 - Fix any test until the whole suite is green
-- Keep tests focused and small. 
+- Keep tests focused and small.
 - Avoid duplicating code within the tests
 
 ### Svelte 5
@@ -91,7 +91,7 @@ We should aim for a modular/atomic approach, minimizing shared logic, ensuring s
 ### Props Pattern
 ```svelte
 <script lang="ts">
-    type Props = { propA: string; propB?: number }
+    type Props = { propA: string, propB?: number }
     const { propA, propB }: Props = $props()
 </script>
 ```
@@ -136,16 +136,19 @@ Use `queryOptions` for type-safe queries:
 
 ```ts
 import { queryOptions } from '@tanstack/svelte-query'
+
 import { queryKeys } from '$lib/domain/query/keys'
 
 export const getAthleteOptions = (supabase: Client) =>
   queryOptions({
-    queryKey: queryKeys.athlete.current(),
     queryFn: async () => {
       const { data, error } = await supabase.from('table').select('*').single()
-      if (error) throw error
+      if (error) {
+        throw error
+      }
       return data
-    }
+    },
+    queryKey: queryKeys.athlete.current()
   })
 ```
 
@@ -153,6 +156,7 @@ export const getAthleteOptions = (supabase: Client) =>
 
 ```ts
 import { createQuery } from '@tanstack/svelte-query'
+
 import { getAthleteOptions } from './athlete'
 
 export const useAthleteQuery = () => {
@@ -169,12 +173,13 @@ export const useAthleteQuery = () => {
 
 ```ts
 import { createMutation, useQueryClient } from '@tanstack/svelte-query'
+
 import { athleteOptions } from './athlete'
 
 export const createAthleteMutation = (athleteId?: string) => {
   const queryClient = useQueryClient()
   const supabaseResult = getSupabaseClient()
-  
+
   if (supabaseResult.isErr()) {
     return null
   }
@@ -184,19 +189,21 @@ export const createAthleteMutation = (athleteId?: string) => {
   return createMutation({
     mutationFn: async (input) => {
       const { data, error } = await supabase.from('table').update(input).eq('id', athleteId).select().single()
-      if (error) throw error
+      if (error) {
+        throw error
+      }
       return data
+    },
+    onError: (_, __, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(options.queryKey, context.previous)
+      }
     },
     onMutate: async (input) => {
       await queryClient.cancelQueries({ queryKey: options.queryKey })
       const previous = queryClient.getQueryData(options.queryKey)
       queryClient.setQueryData(options.queryKey, (old) => ({ ...old, ...input }))
       return { previous }
-    },
-    onError: (_, __, context) => {
-      if (context?.previous) {
-        queryClient.setQueryData(options.queryKey, context.previous)
-      }
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: options.queryKey })
@@ -236,16 +243,16 @@ export const actions = {
   default: async ({ locals: { supabase }, request }) => {
     const formData = await request.formData()
     const result = Schema.safeParse({ ... })
-    
+
     if (!result.success) {
       return fail(400, { errors: result.error.flatten(), values: { ... } })
     }
-    
+
     const { error } = await supabase...
     if (error) {
       return fail(400, { message: error.message })
     }
-    
+
     redirect(303, ROUTES.destination)
   }
 } satisfies Actions
@@ -256,9 +263,9 @@ export const actions = {
 <script lang="ts" module>
     import type { WithElementRef } from '$lib/utils.js'
     import { tv } from 'tailwind-variants'
-    
+
     import { cn } from '$lib/utils.js'
-    
+
     export const variants = tv({ ... })
     export type Props = { variant?: ... } & WithElementRef<HTMLButtonAttributes>
 </script>
