@@ -1,0 +1,104 @@
+{
+	"/(public)": [
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/(private)/(app)/(admin)": [
+		"src/routes/(private)/(app)/(admin)/+layout.server.ts",
+		"src/routes/(private)/(app)/+layout.ts",
+		"src/routes/(private)/+layout.ts",
+		"src/routes/(private)/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/(private)/(app)": [
+		"src/routes/(private)/(app)/+layout.ts",
+		"src/routes/(private)/+layout.ts",
+		"src/routes/(private)/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/(private)": [
+		"src/routes/(private)/+layout.ts",
+		"src/routes/(private)/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/(marketing)": [
+		"src/routes/(marketing)/+layout.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts",
+		"src/routes/(marketing)/+layout.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/": [
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/api/workouts/parse": [
+		"src/routes/api/workouts/parse/+server.ts"
+	],
+	"/(public)/auth/log-in": [
+		"src/routes/(public)/auth/log-in/+page.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/(public)/auth/sign-up": [
+		"src/routes/(public)/auth/sign-up/+page.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/(private)/(app)/dashboard": [
+		"src/routes/(private)/(app)/dashboard/+page.ts",
+		"src/routes/(private)/(app)/+layout.ts",
+		"src/routes/(private)/+layout.ts",
+		"src/routes/(private)/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/(private)/onboarding": [
+		"src/routes/(private)/onboarding/+page.server.ts",
+		"src/routes/(private)/+layout.ts",
+		"src/routes/(private)/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/(private)/(app)/plans": [
+		"src/routes/(private)/(app)/+layout.ts",
+		"src/routes/(private)/+layout.ts",
+		"src/routes/(private)/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/(private)/(app)/plans/new": [
+		"src/routes/(private)/(app)/+layout.ts",
+		"src/routes/(private)/+layout.ts",
+		"src/routes/(private)/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/(private)/(app)/plans/[id]": [
+		"src/routes/(private)/(app)/+layout.ts",
+		"src/routes/(private)/+layout.ts",
+		"src/routes/(private)/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/(private)/(app)/settings": [
+		"src/routes/(private)/(app)/+layout.ts",
+		"src/routes/(private)/+layout.ts",
+		"src/routes/(private)/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/(private)/(app)/(admin)/supplements": [
+		"src/routes/(private)/(app)/(admin)/supplements/+page.ts",
+		"src/routes/(private)/(app)/(admin)/+layout.server.ts",
+		"src/routes/(private)/(app)/+layout.ts",
+		"src/routes/(private)/+layout.ts",
+		"src/routes/(private)/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	]
+}

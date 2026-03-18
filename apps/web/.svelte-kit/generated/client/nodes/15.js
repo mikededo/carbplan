@@ -1,0 +1,1 @@
+export { default as component } from "../../../../src/routes/(public)/auth/log-in/+page.svelte";
