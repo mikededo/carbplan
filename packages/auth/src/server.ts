@@ -1,6 +1,5 @@
-import type { Auth, BetterAuthOptions } from 'better-auth'
-
 import type { Db } from '@carbplan/db'
+import type { BetterAuthOptions } from 'better-auth'
 
 import { drizzleAdapter } from '@better-auth/drizzle-adapter'
 import { schema } from '@carbplan/db'
