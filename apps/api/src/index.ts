@@ -1,7 +1,11 @@
-import { Elysia } from "elysia";
+import { createAppFromEnv } from '$bootstrap/app'
 
-const app = new Elysia().get("/", () => "Hello Elysia").listen(3000);
+export { createApp } from '$bootstrap/app'
+export type { AppServices, PublicServices } from '$bootstrap/services'
 
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
+if (import.meta.main) {
+  const { app, runtimeConfig } = createAppFromEnv()
+  const server = app.listen(runtimeConfig.port)
+
+  console.warn(`API listening at http://${server.server?.hostname}:${server.server?.port}`)
+}
