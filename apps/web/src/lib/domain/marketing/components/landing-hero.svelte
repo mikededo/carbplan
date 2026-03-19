@@ -33,7 +33,7 @@
                 </div>
 
                 <p
-                    class="text-lg leading-relaxed text-muted-foreground transition-all delay-100 duration-700"
+                    class="text-lg/relaxed text-muted-foreground transition-all delay-100 duration-700"
                     style={entryStyles(inView.isInView)}
                 >
                     CarbPlan helps you create detailed nutrition strategies before every workout. Calculate

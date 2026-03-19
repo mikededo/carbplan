@@ -52,7 +52,7 @@
             bind:value={table.globalFilter}
             placeholder="Search products..."
         />
-        <KbdGroup class="absolute end-2 top-2 gap-1">
+        <KbdGroup class="absolute inset-e-2 top-2 gap-1">
             <Kbd>⌘</Kbd>
             <Kbd>L</Kbd>
         </KbdGroup>

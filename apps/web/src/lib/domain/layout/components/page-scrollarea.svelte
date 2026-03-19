@@ -5,7 +5,7 @@
     const { children }: Props = $props()
 </script>
 
-<div class="@container/page-content h-[calc(100dvh-calc(var(--spacing)*16))] w-full overflow-y-auto">
+<div class="@container/page-content h-[calc(100dvh---spacing(16))] w-full overflow-y-auto">
     <div class="flex flex-col gap-6 p-6">
         {@render children()}
     </div>

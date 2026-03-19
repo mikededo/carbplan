@@ -93,7 +93,7 @@
                     ></div>
                     {#each [25, 50, 75] as pos (pos)}
                         <div
-                            class="absolute top-0 bottom-0 w-0.5 bg-background/50"
+                            class="absolute inset-y-0 w-0.5 bg-background/50"
                             style="left: {pos}%;"
                         ></div>
                     {/each}

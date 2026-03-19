@@ -91,7 +91,7 @@
                     <p class="text-3xl font-bold tabular-nums">{animatedPower}W</p>
                     <div class="h-2 overflow-hidden rounded-full bg-muted">
                         <div
-                            class="h-full rounded-full bg-gradient-to-r from-blue-500 via-green-500 to-yellow-500 transition-all duration-500"
+                            class="h-full rounded-full bg-linear-to-r from-blue-500 via-green-500 to-yellow-500 transition-all duration-500"
                             style="width: {isVisible ? `${(animatedPower / 300) * 100}%` : '0%'};"
                         ></div>
                     </div>

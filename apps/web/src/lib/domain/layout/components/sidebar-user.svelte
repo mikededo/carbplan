@@ -45,7 +45,7 @@
                             <Avatar.Image alt={athlete?.full_name ?? 'Avatar'} src={athlete?.avatar_url} />
                             <Avatar.Fallback class="rounded-lg">{initials}</Avatar.Fallback>
                         </Avatar.Root>
-                        <div class="grid flex-1 text-start text-sm leading-tight">
+                        <div class="grid flex-1 text-start text-sm/tight">
                             <span class="truncate font-medium">{athlete?.full_name ?? 'User'}</span>
                         </div>
                         <ChevronsUpDownIcon class="ms-auto size-4" />
