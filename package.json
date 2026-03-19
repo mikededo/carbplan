@@ -15,8 +15,13 @@
     "preview": "turbo run preview",
     "test": "turbo run test"
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ],
+    "catalog": {
+      "eslint": "10.0.3"
+    }
+  }
 }
