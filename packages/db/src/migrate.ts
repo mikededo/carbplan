@@ -1,5 +1,5 @@
-import process from 'node:process'
 import { migrate } from 'drizzle-orm/postgres-js/migrator'
+import process from 'node:process'
 
 import { createDb } from './db'
 
