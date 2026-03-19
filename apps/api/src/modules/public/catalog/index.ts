@@ -28,10 +28,8 @@ export type PublicCatalogModuleOptions = {
   service: PublicCatalogService
 }
 
-export const publicCatalogModule = ({ limiter, service }: PublicCatalogModuleOptions) =>
-  new Elysia({
-    name: 'public-catalog'
-  }).get('/catalog', async ({ request, server, set, status }) => {
+export const publicCatalogModule = ({ limiter, service }: PublicCatalogModuleOptions) => new Elysia({ name: 'public-catalog' })
+  .get('/catalog', async ({ request, server, set, status }) => {
     const clientKey = resolveRateLimitClientKey(request, server)
     const isAllowed = limiter.consume({
       clientKey,

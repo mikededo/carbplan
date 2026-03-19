@@ -8,6 +8,7 @@ import { loadRuntimeConfig } from '$bootstrap/config'
 import { createInfra } from '$bootstrap/infra'
 import { createLoggerModule } from '$bootstrap/logger'
 import { createServices } from '$bootstrap/services'
+import { authModule } from '$modules/auth'
 import { publicModule } from '$modules/public'
 import { ApiErrorModel } from '$modules/public/model'
 
@@ -72,13 +73,18 @@ export const createApp = ({ corsOrigins, services }: CreateAppOptions) =>
         requestId
       }
     })
-    .use(publicModule({
-      services: services.public
-    }))
+    .use(authModule({ auth: services.auth }))
+    .use(publicModule({ services: services.public }))
 
 export const createAppFromEnv = () => {
   const runtimeConfig = loadRuntimeConfig()
-  const infra = createInfra({ databaseUrl: runtimeConfig.databaseUrl })
+  const infra = createInfra({
+    authBasePath: '/auth',
+    authBaseUrl: runtimeConfig.authBaseUrl,
+    authSecret: runtimeConfig.authSecret,
+    authTrustedOrigins: runtimeConfig.authTrustedOrigins,
+    databaseUrl: runtimeConfig.databaseUrl
+  })
   const services = createServices(infra)
 
   const app = createApp({

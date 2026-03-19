@@ -2,8 +2,8 @@ import type { PublicCatalogService } from './catalog/service'
 
 import { Elysia } from 'elysia'
 
-import { publicCatalogModule } from './catalog'
-import { createEndpointRateLimiter } from './utils/rate-limit'
+import { publicCatalogModule } from '$modules/public/catalog'
+import { createEndpointRateLimiter } from '$modules/public/utils/rate-limit'
 
 export type PublicModuleOptions = {
   services: {
@@ -15,7 +15,5 @@ export const publicModule = ({ services }: PublicModuleOptions) => {
   const limiter = createEndpointRateLimiter()
 
   return new Elysia({ name: 'public', prefix: '/v1/public' })
-    .use(
-      publicCatalogModule({ limiter, service: services.catalog })
-    )
+    .use(publicCatalogModule({ limiter, service: services.catalog }))
 }
