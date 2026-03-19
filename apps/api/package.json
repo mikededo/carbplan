@@ -7,7 +7,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "bun test",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "ENVIRONTMENT=development bun run --watch src/index.ts"
   },
   "dependencies": {
     "@carbplan/db": "workspace:*",
@@ -20,6 +20,7 @@
   "devDependencies": {
     "@carbplan/eslint": "workspace:*",
     "bun-types": "1.3.11",
-    "eslint": "10.0.3"
+    "eslint": "10.0.3",
+    "logixlysia": "^6.2.2"
   }
 }

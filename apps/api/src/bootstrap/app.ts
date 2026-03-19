@@ -6,6 +6,7 @@ import { Elysia, StatusMap } from 'elysia'
 
 import { loadRuntimeConfig } from '$bootstrap/config'
 import { createInfra } from '$bootstrap/infra'
+import { createLoggerModule } from '$bootstrap/logger'
 import { createServices } from '$bootstrap/services'
 import { publicModule } from '$modules/public'
 import { ApiErrorModel } from '$modules/public/model'
@@ -21,6 +22,7 @@ const normalizeStatus = (status: number): number => status >= StatusMap['Bad Req
 export const createApp = ({ corsOrigins, services }: CreateAppOptions) =>
   new Elysia({ name: 'carbplan-api' })
     .model({ ApiError: ApiErrorModel })
+    .use(createLoggerModule())
     .use(cors({
       allowedHeaders: ['Content-Type', 'If-None-Match', 'X-Request-Id'],
       credentials: false,
