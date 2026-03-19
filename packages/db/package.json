@@ -26,8 +26,8 @@
   "devDependencies": {
     "@carbplan/eslint": "workspace:*",
     "@types/bun": "1.3.11",
-    "eslint": "catalog:",
     "drizzle-kit": "0.31.10",
+    "eslint": "catalog:",
     "typescript": "5.9.3"
   }
 }
