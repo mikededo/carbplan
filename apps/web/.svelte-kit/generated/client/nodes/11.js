@@ -1,1 +1,0 @@
-export { default as component } from "../../../../src/routes/(private)/(app)/plans/[id]/+page.svelte";

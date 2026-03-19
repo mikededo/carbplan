@@ -1,3 +1,0 @@
-import * as universal from "../../../../src/routes/(private)/+layout.ts";
-export { universal };
-export { default as component } from "../../../../../../node_modules/.bun/@sveltejs+kit@2.55.0+9bfc1f7c29254879/node_modules/@sveltejs/kit/src/runtime/components/svelte-5/layout.svelte";
