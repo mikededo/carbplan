@@ -1,0 +1,28 @@
+{
+  "name": "@carbplan/eslint",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.js",
+    "./base": "./src/presets/base.js",
+    "./svelte": "./src/presets/svelte.js",
+    "./tailwind": "./src/presets/tailwind.js"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "7.7.3",
+    "eslint": "10.0.3",
+    "eslint-plugin-better-tailwindcss": "4.3.2",
+    "eslint-plugin-format": "2.0.1",
+    "eslint-plugin-import": "2.32.0",
+    "eslint-plugin-perfectionist": "5.7.0",
+    "eslint-plugin-svelte": "3.15.2",
+    "eslint-plugin-svelte-sort-attributes": "^2.0.0",
+    "svelte-eslint-parser": "1.6.0",
+    "typescript-eslint": "8.57.1"
+  }
+}
