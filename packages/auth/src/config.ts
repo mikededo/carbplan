@@ -12,10 +12,8 @@ export type LoadAuthConfigOptions = {
   fallbackTrustedOrigins?: string[]
 }
 
-const normalizeURL = (raw: string) => {
-  const url = new URL(raw)
-  return url.toString().replace(/\/$/, '')
-}
+const NORMALIZE_URL_MATCH = /\/$/
+const normalizeURL = (raw: string) => new URL(raw).toString().replace(NORMALIZE_URL_MATCH, '')
 
 const parseOrigins = (value?: string) => (value ?? '')
   .split(',')
