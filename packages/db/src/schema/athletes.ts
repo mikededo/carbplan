@@ -1,3 +1,4 @@
+import { SEX_VALUES } from '@carbplan/domain/profile'
 import { sql } from 'drizzle-orm'
 import {
   boolean,
@@ -16,7 +17,7 @@ import {
 
 import { users } from './auth'
 
-export const sexEnum = pgEnum('sex', ['male', 'female'])
+export const sexEnum = pgEnum('sex', [...SEX_VALUES] as [string, ...string[]])
 
 export const athletes = pgTable('athletes', {
   avatarUrl: text('avatar_url'),
