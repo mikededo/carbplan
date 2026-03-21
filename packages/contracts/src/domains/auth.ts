@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { ApiSuccessSchema } from '../api'
+import { ApiSuccessSchema } from '$lib/api'
 
 export const LogInRequestSchema = z.object({
   email: z.email(),
