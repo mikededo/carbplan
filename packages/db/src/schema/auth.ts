@@ -1,9 +1,17 @@
-import { index, pgTable, text, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core'
+import {
+  boolean,
+  index,
+  pgTable,
+  text,
+  timestamp,
+  uniqueIndex,
+  uuid
+} from 'drizzle-orm/pg-core'
 
 export const users = pgTable('user', {
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   email: text('email').notNull(),
-  emailVerified: timestamp('email_verified', { withTimezone: true }),
+  emailVerified: boolean('email_verified').default(false).notNull(),
   id: uuid('id').defaultRandom().primaryKey(),
   image: text('image'),
   name: text('name'),

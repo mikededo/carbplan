@@ -8,6 +8,13 @@
       "when": 1773913869616,
       "tag": "0000_lame_brother_voodoo",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1774083894777,
+      "tag": "0001_narrow_red_ghost",
+      "breakpoints": true
     }
   ]
 }
