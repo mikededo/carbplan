@@ -1,3 +1,5 @@
+import { normalizeURL } from '@carbplan/utils/url'
+
 export type AuthConfig = {
   baseURL: string
   secret: string
@@ -11,9 +13,6 @@ export type LoadAuthConfigOptions = {
   fallbackBaseUrl?: string
   fallbackTrustedOrigins?: string[]
 }
-
-const NORMALIZE_URL_MATCH = /\/$/
-const normalizeURL = (raw: string) => new URL(raw).toString().replace(NORMALIZE_URL_MATCH, '')
 
 const parseOrigins = (value?: string) => (value ?? '')
   .split(',')

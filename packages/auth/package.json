@@ -16,6 +16,7 @@
   "dependencies": {
     "@better-auth/drizzle-adapter": "^1.5.5",
     "@carbplan/db": "workspace:*",
+    "@carbplan/utils": "workspace:*",
     "better-auth": "^1.5.5",
     "drizzle-orm": "0.45.1"
   },
