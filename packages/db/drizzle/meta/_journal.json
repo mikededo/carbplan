@@ -15,6 +15,13 @@
       "when": 1774083894777,
       "tag": "0001_narrow_red_ghost",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1774198713777,
+      "tag": "0002_wet_reavers",
+      "breakpoints": true
     }
   ]
 }

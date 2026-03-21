@@ -32,6 +32,7 @@ export const athletes = pgTable('athletes', {
   id: uuid('id').primaryKey().references(() => users.id, { onDelete: 'cascade' }),
   isAdmin: boolean('is_admin').default(false).notNull(),
   maxCarbIntakeGPerHr: integer('max_carb_intake_g_per_hr'),
+  onboardingCompleted: boolean('onboarding_completed').default(false).notNull(),
   powerZones: jsonb('power_zones'),
   sex: sexEnum('sex'),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
