@@ -1,7 +1,7 @@
 import { brands, products } from '@carbplan/db'
 import { t } from 'elysia'
 
-import { createSelectModel } from '$modules/public/catalog/schema'
+import { createSelectModel } from '$utils/schema'
 
 const BrandSelectModel = createSelectModel(brands)
 const ProductSelectModel = createSelectModel(products)

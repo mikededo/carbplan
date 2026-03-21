@@ -5,11 +5,22 @@
     "module": "ES2022",
     "moduleResolution": "bundler",
     "paths": {
-      "$bootstrap/*": ["./src/bootstrap/*"],
-      "$modules": ["./src/modules"],
-      "$modules/*": ["./src/modules/*"]
+      "$bootstrap/*": [
+        "./src/bootstrap/*"
+      ],
+      "$modules": [
+        "./src/modules"
+      ],
+      "$modules/*": [
+        "./src/modules/*"
+      ],
+      "$utils/*": [
+        "./src/utils/*"
+      ]
     },
-    "types": ["bun-types"],
+    "types": [
+      "bun-types"
+    ],
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
