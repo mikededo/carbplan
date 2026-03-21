@@ -8,20 +8,20 @@ type AuthModuleOptions = {
   auth: AuthServer
 }
 
-export const authModule = async ({ auth }: AuthModuleOptions) => new Elysia({
+export const authModule = ({ auth }: AuthModuleOptions) => new Elysia({
   name: 'auth-module',
   prefix: '/v1'
 }).mount(auth.handler).macro({
   auth: {
     async resolve({ request: { headers }, status }) {
-      const session = await auth.api.getSession({ headers })
-      if (!session) {
+      const authSession = await auth.api.getSession({ headers })
+      if (!authSession) {
         return status(StatusMap.Unauthorized, apiErrorFactory.unauthorized())
       }
 
       return {
-        session: session.session,
-        user: session.user
+        session: authSession.session,
+        user: authSession.user
       }
     }
   }
