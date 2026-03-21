@@ -5,7 +5,7 @@
   "private": true,
   "exports": {
     "./api": "./src/api.ts",
-    "./domains/*": "./src/domains/*.ts"
+    "./*": "./src/domains/*.ts"
   },
   "scripts": {
     "build": "echo 'No build step for @carbplan/contracts'",

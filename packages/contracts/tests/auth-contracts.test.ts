@@ -3,14 +3,14 @@ import { describe, expect, it } from 'bun:test'
 import { ApiErrorSchema } from '../src/api'
 import {
   GetSessionResponseSchema,
-  SignInRequestSchema,
+  LogInRequestSchema,
   SignOutResponseSchema,
   SignUpRequestSchema
 } from '../src/domains/auth'
 
 describe('auth contracts', () => {
   it('validates sign-in request', () => {
-    const result = SignInRequestSchema.safeParse({
+    const result = LogInRequestSchema.safeParse({
       email: 'athlete@carbplan.app',
       password: 'secret'
     })
