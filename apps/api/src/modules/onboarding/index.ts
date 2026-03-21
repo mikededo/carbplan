@@ -3,11 +3,18 @@ import type { AuthServer } from '@carbplan/auth'
 import type { OnboardingService } from '$modules/onboarding/service'
 
 import * as OnboardingContracts from '@carbplan/contracts/onboarding'
-import { Elysia, status, StatusMap } from 'elysia'
+import { Elysia } from 'elysia'
 
 import { getMeAthletesPath } from '$modules/athletes/routes'
 import { authModule } from '$modules/auth'
-import { apiErrorFactory, ForbiddenErrorModel, InternalServerErrorModel, UnauthorizedErrorModel } from '$modules/public/model'
+import {
+  apiErrorFactory,
+  BadRequestErrorModel,
+  ForbiddenErrorModel,
+  InternalServerErrorModel,
+  UnauthorizedErrorModel
+} from '$modules/public/model'
+import { StatusMap } from '$utils/codes'
 
 export type OnboardingModuleOptions = {
   auth: AuthServer
@@ -18,10 +25,10 @@ export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => 
   .use(authModule({ auth }))
   .post(
     getMeAthletesPath('/onboarding'),
-    async ({ request, user }) => {
+    async ({ request, status, user }) => {
       const parsed = OnboardingContracts.OnboardingRequestSchema.safeParse(await request.json())
       if (parsed.error) {
-        return status(StatusMap['Bad Request'], apiErrorFactory.badRequest())
+        return status(StatusMap.BadRequest, apiErrorFactory.badRequest())
       }
 
       const result = await service.saveAthleteOnboarding({
@@ -30,10 +37,10 @@ export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => 
       })
 
       if (result.isErr()) {
-        return status(StatusMap['Internal Server Error'], apiErrorFactory.internal())
+        return status(StatusMap.InternalServerError, apiErrorFactory.internal())
       }
 
-      return status(StatusMap['No Content'])
+      return status(StatusMap.NoContent, null)
     },
     {
       auth: true,
@@ -44,10 +51,11 @@ export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => 
         tags: ['Athletes']
       },
       response: {
-        204: OnboardingContracts.OnboardingResponseSchema,
-        401: ForbiddenErrorModel,
-        403: UnauthorizedErrorModel,
-        500: InternalServerErrorModel
+        [StatusMap.BadRequest]: BadRequestErrorModel,
+        [StatusMap.Forbidden]: ForbiddenErrorModel,
+        [StatusMap.InternalServerError]: InternalServerErrorModel,
+        [StatusMap.NoContent]: OnboardingContracts.OnboardingResponseSchema,
+        [StatusMap.Unauthorized]: UnauthorizedErrorModel
       }
     }
   )

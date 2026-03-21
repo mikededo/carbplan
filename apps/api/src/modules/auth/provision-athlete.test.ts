@@ -63,7 +63,7 @@ describe('athlete provisioning', () => {
 
     const db = { insert } as any
 
-    await expect(upsertAthleteForUser(db, {
+    expect(await upsertAthleteForUser(db, {
       email: 'athlete@carbplan.app',
       id: 'f8dbd028-c4ed-4e10-8142-a5c4bd8af83d'
     })).rejects.toThrow('db failed')

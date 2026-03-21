@@ -2,7 +2,7 @@ import type { AppServices } from '$bootstrap/services'
 
 import { cors } from '@elysiajs/cors'
 import { openapi } from '@elysiajs/openapi'
-import { Elysia, StatusMap } from 'elysia'
+import { Elysia } from 'elysia'
 import z from 'zod'
 
 import { loadRuntimeConfig } from '$bootstrap/config'
@@ -13,7 +13,8 @@ import { authModule } from '$modules/auth'
 import { OpenAPI } from '$modules/auth/openapi'
 import { onboardingModule } from '$modules/onboarding'
 import { publicModule } from '$modules/public'
-import { ApiErrorModel } from '$modules/public/model'
+import { apiErrorFactory, ApiErrorModel } from '$modules/public/model'
+import { StatusMap } from '$utils/codes'
 
 type CreateAppOptions = {
   corsOrigins: string[]
@@ -21,7 +22,7 @@ type CreateAppOptions = {
   services: AppServices
 }
 
-const normalizeStatus = (status: number): number => status >= StatusMap['Bad Request'] ? status : StatusMap['Internal Server Error']
+const normalizeStatus = (status: number): number => status >= StatusMap.BadRequest ? status : StatusMap.InternalServerError
 
 export const createApp = async ({ corsOrigins, services }: CreateAppOptions) =>
   new Elysia({ name: 'carbplan-api', prefix: '/api' })
@@ -52,36 +53,20 @@ export const createApp = async ({ corsOrigins, services }: CreateAppOptions) =>
       },
       specPath: '/openapi'
     }))
-    .onError(({ code, request, set }) => {
+    .onError(({ code, request, set, status }) => {
       const requestId = request.headers.get('x-request-id') ?? crypto.randomUUID()
       set.headers['x-request-id'] = requestId
 
       if (code === 'NOT_FOUND') {
-        set.status = StatusMap['Not Found']
-        return {
-          code: 'NOT_FOUND',
-          message: 'Route not found',
-          requestId
-        }
+        return status(StatusMap.NotFound, apiErrorFactory.notFound({ requestId }))
       }
 
       if (code === 'VALIDATION') {
-        set.status = StatusMap['Bad Request']
-        return {
-          code: 'VALIDATION_ERROR',
-          message: 'Request validation failed',
-          requestId
-        }
+        return status(StatusMap.BadRequest, apiErrorFactory.validation({ requestId }))
       }
 
-      const currentStatus = typeof set.status === 'number' ? set.status : StatusMap['Internal Server Error']
-      set.status = normalizeStatus(currentStatus)
-
-      return {
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'Internal server error',
-        requestId
-      }
+      const currentStatus = normalizeStatus(typeof set.status === 'number' ? set.status : StatusMap.InternalServerError)
+      return status(currentStatus, apiErrorFactory.internal({ requestId }))
     })
     .use(authModule({ auth: services.auth }))
     .use(publicModule({ services: services.public }))

@@ -5,9 +5,10 @@ import type { EndpointRateLimiter, EndpointRateLimitPolicy } from '$modules/publ
 import { Elysia, t } from 'elysia'
 
 import { CatalogResponseModel } from '$modules/public/catalog/model'
-import { apiErrorFactory, ApiErrorModel } from '$modules/public/model'
+import { apiErrorFactory, InternalServerErrorModel, PreconditionFailedErrorModel } from '$modules/public/model'
 import { applyEndpointHeaders } from '$modules/public/utils/headers'
 import { resolveRateLimitClientKey } from '$modules/public/utils/rate-limit'
+import { StatusMap } from '$utils/codes'
 
 const CATALOG_ENDPOINT_KEY = 'catalog'
 
@@ -38,7 +39,7 @@ export const publicCatalogModule = ({ limiter, service }: PublicCatalogModuleOpt
     })
 
     if (!isAllowed) {
-      return status(429, apiErrorFactory.tooManyRequests())
+      return status(StatusMap.PreconditionFailed, apiErrorFactory.preconditionFailed())
     }
 
     const catalog = await service.getCatalog()
@@ -51,8 +52,7 @@ export const publicCatalogModule = ({ limiter, service }: PublicCatalogModuleOpt
     })
 
     if (notModified) {
-      set.status = 304
-      return null
+      return status(StatusMap.NotModified, undefined)
     }
 
     return catalog
@@ -62,9 +62,9 @@ export const publicCatalogModule = ({ limiter, service }: PublicCatalogModuleOpt
       tags: ['Public Catalog']
     },
     response: {
-      200: CatalogResponseModel,
-      304: t.Null(),
-      429: ApiErrorModel,
-      500: ApiErrorModel
+      [StatusMap.InternalServerError]: InternalServerErrorModel,
+      [StatusMap.NotModified]: t.Void(),
+      [StatusMap.OK]: CatalogResponseModel,
+      [StatusMap.PreconditionFailed]: PreconditionFailedErrorModel
     }
   })

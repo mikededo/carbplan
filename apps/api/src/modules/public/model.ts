@@ -7,6 +7,7 @@ export enum ApiErrorCode {
   Gone = 'GONE',
   Internal = 'INTERNAL_SERVER_ERROR',
   NotFound = 'NOT_FOUND',
+  PreconditionFailed = 'PRECONDITION_FAILED',
   ServiceUnavailable = 'SERVICE_UNAVAILABLE',
   TooManyRequests = 'TOO_MANY_REQUESTS',
   Unauthorized = 'UNAUTHORIZED',
@@ -82,6 +83,12 @@ export const InternalServerErrorModel = t.Object({
   requestId: t.Optional(t.String())
 }, { description: 'Internal server error. An unexpected error occurred on the server.' })
 
+export const PreconditionFailedErrorModel = t.Object({
+  code: t.Literal(ApiErrorCode.PreconditionFailed),
+  message: t.String(),
+  requestId: t.Optional(t.String())
+}, { description: 'Precondition failed. The request does not meet one of the preconditions that the requester put on the request.' })
+
 export const ApiErrorModel = t.Union([
   BadRequestErrorModel,
   ConflictErrorModel,
@@ -93,7 +100,8 @@ export const ApiErrorModel = t.Union([
   TooManyRequestsErrorModel,
   UnauthorizedErrorModel,
   UnprocessableEntityErrorModel,
-  ValidationErrorModel
+  ValidationErrorModel,
+  PreconditionFailedErrorModel
 ])
 
 export type BadRequestError = typeof BadRequestErrorModel.static
@@ -107,62 +115,72 @@ export type TooManyRequestsError = typeof TooManyRequestsErrorModel.static
 export type UnprocessableEntityError = typeof UnprocessableEntityErrorModel.static
 export type ServiceUnavailableError = typeof ServiceUnavailableErrorModel.static
 export type InternalServerError = typeof InternalServerErrorModel.static
+export type PreconditionFailedError = typeof PreconditionFailedErrorModel.static
 export type ApiError = typeof ApiErrorModel.static
 
+type ApiErrorFactoryArgs = {
+  message?: string
+  requestId?: string
+}
 export const apiErrorFactory = {
-  badRequest: (message = 'Bad request', requestId?: string): BadRequestError => ({
+  badRequest: ({ message, requestId }: ApiErrorFactoryArgs = {}): BadRequestError => ({
     code: ApiErrorCode.BadRequest,
-    message,
+    message: message ?? 'Bad request',
     requestId
   }),
-  conflict: (message = 'Resource already exists', requestId?: string): ConflictError => ({
+  conflict: ({ message, requestId }: ApiErrorFactoryArgs = {}): ConflictError => ({
     code: ApiErrorCode.Conflict,
-    message,
+    message: message ?? 'Resource already exists',
     requestId
   }),
-  forbidden: (message = 'Access forbidden', requestId?: string): ForbiddenError => ({
+  forbidden: ({ message, requestId }: ApiErrorFactoryArgs = {}): ForbiddenError => ({
     code: ApiErrorCode.Forbidden,
-    message,
+    message: message ?? 'Access forbidden',
     requestId
   }),
-  gone: (message = 'Resource no longer available', requestId?: string): GoneError => ({
+  gone: ({ message, requestId }: ApiErrorFactoryArgs = {}): GoneError => ({
     code: ApiErrorCode.Gone,
-    message,
+    message: message ?? 'Resource no longer available',
     requestId
   }),
-  internal: (message = 'Internal server error', requestId?: string): InternalServerError => ({
+  internal: ({ message, requestId }: ApiErrorFactoryArgs = {}): InternalServerError => ({
     code: ApiErrorCode.Internal,
-    message,
+    message: message ?? 'Internal server error',
     requestId
   }),
-  notFound: (message = 'Resource not found', requestId?: string): NotFoundError => ({
+  notFound: ({ message, requestId }: ApiErrorFactoryArgs = {}): NotFoundError => ({
     code: ApiErrorCode.NotFound,
-    message,
+    message: message ?? 'Resource not found',
     requestId
   }),
-  serviceUnavailable: (message = 'Service temporarily unavailable', requestId?: string): ServiceUnavailableError => ({
+  preconditionFailed: ({ message, requestId }: ApiErrorFactoryArgs = {}): PreconditionFailedError => ({
+    code: ApiErrorCode.PreconditionFailed,
+    message: message ?? 'Precondition failed',
+    requestId
+  }),
+  serviceUnavailable: ({ message, requestId }: ApiErrorFactoryArgs = {}): ServiceUnavailableError => ({
     code: ApiErrorCode.ServiceUnavailable,
-    message,
+    message: message ?? 'Service temporarily unavailable',
     requestId
   }),
-  tooManyRequests: (message = 'Rate limit exceeded', requestId?: string): TooManyRequestsError => ({
+  tooManyRequests: ({ message, requestId }: ApiErrorFactoryArgs = {}): TooManyRequestsError => ({
     code: ApiErrorCode.TooManyRequests,
-    message,
+    message: message ?? 'Rate limit exceeded',
     requestId
   }),
-  unauthorized: (message = 'Unauthorized request', requestId?: string): UnauthorizedError => ({
+  unauthorized: ({ message, requestId }: ApiErrorFactoryArgs = {}): UnauthorizedError => ({
     code: ApiErrorCode.Unauthorized,
-    message,
+    message: message ?? 'Unauthorized',
     requestId
   }),
-  unprocessableEntity: (message = 'Unprocessable entity', requestId?: string): UnprocessableEntityError => ({
+  unprocessableEntity: ({ message, requestId }: ApiErrorFactoryArgs = {}): UnprocessableEntityError => ({
     code: ApiErrorCode.UnprocessableEntity,
-    message,
+    message: message ?? 'Unprocessable entity',
     requestId
   }),
-  validation: (message = 'Request validation failed', requestId?: string): ValidationError => ({
+  validation: ({ message, requestId }: ApiErrorFactoryArgs = {}): ValidationError => ({
     code: ApiErrorCode.Validation,
-    message,
+    message: message ?? 'Validation error',
     requestId
   })
 } as const
