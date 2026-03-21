@@ -5,6 +5,7 @@ import { drizzleAdapter } from '@better-auth/drizzle-adapter'
 import { schema } from '@carbplan/db'
 import { betterAuth } from 'better-auth'
 import { toNodeHandler } from 'better-auth/node'
+import { openAPI } from 'better-auth/plugins'
 
 export type AuthSessionQuery = {
   disableCookieCache?: boolean
@@ -62,6 +63,7 @@ export const createAuthServer = ({
     emailAndPassword: {
       enabled: true
     },
+    plugins: [openAPI()],
     secret,
     trustedOrigins
   })

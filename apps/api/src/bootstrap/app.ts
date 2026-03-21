@@ -9,6 +9,7 @@ import { createInfra } from '$bootstrap/infra'
 import { createLoggerModule } from '$bootstrap/logger'
 import { createServices } from '$bootstrap/services'
 import { authModule } from '$modules/auth'
+import { OpenAPI } from '$modules/auth/openapi'
 import { publicModule } from '$modules/public'
 import { ApiErrorModel } from '$modules/public/model'
 
@@ -20,7 +21,7 @@ type CreateAppOptions = {
 
 const normalizeStatus = (status: number): number => status >= StatusMap['Bad Request'] ? status : StatusMap['Internal Server Error']
 
-export const createApp = ({ corsOrigins, services }: CreateAppOptions) =>
+export const createApp = async ({ corsOrigins, services }: CreateAppOptions) =>
   new Elysia({ name: 'carbplan-api', prefix: '/api' })
     .model({ ApiError: ApiErrorModel })
     .use(createLoggerModule())
@@ -34,12 +35,17 @@ export const createApp = ({ corsOrigins, services }: CreateAppOptions) =>
     }))
     .use(openapi({
       documentation: {
+        components: await OpenAPI.components(services.auth),
         info: {
           title: 'Carbplan API',
           version: '1.0.0'
-        }
+        },
+        paths: await OpenAPI.getPaths(services.auth)
       },
       path: '/docs',
+      scalar: {
+        customCss: ''
+      },
       specPath: '/openapi'
     }))
     .onError(({ code, request, set }) => {
@@ -76,7 +82,7 @@ export const createApp = ({ corsOrigins, services }: CreateAppOptions) =>
     .use(authModule({ auth: services.auth }))
     .use(publicModule({ services: services.public }))
 
-export const createAppFromEnv = () => {
+export const createAppFromEnv = async () => {
   const runtimeConfig = loadRuntimeConfig()
   const infra = createInfra({
     authBasePath: '/auth',
@@ -87,7 +93,7 @@ export const createAppFromEnv = () => {
   })
   const services = createServices(infra)
 
-  const app = createApp({
+  const app = await createApp({
     corsOrigins: runtimeConfig.corsOrigins,
     nodeEnv: runtimeConfig.nodeEnv,
     services

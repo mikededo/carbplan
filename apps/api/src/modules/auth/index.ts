@@ -2,22 +2,14 @@ import type { AuthServer } from '@carbplan/auth'
 
 import { Elysia, StatusMap } from 'elysia'
 
-export type AuthModuleOptions = {
+type AuthModuleOptions = {
   auth: AuthServer
 }
 
-export const authModule = ({ auth }: AuthModuleOptions) => new Elysia({
+export const authModule = async ({ auth }: AuthModuleOptions) => new Elysia({
   name: 'auth-module',
   prefix: '/v1'
-}).mount(
-  auth.handler,
-  {
-    detail: {
-      description: 'Mounted endpoints on a better-auth authentication system',
-      tags: ['Auth']
-    }
-  }
-).macro({
+}).mount(auth.handler).macro({
   auth: {
     async resolve({ request: { headers }, status }) {
       const session = await auth.api.getSession({ headers })
