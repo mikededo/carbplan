@@ -7,7 +7,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "bun test",
-    "dev": "ENVIRONTMENT=development bun run --watch src/index.ts"
+    "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
     "@carbplan/auth": "workspace:*",
