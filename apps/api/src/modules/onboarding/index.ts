@@ -30,6 +30,7 @@ export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => 
   prefix: getMeAthletesPath('/onboarding')
 })
   .use(authModule({ auth }))
+  .guard({ auth: true })
   .get(
     '',
     async ({ status, user }) => {
@@ -41,7 +42,6 @@ export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => 
       return status(StatusMap.OK, result.value)
     },
     {
-      auth: true,
       detail: {
         description: 'Returns whether the current user has completed onboarding or not',
         summary: 'Has completed onboarding'
@@ -74,7 +74,6 @@ export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => 
       return status(StatusMap.NoContent, null)
     },
     {
-      auth: true,
       body: OnboardingContracts.SaveOnboardingRequestSchema,
       detail: {
         description: 'Fills athlete fields on completing onboarding',
