@@ -40,6 +40,7 @@ export const athletes = pgTable('athletes', {
   index('athletes_email_idx').on(table.email),
   index('athletes_is_admin_idx').on(table.isAdmin)
 ])
+export type AthleteId = typeof athletes.$inferSelect.id
 
 export const coachingRelationships = pgTable('coaching_relationships', {
   acceptedAt: timestamp('accepted_at', { withTimezone: true }),
