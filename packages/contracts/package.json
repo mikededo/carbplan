@@ -1,0 +1,26 @@
+{
+  "name": "@carbplan/contracts",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./api": "./src/api.ts",
+    "./domains/*": "./src/domains/*.ts"
+  },
+  "scripts": {
+    "build": "echo 'No build step for @carbplan/contracts'",
+    "check": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@carbplan/eslint": "workspace:*",
+    "@types/bun": "1.3.11",
+    "eslint": "catalog:",
+    "typescript": "5.9.3"
+  }
+}
