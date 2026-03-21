@@ -4,7 +4,7 @@ import z from 'zod'
 export const SexSchema = z.enum(SEX_VALUES, 'Invalid sex value')
 export const SexEnum = SexSchema.enum
 
-export const OnboardingRequestSchema = z.object({
+export const SaveOnboardingRequestSchema = z.object({
   ftp: z.number()
     .min(PROFILE_FIELD_CONSTRAINTS.ftp.min)
     .max(PROFILE_FIELD_CONSTRAINTS.ftp.max)
@@ -30,6 +30,9 @@ export const OnboardingRequestSchema = z.object({
     .min(PROFILE_FIELD_CONSTRAINTS.weight.min, `Weight must be at least ${PROFILE_FIELD_CONSTRAINTS.weight.min}kg`)
     .max(PROFILE_FIELD_CONSTRAINTS.weight.max, `Weight must be at most ${PROFILE_FIELD_CONSTRAINTS.weight.max}kg`)
 })
-export type OnboardingRequest = z.infer<typeof OnboardingRequestSchema>
-export const OnboardingResponseSchema = z.null()
-export type OnboardingResponse = z.infer<typeof OnboardingResponseSchema>
+export type SaveOnboardingRequest = z.infer<typeof SaveOnboardingRequestSchema>
+export const SaveOnboardingResponseSchema = z.null()
+export type SaveOnboardingResponse = z.infer<typeof SaveOnboardingResponseSchema>
+
+export const HasCompletedOnboardingResponseSchema = z.object({ completed: z.boolean() })
+export type HasCompletedOnboardingResponse = z.infer<typeof HasCompletedOnboardingResponseSchema>

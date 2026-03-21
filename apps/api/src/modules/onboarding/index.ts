@@ -21,12 +21,43 @@ export type OnboardingModuleOptions = {
   service: OnboardingService
 }
 
-export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => new Elysia({ name: 'onboarding' })
+export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => new Elysia({
+  detail: {
+    security: [{ bearerAuth: [] }],
+    tags: ['Athletes']
+  },
+  name: 'onboarding',
+  prefix: getMeAthletesPath('/onboarding')
+})
   .use(authModule({ auth }))
+  .get(
+    '',
+    async ({ status, user }) => {
+      const result = await service.hasCompletedOnboarding(user.id)
+      if (result.isErr()) {
+        return status(StatusMap.InternalServerError, apiErrorFactory.internal())
+      }
+
+      return status(StatusMap.OK, result.value)
+    },
+    {
+      auth: true,
+      detail: {
+        description: 'Returns whether the current user has completed onboarding or not',
+        summary: 'Has completed onboarding'
+      },
+      response: {
+        [StatusMap.Forbidden]: ForbiddenErrorModel,
+        [StatusMap.InternalServerError]: InternalServerErrorModel,
+        [StatusMap.OK]: OnboardingContracts.HasCompletedOnboardingResponseSchema,
+        [StatusMap.Unauthorized]: UnauthorizedErrorModel
+      }
+    }
+  )
   .post(
-    getMeAthletesPath('/onboarding'),
+    '',
     async ({ request, status, user }) => {
-      const parsed = OnboardingContracts.OnboardingRequestSchema.safeParse(await request.json())
+      const parsed = OnboardingContracts.SaveOnboardingRequestSchema.safeParse(await request.json())
       if (parsed.error) {
         return status(StatusMap.BadRequest, apiErrorFactory.badRequest())
       }
@@ -44,7 +75,7 @@ export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => 
     },
     {
       auth: true,
-      body: OnboardingContracts.OnboardingRequestSchema,
+      body: OnboardingContracts.SaveOnboardingRequestSchema,
       detail: {
         description: 'Fills athlete fields on completing onboarding',
         summary: 'Complete onboarding',
@@ -54,7 +85,7 @@ export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => 
         [StatusMap.BadRequest]: BadRequestErrorModel,
         [StatusMap.Forbidden]: ForbiddenErrorModel,
         [StatusMap.InternalServerError]: InternalServerErrorModel,
-        [StatusMap.NoContent]: OnboardingContracts.OnboardingResponseSchema,
+        [StatusMap.NoContent]: OnboardingContracts.SaveOnboardingResponseSchema,
         [StatusMap.Unauthorized]: UnauthorizedErrorModel
       }
     }
