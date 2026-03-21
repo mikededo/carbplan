@@ -22,7 +22,8 @@
       "packages/*"
     ],
     "catalog": {
-      "eslint": "10.0.3"
+      "eslint": "10.0.3",
+      "typescript": "5.9.3"
     }
   }
 }

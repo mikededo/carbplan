@@ -1,0 +1,19 @@
+{
+  "name": "@carbplan/utils",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./*": "./lib/*.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    "@carbplan/eslint": "workspace:",
+    "@types/bun": "latest",
+    "eslint": "catalog:",
+    "typescript": "catalog:"
+  }
+}
