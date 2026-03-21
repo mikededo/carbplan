@@ -34,5 +34,3 @@ export type ApiSuccess<T> = {
   meta?: ApiMeta
 }
 
-export const ApiEmptyResponseSchema = z.null()
-export type ApiEmptyResponse = z.infer<typeof ApiEmptyResponseSchema>
