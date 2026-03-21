@@ -21,7 +21,7 @@ type CreateAppOptions = {
 const normalizeStatus = (status: number): number => status >= StatusMap['Bad Request'] ? status : StatusMap['Internal Server Error']
 
 export const createApp = ({ corsOrigins, services }: CreateAppOptions) =>
-  new Elysia({ name: 'carbplan-api' })
+  new Elysia({ name: 'carbplan-api', prefix: '/api' })
     .model({ ApiError: ApiErrorModel })
     .use(createLoggerModule())
     .use(cors({
