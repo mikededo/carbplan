@@ -67,7 +67,7 @@ export const createAuthServer = ({
   })
 
   return {
-    auth,
+    ...auth,
     handler: auth.handler,
     nodeHandler: toNodeHandler(auth)
   }
