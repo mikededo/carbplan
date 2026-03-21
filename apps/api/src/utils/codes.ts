@@ -61,4 +61,4 @@ export const StatusMap = {
   UpgradeRequired: 426,
   URITooLong: 414,
   VariantAlsoNegotiates: 506
-}
+} as const

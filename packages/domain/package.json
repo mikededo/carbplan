@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    ".": "./src/index.ts",
-    "./profile": "./src/profile.ts"
+    "./*": "./src/*.ts"
   },
   "scripts": {
     "build": "echo 'No build step for @carbplan/domain'",

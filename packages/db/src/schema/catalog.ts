@@ -1,3 +1,4 @@
+import { PRODUCT_FORM } from '@carbplan/domain/product'
 import { sql } from 'drizzle-orm'
 import {
   boolean,
@@ -15,16 +16,7 @@ import {
 
 import { athletes } from './athletes'
 
-export const productFormEnum = pgEnum('product_form', [
-  'gel',
-  'bar',
-  'chew',
-  'drink_mix',
-  'powder',
-  'capsule',
-  'liquid',
-  'solid'
-])
+export const productFormEnum = pgEnum('product_form', PRODUCT_FORM)
 
 export const brands = pgTable('brands', {
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),

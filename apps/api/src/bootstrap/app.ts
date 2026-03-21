@@ -11,6 +11,7 @@ import { createLoggerModule } from '$bootstrap/logger'
 import { createServices } from '$bootstrap/services'
 import { authModule } from '$modules/auth'
 import { OpenAPI } from '$modules/auth/openapi'
+import { meModule } from '$modules/me'
 import { onboardingModule } from '$modules/onboarding'
 import { publicModule } from '$modules/public'
 import { apiErrorFactory, ApiErrorModel } from '$modules/public/model'
@@ -71,6 +72,7 @@ export const createApp = async ({ corsOrigins, services }: CreateAppOptions) =>
     .use(authModule({ auth: services.auth }))
     .use(publicModule({ services: services.public }))
     .use(onboardingModule({ auth: services.auth, service: services.onboarding }))
+    .use(meModule({ auth: services.auth, services: { product: services.products } }))
 
 export const createAppFromEnv = async () => {
   const runtimeConfig = loadRuntimeConfig()
