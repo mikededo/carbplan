@@ -11,17 +11,20 @@
   },
   "dependencies": {
     "@carbplan/auth": "workspace:*",
+    "@carbplan/contracts": "workspace:*",
     "@carbplan/db": "workspace:*",
     "@elysiajs/cors": "^1.4.1",
     "@elysiajs/openapi": "^1.4.14",
     "drizzle-orm": "0.45.1",
     "drizzle-typebox": "0.3.3",
-    "elysia": "1.4.28"
+    "elysia": "1.4.28",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@carbplan/eslint": "workspace:*",
     "bun-types": "1.3.11",
     "eslint": "catalog:",
-    "logixlysia": "^6.2.2"
+    "logixlysia": "^6.2.2",
+    "neverthrow": "8.2.0"
   }
 }

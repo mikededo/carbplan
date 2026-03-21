@@ -5,7 +5,7 @@ import type { EndpointRateLimiter, EndpointRateLimitPolicy } from '$modules/publ
 import { Elysia, t } from 'elysia'
 
 import { CatalogResponseModel } from '$modules/public/catalog/model'
-import { ApiErrorModel } from '$modules/public/model'
+import { apiErrorFactory, ApiErrorModel } from '$modules/public/model'
 import { applyEndpointHeaders } from '$modules/public/utils/headers'
 import { resolveRateLimitClientKey } from '$modules/public/utils/rate-limit'
 
@@ -38,10 +38,7 @@ export const publicCatalogModule = ({ limiter, service }: PublicCatalogModuleOpt
     })
 
     if (!isAllowed) {
-      return status(429, {
-        code: 'RATE_LIMITED',
-        message: 'Too many requests'
-      })
+      return status(429, apiErrorFactory.tooManyRequests())
     }
 
     const catalog = await service.getCatalog()

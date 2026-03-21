@@ -3,6 +3,7 @@ import type { AppServices } from '$bootstrap/services'
 import { cors } from '@elysiajs/cors'
 import { openapi } from '@elysiajs/openapi'
 import { Elysia, StatusMap } from 'elysia'
+import z from 'zod'
 
 import { loadRuntimeConfig } from '$bootstrap/config'
 import { createInfra } from '$bootstrap/infra'
@@ -10,6 +11,7 @@ import { createLoggerModule } from '$bootstrap/logger'
 import { createServices } from '$bootstrap/services'
 import { authModule } from '$modules/auth'
 import { OpenAPI } from '$modules/auth/openapi'
+import { onboardingModule } from '$modules/onboarding'
 import { publicModule } from '$modules/public'
 import { ApiErrorModel } from '$modules/public/model'
 
@@ -42,7 +44,9 @@ export const createApp = async ({ corsOrigins, services }: CreateAppOptions) =>
         },
         paths: await OpenAPI.getPaths(services.auth)
       },
+      mapJsonSchema: { zod: z.toJSONSchema },
       path: '/docs',
+      // @ts-expect-error This is correct, to overwrite elysiajs styles
       scalar: {
         customCss: ''
       },
@@ -81,6 +85,7 @@ export const createApp = async ({ corsOrigins, services }: CreateAppOptions) =>
     })
     .use(authModule({ auth: services.auth }))
     .use(publicModule({ services: services.public }))
+    .use(onboardingModule({ auth: services.auth, service: services.onboarding }))
 
 export const createAppFromEnv = async () => {
   const runtimeConfig = loadRuntimeConfig()
