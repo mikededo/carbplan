@@ -1,46 +1,25 @@
-import type * as ProductsContract from '@carbplan/contracts/products'
-import type { AthleteId, Db } from '@carbplan/db'
+import type { AthleteId } from '@carbplan/db'
 
-import { athletes, brands, favoriteProducts, products } from '@carbplan/db'
-import { and, eq } from 'drizzle-orm'
+import type { FavoriteProductsListResponse } from '$modules/products/model'
+import type { ProductRepository } from '$modules/products/repository'
+
 import { ResultAsync } from 'neverthrow'
 
 export type ProductService = {
-  getAllFavoriteProducts: (id: AthleteId) => ResultAsync<ProductsContract.FavoriteProductsListResponse, unknown>
+  getAllFavoriteProducts: (id: AthleteId) => ResultAsync<FavoriteProductsListResponse, unknown>
 }
 
-export class DbProductService implements ProductService {
-  constructor(private readonly db: Db) { }
+export class ProductServiceImpl implements ProductService {
+  constructor(private readonly repository: ProductRepository) { }
 
-  getAllFavoriteProducts(id: AthleteId): ResultAsync<ProductsContract.FavoriteProductsListResponse, unknown> {
-    return ResultAsync.fromPromise<ProductsContract.FavoriteProductsListResponse, unknown>(
-      this.getAllFavoriteProductsPromise(id),
+  getAllFavoriteProducts(id: AthleteId): ResultAsync<FavoriteProductsListResponse, unknown> {
+    return ResultAsync.fromPromise<FavoriteProductsListResponse, unknown>(
+      this.getAllFavoriteProductsFromRepository(id),
       () => null
     )
   }
 
-  private async getAllFavoriteProductsPromise(id: AthleteId) {
-    const result = await this.db.select()
-      .from(products)
-      .leftJoin(favoriteProducts, eq(favoriteProducts.productId, products.id))
-      .leftJoin(athletes, eq(athletes.id, favoriteProducts.athleteId))
-      .leftJoin(brands, eq(brands.id, products.brandId))
-      .where(and(eq(athletes.id, id), eq(products.isActive, true)))
-
-    return result.reduce((agg: ProductsContract.FavoriteProductsListResponse, { brands, products }) => {
-      if (!brands || !products) {
-        return agg
-      }
-
-      agg.push({
-        ...products,
-        brandId: brands.id,
-        brandLogoUrl: brands.logoUrl,
-        brandName: brands.name,
-        brandSlug: brands.slug,
-        isFavorite: true
-      })
-      return agg
-    }, [])
+  private async getAllFavoriteProductsFromRepository(id: AthleteId): Promise<FavoriteProductsListResponse> {
+    return await this.repository.listFavoriteProductsWithBrands(id)
   }
 }

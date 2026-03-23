@@ -16,10 +16,14 @@
       ],
       "$utils/*": [
         "./src/utils/*"
+      ],
+      "$test/*": [
+        "./src/test/*"
       ]
     },
     "types": [
-      "bun-types"
+      "bun-types",
+      "vitest/globals"
     ],
     "strict": true,
     "esModuleInterop": true,

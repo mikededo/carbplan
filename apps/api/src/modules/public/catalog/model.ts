@@ -6,6 +6,34 @@ import { createSelectModel } from '$utils/schema'
 const BrandSelectModel = createSelectModel(brands)
 const ProductSelectModel = createSelectModel(products)
 
+export const CatalogProductRowModel = t.Object({
+  productCaffeineMg: ProductSelectModel.properties.caffeineMg,
+  productCalories: ProductSelectModel.properties.calories,
+  productCarbsG: ProductSelectModel.properties.carbsG,
+  productFatG: ProductSelectModel.properties.fatG,
+  productFlavor: ProductSelectModel.properties.flavor,
+  productForm: ProductSelectModel.properties.form,
+  productId: ProductSelectModel.properties.id,
+  productIsActive: ProductSelectModel.properties.isActive,
+  productName: ProductSelectModel.properties.name,
+  productProteinG: ProductSelectModel.properties.proteinG,
+  productServingSize: ProductSelectModel.properties.servingSize,
+  productServingsPerPackage: ProductSelectModel.properties.servingsPerPackage,
+  productServingUnit: ProductSelectModel.properties.servingUnit,
+  productSlug: ProductSelectModel.properties.slug,
+  productSodiumMg: ProductSelectModel.properties.sodiumMg,
+  productSugarG: ProductSelectModel.properties.sugarG,
+
+  brandDescription: BrandSelectModel.properties.description,
+  brandId: BrandSelectModel.properties.id,
+  brandIsActive: BrandSelectModel.properties.isActive,
+  brandLogoUrl: BrandSelectModel.properties.logoUrl,
+  brandName: BrandSelectModel.properties.name,
+  brandSlug: BrandSelectModel.properties.slug,
+  brandWebsite: BrandSelectModel.properties.website
+})
+export type CatalogProductRow = typeof CatalogProductRowModel.static
+
 export const CatalogProductModel = t.Object({
   caffeineMg: ProductSelectModel.properties.caffeineMg,
   calories: ProductSelectModel.properties.calories,

@@ -83,7 +83,10 @@ export const createAppFromEnv = async () => {
     authTrustedOrigins: runtimeConfig.authTrustedOrigins,
     databaseUrl: runtimeConfig.databaseUrl
   })
-  const services = createServices(infra)
+  const services = createServices({
+    auth: infra.auth,
+    repositories: infra.repositories
+  })
 
   const app = await createApp({
     corsOrigins: runtimeConfig.corsOrigins,

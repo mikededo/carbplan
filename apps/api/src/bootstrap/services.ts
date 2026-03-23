@@ -1,13 +1,13 @@
 import type { AuthServer } from '@carbplan/auth'
 
-import type { Infra } from '$bootstrap/infra'
+import type { AppRepositories } from '$bootstrap/repositories'
 import type { OnboardingService } from '$modules/onboarding/service'
 import type { ProductService } from '$modules/products/service'
 import type { PublicCatalogService } from '$modules/public/catalog/service'
 
-import { DbOnboardingService } from '$modules/onboarding/service'
-import { DbProductService } from '$modules/products/service'
-import { DbPublicCatalogService } from '$modules/public/catalog/service'
+import { OnboardingServiceImpl } from '$modules/onboarding/service'
+import { ProductServiceImpl } from '$modules/products/service'
+import { PublicCatalogServiceImpl } from '$modules/public/catalog/service'
 
 export type PublicServices = {
   catalog: PublicCatalogService
@@ -20,11 +20,16 @@ export type AppServices = {
   products: ProductService
 }
 
-export const createServices = (infra: Infra): AppServices => ({
-  auth: infra.auth,
-  onboarding: new DbOnboardingService(infra.db),
-  products: new DbProductService(infra.db),
+type CreateServicesOptions = {
+  auth: AuthServer
+  repositories: AppRepositories
+}
+
+export const createServices = ({ auth, repositories }: CreateServicesOptions): AppServices => ({
+  auth,
+  onboarding: new OnboardingServiceImpl(repositories.onboarding),
+  products: new ProductServiceImpl(repositories.products),
   public: {
-    catalog: new DbPublicCatalogService(infra.db)
+    catalog: new PublicCatalogServiceImpl(repositories.public.catalog)
   }
 })

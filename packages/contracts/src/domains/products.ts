@@ -3,10 +3,12 @@ import z from 'zod'
 
 export const FavoriteProductsListResponseSchema = z.array(
   z.object({
-    brandId: z.string(),
-    brandLogoUrl: z.string().nullable(),
-    brandName: z.string(),
-    brandSlug: z.string(),
+    brand: z.object({
+      id: z.string(),
+      logoUrl: z.string().nullable(),
+      name: z.string(),
+      slug: z.string()
+    }),
     caffeineMg: z.number().nullable(),
     calories: z.number().nullable(),
     carbsG: z.number().nullable(),

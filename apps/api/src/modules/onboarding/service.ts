@@ -1,32 +1,29 @@
-import type * as OnboardingContract from '@carbplan/contracts/onboarding'
-import type { AthleteId, Db } from '@carbplan/db'
+import type { AthleteId } from '@carbplan/db'
 
-import { athletes } from '@carbplan/db'
-import { eq } from 'drizzle-orm'
+import type { OnboardingStatus, SaveAthleteOnboardingData } from '$modules/onboarding/model'
+import type { OnboardingRepository } from '$modules/onboarding/repository'
+
 import { ResultAsync } from 'neverthrow'
 
-type SaveAthleteOnboardingData = { id: AthleteId } & OnboardingContract.SaveOnboardingRequest
-
 export type OnboardingService = {
-  hasCompletedOnboarding: (id: AthleteId) => ResultAsync<OnboardingContract.HasCompletedOnboardingResponse, unknown>
-  saveAthleteOnboarding: (data: SaveAthleteOnboardingData) => ResultAsync<OnboardingContract.SaveOnboardingResponse, unknown>
+  hasCompletedOnboarding: (id: AthleteId) => ResultAsync<OnboardingStatus, unknown>
+  saveAthleteOnboarding: (data: SaveAthleteOnboardingData) => ResultAsync<null, unknown>
 }
 
-export class DbOnboardingService implements OnboardingService {
-  constructor(private readonly db: Db) { }
+export class OnboardingServiceImpl implements OnboardingService {
+  constructor(private readonly repository: OnboardingRepository) { }
 
-  hasCompletedOnboarding(id: AthleteId): ResultAsync<OnboardingContract.HasCompletedOnboardingResponse, unknown> {
+  hasCompletedOnboarding(id: AthleteId): ResultAsync<OnboardingStatus, unknown> {
     return ResultAsync.fromPromise(
-      this.db.select({ completed: athletes.onboardingCompleted }).from(athletes).where(eq(athletes.id, id)),
+      this.repository.findCompletionByAthleteId(id),
       (error) => error
-    ).map(([value]) => value)
+    ).map((value) => value ?? { completed: false })
   }
 
-  saveAthleteOnboarding({ id, ...data }: SaveAthleteOnboardingData): ResultAsync<OnboardingContract.SaveOnboardingResponse, null> {
+  saveAthleteOnboarding(data: SaveAthleteOnboardingData): ResultAsync<null, null> {
     return ResultAsync.fromPromise(
-      this.db.update(athletes).set({ ...data, onboardingCompleted: true }).where(eq(athletes.id, id)),
+      this.repository.saveAthleteOnboarding(data),
       (error) => error
     ).map(() => null).mapErr(() => null)
   }
 }
-

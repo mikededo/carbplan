@@ -56,8 +56,8 @@ export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => 
   )
   .post(
     '',
-    async ({ request, status, user }) => {
-      const parsed = OnboardingContracts.SaveOnboardingRequestSchema.safeParse(await request.json())
+    async ({ body, status, user }) => {
+      const parsed = OnboardingContracts.SaveOnboardingRequestSchema.safeParse(body)
       if (parsed.error) {
         return status(StatusMap.BadRequest, apiErrorFactory.badRequest())
       }
@@ -66,12 +66,11 @@ export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => 
         id: user.id,
         ...parsed.data
       })
-
       if (result.isErr()) {
         return status(StatusMap.InternalServerError, apiErrorFactory.internal())
       }
 
-      return status(StatusMap.NoContent, null)
+      return status(StatusMap.NoContent, undefined)
     },
     {
       body: OnboardingContracts.SaveOnboardingRequestSchema,

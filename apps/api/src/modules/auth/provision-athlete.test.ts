@@ -1,6 +1,4 @@
-import { describe, expect, it, mock } from 'bun:test'
-
-import { toAthletePayload, upsertAthleteForUser } from './provision-athlete'
+import { AthleteProvisioningServiceImpl, toAthletePayload, upsertAthleteForUser } from './provision-athlete'
 
 describe('athlete provisioning', () => {
   it('creates payload when user has id and email', () => {
@@ -21,49 +19,36 @@ describe('athlete provisioning', () => {
   })
 
   it('upserts athlete on signup bootstrap', async () => {
-    const onConflictDoUpdate = mock(async () => undefined)
-    const values = mock(() => ({ onConflictDoUpdate }))
-    const insert = mock(() => ({ values }))
+    const upsertAthlete = vi.fn(async () => undefined)
+    const service = new AthleteProvisioningServiceImpl({ upsertAthlete })
 
-    const db = { insert } as any
-
-    const upserted = await upsertAthleteForUser(db, {
+    const upserted = await upsertAthleteForUser(service, {
       email: 'athlete@carbplan.app',
       id: 'f8dbd028-c4ed-4e10-8142-a5c4bd8af83d'
     })
 
     expect(upserted).toBe(true)
-    expect(insert).toHaveBeenCalledTimes(1)
-    expect(values).toHaveBeenCalledTimes(1)
-    expect(onConflictDoUpdate).toHaveBeenCalledTimes(1)
+    expect(upsertAthlete).toHaveBeenCalledTimes(1)
   })
 
   it('skips bootstrap when user payload is incomplete', async () => {
-    const onConflictDoUpdate = mock(async () => undefined)
-    const values = mock(() => ({ onConflictDoUpdate }))
-    const insert = mock(() => ({ values }))
+    const upsertAthlete = vi.fn(async () => undefined)
+    const service = new AthleteProvisioningServiceImpl({ upsertAthlete })
 
-    const db = { insert } as any
-
-    const upserted = await upsertAthleteForUser(db, {
+    const upserted = await upsertAthleteForUser(service, {
       email: null,
       id: 'f8dbd028-c4ed-4e10-8142-a5c4bd8af83d'
     })
 
     expect(upserted).toBe(false)
-    expect(insert).toHaveBeenCalledTimes(0)
+    expect(upsertAthlete).toHaveBeenCalledTimes(0)
   })
 
   it('propagates db failures', async () => {
-    const onConflictDoUpdate = mock(async () => {
-      throw new Error('db failed')
-    })
-    const values = mock(() => ({ onConflictDoUpdate }))
-    const insert = mock(() => ({ values }))
+    const upsertAthlete = vi.fn().mockRejectedValue('db failed')
+    const service = new AthleteProvisioningServiceImpl({ upsertAthlete })
 
-    const db = { insert } as any
-
-    expect(await upsertAthleteForUser(db, {
+    await expect(upsertAthleteForUser(service, {
       email: 'athlete@carbplan.app',
       id: 'f8dbd028-c4ed-4e10-8142-a5c4bd8af83d'
     })).rejects.toThrow('db failed')

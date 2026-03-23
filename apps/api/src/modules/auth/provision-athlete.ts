@@ -2,7 +2,7 @@ import type { Db } from '@carbplan/db'
 
 import { athletes } from '@carbplan/db'
 
-type AuthUserPayload = {
+export type AuthUserPayload = {
   email?: null | string
   id?: null | string
 }
@@ -10,6 +10,14 @@ type AuthUserPayload = {
 export type AthletePayload = {
   email: string
   id: string
+}
+
+export type AthleteProvisioningRepository = {
+  upsertAthlete: (payload: AthletePayload) => Promise<void>
+}
+
+export type AthleteProvisioningService = {
+  upsertAthleteForUser: (user: AuthUserPayload) => Promise<boolean>
 }
 
 export const toAthletePayload = (user: AuthUserPayload): AthletePayload | null => {
@@ -23,24 +31,40 @@ export const toAthletePayload = (user: AuthUserPayload): AthletePayload | null =
   }
 }
 
-export const upsertAthleteForUser = async (db: Db, user: AuthUserPayload): Promise<boolean> => {
-  const payload = toAthletePayload(user)
-  if (!payload) {
-    return false
-  }
+export class DbAthleteProvisioningRepository implements AthleteProvisioningRepository {
+  constructor(private readonly db: Db) {}
 
-  await db.insert(athletes)
-    .values({
-      email: payload.email,
-      id: payload.id
-    })
-    .onConflictDoUpdate({
-      set: {
+  async upsertAthlete(payload: AthletePayload): Promise<void> {
+    await this.db.insert(athletes)
+      .values({
         email: payload.email,
-        updatedAt: new Date()
-      },
-      target: athletes.id
-    })
-
-  return true
+        id: payload.id
+      })
+      .onConflictDoUpdate({
+        set: {
+          email: payload.email,
+          updatedAt: new Date()
+        },
+        target: athletes.id
+      })
+  }
 }
+
+export class AthleteProvisioningServiceImpl implements AthleteProvisioningService {
+  constructor(private readonly repository: AthleteProvisioningRepository) {}
+
+  async upsertAthleteForUser(user: AuthUserPayload): Promise<boolean> {
+    const payload = toAthletePayload(user)
+    if (!payload) {
+      return false
+    }
+
+    await this.repository.upsertAthlete(payload)
+    return true
+  }
+}
+
+export const upsertAthleteForUser = async (
+  service: AthleteProvisioningService,
+  user: AuthUserPayload
+): Promise<boolean> => service.upsertAthleteForUser(user)
