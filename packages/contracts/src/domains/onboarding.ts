@@ -1,6 +1,8 @@
 import { PROFILE_FIELD_CONSTRAINTS, SEX_VALUES } from '@carbplan/domain/profile'
 import z from 'zod'
 
+import { ApiEmptyResponse } from '../api'
+
 export const SexSchema = z.enum(SEX_VALUES, 'Invalid sex value')
 export const SexEnum = SexSchema.enum
 
@@ -31,7 +33,7 @@ export const SaveOnboardingRequestSchema = z.object({
     .max(PROFILE_FIELD_CONSTRAINTS.weight.max, `Weight must be at most ${PROFILE_FIELD_CONSTRAINTS.weight.max}kg`)
 })
 export type SaveOnboardingRequest = z.infer<typeof SaveOnboardingRequestSchema>
-export const SaveOnboardingResponseSchema = z.null()
+export const SaveOnboardingResponseSchema = ApiEmptyResponse
 export type SaveOnboardingResponse = z.infer<typeof SaveOnboardingResponseSchema>
 
 export const HasCompletedOnboardingResponseSchema = z.object({ completed: z.boolean() })

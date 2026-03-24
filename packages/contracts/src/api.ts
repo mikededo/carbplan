@@ -9,6 +9,7 @@ export const PaginationApiMeta = ApiMetaSchema.extend({
   total: z.number().int().nonnegative().optional()
 })
 
+export const ApiEmptyResponse = z.undefined()
 export const ApiSuccessSchema = <T extends z.ZodTypeAny, M extends z.ZodObject<z.ZodRawShape>>(
   data: T,
   meta: M = ApiMetaSchema.optional() as unknown as M

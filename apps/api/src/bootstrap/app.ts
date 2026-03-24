@@ -54,7 +54,7 @@ export const createApp = async ({ corsOrigins, services }: CreateAppOptions) =>
       },
       specPath: '/openapi'
     }))
-    .onError(({ code, request, set, status }) => {
+    .onError(({ code, error, request, set, status }) => {
       const requestId = request.headers.get('x-request-id') ?? crypto.randomUUID()
       set.headers['x-request-id'] = requestId
 
@@ -63,7 +63,10 @@ export const createApp = async ({ corsOrigins, services }: CreateAppOptions) =>
       }
 
       if (code === 'VALIDATION') {
-        return status(StatusMap.BadRequest, apiErrorFactory.validation({ requestId }))
+        return status(StatusMap.BadRequest, apiErrorFactory.validation({
+          message: error.valueError?.message,
+          requestId
+        }))
       }
 
       const currentStatus = normalizeStatus(typeof set.status === 'number' ? set.status : StatusMap.InternalServerError)
@@ -72,7 +75,10 @@ export const createApp = async ({ corsOrigins, services }: CreateAppOptions) =>
     .use(authModule({ auth: services.auth }))
     .use(publicModule({ services: services.public }))
     .use(onboardingModule({ auth: services.auth, service: services.onboarding }))
-    .use(meModule({ auth: services.auth, services: { product: services.products } }))
+    .use(meModule({
+      auth: services.auth,
+      services: { me: services.me, product: services.products }
+    }))
 
 export const createAppFromEnv = async () => {
   const runtimeConfig = loadRuntimeConfig()

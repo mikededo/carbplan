@@ -1,3 +1,5 @@
+import type { HRZonesData } from '@carbplan/domain/hr'
+
 import { SEX_VALUES } from '@carbplan/domain/profile'
 import { sql } from 'drizzle-orm'
 import {
@@ -28,7 +30,7 @@ export const athletes = pgTable('athletes', {
   heightCm: numeric('height_cm', { mode: 'number', precision: 5, scale: 1 }),
   hrMax: integer('hr_max'),
   hrRest: integer('hr_rest'),
-  hrZones: jsonb('hr_zones'),
+  hrZones: jsonb('hr_zones').$type<HRZonesData>(),
   id: uuid('id').primaryKey().references(() => users.id, { onDelete: 'cascade' }),
   isAdmin: boolean('is_admin').default(false).notNull(),
   maxCarbIntakeGPerHr: integer('max_carb_intake_g_per_hr'),

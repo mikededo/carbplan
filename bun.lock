@@ -118,6 +118,9 @@
     "packages/domain": {
       "name": "@carbplan/domain",
       "version": "0.0.0",
+      "dependencies": {
+        "zod": "catalog:",
+      },
       "devDependencies": {
         "@carbplan/eslint": "workspace:*",
         "@types/bun": "1.3.11",
