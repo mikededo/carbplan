@@ -22,6 +22,7 @@
         "drizzle-orm": "0.45.1",
         "drizzle-typebox": "0.3.3",
         "elysia": "1.4.28",
+        "pg-error-enum": "1.0.2",
         "zod": "catalog:",
       },
       "devDependencies": {
@@ -1319,6 +1320,8 @@
     "path-parse": ["path-parse@1.0.7", "", {}, "sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw=="],
 
     "pathe": ["pathe@2.0.3", "", {}, "sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w=="],
+
+    "pg-error-enum": ["pg-error-enum@1.0.2", "", {}, "sha512-zcMbZwFtsyUhLeY7r9SY24gjJ+7dlpyp1GmcPCwsiwgnh2iEjr2K7FYEqZOLjI1+6DEW0yne01VzP+Irnhd2Yg=="],
 
     "picocolors": ["picocolors@1.1.1", "", {}, "sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA=="],
 

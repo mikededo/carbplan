@@ -1,4 +1,5 @@
 import { OnboardingServiceImpl } from '$modules/onboarding/service'
+import { DatabaseQueryError } from '$utils/db-error'
 
 describe('onboarding service', () => {
   it('returns completed status from repository', async () => {
@@ -46,7 +47,7 @@ describe('onboarding service', () => {
     expect(result._unsafeUnwrap()).toBeNull()
   })
 
-  it('maps repository save errors to null error', async () => {
+  it('maps repository save errors to a database error', async () => {
     const repository = {
       findCompletionByAthleteId: vi.fn(async () => ({ completed: false })),
       saveAthleteOnboarding: vi.fn(async () => {
@@ -64,6 +65,9 @@ describe('onboarding service', () => {
     })
 
     expect(result.isErr()).toBe(true)
-    expect(result._unsafeUnwrapErr()).toBeNull()
+    const error = result._unsafeUnwrapErr()
+    expect(error).toBeInstanceOf(DatabaseQueryError)
+    expect(error.code).toBe('UNKNOWN_DB_ERROR')
+    expect(error.cause).toEqual(expect.objectContaining({ message: 'write failed' }))
   })
 })

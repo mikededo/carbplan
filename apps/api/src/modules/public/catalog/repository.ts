@@ -3,6 +3,7 @@ import type { SQL } from 'drizzle-orm'
 import type { PgColumn } from 'drizzle-orm/pg-core'
 
 import type { CatalogListPageResult, CatalogProductsListQuery, CatalogSortField } from '$modules/public/catalog/model'
+import type { DatabaseQueryError } from '$utils/db-error'
 
 import { brands, products } from '@carbplan/db'
 import {
@@ -21,6 +22,7 @@ import {
 import { errAsync, ResultAsync } from 'neverthrow'
 
 import { CatalogQueryValidationError } from '$modules/public/catalog/model'
+import { mapDbError } from '$utils/db-error'
 import { NUMERIC_NULL_SENTINEL, parseQuerySort, resolveSortSql } from '$utils/sorting'
 
 const SORT_FIELD_MAP: Record<CatalogSortField, PgColumn> = {
@@ -35,13 +37,13 @@ const SORT_FIELD_MAP: Record<CatalogSortField, PgColumn> = {
 }
 
 export type PublicCatalogRepository = {
-  listCatalogProducts: (query: CatalogProductsListQuery) => ResultAsync<CatalogListPageResult, unknown>
+  listCatalogProducts: (query: CatalogProductsListQuery) => ResultAsync<CatalogListPageResult, CatalogQueryValidationError | DatabaseQueryError>
 }
 
 export class DbPublicCatalogRepository implements PublicCatalogRepository {
   constructor(private readonly db: Db) { }
 
-  listCatalogProducts(query: CatalogProductsListQuery): ResultAsync<CatalogListPageResult, unknown> {
+  listCatalogProducts(query: CatalogProductsListQuery): ResultAsync<CatalogListPageResult, CatalogQueryValidationError | DatabaseQueryError> {
     const parsedQuery = parseQuerySort(query.sort, SORT_FIELD_MAP)
     if (parsedQuery.isErr()) {
       return errAsync(new CatalogQueryValidationError('Invalid sort param'))
@@ -134,7 +136,7 @@ export class DbPublicCatalogRepository implements PublicCatalogRepository {
           .innerJoin(products, eq(products.brandId, brands.id))
           .where(whereClause)
       ]),
-      (error) => error
+      mapDbError
     ).map(([rows, countRows]) => ({
       data: rows,
       meta: {

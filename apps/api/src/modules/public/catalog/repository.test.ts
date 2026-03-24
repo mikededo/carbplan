@@ -2,6 +2,8 @@
 import { createRepositoryDbMock } from '@carbplan/auth/testing'
 import { describe, expect, it } from 'vitest'
 
+import { DatabaseQueryError } from '$utils/db-error'
+
 import { DbPublicCatalogRepository } from './repository'
 
 const baseRow = {
@@ -85,6 +87,9 @@ describe('public catalog repository', () => {
     })
 
     expect(result.isErr()).toBe(true)
-    expect(result._unsafeUnwrapErr()).toEqual(expect.objectContaining({ message: 'db failed' }))
+    const error = result._unsafeUnwrapErr()
+    expect(error).toBeInstanceOf(DatabaseQueryError)
+    expect(error.code).toBe('UNKNOWN_DB_ERROR')
+    expect(error.cause).toEqual(expect.objectContaining({ message: 'db failed' }))
   })
 })

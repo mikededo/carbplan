@@ -2,6 +2,7 @@ import type { FavoriteProductsListResponse } from '$modules/products/model'
 import type { ProductRepository } from '$modules/products/repository'
 
 import { ProductServiceImpl } from '$modules/products/service'
+import { DatabaseQueryError } from '$utils/db-error'
 
 describe('product service', () => {
   it('maps repository rows to favorite product response', async () => {
@@ -72,7 +73,7 @@ describe('product service', () => {
     }])
   })
 
-  it('maps repository errors to null', async () => {
+  it('maps repository errors to a database error', async () => {
     const repository = {
       listFavoriteProductsWithBrands: vi.fn(async () => {
         throw new Error('db failure')
@@ -83,6 +84,9 @@ describe('product service', () => {
     const result = await service.getAllFavoriteProducts('athlete-id')
 
     expect(result.isErr()).toBe(true)
-    expect(result._unsafeUnwrapErr()).toBeNull()
+    const error = result._unsafeUnwrapErr()
+    expect(error).toBeInstanceOf(DatabaseQueryError)
+    expect(error.code).toBe('UNKNOWN_DB_ERROR')
+    expect(error.cause).toEqual(expect.objectContaining({ message: 'db failure' }))
   })
 })
