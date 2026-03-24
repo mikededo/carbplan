@@ -1,41 +1,76 @@
+
 import { createRepositoryDbMock } from '@carbplan/auth/testing'
 import { describe, expect, it } from 'vitest'
 
 import { DbPublicCatalogRepository } from './repository'
 
+const baseRow = {
+  brandDescription: null,
+  brandId: 'brand-1',
+  brandLogoUrl: null,
+  brandName: 'Brand One',
+  brandSlug: 'brand-one',
+  brandWebsite: null,
+  caffeineMg: 80,
+  calories: 100,
+  carbsG: 25,
+  fatG: 0,
+  flavor: 'citrus',
+  form: 'gel' as const,
+  id: crypto.randomUUID(),
+  name: 'Gel One',
+  proteinG: 0,
+  servingSize: 60,
+  servingsPerPackage: 1,
+  servingUnit: 'g',
+  slug: 'gel-one',
+  sodiumMg: 50,
+  sugarG: 20
+}
+
 describe('public catalog repository', () => {
-  it('queries active brands and products ordered by name', async () => {
+  it('returns a paginated response envelope with total', async () => {
     const dbMock = createRepositoryDbMock()
-    dbMock.queueResult([{
-      brandDescription: null,
-      brandId: 'brand-1',
-      brandIsActive: true,
-      brandLogoUrl: null,
-      brandName: 'Brand One',
-      brandSlug: 'brand-one',
-      brandWebsite: null,
-      productCaffeineMg: 80,
-      productCalories: 100,
-      productCarbsG: 25,
-      productFatG: 0,
-      productFlavor: 'citrus',
-      productForm: 'gel',
-      productId: 'product-1',
-      productIsActive: true,
-      productName: 'Gel One',
-      productProteinG: 0,
-      productServingSize: 60,
-      productServingsPerPackage: 1,
-      productServingUnit: 'g',
-      productSlug: 'gel-one',
-      productSodiumMg: 50,
-      productSugarG: 20
-    }])
+    dbMock.queueResult([baseRow])
+    dbMock.queueResult([{ total: 2 }])
     const repository = new DbPublicCatalogRepository(dbMock.db)
 
-    const result = await repository.listCatalogRows()
+    const result = await repository.listCatalogProducts({
+      limit: 1,
+      offset: 0,
+      sort: 'name:asc'
+    })
+    expect(result.isOk()).toBe(true)
+    const value = result._unsafeUnwrap()
 
-    expect(result).toHaveLength(1)
+    expect(value.data).toHaveLength(1)
+    expect(value.meta).toEqual({
+      limit: 1,
+      offset: 0,
+      total: 2
+    })
+  })
+
+  it('applies offset pagination to list queries', async () => {
+    const dbMock = createRepositoryDbMock()
+    dbMock.queueResult([baseRow])
+    dbMock.queueResult([{ total: 10 }])
+    const repository = new DbPublicCatalogRepository(dbMock.db)
+
+    const result = await repository.listCatalogProducts({
+      limit: 5,
+      offset: 5,
+      sort: 'name:asc'
+    })
+    expect(result.isOk()).toBe(true)
+    const value = result._unsafeUnwrap()
+
+    expect(value.data).toHaveLength(1)
+    expect(value.meta).toEqual({
+      limit: 5,
+      offset: 5,
+      total: 10
+    })
   })
 
   it('propagates db failures', async () => {
@@ -43,6 +78,13 @@ describe('public catalog repository', () => {
     dbMock.queueError(new Error('db failed'))
     const repository = new DbPublicCatalogRepository(dbMock.db)
 
-    await expect(repository.listCatalogRows()).rejects.toThrow('db failed')
+    const result = await repository.listCatalogProducts({
+      limit: 20,
+      offset: 0,
+      sort: 'name:asc'
+    })
+
+    expect(result.isErr()).toBe(true)
+    expect(result._unsafeUnwrapErr()).toEqual(expect.objectContaining({ message: 'db failed' }))
   })
 })

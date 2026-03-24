@@ -1,14 +1,18 @@
 import { z } from 'zod'
 
 export const ApiMetaSchema = z.object({
-  nextCursor: z.string().optional(),
   requestId: z.string().optional()
 })
-
-export const ApiSuccessSchema = <T extends z.ZodTypeAny>(data: T) => z.object({
-  data,
-  meta: ApiMetaSchema.optional()
+export const PaginationApiMeta = ApiMetaSchema.extend({
+  limit: z.number().int().positive().optional(),
+  offset: z.number().int().min(0).optional(),
+  total: z.number().int().nonnegative().optional()
 })
+
+export const ApiSuccessSchema = <T extends z.ZodTypeAny, M extends z.ZodObject<z.ZodRawShape>>(
+  data: T,
+  meta: M = ApiMetaSchema.optional() as unknown as M
+) => z.object({ data, meta })
 
 export const ApiErrorCodeSchema = z.enum([
   'AUTH_FORBIDDEN',
@@ -33,4 +37,3 @@ export type ApiSuccess<T> = {
   data: T
   meta?: ApiMeta
 }
-

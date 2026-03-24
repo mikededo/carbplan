@@ -92,7 +92,9 @@ type ApiSuccess<T> = {
   data: T
   meta?: {
     requestId?: string
-    nextCursor?: string
+    limit?: number
+    offset?: number
+    total?: number
   }
 }
 ```
@@ -138,7 +140,7 @@ Use this mapping for new routes:
 
 - Pagination:
   - `limit` (integer, bounded)
-  - `cursor` (opaque string)
+  - `offset` (integer, `>= 0`)
 - Sorting:
   - `sort` as `field:direction`, where direction is `asc` or `desc`
 - Filtering:

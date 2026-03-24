@@ -70,7 +70,7 @@ export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => 
         return status(StatusMap.InternalServerError, apiErrorFactory.internal())
       }
 
-      return status(StatusMap.NoContent, undefined)
+      return status(StatusMap.NoContent, null)
     },
     {
       body: OnboardingContracts.SaveOnboardingRequestSchema,

@@ -13,7 +13,7 @@ export class ProductServiceImpl implements ProductService {
   constructor(private readonly repository: ProductRepository) { }
 
   getAllFavoriteProducts(id: AthleteId): ResultAsync<FavoriteProductsListResponse, unknown> {
-    return ResultAsync.fromPromise<FavoriteProductsListResponse, unknown>(
+    return ResultAsync.fromPromise(
       this.getAllFavoriteProductsFromRepository(id),
       () => null
     )

@@ -2,11 +2,20 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".svelte-kit/**", "build/**", "dist/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".svelte-kit/**",
+        "build/**",
+        "dist/**"
+      ]
     },
     "check": {
-      "dependsOn": ["gen:i18n", "^check"],
+      "dependsOn": [
+        "gen:i18n",
+        "^check"
+      ],
       "outputs": []
     },
     "check:watch": {
@@ -18,20 +27,27 @@
       "persistent": true
     },
     "lint": {
-      "dependsOn": ["^lint"],
+      "dependsOn": [
+        "^lint"
+      ],
       "outputs": []
     },
     "lint:ci": {
-      "dependsOn": ["^lint:ci"],
+      "dependsOn": [
+        "^lint:ci"
+      ],
       "outputs": []
     },
     "lint:fix": {
       "cache": false
     },
     "preview": {
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "cache": false,
       "persistent": true
-    }
+    },
+    "test": {},
   }
 }

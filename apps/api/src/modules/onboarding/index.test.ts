@@ -7,18 +7,18 @@ import { okAsync } from 'neverthrow'
 import { onboardingModule } from '$modules/onboarding'
 import { createAuthServerStub } from '$test/stubs/auth-server'
 
-describe('onboarding HTTP contract', () => {
-  const createTestApp = () => new Elysia()
-    .use(
-      onboardingModule({
-        auth: createAuthServerStub(),
-        service: {
-          hasCompletedOnboarding: () => okAsync({ completed: true }),
-          saveAthleteOnboarding: () => okAsync(null)
-        }
-      })
-    )
+const createTestApp = () => new Elysia()
+  .use(
+    onboardingModule({
+      auth: createAuthServerStub(),
+      service: {
+        hasCompletedOnboarding: () => okAsync({ completed: true }),
+        saveAthleteOnboarding: () => okAsync(null)
+      }
+    })
+  )
 
+describe('onboarding HTTP contract', () => {
   it('[GET] /v1/athletes/me/onboarding keeps response contract', async () => {
     const app = createTestApp()
 

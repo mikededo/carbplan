@@ -2,10 +2,11 @@ import type { PublicCatalogService } from '$modules/public/catalog/service'
 import type { EndpointHeaderPolicy } from '$modules/public/utils/headers'
 import type { EndpointRateLimiter, EndpointRateLimitPolicy } from '$modules/public/utils/rate-limit'
 
+import * as CatalogContracts from '@carbplan/contracts/catalog'
 import { Elysia, t } from 'elysia'
 
-import { CatalogResponseModel } from '$modules/public/catalog/model'
-import { apiErrorFactory, InternalServerErrorModel, PreconditionFailedErrorModel } from '$modules/public/model'
+import { CatalogQueryValidationError } from '$modules/public/catalog/model'
+import { apiErrorFactory, BadRequestErrorModel, InternalServerErrorModel, PreconditionFailedErrorModel } from '$modules/public/model'
 import { applyEndpointHeaders } from '$modules/public/utils/headers'
 import { resolveRateLimitClientKey } from '$modules/public/utils/rate-limit'
 import { StatusMap } from '$utils/codes'
@@ -30,7 +31,7 @@ export type PublicCatalogModuleOptions = {
 }
 
 export const publicCatalogModule = ({ limiter, service }: PublicCatalogModuleOptions) => new Elysia({ name: 'public-catalog' })
-  .get('/catalog', async ({ request, server, set, status }) => {
+  .get('/catalog', async ({ query, request, server, set, status }) => {
     const clientKey = resolveRateLimitClientKey(request, server)
     const isAllowed = limiter.consume({
       clientKey,
@@ -42,10 +43,19 @@ export const publicCatalogModule = ({ limiter, service }: PublicCatalogModuleOpt
       return status(StatusMap.PreconditionFailed, apiErrorFactory.preconditionFailed())
     }
 
-    const catalog = await service.getCatalog()
-    const payload = JSON.stringify(catalog)
+    const catalogResult = await service.getCatalogProducts(query)
+    if (catalogResult.isErr()) {
+      const error = catalogResult.error
+      if (error instanceof CatalogQueryValidationError) {
+        return status(StatusMap.BadRequest, apiErrorFactory.badRequest({ message: error.message }))
+      }
+
+      return status(StatusMap.InternalServerError, apiErrorFactory.internal())
+    }
+
+    const result = catalogResult.value
     const { notModified } = applyEndpointHeaders({
-      payload,
+      payload: JSON.stringify(result),
       policy: CATALOG_HEADER_POLICY,
       request,
       set
@@ -55,16 +65,18 @@ export const publicCatalogModule = ({ limiter, service }: PublicCatalogModuleOpt
       return status(StatusMap.NotModified, undefined)
     }
 
-    return catalog
+    return status(StatusMap.OK, result)
   }, {
     detail: {
       summary: 'Get public catalog',
       tags: ['Public Catalog']
     },
+    query: CatalogContracts.CatalogProductsListQuerySchema,
     response: {
+      [StatusMap.BadRequest]: BadRequestErrorModel,
       [StatusMap.InternalServerError]: InternalServerErrorModel,
       [StatusMap.NotModified]: t.Void(),
-      [StatusMap.OK]: CatalogResponseModel,
+      [StatusMap.OK]: CatalogContracts.CatalogProductsListResponseSchema,
       [StatusMap.PreconditionFailed]: PreconditionFailedErrorModel
     }
   })
