@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "target": "ES2022",
     "lib": [
       "ES2022"
@@ -17,12 +16,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "verbatimModuleSyntax": true,
-    "skipLibCheck": true,
-    "paths": {
-      "$lib/*": [
-        "./src/*"
-      ]
-    }
+    "skipLibCheck": true
   },
   "include": [
     "src"
