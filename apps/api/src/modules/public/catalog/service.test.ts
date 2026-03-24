@@ -22,7 +22,7 @@ describe('public catalog service', () => {
 
     const result = await service.getCatalogProducts(query)
 
-    expect(result).toEqual({
+    expect(result._unsafeUnwrap()).toEqual({
       data: [],
       meta: { limit: 20, offset: 0, total: 0 }
     })
