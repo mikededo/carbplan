@@ -6,6 +6,7 @@ import type { ProductService } from '$modules/products/service'
 import * as MeContracts from '@carbplan/contracts/me'
 import * as ProductsContracts from '@carbplan/contracts/products'
 import { Elysia } from 'elysia'
+import z from 'zod'
 
 import { authModule } from '$modules/auth'
 import {
@@ -75,7 +76,7 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
       response: {
         [StatusMap.Forbidden]: ForbiddenErrorModel,
         [StatusMap.InternalServerError]: InternalServerErrorModel,
-        [StatusMap.NoContent]: MeContracts.UpdateHRZonesResponseSchema,
+        [StatusMap.NoContent]: z.any(),
         [StatusMap.Unauthorized]: UnauthorizedErrorModel
       }
     }

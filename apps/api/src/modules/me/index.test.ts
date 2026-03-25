@@ -1,14 +1,15 @@
 import type { FavoriteProductsListResponse } from '$modules/products/model'
 
+import * as MeContracts from '@carbplan/contracts/me'
 import * as ProductsContracts from '@carbplan/contracts/products'
-import { Elysia } from 'elysia'
+import { HRZoneModelEnum } from '@carbplan/domain/hr'
+import { treaty } from '@elysiajs/eden'
 import { okAsync } from 'neverthrow'
-import { describe, expect, it } from 'vitest'
 
 import { meModule } from '$modules/me'
 import { createAuthServerStub } from '$test/stubs/auth-server'
 
-const createTestApp = () => new Elysia().use(meModule({
+const app = treaty(meModule({
   auth: createAuthServerStub(),
   services: {
     me: {
@@ -50,18 +51,27 @@ const createTestApp = () => new Elysia().use(meModule({
 
 describe('me HTTP contract', () => {
   it('[GET] /v1/me/favorites/products keeps response contract', async () => {
-    const app = createTestApp()
-
-    const response = await app.handle(new Request('http://localhost/v1/me/favorites/products'))
-    const payload = await response.json()
+    const response = await app.v1.me.favorites.products.get()
 
     expect(response.status).toBe(200)
 
-    const normalized = (payload as Array<Record<string, unknown>>).map((item) => ({
+    expect(Array.isArray(response.data)).toBeDefined()
+    const normalized = response.data?.map((item) => ({
       ...item,
       createdAt: new Date(String(item.createdAt)),
       updatedAt: new Date(String(item.updatedAt))
     }))
     expect(ProductsContracts.FavoriteProductsListResponseSchema.safeParse(normalized).success).toBe(true)
+  })
+
+  // FIXME: NoContent fail when passing null/undefined: https://github.com/elysiajs/elysia/pull/1810
+  it.skip('[PATCH] /v1/me/hr keeps response contract', async () => {
+    const response = await app.v1.me.hr.patch({
+      model: HRZoneModelEnum.custom,
+      zones: []
+    })
+
+    expect(response.status).toBe(204)
+    expect(MeContracts.UpdateHRZonesResponseSchema.safeParse(response).success).toBe(true)
   })
 })

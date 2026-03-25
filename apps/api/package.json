@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@carbplan/eslint": "workspace:*",
+    "@elysiajs/eden": "1.4.8",
     "bun-types": "1.3.11",
     "eslint": "catalog:",
     "logixlysia": "^6.2.2",

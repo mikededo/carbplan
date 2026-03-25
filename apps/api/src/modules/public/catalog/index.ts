@@ -3,7 +3,7 @@ import type { EndpointHeaderPolicy } from '$modules/public/utils/headers'
 import type { EndpointRateLimiter, EndpointRateLimitPolicy } from '$modules/public/utils/rate-limit'
 
 import * as CatalogContracts from '@carbplan/contracts/catalog'
-import { Elysia, t } from 'elysia'
+import { Elysia } from 'elysia'
 
 import { CatalogQueryValidationError } from '$modules/public/catalog/model'
 import { apiErrorFactory, BadRequestErrorModel, InternalServerErrorModel, PreconditionFailedErrorModel } from '$modules/public/model'
@@ -75,7 +75,7 @@ export const publicCatalogModule = ({ limiter, service }: PublicCatalogModuleOpt
     response: {
       [StatusMap.BadRequest]: BadRequestErrorModel,
       [StatusMap.InternalServerError]: InternalServerErrorModel,
-      [StatusMap.NotModified]: t.Void(),
+      [StatusMap.NotModified]: CatalogContracts.CatalogProductListCachedResponseSchema,
       [StatusMap.OK]: CatalogContracts.CatalogProductsListResponseSchema,
       [StatusMap.PreconditionFailed]: PreconditionFailedErrorModel
     }

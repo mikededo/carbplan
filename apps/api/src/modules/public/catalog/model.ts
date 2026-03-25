@@ -20,7 +20,7 @@ export type CatalogSortSelection = {
 }
 
 export type CatalogProductsListQuery = {
-  sort: string
+  sort?: string
   brand?: string[] | undefined
   caloriesGte?: number | undefined
   caloriesLte?: number | undefined
