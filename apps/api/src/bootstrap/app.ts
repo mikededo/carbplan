@@ -46,7 +46,9 @@ export const createApp = async ({ corsOrigins, services }: CreateAppOptions) =>
         },
         paths: await OpenAPI.getPaths(services.auth)
       },
-      mapJsonSchema: { zod: z.toJSONSchema },
+      // Passing 'any' in order to be able to treat undefined as some value,
+      // otherwise empty responses do not show up in docs
+      mapJsonSchema: { zod: (schema: z.ZodType) => z.toJSONSchema(schema, { unrepresentable: 'any' }) },
       path: '/docs',
       // @ts-expect-error This is correct, to overwrite elysiajs styles
       scalar: {
