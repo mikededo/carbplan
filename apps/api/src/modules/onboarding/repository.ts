@@ -4,8 +4,8 @@ import type { OnboardingStatus, SaveAthleteOnboardingData } from '$modules/onboa
 import type { DatabaseQueryError } from '$utils/db-error'
 
 import { athletes } from '@carbplan/db'
-import { f } from '@carbplan/utils/function'
 import { eq } from 'drizzle-orm'
+import { noop } from 'es-toolkit'
 import { ResultAsync } from 'neverthrow'
 
 import { mapDbError } from '$utils/db-error'
@@ -35,6 +35,6 @@ export class DbOnboardingRepository implements OnboardingRepository {
         .set({ ...data, onboardingCompleted: true })
         .where(eq(athletes.id, id)),
       mapDbError
-    ).map(f.noop)
+    ).map(noop)
   }
 }

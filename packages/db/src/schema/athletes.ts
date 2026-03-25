@@ -1,7 +1,7 @@
 import type { HRZonesData } from '@carbplan/domain/hr'
 import type { PowerZonesData } from '@carbplan/domain/power'
 
-import { SEX_VALUES } from '@carbplan/domain/profile'
+import { SexSchema } from '@carbplan/domain/profile'
 import { sql } from 'drizzle-orm'
 import {
   boolean,
@@ -20,7 +20,7 @@ import {
 
 import { users } from './auth'
 
-export const sexEnum = pgEnum('sex', [...SEX_VALUES] as [string, ...string[]])
+export const sexEnum = pgEnum('sex', SexSchema.enum)
 
 export const athletes = pgTable('athletes', {
   avatarUrl: text('avatar_url'),

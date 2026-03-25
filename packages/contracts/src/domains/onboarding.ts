@@ -1,10 +1,7 @@
-import { PROFILE_FIELD_CONSTRAINTS, SEX_VALUES } from '@carbplan/domain/profile'
+import { PROFILE_FIELD_CONSTRAINTS, SexSchema } from '@carbplan/domain/profile'
 import z from 'zod'
 
 import { ApiEmptyResponse } from '../api'
-
-export const SexSchema = z.enum(SEX_VALUES, 'Invalid sex value')
-export const SexEnum = SexSchema.enum
 
 export const SaveOnboardingRequestSchema = z.object({
   ftp: z.number()

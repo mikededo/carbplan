@@ -20,6 +20,7 @@
     "drizzle-orm": "0.45.1",
     "drizzle-typebox": "0.3.3",
     "elysia": "1.4.28",
+    "es-toolkit": "1.45.1",
     "pg-error-enum": "1.0.2",
     "zod": "catalog:"
   },

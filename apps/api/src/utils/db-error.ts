@@ -81,3 +81,14 @@ export const mapDbError = (error: unknown): DatabaseQueryError => {
     table: asString(maybePostgresError.table)
   })
 }
+
+export class EntityNotFound extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'EntityNotFound'
+  }
+
+  public static withEntityName(entity: string, message?: string) {
+    return new EntityNotFound(message ?? '%s not found'.replace('%s', entity))
+  }
+}

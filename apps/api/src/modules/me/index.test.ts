@@ -13,7 +13,27 @@ const app = treaty(meModule({
   auth: createAuthServerStub(),
   services: {
     me: {
-      updateHRZones: () => okAsync(true)
+      getCurrentAthlete: () => okAsync<MeContracts.GetCurrentAthleteResponse>({
+        avatarUrl: null,
+        createdAt: new Date(),
+        email: 'test@test.com',
+        ftp: null,
+        fullName: 'Test User',
+        heightCm: 150,
+        hrMax: 200,
+        hrRest: 40,
+        hrZones: null,
+        id: crypto.randomUUID(),
+        isAdmin: false,
+        maxCarbIntakeGPerHr: 80,
+        onboardingCompleted: true,
+        powerZones: null,
+        sex: 'male',
+        updatedAt: new Date(),
+        weightKg: 70
+      }),
+      updateHRZones: () => okAsync(true),
+      updatePowerZones: () => okAsync(true)
     },
     product: {
       getAllFavoriteProducts: () => okAsync<FavoriteProductsListResponse>([{
@@ -50,6 +70,23 @@ const app = treaty(meModule({
 }))
 
 describe('me HTTP contract', () => {
+  it('[GET] /v1/me keeps response contract', async () => {
+    const response = await app.v1.me.get()
+    expect(response.status).toBe(200)
+    expect(MeContracts.GetCurrentAthleteResponseSchema.parse(response.data)).toBeTruthy()
+  })
+
+  // FIXME: NoContent fail when passing null/undefined: https://github.com/elysiajs/elysia/pull/1810
+  it.skip('[PATCH] /v1/me/hr keeps response contract', async () => {
+    const response = await app.v1.me.hr.patch({
+      model: HRZoneModelEnum.custom,
+      zones: []
+    })
+
+    expect(response.status).toBe(204)
+    expect(MeContracts.UpdateHRZonesResponseSchema.safeParse(response).success).toBe(true)
+  })
+
   it('[GET] /v1/me/favorites/products keeps response contract', async () => {
     const response = await app.v1.me.favorites.products.get()
 
@@ -62,16 +99,5 @@ describe('me HTTP contract', () => {
       updatedAt: new Date(String(item.updatedAt))
     }))
     expect(ProductsContracts.FavoriteProductsListResponseSchema.safeParse(normalized).success).toBe(true)
-  })
-
-  // FIXME: NoContent fail when passing null/undefined: https://github.com/elysiajs/elysia/pull/1810
-  it.skip('[PATCH] /v1/me/hr keeps response contract', async () => {
-    const response = await app.v1.me.hr.patch({
-      model: HRZoneModelEnum.custom,
-      zones: []
-    })
-
-    expect(response.status).toBe(204)
-    expect(MeContracts.UpdateHRZonesResponseSchema.safeParse(response).success).toBe(true)
   })
 })

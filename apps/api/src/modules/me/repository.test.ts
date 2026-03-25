@@ -1,9 +1,54 @@
+import type { CurrentAthleteData } from '$modules/me/model'
+
 import { createRepositoryDbMock } from '@carbplan/auth/testing'
 import { HRZoneModelEnum } from '@carbplan/domain/hr'
 
 import { DbMeRepository } from '$modules/me/repository'
+import { EntityNotFound } from '$utils/db-error'
 
 describe('db me repository', () => {
+  describe('.getCurrentAthlete', () => {
+    it('returns current athelte data', async () => {
+      const model: CurrentAthleteData = {
+        avatarUrl: null,
+        createdAt: new Date(),
+        email: 'test@test.com',
+        ftp: null,
+        fullName: 'Test User',
+        heightCm: 150,
+        hrMax: 200,
+        hrRest: 40,
+        hrZones: null,
+        id: crypto.randomUUID(),
+        isAdmin: false,
+        maxCarbIntakeGPerHr: 80,
+        onboardingCompleted: true,
+        powerZones: null,
+        sex: 'male',
+        updatedAt: new Date(),
+        weightKg: 70
+      }
+      const dbMock = createRepositoryDbMock()
+      dbMock.queueResult([model])
+      const repository = new DbMeRepository(dbMock.db)
+
+      const result = await repository.getCurrentAthlete('athlete-id')
+      expect(result._unsafeUnwrap()).toEqual(model)
+    })
+
+    it('returns EntityNotFound if no entry found', async () => {
+      const dbMock = createRepositoryDbMock()
+      dbMock.queueResult([])
+      const repository = new DbMeRepository(dbMock.db)
+
+      await repository.getCurrentAthlete('athlete-id')
+        .match(
+          () => expect.fail('Should return with EntityNotFound error'),
+          (err) => expect(err).toBeInstanceOf(EntityNotFound)
+        )
+    })
+  })
+
   it('updates the hr zones from an athlete', async () => {
     const dbMock = createRepositoryDbMock()
     dbMock.queueResult(undefined)

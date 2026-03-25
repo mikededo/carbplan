@@ -1,5 +1,8 @@
-export const SEX_VALUES = ['male', 'female'] as const
-export type Sex = (typeof SEX_VALUES)[number]
+import { z } from 'zod'
+
+export const SexSchema = z.enum(['male', 'female'])
+export const SexEnum = SexSchema.enum
+export type Sex = z.infer<typeof SexSchema>
 
 export const PROFILE_FIELD_CONSTRAINTS = {
   ftp: { max: 750, min: 50 },

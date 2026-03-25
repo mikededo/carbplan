@@ -12,9 +12,11 @@ import {
   apiErrorFactory,
   ForbiddenErrorModel,
   InternalServerErrorModel,
+  NotFoundErrorModel,
   UnauthorizedErrorModel
 } from '$modules/public/model'
 import { StatusMap } from '$utils/codes'
+import { EntityNotFound } from '$utils/db-error'
 
 export type MeModuleOptions = {
   auth: AuthServer
@@ -34,28 +36,32 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
 })
   .use(authModule({ auth }))
   .guard({ auth: true })
-  .group(
-    '/favorites',
-    (app) => app.get(
-      '/products',
-      ({ status, user }) => services.product.getAllFavoriteProducts(user.id)
-        .match(
-          (value) => status(StatusMap.OK, value),
-          () => status(StatusMap.InternalServerError, apiErrorFactory.internal())
-        ),
-      {
-        detail: {
-          description: 'Return the favorite products of the user',
-          summary: 'Favorite products'
-        },
-        response: {
-          [StatusMap.Forbidden]: ForbiddenErrorModel,
-          [StatusMap.InternalServerError]: InternalServerErrorModel,
-          [StatusMap.OK]: ProductsContracts.FavoriteProductsListResponseSchema,
-          [StatusMap.Unauthorized]: UnauthorizedErrorModel
+  .get(
+    '',
+    ({ status, user }) => services.me.getCurrentAthlete(user.id)
+      .match(
+        (result) => status(StatusMap.OK, result),
+        (error) => {
+          if (error instanceof EntityNotFound) {
+            return status(StatusMap.NotFound, apiErrorFactory.notFound({ message: error.message }))
+          }
+
+          return status(StatusMap.InternalServerError, apiErrorFactory.internal())
         }
+      ),
+    {
+      detail: {
+        description: 'Returns current session athlete data',
+        summary: 'Current athlete'
+      },
+      response: {
+        [StatusMap.Forbidden]: ForbiddenErrorModel,
+        [StatusMap.InternalServerError]: InternalServerErrorModel,
+        [StatusMap.NotFound]: NotFoundErrorModel,
+        [StatusMap.OK]: MeContracts.GetCurrentAthleteResponseSchema,
+        [StatusMap.Unauthorized]: UnauthorizedErrorModel
       }
-    )
+    }
   )
   .patch(
     '/hr',
@@ -98,4 +104,27 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
         [StatusMap.Unauthorized]: UnauthorizedErrorModel
       }
     }
+  )
+  .group(
+    '/favorites',
+    (app) => app.get(
+      '/products',
+      ({ status, user }) => services.product.getAllFavoriteProducts(user.id)
+        .match(
+          (value) => status(StatusMap.OK, value),
+          () => status(StatusMap.InternalServerError, apiErrorFactory.internal())
+        ),
+      {
+        detail: {
+          description: 'Return the favorite products of the user',
+          summary: 'Favorite products'
+        },
+        response: {
+          [StatusMap.Forbidden]: ForbiddenErrorModel,
+          [StatusMap.InternalServerError]: InternalServerErrorModel,
+          [StatusMap.OK]: ProductsContracts.FavoriteProductsListResponseSchema,
+          [StatusMap.Unauthorized]: UnauthorizedErrorModel
+        }
+      }
+    )
   )
