@@ -43,29 +43,29 @@ export const publicCatalogModule = ({ limiter, service }: PublicCatalogModuleOpt
       return status(StatusMap.PreconditionFailed, apiErrorFactory.preconditionFailed())
     }
 
-    const catalogResult = await service.getCatalogProducts(query)
-    if (catalogResult.isErr()) {
-      const error = catalogResult.error
-      if (error instanceof CatalogQueryValidationError) {
-        return status(StatusMap.BadRequest, apiErrorFactory.badRequest({ message: error.message }))
+    return service.getCatalogProducts(query).match(
+      (result) => {
+        const { notModified } = applyEndpointHeaders({
+          payload: JSON.stringify(result),
+          policy: CATALOG_HEADER_POLICY,
+          request,
+          set
+        })
+
+        if (notModified) {
+          return status(StatusMap.NotModified, undefined)
+        }
+
+        return status(StatusMap.OK, result)
+      },
+      (error) => {
+        if (error instanceof CatalogQueryValidationError) {
+          return status(StatusMap.BadRequest, apiErrorFactory.badRequest({ message: error.message }))
+        }
+
+        return status(StatusMap.InternalServerError, apiErrorFactory.internal())
       }
-
-      return status(StatusMap.InternalServerError, apiErrorFactory.internal())
-    }
-
-    const result = catalogResult.value
-    const { notModified } = applyEndpointHeaders({
-      payload: JSON.stringify(result),
-      policy: CATALOG_HEADER_POLICY,
-      request,
-      set
-    })
-
-    if (notModified) {
-      return status(StatusMap.NotModified, undefined)
-    }
-
-    return status(StatusMap.OK, result)
+    )
   }, {
     detail: {
       summary: 'Get public catalog',

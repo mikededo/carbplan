@@ -11,7 +11,7 @@ const app = treaty(
     auth: createAuthServerStub(),
     service: {
       hasCompletedOnboarding: () => okAsync({ completed: true }),
-      saveAthleteOnboarding: () => okAsync(null)
+      saveAthleteOnboarding: () => okAsync()
     }
   })
 )

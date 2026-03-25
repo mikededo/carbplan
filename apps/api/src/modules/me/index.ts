@@ -36,36 +36,34 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
   .guard({ auth: true })
   .group(
     '/favorites',
-    (app) => app.get('/products', async ({ status, user }) => {
-      const result = await services.product.getAllFavoriteProducts(user.id)
-      if (result.isErr()) {
-        return status(StatusMap.InternalServerError, apiErrorFactory.internal())
+    (app) => app.get(
+      '/products',
+      ({ status, user }) => services.product.getAllFavoriteProducts(user.id)
+        .match(
+          (value) => status(StatusMap.OK, value),
+          () => status(StatusMap.InternalServerError, apiErrorFactory.internal())
+        ),
+      {
+        detail: {
+          description: 'Return the favorite products of the user',
+          summary: 'Favorite products'
+        },
+        response: {
+          [StatusMap.Forbidden]: ForbiddenErrorModel,
+          [StatusMap.InternalServerError]: InternalServerErrorModel,
+          [StatusMap.OK]: ProductsContracts.FavoriteProductsListResponseSchema,
+          [StatusMap.Unauthorized]: UnauthorizedErrorModel
+        }
       }
-
-      return status(StatusMap.OK, result.value)
-    }, {
-      detail: {
-        description: 'Return the favorite products of the user',
-        summary: 'Favorite products'
-      },
-      response: {
-        [StatusMap.Forbidden]: ForbiddenErrorModel,
-        [StatusMap.InternalServerError]: InternalServerErrorModel,
-        [StatusMap.OK]: ProductsContracts.FavoriteProductsListResponseSchema,
-        [StatusMap.Unauthorized]: UnauthorizedErrorModel
-      }
-    })
+    )
   )
   .patch(
     '/hr',
-    async ({ body, status, user }) => {
-      const result = await services.me.updateHRZones(user.id, body)
-      if (result.isErr()) {
-        return status(StatusMap.InternalServerError, apiErrorFactory.internal())
-      }
-
-      return status(StatusMap.NoContent, undefined)
-    },
+    async ({ body, status, user }) => await services.me.updateHRZones(user.id, body)
+      .match(
+        () => status(StatusMap.NoContent, undefined),
+        () => status(StatusMap.InternalServerError, apiErrorFactory.internal())
+      ),
     {
       body: MeContracts.UpdateHRZonesRequestSchema,
       detail: {
@@ -82,9 +80,11 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
   )
   .patch(
     '/power',
-    async ({ body, status, user }) => await services.me.updatePowerZones(user.id, body)
-      .map(() => status(StatusMap.NoContent, undefined))
-      .mapErr(() => status(StatusMap.InternalServerError, apiErrorFactory.internal())),
+    ({ body, status, user }) => services.me.updatePowerZones(user.id, body)
+      .match(
+        () => status(StatusMap.NoContent, undefined),
+        () => status(StatusMap.InternalServerError, apiErrorFactory.internal())
+      ),
     {
       body: MeContracts.UpdatePowerZonesRequestSchema,
       detail: {

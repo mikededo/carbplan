@@ -14,6 +14,7 @@
     "@carbplan/contracts": "workspace:*",
     "@carbplan/db": "workspace:*",
     "@carbplan/domain": "workspace:*",
+    "@carbplan/utils": "workspace:*",
     "@elysiajs/cors": "^1.4.1",
     "@elysiajs/openapi": "^1.4.14",
     "drizzle-orm": "0.45.1",

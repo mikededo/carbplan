@@ -33,14 +33,11 @@ export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => 
   .guard({ auth: true })
   .get(
     '',
-    async ({ status, user }) => {
-      const result = await service.hasCompletedOnboarding(user.id)
-      if (result.isErr()) {
-        return status(StatusMap.InternalServerError, apiErrorFactory.internal())
-      }
-
-      return status(StatusMap.OK, result.value)
-    },
+    ({ status, user }) =>
+      service.hasCompletedOnboarding(user.id).match(
+        (result) => status(StatusMap.OK, result),
+        () => status(StatusMap.InternalServerError, apiErrorFactory.internal())
+      ),
     {
       detail: {
         description: 'Returns whether the current user has completed onboarding or not',
@@ -56,21 +53,19 @@ export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => 
   )
   .post(
     '',
-    async ({ body, status, user }) => {
+    ({ body, status, user }) => {
       const parsed = OnboardingContracts.SaveOnboardingRequestSchema.safeParse(body)
       if (parsed.error) {
         return status(StatusMap.BadRequest, apiErrorFactory.badRequest())
       }
 
-      const result = await service.saveAthleteOnboarding({
+      service.saveAthleteOnboarding({
         id: user.id,
         ...parsed.data
-      })
-      if (result.isErr()) {
-        return status(StatusMap.InternalServerError, apiErrorFactory.internal())
-      }
-
-      return status(StatusMap.NoContent, undefined)
+      }).match(
+        () => status(StatusMap.NoContent, undefined),
+        () => status(StatusMap.InternalServerError, apiErrorFactory.internal())
+      )
     },
     {
       body: OnboardingContracts.SaveOnboardingRequestSchema,
