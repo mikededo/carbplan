@@ -80,5 +80,3 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
       }
     }
   )
-  .onError(() => {
-  })
