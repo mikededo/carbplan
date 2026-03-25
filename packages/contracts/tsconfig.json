@@ -8,7 +8,8 @@
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "types": [
-      "bun"
+      "bun",
+      "vitest/globals"
     ],
     "allowJs": false,
     "strict": true,

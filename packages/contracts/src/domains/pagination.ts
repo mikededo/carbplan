@@ -15,12 +15,23 @@ type CreateSortSchemaInput<TSortField extends readonly [string, ...string[]]> = 
   fields: TSortField
 }
 
+type SortValue<T extends readonly [string, ...string[]]> =
+  `${T[number]}:${'asc' | 'desc'}`
+
 export const createSortSchema = <TSortField extends readonly [string, ...string[]]>({
   defaultSort,
   fields
 }: CreateSortSchemaInput<TSortField>) => {
-  const values = fields.flatMap((field) => [`${field}:asc`, `${field}:desc`])
-  return z.enum(values).default(defaultSort)
+  const validValues = new Set(
+    fields.flatMap((field) => [`${field}:asc`, `${field}:desc`])
+  )
+
+  return z
+    .custom<SortValue<TSortField>>(
+      (val) => typeof val === 'string' && validValues.has(val),
+      { message: `Must be one of: ${[...validValues].join(', ')}` }
+    )
+    .default(defaultSort)
 }
 
 type CreateListQuerySchemaInput<
@@ -42,7 +53,7 @@ export const createListQuerySchema = <
   filters,
   maxLimit = 100
 }: CreateListQuerySchemaInput<TFilterShape, TSortField>) => filters.extend({
-  limit: z.coerce.number().int().positive().max(maxLimit).default(20),
-  offset: z.coerce.number().int().min(0).default(0),
-  sort: createSortSchema({ defaultSort, fields })
+  limit: z.coerce.number().int().positive().max(maxLimit).default(20).optional(),
+  offset: z.coerce.number().int().positive().min(0).default(0).optional(),
+  sort: createSortSchema({ defaultSort, fields }).optional()
 })
