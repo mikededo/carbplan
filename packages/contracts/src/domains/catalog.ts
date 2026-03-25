@@ -2,6 +2,7 @@ import { PRODUCT_FORM } from '@carbplan/domain/product'
 import z from 'zod'
 
 import { ApiEmptyResponse, ApiSuccessSchema, PaginationApiMeta } from '../api'
+import { createFilterArraySchema, StringFilterArraySchema } from './filtering'
 import { createListQuerySchema } from './pagination'
 
 export const CatalogProductsSortFields = [
@@ -17,12 +18,12 @@ export const CatalogProductsSortFields = [
 export type CatalogProductsSortField = (typeof CatalogProductsSortFields)[number]
 
 export const CatalogProductsFilterSchema = z.object({
-  brand: z.array(z.string().min(1)).optional(),
+  brand: StringFilterArraySchema.optional(),
   caloriesGte: z.coerce.number().nonnegative().optional(),
   caloriesLte: z.coerce.number().nonnegative().optional(),
   carbsGte: z.coerce.number().nonnegative().optional(),
   carbsLte: z.coerce.number().nonnegative().optional(),
-  form: z.array(z.enum(PRODUCT_FORM)).optional(),
+  form: createFilterArraySchema(z.enum(PRODUCT_FORM)).optional(),
   q: z.string().trim().min(1).max(120).optional()
 })
   .refine((value) => value.caloriesGte === undefined || value.caloriesLte === undefined || value.caloriesGte <= value.caloriesLte, {
