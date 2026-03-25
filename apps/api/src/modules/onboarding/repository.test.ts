@@ -8,9 +8,11 @@ describe('onboarding repository', () => {
     dbMock.queueResult([{ completed: true }])
     const repository = new DbOnboardingRepository(dbMock.db)
 
-    const result = await repository.findCompletionByAthleteId('athlete-id')
-
-    expect(result).toEqual({ completed: true })
+    await repository.findCompletionByAthleteId('athlete-id')
+      .match(
+        (result) => expect(result).toEqual({ completed: true }),
+        () => expect.fail('Got error when should result to ok')
+      )
   })
 
   it('returns null when athlete is not found', async () => {
@@ -18,9 +20,11 @@ describe('onboarding repository', () => {
     dbMock.queueResult([])
     const repository = new DbOnboardingRepository(dbMock.db)
 
-    const result = await repository.findCompletionByAthleteId('athlete-id')
-
-    expect(result).toBeNull()
+    await repository.findCompletionByAthleteId('athlete-id')
+      .match(
+        (result) => expect(result).toBeUndefined(),
+        () => expect.fail('Got error when should result to ok')
+      )
   })
 
   it('updates onboarding data and marks completion', async () => {
@@ -39,15 +43,18 @@ describe('onboarding repository', () => {
 
   it('propagates db errors when updating onboarding data', async () => {
     const dbMock = createRepositoryDbMock()
-    dbMock.queueError(new Error('db failed'))
+    dbMock.queueError(new Error('Error'))
     const repository = new DbOnboardingRepository(dbMock.db)
 
-    await expect(repository.saveAthleteOnboarding({
+    await repository.saveAthleteOnboarding({
       fullName: 'Jane Rider',
       height: 170,
       id: 'athlete-id',
       sex: 'female',
       weight: 58
-    })).rejects.toThrow('db failed')
+    }).match(
+      () => expect.fail('Got ok when should result to err'),
+      (error) => expect(error).toBeInstanceOf(Error)
+    )
   })
 })

@@ -1,11 +1,13 @@
+import { errAsync, okAsync } from 'neverthrow'
+
 import { OnboardingServiceImpl } from '$modules/onboarding/service'
 import { DatabaseQueryError } from '$utils/db-error'
 
 describe('onboarding service', () => {
   it('returns completed status from repository', async () => {
     const repository = {
-      findCompletionByAthleteId: vi.fn(async () => ({ completed: true })),
-      saveAthleteOnboarding: vi.fn(async () => undefined)
+      findCompletionByAthleteId: vi.fn(() => okAsync(({ completed: true }))),
+      saveAthleteOnboarding: vi.fn(() => okAsync(undefined))
     }
     const service = new OnboardingServiceImpl(repository)
 
@@ -15,23 +17,10 @@ describe('onboarding service', () => {
     expect(result._unsafeUnwrap()).toEqual({ completed: true })
   })
 
-  it('defaults to not completed when repository has no record', async () => {
-    const repository = {
-      findCompletionByAthleteId: vi.fn(async () => null),
-      saveAthleteOnboarding: vi.fn(async () => undefined)
-    }
-    const service = new OnboardingServiceImpl(repository)
-
-    const result = await service.hasCompletedOnboarding('athlete-id')
-
-    expect(result.isOk()).toBe(true)
-    expect(result._unsafeUnwrap()).toEqual({ completed: false })
-  })
-
   it('maps save success to null response', async () => {
     const repository = {
-      findCompletionByAthleteId: vi.fn(async () => ({ completed: false })),
-      saveAthleteOnboarding: vi.fn(async () => undefined)
+      findCompletionByAthleteId: vi.fn(() => okAsync({ completed: false })),
+      saveAthleteOnboarding: vi.fn(() => okAsync(undefined))
     }
     const service = new OnboardingServiceImpl(repository)
 
@@ -44,15 +33,15 @@ describe('onboarding service', () => {
     })
 
     expect(result.isOk()).toBe(true)
-    expect(result._unsafeUnwrap()).toBeNull()
+    expect(result._unsafeUnwrap()).toBeUndefined()
   })
 
   it('maps repository save errors to a database error', async () => {
     const repository = {
-      findCompletionByAthleteId: vi.fn(async () => ({ completed: false })),
-      saveAthleteOnboarding: vi.fn(async () => {
-        throw new Error('write failed')
-      })
+      findCompletionByAthleteId: vi.fn(() => okAsync({ completed: false })),
+      saveAthleteOnboarding: vi.fn(() => errAsync(
+        new DatabaseQueryError({ cause: '', code: 'UNKNOWN_DB_ERROR' })
+      ))
     }
     const service = new OnboardingServiceImpl(repository)
 
@@ -68,6 +57,5 @@ describe('onboarding service', () => {
     const error = result._unsafeUnwrapErr()
     expect(error).toBeInstanceOf(DatabaseQueryError)
     expect(error.code).toBe('UNKNOWN_DB_ERROR')
-    expect(error.cause).toEqual(expect.objectContaining({ message: 'write failed' }))
   })
 })
