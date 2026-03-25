@@ -80,3 +80,22 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
       }
     }
   )
+  .patch(
+    '/power',
+    async ({ body, status, user }) => await services.me.updatePowerZones(user.id, body)
+      .map(() => status(StatusMap.NoContent, undefined))
+      .mapErr(() => status(StatusMap.InternalServerError, apiErrorFactory.internal())),
+    {
+      body: MeContracts.UpdatePowerZonesRequestSchema,
+      detail: {
+        description: 'Updates power settings for the current user',
+        summary: 'Update power'
+      },
+      response: {
+        [StatusMap.Forbidden]: ForbiddenErrorModel,
+        [StatusMap.InternalServerError]: InternalServerErrorModel,
+        [StatusMap.NoContent]: MeContracts.UpdatePowerZonesResponseSchema,
+        [StatusMap.Unauthorized]: UnauthorizedErrorModel
+      }
+    }
+  )

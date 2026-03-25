@@ -1,4 +1,5 @@
 import type { HRZonesData } from '@carbplan/domain/hr'
+import type { PowerZonesData } from '@carbplan/domain/power'
 
 import { SEX_VALUES } from '@carbplan/domain/profile'
 import { sql } from 'drizzle-orm'
@@ -35,7 +36,7 @@ export const athletes = pgTable('athletes', {
   isAdmin: boolean('is_admin').default(false).notNull(),
   maxCarbIntakeGPerHr: integer('max_carb_intake_g_per_hr'),
   onboardingCompleted: boolean('onboarding_completed').default(false).notNull(),
-  powerZones: jsonb('power_zones'),
+  powerZones: jsonb('power_zones').$type<PowerZonesData>(),
   sex: sexEnum('sex'),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
   weightKg: numeric('weight_kg', { mode: 'number', precision: 5, scale: 2 })
