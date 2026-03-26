@@ -1,170 +1,217 @@
 import { Err, Ok, ResultAsync } from 'neverthrow'
-import { chai } from 'vitest'
+import { expect } from 'vitest'
+
+type MatcherResult = {
+  message: () => string
+  pass: boolean
+}
+
+type MatcherContext = {
+  equals: (actual: unknown, expected: unknown) => boolean
+  utils: {
+    printExpected: (value: unknown) => string
+    printReceived: (value: unknown) => string
+  }
+}
+
+type NeverthrowMatchers<R = unknown> = {
+  toBeOk: () => R
+  toBeErr: () => R
+  toBeOkWith: (expected: unknown) => R
+  toBeErrWith: (expected: unknown) => R
+  toBeOkAsync: () => Promise<R>
+  toBeErrAsync: () => Promise<R>
+  toBeOkAsyncWith: (expected: unknown) => Promise<R>
+  toBeErrAsyncWith: (expected: unknown) => Promise<R>
+}
 
 declare module 'vitest' {
-  // eslint-disable-next-line ts/consistent-type-definitions
-  interface Assertion<T = any> {
-    $err: Assertion<T>
-    $errAsync: Assertion<T>
-    $ok: Assertion<T>
-    $okAsync: Assertion<T>
+  interface Matchers<T = any> extends NeverthrowMatchers<T> {}
+}
+
+const isOkResult = (value: unknown): value is Ok<unknown, unknown> => value instanceof Ok
+const isErrResult = (value: unknown): value is Err<unknown, unknown> => value instanceof Err
+const isResult = (value: unknown): value is Err<unknown, unknown> | Ok<unknown, unknown> => (
+  isOkResult(value) || isErrResult(value)
+)
+
+const ensureResult = (value: unknown, matcherName: string) => {
+  if (isResult(value)) {
+    return
+  }
+
+  throw new TypeError(`You must provide a Result to expect() when using .${matcherName}.`)
+}
+
+const ensureResultAsync = (value: unknown, matcherName: string): ResultAsync<unknown, unknown> => {
+  if (value instanceof ResultAsync) {
+    return value
+  }
+
+  throw new TypeError(`You must provide a ResultAsync to expect() when using .${matcherName}.`)
+}
+
+const isConstructor = (value: unknown): value is new (...args: never[]) => unknown => typeof value === 'function'
+
+const matchesExpected = (
+  equals: MatcherContext['equals'],
+  actual: unknown,
+  expected: unknown
+) => {
+  if (isConstructor(expected) && typeof actual === 'object' && actual !== null) {
+    return actual instanceof expected
+  }
+
+  return equals(actual, expected)
+}
+
+const passMessage = (matcher: string, expected: string, received: string) =>
+  `expected ${received} not to ${matcher}${expected.length > 0 ? ` ${expected}` : ''}`
+
+const failMessage = (matcher: string, expected: string, received: string) =>
+  `expected ${received} to ${matcher}${expected.length > 0 ? ` ${expected}` : ''}`
+
+export const neverthrowMatchers = {
+  toBeOk(this: MatcherContext, received: unknown): MatcherResult {
+    ensureResult(received, 'toBeOk')
+    const pass = isOkResult(received)
+
+    return {
+      message: () => (pass
+        ? passMessage('be Ok', '', this.utils.printReceived(received))
+        : failMessage('be Ok', '', this.utils.printReceived(received))),
+      pass
+    }
+  },
+
+  toBeErr(this: MatcherContext, received: unknown): MatcherResult {
+    ensureResult(received, 'toBeErr')
+    const pass = isErrResult(received)
+
+    return {
+      message: () => (pass
+        ? passMessage('be Err', '', this.utils.printReceived(received))
+        : failMessage('be Err', '', this.utils.printReceived(received))),
+      pass
+    }
+  },
+
+  toBeOkWith(this: MatcherContext, received: unknown, expected: unknown): MatcherResult {
+    ensureResult(received, 'toBeOkWith')
+    const pass = isOkResult(received) && matchesExpected(this.equals, received.value, expected)
+
+    return {
+      message: () => {
+        if (!isOkResult(received)) {
+          return failMessage('be Ok with', this.utils.printExpected(expected), this.utils.printReceived(received))
+        }
+
+        return pass
+          ? passMessage('be Ok with', this.utils.printExpected(expected), this.utils.printReceived(received.value))
+          : failMessage('be Ok with', this.utils.printExpected(expected), this.utils.printReceived(received.value))
+      },
+      pass
+    }
+  },
+
+  toBeErrWith(this: MatcherContext, received: unknown, expected: unknown): MatcherResult {
+    ensureResult(received, 'toBeErrWith')
+    const pass = isErrResult(received) && matchesExpected(this.equals, received.error, expected)
+
+    return {
+      message: () => {
+        if (!isErrResult(received)) {
+          return failMessage('be Err with', this.utils.printExpected(expected), this.utils.printReceived(received))
+        }
+
+        return pass
+          ? passMessage('be Err with', this.utils.printExpected(expected), this.utils.printReceived(received.error))
+          : failMessage('be Err with', this.utils.printExpected(expected), this.utils.printReceived(received.error))
+      },
+      pass
+    }
+  },
+
+  async toBeOkAsync(this: MatcherContext, received: unknown): Promise<MatcherResult> {
+    const resultAsync = ensureResultAsync(received, 'toBeOkAsync')
+    const resolved = await resultAsync
+    const pass = isOkResult(resolved)
+
+    return {
+      message: () => (pass
+        ? passMessage('be Ok', '', this.utils.printReceived(resolved))
+        : failMessage('be Ok', '', this.utils.printReceived(resolved))),
+      pass
+    }
+  },
+
+  async toBeErrAsync(this: MatcherContext, received: unknown): Promise<MatcherResult> {
+    const resultAsync = ensureResultAsync(received, 'toBeErrAsync')
+    const resolved = await resultAsync
+    const pass = isErrResult(resolved)
+
+    return {
+      message: () => (pass
+        ? passMessage('be Err', '', this.utils.printReceived(resolved))
+        : failMessage('be Err', '', this.utils.printReceived(resolved))),
+      pass
+    }
+  },
+
+  async toBeOkAsyncWith(
+    this: MatcherContext,
+    received: unknown,
+    expected: unknown
+  ): Promise<MatcherResult> {
+    const resultAsync = ensureResultAsync(received, 'toBeOkAsyncWith')
+    const resolved = await resultAsync
+    const pass = isOkResult(resolved) && matchesExpected(this.equals, resolved.value, expected)
+
+    return {
+      message: () => {
+        if (!isOkResult(resolved)) {
+          return failMessage('be Ok with', this.utils.printExpected(expected), this.utils.printReceived(resolved))
+        }
+
+        return pass
+          ? passMessage('be Ok with', this.utils.printExpected(expected), this.utils.printReceived(resolved.value))
+          : failMessage('be Ok with', this.utils.printExpected(expected), this.utils.printReceived(resolved.value))
+      },
+      pass
+    }
+  },
+
+  async toBeErrAsyncWith(
+    this: MatcherContext,
+    received: unknown,
+    expected: unknown
+  ): Promise<MatcherResult> {
+    const resultAsync = ensureResultAsync(received, 'toBeErrAsyncWith')
+    const resolved = await resultAsync
+    const pass = isErrResult(resolved) && matchesExpected(this.equals, resolved.error, expected)
+
+    return {
+      message: () => {
+        if (!isErrResult(resolved)) {
+          return failMessage('be Err with', this.utils.printExpected(expected), this.utils.printReceived(resolved))
+        }
+
+        return pass
+          ? passMessage('be Err with', this.utils.printExpected(expected), this.utils.printReceived(resolved.error))
+          : failMessage('be Err with', this.utils.printExpected(expected), this.utils.printReceived(resolved.error))
+      },
+      pass
+    }
   }
 }
 
 let didRegisterMatchers = false
-
-const safeIsOk = (obj: unknown): obj is Ok<unknown, unknown> => obj instanceof Ok && obj.isOk()
-const safeIsErr = (obj: unknown): obj is Err<unknown, unknown> => obj instanceof Err && obj.isErr()
 
 export const registerNeverthrowMatchers = () => {
   if (didRegisterMatchers) {
     return
   }
 
+  expect.extend(neverthrowMatchers)
   didRegisterMatchers = true
-
-  chai.use((chaiInstance, utils) => {
-    utils.addChainableMethod(
-      chaiInstance.Assertion.prototype,
-      '$ok',
-      () => { },
-
-      function assertOk(this: typeof chaiInstance.Assertion.prototype) {
-        const obj = utils.flag(this, 'object')
-        const isOk = safeIsOk(obj)
-
-        this.assert(isOk, 'expected #{this} to be Ok', 'expected #{this} not to be Ok')
-
-        if (!safeIsOk(obj)) {
-          return this
-        }
-
-        utils.flag(this, 'object', obj.value)
-        return this
-      }
-    )
-
-    utils.addChainableMethod(
-      chaiInstance.Assertion.prototype,
-      '$err',
-      () => { },
-
-      function assertErr(this: typeof chaiInstance.Assertion.prototype) {
-        const obj = utils.flag(this, 'object')
-        const isErr = safeIsErr(obj)
-
-        this.assert(isErr, 'expected #{this} to be Err', 'expected #{this} not to be Err')
-
-        if (!safeIsErr(obj)) {
-          return this
-        }
-
-        utils.flag(this, 'object', obj.error)
-        return this
-      }
-    )
-
-    utils.addProperty(
-      chaiInstance.Assertion.prototype,
-      '$okAsync',
-      function okAsync(this: typeof chaiInstance.Assertion.prototype) {
-        const obj = utils.flag(this, 'object')
-
-        if (!(obj instanceof ResultAsync)) {
-          throw new TypeError(`You must provide a ResultAsync to expect() when using .$okAsync, not '${typeof obj}'.`)
-        }
-
-        const proxy = new Proxy(this, {
-          get: (target, key, receiver) => {
-            const result = Reflect.get(target, key, receiver)
-
-            if (typeof result !== 'function') {
-              return result instanceof chaiInstance.Assertion ? proxy : result
-            }
-
-            return (...args: any[]) =>
-              obj.then(
-                (resolved) => {
-                  this.assert(
-                    safeIsOk(resolved),
-                    'expected #{this} to be Ok',
-                    'expected #{this} not to be Ok with value'
-                  )
-
-                  if (!safeIsOk(resolved)) {
-                    return
-                  }
-
-                  utils.flag(this, 'object', resolved.value)
-                  return result.call(this, ...args)
-                },
-                (error) => {
-                  this.assert(
-                    false,
-                    'expected #{this} to be Ok with value, but it rejected the promise',
-                    'expected #{this} not to be Ok with value, but it rejected the promise',
-                    null,
-                    error
-                  )
-                }
-              )
-          }
-        })
-
-        return proxy
-      }
-    )
-
-    utils.addProperty(
-      chaiInstance.Assertion.prototype,
-      '$errAsync',
-      function errAsync(this: typeof chaiInstance.Assertion.prototype) {
-        const obj = utils.flag(this, 'object')
-
-        if (!(obj instanceof ResultAsync)) {
-          throw new TypeError(
-            `You must provide a ResultAsync to expect() when using .$errAsync, not '${typeof obj}'.`
-          )
-        }
-
-        const proxy = new Proxy(this, {
-          get: (target, key, receiver) => {
-            const result = Reflect.get(target, key, receiver)
-
-            if (typeof result !== 'function') {
-              return result instanceof chaiInstance.Assertion ? proxy : result
-            }
-
-            return (...args: Parameters<Chai.AssertionPrototype['assert']>) => obj.then(
-              (resolved) => {
-                this.assert(
-                  safeIsErr(resolved),
-                  'expected #{this} to be Err',
-                  'expected #{this} not to be Err with value'
-                )
-
-                if (!safeIsErr(resolved)) {
-                  return
-                }
-
-                utils.flag(this, 'object', resolved.error)
-                return result.call(this, ...args)
-              },
-              (error) => {
-                this.assert(
-                  false,
-                  'expected #{this} to be Err with value, but it rejected the promise',
-                  'expected #{this} not to be Err with value, but it rejected the promise',
-                  null,
-                  error
-                )
-              }
-            )
-          }
-        })
-
-        return proxy
-      }
-    )
-  })
 }

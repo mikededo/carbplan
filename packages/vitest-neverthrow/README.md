@@ -1,29 +1,25 @@
 # @carbplan/vitest-neverthrow
 
-Neverthrow matchers for Vitest with plugin-based setup.
+Neverthrow matchers for Vitest via `expect.extend`.
 
 ## Matchers
 
-- `$ok`: assert value is `Ok` and unwrap `value`
-- `$err`: assert value is `Err` and unwrap `error`
-- `$okAsync`: assert `ResultAsync` resolves to `Ok` and unwrap `value`
-- `$errAsync`: assert `ResultAsync` resolves to `Err` and unwrap `error`
+- `toBeOk`
+- `toBeErr`
+- `toBeOkWith(expected)`
+- `toBeErrWith(expected)`
+- `toBeOkAsync`
+- `toBeErrAsync`
+- `toBeOkAsyncWith(expected)`
+- `toBeErrAsyncWith(expected)`
 
 ## Usage
 
-### Vitest plugin
+Create a test setup file:
 
 ```ts
-import { neverthrowPlugin } from '@carbplan/vitest-neverthrow'
-import { defineConfig } from 'vitest/config'
+import { expect } from 'vitest'
+import { neverthrowMatchers } from '@carbplan/vitest-neverthrow'
 
-export default defineConfig({
-  plugins: [neverthrowPlugin()]
-})
-```
-
-### Manual setup import
-
-```ts
-import '@carbplan/vitest-neverthrow/setup'
+expect.extend(neverthrowMatchers)
 ```

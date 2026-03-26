@@ -1,41 +1,54 @@
-import './setup'
 import { err, ok, ResultAsync } from 'neverthrow'
 import { describe, expect, it } from 'vitest'
 
+import { registerNeverthrowMatchers } from './matchers'
+
+registerNeverthrowMatchers()
+
 describe('sync matchers', () => {
-  it('$ok unwraps Ok values', () => {
-    expect(ok({ value: 1 })).$ok.toEqual({ value: 1 })
+  it('toBeOk passes for Ok values', () => {
+    expect(ok({ value: 1 })).toBeOk()
   })
 
-  it('$err unwraps Err values', () => {
-    expect(err(new Error('oops'))).$err.toBeInstanceOf(Error)
+  it('toBeErr passes for Err values', () => {
+    expect(err(new Error('oops'))).toBeErr()
   })
 
-  it('throws when using $ok on Err', () => {
-    expect(() => expect(err('x')).$ok).toThrowError(/to be Ok/)
+  it('toBeOkWith matches Ok payload', () => {
+    expect(ok({ value: 1 })).toBeOkWith({ value: 1 })
   })
 
-  it('throws when using $err on Ok', () => {
-    expect(() => expect(ok('x')).$err).toThrowError(/to be Err/)
+  it('toBeErrWith matches Err payload', () => {
+    expect(err('oops')).toBeErrWith('oops')
+  })
+
+  it('throws when using toBeOk on non-Result values', () => {
+    expect(() => expect(1).toBeOk()).toThrow(/Result/)
   })
 })
 
 describe('async matchers', () => {
-  it('$okAsync unwraps ResultAsync Ok values', async () => {
+  it('toBeOkAsync passes for ResultAsync Ok values', async () => {
     const result = ResultAsync.fromSafePromise(Promise.resolve({ value: 2 }))
-    await expect(result).$okAsync.toEqual({ value: 2 })
+    await expect(result).toBeOkAsync()
   })
 
-  it('$errAsync unwraps ResultAsync Err values', async () => {
+  it('toBeErrAsync passes for ResultAsync Err values', async () => {
     const parse = ResultAsync.fromThrowable((value: string) => JSON.parse(value))
-    await expect(parse('invalid')).$errAsync.toBeInstanceOf(SyntaxError)
+    await expect(parse('invalid')).toBeErrAsync()
   })
 
-  it('throws for non-ResultAsync with $okAsync', () => {
-    expect(() => (expect(1) as unknown as { $okAsync: unknown }).$okAsync).toThrowError(/ResultAsync/)
+  it('toBeOkAsyncWith matches ResultAsync Ok payload', async () => {
+    const result = ResultAsync.fromSafePromise(Promise.resolve({ value: 2 }))
+    await expect(result).toBeOkAsyncWith({ value: 2 })
   })
 
-  it('throws for non-ResultAsync with $errAsync', () => {
-    expect(() => (expect(1) as unknown as { $errAsync: unknown }).$errAsync).toThrowError(/ResultAsync/)
+  it('toBeErrAsyncWith matches ResultAsync Err payload', async () => {
+    const parse = ResultAsync.fromThrowable((value: string) => JSON.parse(value))
+    await expect(parse('invalid')).toBeErrAsyncWith(expect.any(SyntaxError))
+  })
+
+  it('throws for non-ResultAsync with toBeOkAsync', async () => {
+    await expect(expect(1).toBeOkAsync()).rejects.toThrowError(/ResultAsync/)
   })
 })

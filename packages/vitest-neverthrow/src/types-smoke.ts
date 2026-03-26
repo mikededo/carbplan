@@ -1,10 +1,10 @@
-import { ok, ResultAsync } from 'neverthrow'
-import { expect } from 'vitest'
+import { err, ok, ResultAsync } from 'neverthrow'
 
 import { registerNeverthrowMatchers } from './matchers'
 
 registerNeverthrowMatchers()
 
-expect(ok(1)).$ok.toEqual(1)
-expect(ok(new Error('x'))).$ok.toBeInstanceOf(Error)
-void expect(ResultAsync.fromSafePromise(Promise.resolve(1))).$okAsync.toEqual(1)
+expect(ok(1)).toBeOk()
+expect(ok({ value: 1 })).toBeOkWith({ value: 1 })
+expect(err('x')).toBeErrWith('x')
+void expect(ResultAsync.fromSafePromise(Promise.resolve(1))).toBeOkAsyncWith(1)
