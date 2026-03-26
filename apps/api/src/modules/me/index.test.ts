@@ -1,4 +1,4 @@
-import type { FavoriteProductsListResponse } from '$modules/products/model'
+import type { FavoriteProductsListResponse } from '$modules/favorites/model'
 
 import * as MeContracts from '@carbplan/contracts/me'
 import * as ProductsContracts from '@carbplan/contracts/products'
@@ -12,31 +12,7 @@ import { createAuthServerStub } from '$test/stubs/auth-server'
 const app = treaty(meModule({
   auth: createAuthServerStub(),
   services: {
-    me: {
-      getCurrentAthlete: () => okAsync<MeContracts.GetCurrentAthleteResponse>({
-        avatarUrl: null,
-        createdAt: new Date(),
-        email: 'test@test.com',
-        ftp: null,
-        fullName: 'Test User',
-        heightCm: 150,
-        hrMax: 200,
-        hrRest: 40,
-        hrZones: null,
-        id: crypto.randomUUID(),
-        isAdmin: false,
-        maxCarbIntakeGPerHr: 80,
-        onboardingCompleted: true,
-        powerZones: null,
-        sex: 'male',
-        updatedAt: new Date(),
-        weightKg: 70
-      }),
-      updateCurrentAthlete: () => okAsync(true),
-      updateHRZones: () => okAsync(true),
-      updatePowerZones: () => okAsync(true)
-    },
-    product: {
+    favorites: {
       getAllFavoriteProducts: () => okAsync<FavoriteProductsListResponse>([{
         brand: {
           id: 'brand-1',
@@ -66,6 +42,30 @@ const app = treaty(meModule({
         sugarG: 20,
         updatedAt: new Date('2024-01-02T00:00:00.000Z')
       }])
+    },
+    me: {
+      getCurrentAthlete: () => okAsync<MeContracts.GetCurrentAthleteResponse>({
+        avatarUrl: null,
+        createdAt: new Date(),
+        email: 'test@test.com',
+        ftp: null,
+        fullName: 'Test User',
+        heightCm: 150,
+        hrMax: 200,
+        hrRest: 40,
+        hrZones: null,
+        id: crypto.randomUUID(),
+        isAdmin: false,
+        maxCarbIntakeGPerHr: 80,
+        onboardingCompleted: true,
+        powerZones: null,
+        sex: 'male',
+        updatedAt: new Date(),
+        weightKg: 70
+      }),
+      updateCurrentAthlete: () => okAsync(true),
+      updateHRZones: () => okAsync(true),
+      updatePowerZones: () => okAsync(true)
     }
   }
 }))

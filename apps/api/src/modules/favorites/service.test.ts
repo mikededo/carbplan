@@ -1,12 +1,12 @@
-import type { FavoriteProductsListResponse } from '$modules/products/model'
-import type { ProductRepository } from '$modules/products/repository'
+import type { FavoriteProductsListResponse } from '$modules/favorites/model'
+import type { AthleteFavoritesRepository } from '$modules/favorites/repository'
 
-import { ProductServiceImpl } from '$modules/products/service'
+import { AthletesFavoritesServiceImpl } from '$modules/favorites/service'
 import { DatabaseQueryError } from '$utils/db-error'
 
-describe('product service', () => {
+describe('athlete favorites service', () => {
   it('maps repository rows to favorite product response', async () => {
-    const repository: ProductRepository = {
+    const repository: AthleteFavoritesRepository = {
       listFavoriteProductsWithBrands: vi.fn(async (): Promise<FavoriteProductsListResponse> => [{
         brand: {
           id: 'brand-1',
@@ -37,7 +37,7 @@ describe('product service', () => {
         updatedAt: new Date('2024-01-02T00:00:00.000Z')
       }])
     }
-    const service = new ProductServiceImpl(repository)
+    const service = new AthletesFavoritesServiceImpl(repository)
 
     const result = await service.getAllFavoriteProducts('athlete-id')
 
@@ -79,7 +79,7 @@ describe('product service', () => {
         throw new Error('db failure')
       })
     }
-    const service = new ProductServiceImpl(repository)
+    const service = new AthletesFavoritesServiceImpl(repository)
 
     const result = await service.getAllFavoriteProducts('athlete-id')
 

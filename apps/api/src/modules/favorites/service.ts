@@ -1,19 +1,19 @@
 import type { AthleteId } from '@carbplan/db'
 
-import type { FavoriteProductsListResponse } from '$modules/products/model'
-import type { ProductRepository } from '$modules/products/repository'
+import type { FavoriteProductsListResponse } from '$modules/favorites/model'
+import type { AthleteFavoritesRepository } from '$modules/favorites/repository'
 import type { DatabaseQueryError } from '$utils/db-error'
 
 import { ResultAsync } from 'neverthrow'
 
 import { mapDbError } from '$utils/db-error'
 
-export type ProductService = {
+export type AthleteFavoritesService = {
   getAllFavoriteProducts: (id: AthleteId) => ResultAsync<FavoriteProductsListResponse, DatabaseQueryError>
 }
 
-export class ProductServiceImpl implements ProductService {
-  constructor(private readonly repository: ProductRepository) { }
+export class AthletesFavoritesServiceImpl implements AthleteFavoritesService {
+  constructor(private readonly repository: AthleteFavoritesRepository) { }
 
   getAllFavoriteProducts(id: AthleteId): ResultAsync<FavoriteProductsListResponse, DatabaseQueryError> {
     return ResultAsync.fromPromise(

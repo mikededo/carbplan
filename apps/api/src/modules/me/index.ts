@@ -1,7 +1,7 @@
 import type { AuthServer } from '@carbplan/auth'
 
+import type { AthleteFavoritesService } from '$modules/favorites/service'
 import type { MeService } from '$modules/me/service'
-import type { ProductService } from '$modules/products/service'
 
 import * as MeContracts from '@carbplan/contracts/me'
 import * as ProductsContracts from '@carbplan/contracts/products'
@@ -22,7 +22,7 @@ export type MeModuleOptions = {
   auth: AuthServer
   services: {
     me: MeService
-    product: ProductService
+    favorites: AthleteFavoritesService
   }
 }
 
@@ -137,7 +137,7 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
     '/favorites',
     (app) => app.get(
       '/products',
-      ({ status, user }) => services.product.getAllFavoriteProducts(user.id)
+      ({ status, user }) => services.favorites.getAllFavoriteProducts(user.id)
         .match(
           (value) => status(StatusMap.OK, value),
           () => status(StatusMap.InternalServerError, apiErrorFactory.internal())

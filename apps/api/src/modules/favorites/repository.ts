@@ -1,15 +1,15 @@
 import type { AthleteId, Db } from '@carbplan/db'
 
-import type { FavoriteProductWithBrand } from '$modules/products/model'
+import type { FavoriteProductWithBrand } from '$modules/favorites/model'
 
 import { athletes, brands, favoriteProducts, products } from '@carbplan/db'
 import { and, eq } from 'drizzle-orm'
 
-export type ProductRepository = {
+export type AthleteFavoritesRepository = {
   listFavoriteProductsWithBrands: (athleteId: AthleteId) => Promise<FavoriteProductWithBrand[]>
 }
 
-export class DbProductRepository implements ProductRepository {
+export class DbAthleteFavoritesRepository implements AthleteFavoritesRepository {
   constructor(private readonly db: Db) { }
 
   async listFavoriteProductsWithBrands(athleteId: AthleteId): Promise<FavoriteProductWithBrand[]> {

@@ -1,14 +1,14 @@
 import type { AuthServer } from '@carbplan/auth'
 
 import type { AppRepositories } from '$bootstrap/repositories'
+import type { AthleteFavoritesService } from '$modules/favorites/service'
 import type { MeService } from '$modules/me/service'
 import type { OnboardingService } from '$modules/onboarding/service'
-import type { ProductService } from '$modules/products/service'
 import type { PublicCatalogService } from '$modules/public/catalog/service'
 
+import { AthletesFavoritesServiceImpl } from '$modules/favorites/service'
 import { MeServiceImpl } from '$modules/me/service'
 import { OnboardingServiceImpl } from '$modules/onboarding/service'
-import { ProductServiceImpl } from '$modules/products/service'
 import { PublicCatalogServiceImpl } from '$modules/public/catalog/service'
 
 export type PublicServices = {
@@ -20,7 +20,7 @@ export type AppServices = {
   me: MeService
   public: PublicServices
   onboarding: OnboardingService
-  products: ProductService
+  favorites: AthleteFavoritesService
 }
 
 type CreateServicesOptions = {
@@ -30,9 +30,9 @@ type CreateServicesOptions = {
 
 export const createServices = ({ auth, repositories }: CreateServicesOptions): AppServices => ({
   auth,
+  favorites: new AthletesFavoritesServiceImpl(repositories.favorites),
   me: new MeServiceImpl(repositories.me),
   onboarding: new OnboardingServiceImpl(repositories.onboarding),
-  products: new ProductServiceImpl(repositories.products),
   public: {
     catalog: new PublicCatalogServiceImpl(repositories.public.catalog)
   }

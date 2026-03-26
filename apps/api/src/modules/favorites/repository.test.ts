@@ -1,6 +1,6 @@
 import { createRepositoryDbMock } from '@carbplan/auth/testing'
 
-import { DbProductRepository } from '$modules/products/repository'
+import { DbAthleteFavoritesRepository } from '$modules/favorites/repository'
 
 describe('product repository', () => {
   it('queries favorite products and maps rows with brand data', async () => {
@@ -36,7 +36,7 @@ describe('product repository', () => {
       }
     }])
 
-    const repository = new DbProductRepository(dbMock.db)
+    const repository = new DbAthleteFavoritesRepository(dbMock.db)
 
     const result = await repository.listFavoriteProductsWithBrands('athlete-id')
 
@@ -100,7 +100,7 @@ describe('product repository', () => {
       }
     }])
 
-    const repository = new DbProductRepository(dbMock.db)
+    const repository = new DbAthleteFavoritesRepository(dbMock.db)
 
     const result = await repository.listFavoriteProductsWithBrands('athlete-id')
 
@@ -110,7 +110,7 @@ describe('product repository', () => {
   it('propagates db failures', async () => {
     const dbMock = createRepositoryDbMock()
     dbMock.queueError(new Error('db failed'))
-    const repository = new DbProductRepository(dbMock.db)
+    const repository = new DbAthleteFavoritesRepository(dbMock.db)
 
     await expect(repository.listFavoriteProductsWithBrands('athlete-id')).rejects.toThrow('db failed')
   })

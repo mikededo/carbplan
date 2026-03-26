@@ -80,7 +80,7 @@ export const createApp = async ({ corsOrigins, services }: CreateAppOptions) =>
     .use(onboardingModule({ auth: services.auth, service: services.onboarding }))
     .use(meModule({
       auth: services.auth,
-      services: { me: services.me, product: services.products }
+      services: { favorites: services.favorites, me: services.me }
     }))
 
 export const createAppFromEnv = async () => {
