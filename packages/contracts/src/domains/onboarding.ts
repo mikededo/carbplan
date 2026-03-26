@@ -1,33 +1,26 @@
-import { PROFILE_FIELD_CONSTRAINTS, SexSchema } from '@carbplan/domain/profile'
+import {
+  FTPFieldSchema,
+  HeightSchema,
+  HRMaxFieldSchema,
+  HRRestFieldSchema,
+  MaxCarbIntakeFieldSchema,
+  SexSchema,
+  WeightSchema
+} from '@carbplan/domain/profile'
 import z from 'zod'
 
 import { ApiEmptyResponse } from '../api'
 
 export const SaveOnboardingRequestSchema = z.object({
-  ftp: z.number()
-    .min(PROFILE_FIELD_CONSTRAINTS.ftp.min)
-    .max(PROFILE_FIELD_CONSTRAINTS.ftp.max)
+  ftp: FTPFieldSchema
     .optional(),
   fullName: z.string().min(1, 'Full name is required'),
-  height: z.number()
-    .min(PROFILE_FIELD_CONSTRAINTS.height.min, `Height must be at least ${PROFILE_FIELD_CONSTRAINTS.height.min}cm`)
-    .max(PROFILE_FIELD_CONSTRAINTS.height.max, `Height must be at most ${PROFILE_FIELD_CONSTRAINTS.height.max}cm`),
-  hrMax: z.number()
-    .min(PROFILE_FIELD_CONSTRAINTS.hrMax.min)
-    .max(PROFILE_FIELD_CONSTRAINTS.hrMax.max)
-    .optional(),
-  hrRest: z.number()
-    .min(PROFILE_FIELD_CONSTRAINTS.hrRest.min)
-    .max(PROFILE_FIELD_CONSTRAINTS.hrRest.max)
-    .optional(),
-  maxCarbIntake: z.number()
-    .min(PROFILE_FIELD_CONSTRAINTS.maxCarbIntake.min)
-    .max(PROFILE_FIELD_CONSTRAINTS.maxCarbIntake.max)
-    .optional(),
+  height: HeightSchema,
+  hrMax: HRMaxFieldSchema.optional(),
+  hrRest: HRRestFieldSchema.optional(),
+  maxCarbIntake: MaxCarbIntakeFieldSchema.optional(),
   sex: SexSchema,
-  weight: z.number()
-    .min(PROFILE_FIELD_CONSTRAINTS.weight.min, `Weight must be at least ${PROFILE_FIELD_CONSTRAINTS.weight.min}kg`)
-    .max(PROFILE_FIELD_CONSTRAINTS.weight.max, `Weight must be at most ${PROFILE_FIELD_CONSTRAINTS.weight.max}kg`)
+  weight: WeightSchema
 })
 export type SaveOnboardingRequest = z.infer<typeof SaveOnboardingRequestSchema>
 export const SaveOnboardingResponseSchema = ApiEmptyResponse
