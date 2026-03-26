@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 
 import { PROFILE_VALUES } from '$lib/domain/settings/constants'
 
@@ -10,7 +10,7 @@ export const ProfileSchema = z.object({
     .min(PROFILE_VALUES.ftp.min)
     .max(PROFILE_VALUES.ftp.max)
     .optional(),
-  fullName: z.string().min(1, 'Full name is required'),
+  fullName: z.string().trim().min(1, 'Full name is required'),
   height: z.number()
     .min(PROFILE_VALUES.height.min)
     .max(PROFILE_VALUES.height.max)

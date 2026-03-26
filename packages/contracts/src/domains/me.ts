@@ -9,16 +9,16 @@ import {
   SexSchema,
   WeightSchema
 } from '@carbplan/domain/profile'
-import { z } from 'zod'
+import * as z from 'zod'
 
-import { ApiEmptyResponse } from '../api'
+import { ApiEmptyResponseSchema } from '../api'
 
 export const GetCurrentAthleteResponseSchema = z.object({
-  avatarUrl: z.string().nullable(),
+  avatarUrl: z.string().trim().nullable(),
   createdAt: z.date(),
   email: z.email(),
   ftp: FTPFieldSchema.nullable(),
-  fullName: z.string().nullable(),
+  fullName: z.string().trim().nullable(),
   heightCm: HeightSchema.nullable(),
   hrMax: HRMaxFieldSchema.nullable(),
   hrRest: HRRestFieldSchema.nullable(),
@@ -36,7 +36,7 @@ export type GetCurrentAthleteResponse = z.infer<typeof GetCurrentAthleteResponse
 
 export const UpdateCurrentAthleteRequestSchema = z.object({
   ftp: FTPFieldSchema.optional(),
-  fullName: z.string().optional(),
+  fullName: z.string().trim().optional(),
   heightCm: HeightSchema.optional(),
   hrMax: HRMaxFieldSchema.optional(),
   hrRest: HRRestFieldSchema.optional(),
@@ -46,13 +46,13 @@ export const UpdateCurrentAthleteRequestSchema = z.object({
   weightKg: WeightSchema.optional()
 })
 export type UpdateCurrentAthleteRequest = z.infer<typeof UpdateCurrentAthleteRequestSchema>
-export const UpdateCurrentAthleteResponseSchema = ApiEmptyResponse
+export const UpdateCurrentAthleteResponseSchema = ApiEmptyResponseSchema
 export type UpdateCurrentAthleteResponse = z.infer<typeof UpdateCurrentAthleteResponseSchema>
 
 export const UpdateHRZonesRequestSchema = HRZonesDataSchema
 export type UpdateHRZonesRequest = z.infer<typeof HRZonesDataSchema>
-export const UpdateHRZonesResponseSchema = ApiEmptyResponse
+export const UpdateHRZonesResponseSchema = ApiEmptyResponseSchema
 
 export const UpdatePowerZonesRequestSchema = PowerZonesDataSchema
 export type UpdatePowerZonesRequest = z.infer<typeof PowerZonesDataSchema>
-export const UpdatePowerZonesResponseSchema = ApiEmptyResponse
+export const UpdatePowerZonesResponseSchema = ApiEmptyResponseSchema

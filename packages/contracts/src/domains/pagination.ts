@@ -1,4 +1,4 @@
-import z from 'zod'
+import * as z from 'zod'
 
 export const SortDirectionSchema = z.enum(['asc', 'desc'])
 export const SortDirectionEnum = SortDirectionSchema.enum
@@ -29,7 +29,7 @@ export const createSortSchema = <TSortField extends readonly [string, ...string[
   return z
     .custom<SortValue<TSortField>>(
       (val) => typeof val === 'string' && validValues.has(val),
-      { message: `Must be one of: ${[...validValues].join(', ')}` }
+      { error: `Must be one of: ${[...validValues].join(', ')}` }
     )
     .default(defaultSort)
 }
@@ -53,7 +53,7 @@ export const createListQuerySchema = <
   filters,
   maxLimit = 100
 }: CreateListQuerySchemaInput<TFilterShape, TSortField>) => filters.extend({
-  limit: z.coerce.number().int().positive().max(maxLimit).default(20).optional(),
-  offset: z.coerce.number().int().positive().min(0).default(0).optional(),
+  limit: z.coerce.number().int().positive().max(maxLimit).default(20),
+  offset: z.coerce.number().int().positive().min(0).default(0),
   sort: createSortSchema({ defaultSort, fields }).optional()
 })

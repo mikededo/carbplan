@@ -91,11 +91,10 @@ Recommended flow:
 Example adapter in API:
 
 ```ts
-import type { ZodType } from 'zod'
 import { t } from 'elysia'
-import { z } from 'zod'
+import * as z from 'zod'
 
-export const toApiModel = <T extends ZodType>(schema: T) =>
+export const toApiModel = <T extends z.ZodType>(schema: T) =>
   t.Unsafe<z.infer<T>>(z.toJSONSchema(schema) as Record<string, unknown>)
 ```
 
@@ -104,9 +103,13 @@ Example usage in a route:
 ```ts
 import { authContracts } from '@carbplan/contracts'
 
-response: {
-  200: toApiModel(authContracts.GetSessionResponseSchema)
-}
+use(
+  '',
+  () => {},
+  {
+    response: { 200: toApiModel(authContracts.GetSessionResponseSchema) }
+  }
+)
 ```
 
 Important rule:
@@ -120,21 +123,22 @@ Important rule:
 
 ```ts
 // src/domains/athlete.ts
-import { z } from 'zod'
+import * as z from 'zod'
+
 import { ApiSuccessSchema } from '../api'
 
 export const UpdateAthleteProfileRequestSchema = z.object({
-  fullName: z.string().min(1).optional(),
-  ftp: z.number().int().positive().optional(),
+  ftp: z.int().positive().optional(),
+  fullName: z.string().trim().min(1).optional(),
   weightKg: z.number().positive().optional()
 })
 
 export const AthleteProfileSchema = z.object({
-  id: z.string().uuid(),
-  fullName: z.string().nullable(),
-  ftp: z.number().int().nullable(),
+  ftp: z.int().nullable(),
+  fullName: z.string().trim().nullable(),
+  id: z.uuid(),
   weightKg: z.number().nullable()
-}))
+})
 
 export const UpdateAthleteProfileResponseSchema = ApiSuccessSchema(z.object({
   athlete: AthleteProfileSchema
@@ -154,9 +158,9 @@ const input = athleteContracts.UpdateAthleteProfileRequestSchema.parse(body)
 const response = {
   data: {
     athlete: {
-      id: uuid(),
-      fullName: input.fullName ?? 'Jane Rider',
       ftp: input.ftp ?? 265,
+      fullName: input.fullName ?? 'Jane Rider',
+      id: uuid(),
       weightKg: input.weightKg ?? 63.5
     }
   }

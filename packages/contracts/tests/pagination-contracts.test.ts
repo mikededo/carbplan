@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import z from 'zod'
+import * as z from 'zod'
 
 import {
   createListQuerySchema,
@@ -36,7 +36,7 @@ describe('pagination contracts', () => {
       defaultSort: 'name:asc',
       fields: ['name', 'calories'] as const,
       filters: z.object({
-        q: z.string().optional()
+        q: z.string().trim().optional()
       })
     })
 

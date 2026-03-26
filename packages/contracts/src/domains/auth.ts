@@ -1,16 +1,16 @@
-import { z } from 'zod'
+import * as z from 'zod'
 
 import { ApiSuccessSchema } from '../api'
 
 export const LogInRequestSchema = z.object({
   email: z.email(),
-  password: z.string().min(1)
+  password: z.string().trim().min(1)
 })
 export type LogInRequest = z.infer<typeof LogInRequestSchema>
 
 export const SignUpRequestSchema = z.object({
   email: z.email(),
-  password: z.string().min(8)
+  password: z.string().trim().min(8)
 })
 export type SignUpRequest = z.infer<typeof SignUpRequestSchema>
 

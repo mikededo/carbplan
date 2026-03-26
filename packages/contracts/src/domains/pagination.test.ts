@@ -1,6 +1,6 @@
 import type { SortDirection } from './pagination'
 
-import { z } from 'zod'
+import * as z from 'zod'
 
 import {
   createListQuerySchema,
@@ -58,52 +58,52 @@ describe('offsetPaginationQuerySchema', () => {
 })
 
 describe('createSortSchema', () => {
-  const schema = createSortSchema({
+  const Schema = createSortSchema({
     defaultSort: 'name:asc',
     fields: ['name', 'age'] as const
   })
 
   it('applies the default when nothing is passed', () => {
-    expect(schema.parse(undefined)).toBe('name:asc')
+    expect(Schema.parse(undefined)).toBe('name:asc')
   })
 
   it('accepts all valid field+direction combos', () => {
-    expect(schema.parse('name:asc')).toBe('name:asc')
-    expect(schema.parse('name:desc')).toBe('name:desc')
-    expect(schema.parse('age:asc')).toBe('age:asc')
-    expect(schema.parse('age:desc')).toBe('age:desc')
+    expect(Schema.parse('name:asc')).toBe('name:asc')
+    expect(Schema.parse('name:desc')).toBe('name:desc')
+    expect(Schema.parse('age:asc')).toBe('age:asc')
+    expect(Schema.parse('age:desc')).toBe('age:desc')
   })
 
   it('rejects an unknown field', () => {
-    expect(() => schema.parse('email:asc')).toThrow()
+    expect(() => Schema.parse('email:asc')).toThrow()
   })
 
   it('rejects a valid field with an invalid direction', () => {
-    expect(() => schema.parse('name:ASC')).toThrow()
-    expect(() => schema.parse('name:random')).toThrow()
+    expect(() => Schema.parse('name:ASC')).toThrow()
+    expect(() => Schema.parse('name:random')).toThrow()
   })
 
   it('rejects a non-string value', () => {
-    expect(() => schema.parse(123)).toThrow()
-    expect(() => schema.parse(null)).toThrow()
+    expect(() => Schema.parse(123)).toThrow()
+    expect(() => Schema.parse(null)).toThrow()
   })
 
   it('has the correct inferred type', () => {
-    expectTypeOf(schema.parse('name:asc')).toEqualTypeOf<'age:asc' | 'age:desc' | 'name:asc' | 'name:desc'>()
+    expectTypeOf(Schema.parse('name:asc')).toEqualTypeOf<'age:asc' | 'age:desc' | 'name:asc' | 'name:desc'>()
   })
 })
 
 describe('createListQuerySchema', () => {
-  const filters = z.object({ search: z.string().optional() })
+  const FiltersSchema = z.object({ search: z.string().trim().optional() })
 
-  const schema = createListQuerySchema({
+  const Schema = createListQuerySchema({
     defaultSort: 'name:asc',
     fields: ['name', 'age'] as const,
-    filters
+    filters: FiltersSchema
   })
 
   it('applies defaults when nothing is passed', () => {
-    expect(schema.parse({})).toEqual({
+    expect(Schema.parse({})).toEqual({
       limit: 20,
       offset: 0,
       sort: 'name:asc'
@@ -111,41 +111,41 @@ describe('createListQuerySchema', () => {
   })
 
   it('passes through valid filter fields', () => {
-    expect(schema.parse({ search: 'alice' })).toMatchObject({ search: 'alice' })
+    expect(Schema.parse({ search: 'alice' })).toMatchObject({ search: 'alice' })
   })
 
   it('accepts a valid sort value', () => {
-    expect(schema.parse({ sort: 'age:desc' })).toMatchObject({ sort: 'age:desc' })
+    expect(Schema.parse({ sort: 'age:desc' })).toMatchObject({ sort: 'age:desc' })
   })
 
   it('rejects an invalid sort value', () => {
-    expect(() => schema.parse({ sort: 'email:asc' })).toThrow()
+    expect(() => Schema.parse({ sort: 'email:asc' })).toThrow()
   })
 
   it('respects the default maxLimit of 100', () => {
-    expect(() => schema.parse({ limit: 101 })).toThrow()
-    expect(schema.parse({ limit: 100 })).toMatchObject({ limit: 100 })
+    expect(() => Schema.parse({ limit: 101 })).toThrow()
+    expect(Schema.parse({ limit: 100 })).toMatchObject({ limit: 100 })
   })
 
   it('respects a custom maxLimit', () => {
-    const capped = createListQuerySchema({
+    const CappedSchema = createListQuerySchema({
       defaultSort: 'name:asc',
       fields: ['name'] as const,
-      filters,
+      filters: FiltersSchema,
       maxLimit: 50
     })
-    expect(() => capped.parse({ limit: 51 })).toThrow()
-    expect(capped.parse({ limit: 50 })).toMatchObject({ limit: 50 })
+    expect(() => CappedSchema.parse({ limit: 51 })).toThrow()
+    expect(CappedSchema.parse({ limit: 50 })).toMatchObject({ limit: 50 })
   })
 
   it('treats sort as optional', () => {
-    const result = schema.parse({ sort: undefined })
+    const result = Schema.parse({ sort: undefined })
     expect(result.sort).toBe('name:asc')
   })
 
   it('rejects unknown filter fields by default (strict passthrough)', () => {
     // z.object strips unknown keys by default, verify no throw but key is stripped
-    const result = schema.parse({ unknown: 'value' })
+    const result = Schema.parse({ unknown: 'value' })
     expect(result).not.toHaveProperty('unknown')
   })
 })

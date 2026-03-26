@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 
 export const SexSchema = z.enum(['male', 'female'])
 export const SexEnum = SexSchema.enum

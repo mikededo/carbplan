@@ -10,7 +10,7 @@ This package is the source of truth for values that represent domain meaning and
 
 ## Why this package exists
 
-Some values are not just API concerns or DB concerns. They are domain concerns.  
+Some values are not just API concerns or DB concerns. They are domain concerns.
 When those values are duplicated by layer, drift appears quickly.
 
 `@carbplan/domain` keeps those values in one place while preserving clean dependency direction:
@@ -30,7 +30,7 @@ import { PROFILE_FIELD_CONSTRAINTS, SEX_VALUES } from '@carbplan/domain/profile'
 
 ```ts
 import { PROFILE_FIELD_CONSTRAINTS, SEX_VALUES } from '@carbplan/domain/profile'
-import { z } from 'zod'
+import * as z from 'zod'
 
 const SexSchema = z.enum(SEX_VALUES)
 ```

@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 
 import { ProductForm, ProductFormValues } from '$lib/database/types.g'
 
@@ -20,22 +20,11 @@ export const generateSlug = (input: string): string =>
     .trim()
 
 export const BrandSchema = z.object({
-  description: z.string()
-    .max(500, 'Description must be at most 500 characters')
-    .optional(),
-  logoUrl: z.string()
-    .url('Please enter a valid URL')
-    .optional(),
-  name: z.string()
-    .min(1, 'Brand name is required')
-    .max(100, 'Brand name must be at most 100 characters'),
-  slug: z.string()
-    .min(1, 'Slug is required')
-    .max(100, 'Slug must be at most 100 characters')
-    .regex(SLUG_VALIDATION_REGEX, 'Slug can only contain lowercase letters, numbers, and hyphens'),
-  website: z.string()
-    .url('Please enter a valid URL')
-    .optional()
+  description: z.string().trim().max(500, 'Description must be at most 500 characters').optional(),
+  logoUrl: z.string().trim().url('Please enter a valid URL').optional(),
+  name: z.string().trim().min(1, 'Brand name is required').max(100, 'Brand name must be at most 100 characters'),
+  slug: z.string().trim().min(1, 'Slug is required').max(100, 'Slug must be at most 100 characters').regex(SLUG_VALIDATION_REGEX, 'Slug can only contain lowercase letters, numbers, and hyphens'),
+  website: z.string().trim().url('Please enter a valid URL').optional()
 })
 
 export type BrandSchemaInput = z.input<typeof BrandSchema>
@@ -53,7 +42,7 @@ export const PRODUCT_FORM_LABELS: Record<ProductForm, string> = {
 }
 
 export const ProductSchema = z.object({
-  brandId: z.string().min(1, 'Brand is required'),
+  brandId: z.string().trim().min(1, 'Brand is required'),
   caffeineGm: z.number()
     .min(0, 'Caffeine must be positive')
     .optional(),
@@ -66,16 +55,10 @@ export const ProductSchema = z.object({
   fatG: z.number()
     .min(0, 'Fat must be positive')
     .optional(),
-  flavor: z.string()
-    .max(100, 'Flavor must be at most 100 characters')
-    .optional(),
+  flavor: z.string().trim().max(100, 'Flavor must be at most 100 characters').optional(),
   form: z.enum(ProductFormValues, 'Please select a product form'),
-  name: z.string()
-    .min(1, 'Product name is required')
-    .max(200, 'Product name must be at most 200 characters'),
-  notes: z.string()
-    .max(1000, 'Notes must be at most 1000 characters')
-    .optional(),
+  name: z.string().trim().min(1, 'Product name is required').max(200, 'Product name must be at most 200 characters'),
+  notes: z.string().trim().max(1000, 'Notes must be at most 1000 characters').optional(),
   proteinG: z.number()
     .min(0, 'Protein must be positive')
     .optional(),
@@ -83,13 +66,8 @@ export const ProductSchema = z.object({
   servingsPerPackage: z.number()
     .min(1, 'Servings per package must be at least 1')
     .optional(),
-  servingUnit: z.string()
-    .min(1, 'Serving unit is required')
-    .max(20, 'Serving unit must be at most 20 characters'),
-  slug: z.string()
-    .min(1, 'Slug is required')
-    .max(200, 'Slug must be at most 200 characters')
-    .regex(SLUG_VALIDATION_REGEX, 'Slug can only contain lowercase letters, numbers, and hyphens'),
+  servingUnit: z.string().trim().min(1, 'Serving unit is required').max(20, 'Serving unit must be at most 20 characters'),
+  slug: z.string().trim().min(1, 'Slug is required').max(200, 'Slug must be at most 200 characters').regex(SLUG_VALIDATION_REGEX, 'Slug can only contain lowercase letters, numbers, and hyphens'),
   sodiumMg: z.number()
     .min(0, 'Sodium must be positive')
     .optional(),

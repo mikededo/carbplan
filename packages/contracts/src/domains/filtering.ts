@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 
 export const createFilterArraySchema = <T extends z.ZodType>(
   itemSchema: T

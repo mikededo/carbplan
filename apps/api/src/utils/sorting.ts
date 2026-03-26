@@ -4,7 +4,7 @@ import type { Result } from 'neverthrow'
 
 import { sql } from 'drizzle-orm'
 import { err, ok } from 'neverthrow'
-import z from 'zod'
+import * as z from 'zod'
 
 export const SortDirectionSchema = z.enum(['asc', 'desc'])
 export const SortDirectionEnum = SortDirectionSchema.enum

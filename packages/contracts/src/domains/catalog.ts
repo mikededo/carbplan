@@ -1,7 +1,7 @@
 import { PRODUCT_FORM } from '@carbplan/domain/product'
-import z from 'zod'
+import * as z from 'zod'
 
-import { ApiEmptyResponse, ApiSuccessSchema, PaginationApiMeta } from '../api'
+import { ApiEmptyResponseSchema, ApiSuccessSchema, PaginationApiMeta } from '../api'
 import { createFilterArraySchema, StringFilterArraySchema } from './filtering'
 import { createListQuerySchema } from './pagination'
 
@@ -27,7 +27,7 @@ export const CatalogProductsFilterSchema = z.object({
   q: z.string().trim().min(1).max(120).optional()
 })
   .refine((value) => value.caloriesGte === undefined || value.caloriesLte === undefined || value.caloriesGte <= value.caloriesLte, {
-    message: 'caloriesGte must be less than or equal to caloriesLte'
+    error: 'caloriesGte must be less than or equal to caloriesLte'
   })
   .refine((value) => value.carbsGte === undefined || value.carbsLte === undefined || value.carbsGte <= value.carbsLte, {
     message: 'carbsGte must be less than or equal to carbsLte'
@@ -42,25 +42,25 @@ export const CatalogProductsListQuerySchema = createListQuerySchema({
 export type CatalogProductsListQuery = z.infer<typeof CatalogProductsListQuerySchema>
 
 export const CatalogProductListItemSchema = z.object({
-  brandDescription: z.string().nullable(),
-  brandId: z.string(),
-  brandLogoUrl: z.string().nullable(),
-  brandName: z.string(),
-  brandSlug: z.string(),
-  brandWebsite: z.string().nullable(),
+  brandDescription: z.string().trim().nullable(),
+  brandId: z.string().trim(),
+  brandLogoUrl: z.string().trim().nullable(),
+  brandName: z.string().trim(),
+  brandSlug: z.string().trim(),
+  brandWebsite: z.string().trim().nullable(),
   caffeineMg: z.number().nullable(),
   calories: z.number().nullable(),
   carbsG: z.number().nullable(),
   fatG: z.number().nullable(),
-  flavor: z.string().nullable(),
+  flavor: z.string().trim().nullable(),
   form: z.enum(PRODUCT_FORM),
   id: z.uuid(),
-  name: z.string(),
+  name: z.string().trim(),
   proteinG: z.number().nullable(),
   servingSize: z.number().nullable(),
   servingsPerPackage: z.number().nullable(),
-  servingUnit: z.string().nullable(),
-  slug: z.string(),
+  servingUnit: z.string().trim().nullable(),
+  slug: z.string().trim(),
   sodiumMg: z.number().nullable(),
   sugarG: z.number().nullable()
 })
@@ -71,5 +71,5 @@ export const CatalogProductsListResponseSchema = ApiSuccessSchema(
   PaginationApiMeta
 )
 export type CatalogProductsListResponse = z.infer<typeof CatalogProductsListResponseSchema>
-export const CatalogProductListCachedResponseSchema = ApiEmptyResponse
+export const CatalogProductListCachedResponseSchema = ApiEmptyResponseSchema
 export type CatalogProductListCachedResponse = z.infer<typeof CatalogProductListCachedResponseSchema>

@@ -1,13 +1,13 @@
 import type { Actions } from './$types'
 
 import { fail, redirect } from '@sveltejs/kit'
-import { z } from 'zod'
+import * as z from 'zod'
 
 import { ROUTES } from '$lib/constants/routes'
 
 const LoginSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(1, 'Password is required')
+  email: z.string().trim().email('Invalid email address'),
+  password: z.string().trim().min(1, 'Password is required')
 })
 
 export const actions = {

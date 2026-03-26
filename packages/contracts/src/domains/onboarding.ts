@@ -7,14 +7,14 @@ import {
   SexSchema,
   WeightSchema
 } from '@carbplan/domain/profile'
-import z from 'zod'
+import * as z from 'zod'
 
-import { ApiEmptyResponse } from '../api'
+import { ApiEmptyResponseSchema } from '../api'
 
 export const SaveOnboardingRequestSchema = z.object({
   ftp: FTPFieldSchema
     .optional(),
-  fullName: z.string().min(1, 'Full name is required'),
+  fullName: z.string().trim().min(1, 'Full name is required'),
   height: HeightSchema,
   hrMax: HRMaxFieldSchema.optional(),
   hrRest: HRRestFieldSchema.optional(),
@@ -23,7 +23,7 @@ export const SaveOnboardingRequestSchema = z.object({
   weight: WeightSchema
 })
 export type SaveOnboardingRequest = z.infer<typeof SaveOnboardingRequestSchema>
-export const SaveOnboardingResponseSchema = ApiEmptyResponse
+export const SaveOnboardingResponseSchema = ApiEmptyResponseSchema
 export type SaveOnboardingResponse = z.infer<typeof SaveOnboardingResponseSchema>
 
 export const HasCompletedOnboardingResponseSchema = z.object({ completed: z.boolean() })

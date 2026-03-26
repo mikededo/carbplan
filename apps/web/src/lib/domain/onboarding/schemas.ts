@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 
 import { PROFILE_VALUES } from '$lib/domain/settings/constants'
 
@@ -6,7 +6,7 @@ export const SexSchema = z.enum(['male', 'female'], 'Please select your sex')
 export const SexEnum = SexSchema.enum
 
 export const StepOneSchema = z.object({
-  fullName: z.string().min(1, 'Full name is required'),
+  fullName: z.string().trim().min(1, 'Full name is required'),
   height: z.number()
     .min(PROFILE_VALUES.height.min, `Height must be at least ${PROFILE_VALUES.height.min}cm`)
     .max(PROFILE_VALUES.height.max, `Height must be at most ${PROFILE_VALUES.height.max}cm`),

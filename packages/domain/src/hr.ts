@@ -1,18 +1,18 @@
 import type { ZoneModelInfo, ZonePreset } from './zone'
 
-import { z } from 'zod'
+import * as z from 'zod'
 
 export const HRZoneModelSchema = z.enum(['5-zone', 'friel', 'karvonen', 'custom'], 'HR model is not supported')
 export const HRZoneModelEnum = HRZoneModelSchema.enum
 export type HRZoneModel = z.infer<typeof HRZoneModelSchema>
 
 export const HRZoneSchema = z.object({
-  color: z.string(),
+  color: z.string().trim(),
   maxBpm: z.number().min(0).nullable(),
   maxPercent: z.number().min(0).max(100).nullable(),
   minBpm: z.number().min(0),
   minPercent: z.number().min(0).max(100),
-  name: z.string()
+  name: z.string().trim()
 })
 export type HRZone = z.infer<typeof HRZoneSchema>
 

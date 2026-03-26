@@ -1,9 +1,9 @@
 import type { ParsedWorkoutStep } from './types'
 
-import { z } from 'zod'
+import * as z from 'zod'
 
 export const ParseWorkoutRequestSchema = z.object({
-  text: z.string().min(1, 'Workout text is required')
+  text: z.string().trim().min(1, 'Workout text is required')
 })
 
 export const WorkoutTargetUnitsSchema = z.enum([
@@ -20,7 +20,7 @@ export const ParsedWorkoutTargetSchema = z.object({
   max: z.number().optional(),
   min: z.number().optional(),
   units: WorkoutTargetUnitsSchema,
-  value: z.union([z.number(), z.string()])
+  value: z.union([z.number(), z.string().trim()])
 })
 
 export const ParsedWorkoutStepSchema: z.ZodType<ParsedWorkoutStep> = z.lazy(() =>
@@ -30,12 +30,12 @@ export const ParsedWorkoutStepSchema: z.ZodType<ParsedWorkoutStep> = z.lazy(() =
     reps: z.number().min(1).optional(),
     steps: z.array(ParsedWorkoutStepSchema).optional(),
     target: ParsedWorkoutTargetSchema.optional(),
-    text: z.string().optional()
+    text: z.string().trim().optional()
   })
 )
 
 export const ParsedWorkoutDocSchema = z.object({
   duration_seconds: z.number().min(0),
   steps: z.array(ParsedWorkoutStepSchema),
-  warnings: z.array(z.string())
+  warnings: z.array(z.string().trim())
 })

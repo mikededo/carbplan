@@ -1,16 +1,16 @@
-import { z } from 'zod'
+import * as z from 'zod'
 
 export const PowerZoneModelSchema = z.enum(['coggan', 'friel', 'polarized', 'sweet-spot', 'custom'])
 export const PowerZoneModelEnum = PowerZoneModelSchema.enum
 export type PowerZoneModel = z.infer<typeof PowerZoneModelSchema>
 
 export const PowerZoneSchema = z.object({
-  color: z.string(),
+  color: z.string().trim(),
   maxPercent: z.number().min(0).nullable(),
   maxWatts: z.number().min(0).nullable(),
   minPercent: z.number().min(0),
   minWatts: z.number().min(0),
-  name: z.string()
+  name: z.string().trim()
 })
 export type PowerZone = z.infer<typeof PowerZoneSchema>
 

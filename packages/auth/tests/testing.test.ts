@@ -1,7 +1,6 @@
-import { describe, expect, it } from 'vitest'
-
 import { athletes } from '@carbplan/db'
 import { eq } from 'drizzle-orm'
+import { describe, expect, it } from 'vitest'
 
 import { createRepositoryDbMock } from '../src/testing'
 
