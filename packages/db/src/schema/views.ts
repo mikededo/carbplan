@@ -24,7 +24,6 @@ export const currentAthlete = pgView('current_athlete', {
   hrRest: integer('hr_rest'),
   hrZones: jsonb('hr_zones'),
   id: uuid('id'),
-  isAdmin: boolean('is_admin'),
   maxCarbIntakeGPerHr: integer('max_carb_intake_g_per_hr'),
   powerZones: jsonb('power_zones'),
   sex: sexEnum('sex'),

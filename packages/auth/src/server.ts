@@ -65,7 +65,18 @@ export const createAuthServer = ({
     },
     plugins: [openAPI()],
     secret,
-    trustedOrigins
+    trustedOrigins,
+    user: {
+      additionalFields: {
+        isAdmin: {
+          defaultValue: false,
+          fieldName: 'is_admin',
+          input: false,
+          required: false,
+          type: 'boolean'
+        }
+      }
+    }
   })
 
   return {

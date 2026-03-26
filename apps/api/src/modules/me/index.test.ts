@@ -55,7 +55,6 @@ const app = treaty(meModule({
         hrRest: 40,
         hrZones: null,
         id: crypto.randomUUID(),
-        isAdmin: false,
         maxCarbIntakeGPerHr: 80,
         onboardingCompleted: true,
         powerZones: null,

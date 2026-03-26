@@ -24,7 +24,6 @@ export const GetCurrentAthleteResponseSchema = z.object({
   hrRest: HRRestFieldSchema.nullable(),
   hrZones: HRZonesDataSchema.nullable(),
   id: z.uuid(),
-  isAdmin: z.boolean().default(false),
   maxCarbIntakeGPerHr: MaxCarbIntakeFieldSchema.nullable(),
   onboardingCompleted: z.boolean().default(false),
   powerZones: PowerZonesDataSchema.nullable(),

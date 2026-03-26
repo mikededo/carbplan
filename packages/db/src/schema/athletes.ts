@@ -33,7 +33,6 @@ export const athletes = pgTable('athletes', {
   hrRest: integer('hr_rest'),
   hrZones: jsonb('hr_zones').$type<HRZonesData>(),
   id: uuid('id').primaryKey().references(() => users.id, { onDelete: 'cascade' }),
-  isAdmin: boolean('is_admin').default(false).notNull(),
   maxCarbIntakeGPerHr: integer('max_carb_intake_g_per_hr'),
   onboardingCompleted: boolean('onboarding_completed').default(false).notNull(),
   powerZones: jsonb('power_zones').$type<PowerZonesData>(),
@@ -41,8 +40,7 @@ export const athletes = pgTable('athletes', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
   weightKg: numeric('weight_kg', { mode: 'number', precision: 5, scale: 2 })
 }, (table) => [
-  index('athletes_email_idx').on(table.email),
-  index('athletes_is_admin_idx').on(table.isAdmin)
+  index('athletes_email_idx').on(table.email)
 ])
 export type AthleteId = typeof athletes.$inferSelect.id
 

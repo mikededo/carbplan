@@ -37,7 +37,6 @@ describe('db me repository', () => {
         hrRest: 40,
         hrZones: null,
         id: crypto.randomUUID(),
-        isAdmin: false,
         maxCarbIntakeGPerHr: 80,
         onboardingCompleted: true,
         powerZones: null,

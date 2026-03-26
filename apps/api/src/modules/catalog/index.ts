@@ -32,7 +32,7 @@ export const catalogModule = ({ auth, services }: CatalogModuleOptions) => new E
   prefix: '/v1/catalog'
 })
   .use(authModule({ auth }))
-  .guard({ auth: true })
+  .guard({ admin: true, auth: true })
   .post(
     '/brand',
     ({ body, status }) => services.catalog.createBrand(body)

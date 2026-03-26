@@ -16,7 +16,6 @@ export type CurrentAthleteData = {
   hrZones: HRZonesData | null
   id: string
   updatedAt: Date
-  isAdmin: boolean
   maxCarbIntakeGPerHr: null | number
   onboardingCompleted: boolean
   powerZones: null | PowerZonesData
@@ -37,4 +36,3 @@ export type UpdateCurrentAthlete = {
   weightKg?: number
 }
 export type UpdateCurrentAthleteError = DatabaseQueryError | EntityNotFound
-

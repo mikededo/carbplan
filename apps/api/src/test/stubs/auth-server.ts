@@ -6,6 +6,7 @@ type AuthSession = {
   session: Record<string, unknown>
   user: {
     id: string
+    isAdmin?: boolean
   }
 }
 
