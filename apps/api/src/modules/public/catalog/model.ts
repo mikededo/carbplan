@@ -1,5 +1,5 @@
 import type { CatalogProductListItem } from '@carbplan/contracts/catalog'
-import type { SortDirection } from '@carbplan/contracts/pagination'
+import type { SortDirection, SortOptions } from '@carbplan/contracts/pagination'
 import type { ProductForm } from '@carbplan/domain/product'
 
 import type { PaginationModel, PaginationWithTotal } from '$utils/pagination'
@@ -20,7 +20,7 @@ export type CatalogSortSelection = {
 }
 
 export type CatalogProductsListQuery = {
-  sort?: string
+  sort: SortOptions<CatalogSortField>
   brand?: string[] | undefined
   caloriesGte?: number | undefined
   caloriesLte?: number | undefined

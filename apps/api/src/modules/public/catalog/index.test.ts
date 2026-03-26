@@ -45,7 +45,7 @@ describe('public catalog HTTP contract', () => {
         offset: 0,
         total: 1
       }
-    }).v1.public.catalog.get({ query: { limit: 1 } })
+    }).v1.public.catalog.get({ query: { limit: 1, offset: 1, sort: 'name:asc' } })
 
     expect(response.status).toBe(200)
     expect(CatalogContracts.CatalogProductsListResponseSchema.safeParse(response.data).success).toBe(true)

@@ -17,6 +17,7 @@ type CreateSortSchemaInput<TSortField extends readonly [string, ...string[]]> = 
 
 type SortValue<T extends readonly [string, ...string[]]> =
   `${T[number]}:${'asc' | 'desc'}`
+export type SortOptions<T extends string> = `${T}:${'asc' | 'desc'}`
 
 export const createSortSchema = <TSortField extends readonly [string, ...string[]]>({
   defaultSort,
@@ -55,5 +56,5 @@ export const createListQuerySchema = <
 }: CreateListQuerySchemaInput<TFilterShape, TSortField>) => filters.extend({
   limit: z.coerce.number().int().positive().max(maxLimit).default(20),
   offset: z.coerce.number().int().positive().min(0).default(0),
-  sort: createSortSchema({ defaultSort, fields }).optional()
+  sort: createSortSchema({ defaultSort, fields })
 })
