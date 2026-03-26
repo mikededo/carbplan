@@ -1,6 +1,7 @@
 import antfu from '@antfu/eslint-config'
 import betterTailwindcss from 'eslint-plugin-better-tailwindcss'
 import perfectionist from 'eslint-plugin-perfectionist'
+import zod from 'eslint-plugin-zod'
 
 /**
  *
@@ -90,7 +91,7 @@ export const baseConfig = (args) => antfu({
       entryPoint: './src/app.css'
     }
   }
-})
+}, zod.configs.recommended)
   .override('antfu/stylistic/rules', {
     rules: {
       'style/arrow-parens': ['error', 'always'],
