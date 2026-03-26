@@ -1,27 +1,11 @@
-import type { ResultAsync } from 'neverthrow'
 
 import type { CurrentAthleteData, UpdateCurrentAthlete } from '$modules/me/model'
-import type { MeRepository } from '$modules/me/repository'
 
 import { createRepositoryDbMock } from '@carbplan/auth/testing'
 import { HRZoneModelEnum } from '@carbplan/domain/hr'
 
 import { DbMeRepository } from '$modules/me/repository'
-import { EntityNotFound } from '$utils/db-error'
-
-const entityNotFoundTest = <O, E>(promise: (repository: MeRepository) => ResultAsync<O, E>) => {
-  it('returns EntityNotFound if no entry found', async () => {
-    const dbMock = createRepositoryDbMock()
-    dbMock.queueResult([])
-    const repository = new DbMeRepository(dbMock.db)
-
-    await promise(repository)
-      .match(
-        () => expect.fail('Should return with EntityNotFound error'),
-        (err) => expect(err).toBeInstanceOf(EntityNotFound)
-      )
-  })
-}
+import { entityNotFoundTest } from '$test/utils.test'
 
 describe('db me repository', () => {
   describe('.getCurrentAthlete', () => {
@@ -48,11 +32,13 @@ describe('db me repository', () => {
       dbMock.queueResult([model])
       const repository = new DbMeRepository(dbMock.db)
 
-      const result = await repository.getCurrentAthlete('athlete-id')
-      expect(result._unsafeUnwrap()).toEqual(model)
+      expect(repository.getCurrentAthlete('athlete-id')).toBeOkAsyncWith(model)
     })
 
-    entityNotFoundTest((repository) => repository.getCurrentAthlete('athlete-id'))
+    entityNotFoundTest(
+      DbMeRepository,
+      (repository) => repository.getCurrentAthlete('athlete-id')
+    )
   })
 
   describe('.updateCurrentAthlete', () => {
@@ -70,11 +56,13 @@ describe('db me repository', () => {
       dbMock.queueResult([model])
       const repository = new DbMeRepository(dbMock.db)
 
-      const result = await repository.updateCurrentAthlete('athlete-id', model)
-      expect(result._unsafeUnwrap()).toBeTruthy()
+      expect(repository.updateCurrentAthlete('athlete-id', model)).toBeOkAsyncWith(true)
     })
 
-    entityNotFoundTest((repository) => repository.updateCurrentAthlete('athlete-id', { fullName: 'Test user' }))
+    entityNotFoundTest(
+      DbMeRepository,
+      (repository) => repository.updateCurrentAthlete('athlete-id', { fullName: 'Test user' })
+    )
   })
 
   it('updates the hr zones from an athlete', async () => {
@@ -82,10 +70,10 @@ describe('db me repository', () => {
     dbMock.queueResult(undefined)
     const repository = new DbMeRepository(dbMock.db)
 
-    const result = await repository.updateHRZones('athlete-id', {
+    const result = repository.updateHRZones('athlete-id', {
       model: HRZoneModelEnum.custom,
       zones: [{ color: '#HEXCOL', maxBpm: 200, maxPercent: 100, minBpm: 50, minPercent: 0, name: 'Z1' }]
     })
-    expect(result._unsafeUnwrap()).toBeTruthy()
+    expect(result).toBeOkAsyncWith(true)
   })
 })
