@@ -11,6 +11,7 @@ import { createLoggerModule } from '$bootstrap/logger'
 import { createServices } from '$bootstrap/services'
 import { authModule } from '$modules/auth'
 import { OpenAPI } from '$modules/auth/openapi'
+import { catalogModule } from '$modules/catalog'
 import { meModule } from '$modules/me'
 import { onboardingModule } from '$modules/onboarding'
 import { publicModule } from '$modules/public'
@@ -82,6 +83,7 @@ export const createApp = async ({ corsOrigins, services }: CreateAppOptions) =>
       auth: services.auth,
       services: { favorites: services.favorites, me: services.me }
     }))
+    .use(catalogModule({ auth: services.auth, services: { catalog: services.catalog } }))
 
 export const createAppFromEnv = async () => {
   const runtimeConfig = loadRuntimeConfig()

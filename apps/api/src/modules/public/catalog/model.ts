@@ -1,5 +1,5 @@
-import type { CatalogProductListItem } from '@carbplan/contracts/catalog'
 import type { SortDirection, SortOptions } from '@carbplan/contracts/pagination'
+import type * as PublicCatalogContracts from '@carbplan/contracts/public-catalog'
 import type { ProductForm } from '@carbplan/domain/product'
 
 import type { PaginationModel, PaginationWithTotal } from '$utils/pagination'
@@ -31,7 +31,7 @@ export type CatalogProductsListQuery = {
 } & PaginationModel
 
 export type CatalogListPageResult = {
-  data: CatalogProductListItem[]
+  data: PublicCatalogContracts.CatalogProductListItem[]
   meta: PaginationWithTotal
 }
 

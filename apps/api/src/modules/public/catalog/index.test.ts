@@ -1,6 +1,6 @@
 import type { CatalogListPageResult } from '$modules/public/catalog/model'
 
-import * as CatalogContracts from '@carbplan/contracts/catalog'
+import * as PublicCatalogContracts from '@carbplan/contracts/public-catalog'
 import { treaty } from '@elysiajs/eden'
 import { okAsync } from 'neverthrow'
 
@@ -48,7 +48,7 @@ describe('public catalog HTTP contract', () => {
     }).v1.public.catalog.get({ query: { limit: 1, offset: 1, sort: 'name:asc' } })
 
     expect(response.status).toBe(200)
-    expect(CatalogContracts.CatalogProductsListResponseSchema.safeParse(response.data).success).toBe(true)
+    expect(PublicCatalogContracts.CatalogProductsListResponseSchema.safeParse(response.data).success).toBe(true)
     expect(response.data).toEqual({
       data: [{
         brandDescription: null,

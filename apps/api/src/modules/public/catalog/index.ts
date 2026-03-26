@@ -2,7 +2,7 @@ import type { PublicCatalogService } from '$modules/public/catalog/service'
 import type { EndpointHeaderPolicy } from '$modules/public/utils/headers'
 import type { EndpointRateLimiter, EndpointRateLimitPolicy } from '$modules/public/utils/rate-limit'
 
-import * as CatalogContracts from '@carbplan/contracts/catalog'
+import * as PublicCatalogContracts from '@carbplan/contracts/public-catalog'
 import { Elysia } from 'elysia'
 
 import { CatalogQueryValidationError } from '$modules/public/catalog/model'
@@ -71,12 +71,12 @@ export const publicCatalogModule = ({ limiter, service }: PublicCatalogModuleOpt
       summary: 'Get public catalog',
       tags: ['Public Catalog']
     },
-    query: CatalogContracts.CatalogProductsListQuerySchema,
+    query: PublicCatalogContracts.CatalogProductsListQuerySchema,
     response: {
       [StatusMap.BadRequest]: BadRequestErrorModel,
       [StatusMap.InternalServerError]: InternalServerErrorModel,
-      [StatusMap.NotModified]: CatalogContracts.CatalogProductListCachedResponseSchema,
-      [StatusMap.OK]: CatalogContracts.CatalogProductsListResponseSchema,
+      [StatusMap.NotModified]: PublicCatalogContracts.CatalogProductListCachedResponseSchema,
+      [StatusMap.OK]: PublicCatalogContracts.CatalogProductsListResponseSchema,
       [StatusMap.PreconditionFailed]: PreconditionFailedErrorModel
     }
   })

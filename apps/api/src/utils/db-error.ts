@@ -1,10 +1,12 @@
 import { PostgresError } from 'pg-error-enum'
+import * as z from 'zod'
 
 const POSTGRES_ERROR_CODES = new Set<string>(Object.values(PostgresError))
 
 const UNKNOWN_DB_ERROR_CODE = 'UNKNOWN_DB_ERROR' as const
 
-export type DatabaseErrorCode = PostgresError | typeof UNKNOWN_DB_ERROR_CODE
+export type DatabaseErrorCode = `${PostgresError}` | typeof UNKNOWN_DB_ERROR_CODE
+export const DatabaseErrorCodeEnum = z.enum({ ...PostgresError, UNKNOWN: UNKNOWN_DB_ERROR_CODE }).enum
 
 type MaybePostgresError = {
   code?: unknown
@@ -90,5 +92,16 @@ export class EntityNotFound extends Error {
 
   public static withEntityName(entity: string, message?: string) {
     return new EntityNotFound(message ?? '%s not found'.replace('%s', entity))
+  }
+}
+
+export class EntityNotInserted extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'EntityNotInserted'
+  }
+
+  public static withEntityName(entity: string, message?: string) {
+    return new EntityNotFound(message ?? '%s could not have been inserted'.replace('%s', entity))
   }
 }

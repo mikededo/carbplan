@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import {
   CatalogProductsListQuerySchema,
   CatalogProductsListResponseSchema
-} from '../src/domains/catalog'
+} from '../src/domains/public-catalog'
 
 describe('products list contracts', () => {
   it('validates list query defaults and coercion', () => {
