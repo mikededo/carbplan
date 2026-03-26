@@ -13,13 +13,16 @@ Neverthrow matchers for Vitest via `expect.extend`.
 - `toBeOkAsyncWith(expected)`
 - `toBeErrAsyncWith(expected)`
 
+> Async matchers require receiving a `ResultAsync`, and the test case must be
+> declared `async`, without awaiting for the response
+
 ## Usage
 
 Create a test setup file:
 
 ```ts
-import { expect } from 'vitest'
 import { neverthrowMatchers } from '@carbplan/vitest-neverthrow'
+import { expect } from 'vitest'
 
 expect.extend(neverthrowMatchers)
 ```
