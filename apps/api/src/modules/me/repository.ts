@@ -2,7 +2,7 @@ import type { AthleteId, Db } from '@carbplan/db'
 import type { HRZonesData } from '@carbplan/domain/hr'
 import type { PowerZonesData } from '@carbplan/domain/power'
 
-import type { CurrentAthleteData, GetCurrentAthleteError } from '$modules/me/model'
+import type { CurrentAthleteData, GetCurrentAthleteError, UpdateCurrentAthlete, UpdateCurrentAthleteError } from '$modules/me/model'
 import type { DatabaseQueryError } from '$utils/db-error'
 
 import { athletes } from '@carbplan/db'
@@ -14,6 +14,7 @@ import { EntityNotFound, mapDbError } from '$utils/db-error'
 
 export type MeRepository = {
   getCurrentAthlete: (id: AthleteId) => ResultAsync<CurrentAthleteData, GetCurrentAthleteError>
+  updateCurrentAthlete: (id: AthleteId, data: UpdateCurrentAthlete) => ResultAsync<boolean, UpdateCurrentAthleteError>
   updateHRZones: (id: AthleteId, data: HRZonesData) => ResultAsync<boolean, DatabaseQueryError>
   updatePowerZones: (id: AthleteId, data: PowerZonesData) => ResultAsync<boolean, DatabaseQueryError>
 }
@@ -25,9 +26,19 @@ export class DbMeRepository implements MeRepository {
     return ResultAsync.fromPromise(
       this.db.select().from(athletes).limit(1).where(eq(athletes.id, id)),
       mapDbError
+    ).andThen((result) => {
+      const item = head(result)
+      return item ? ok(item) : err(EntityNotFound.withEntityName('Athlete'))
+    })
+  }
+
+  updateCurrentAthlete(id: AthleteId, data: UpdateCurrentAthlete): ResultAsync<boolean, UpdateCurrentAthleteError> {
+    return ResultAsync.fromPromise(
+      this.db.update(athletes).set(data).where(eq(athletes.id, id)).returning(),
+      mapDbError
+    ).andThen(
+      (result) => result.length > 0 ? ok(true) : err(EntityNotFound.withEntityName('Athlete'))
     )
-      .map((items) => head(items))
-      .andThen((result) => result ? ok(result) : err(EntityNotFound.withEntityName('Athlete')))
   }
 
   updateHRZones(id: AthleteId, data: HRZonesData): ResultAsync<boolean, DatabaseQueryError> {

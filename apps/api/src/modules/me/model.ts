@@ -23,5 +23,18 @@ export type CurrentAthleteData = {
   sex: null | Sex
   weightKg: null | number
 }
-
 export type GetCurrentAthleteError = DatabaseQueryError | EntityNotFound
+
+export type UpdateCurrentAthlete = {
+  avatarUrl?: string
+  ftp?: number
+  fullName?: string
+  heightCm?: number
+  hrMax?: number
+  hrRest?: number
+  maxCarbIntakeGPerHr?: number
+  sex?: Sex
+  weightKg?: number
+}
+export type UpdateCurrentAthleteError = DatabaseQueryError | EntityNotFound
+

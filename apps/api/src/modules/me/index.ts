@@ -64,6 +64,34 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
     }
   )
   .patch(
+    '',
+    ({ body, status, user }) => services.me.updateCurrentAthlete(user.id, body)
+      .match(
+        () => status(StatusMap.NoContent, undefined),
+        (error) => {
+          if (error instanceof EntityNotFound) {
+            return status(StatusMap.NotFound, apiErrorFactory.notFound({ message: error.message }))
+          }
+
+          return status(StatusMap.InternalServerError, apiErrorFactory.internal())
+        }
+      ),
+    {
+      body: MeContracts.UpdateCurrentAthleteRequestSchema,
+      detail: {
+        description: 'Returns current session athlete data',
+        summary: 'Current athlete'
+      },
+      response: {
+        [StatusMap.Forbidden]: ForbiddenErrorModel,
+        [StatusMap.InternalServerError]: InternalServerErrorModel,
+        [StatusMap.NoContent]: MeContracts.UpdateCurrentAthleteResponseSchema,
+        [StatusMap.NotFound]: NotFoundErrorModel,
+        [StatusMap.Unauthorized]: UnauthorizedErrorModel
+      }
+    }
+  )
+  .patch(
     '/hr',
     async ({ body, status, user }) => await services.me.updateHRZones(user.id, body)
       .match(

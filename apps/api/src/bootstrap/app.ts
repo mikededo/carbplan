@@ -52,7 +52,8 @@ export const createApp = async ({ corsOrigins, services }: CreateAppOptions) =>
       path: '/docs',
       // @ts-expect-error This is correct, to overwrite elysiajs styles
       scalar: {
-        customCss: ''
+        customCss: '',
+        persistAuth: true
       },
       specPath: '/openapi'
     }))

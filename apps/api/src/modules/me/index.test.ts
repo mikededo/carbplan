@@ -32,6 +32,7 @@ const app = treaty(meModule({
         updatedAt: new Date(),
         weightKg: 70
       }),
+      updateCurrentAthlete: () => okAsync(true),
       updateHRZones: () => okAsync(true),
       updatePowerZones: () => okAsync(true)
     },
@@ -73,6 +74,27 @@ describe('me HTTP contract', () => {
   it('[GET] /v1/me keeps response contract', async () => {
     const response = await app.v1.me.get()
     expect(response.status).toBe(200)
+    expect(MeContracts.GetCurrentAthleteResponseSchema.parse(response.data)).toBeTruthy()
+  })
+
+  // FIXME: NoContent fail when passing null/undefined: https://github.com/elysiajs/elysia/pull/1810
+  it.skip.each<{ name: string, body: MeContracts.UpdateCurrentAthleteRequest }>([
+    {
+      body: { fullName: 'Updated Name' },
+      name: 'single field update'
+    },
+    {
+      body: {
+        ftp: 250,
+        fullName: 'Updated Name',
+        maxCarbIntakeGPerHr: 90,
+        weightKg: 80
+      },
+      name: 'multiple fields update'
+    }
+  ])('[PATCH] /v1/me keeps response contract ($name)', async ({ body }) => {
+    const response = await app.v1.me.patch(body)
+    expect(response.status).toBe(204)
     expect(MeContracts.GetCurrentAthleteResponseSchema.parse(response.data)).toBeTruthy()
   })
 

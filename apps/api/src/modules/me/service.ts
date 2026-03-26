@@ -3,12 +3,13 @@ import type { HRZonesData } from '@carbplan/domain/hr'
 import type { PowerZonesData } from '@carbplan/domain/power'
 import type { ResultAsync } from 'neverthrow'
 
-import type { CurrentAthleteData, GetCurrentAthleteError } from '$modules/me/model'
+import type { CurrentAthleteData, GetCurrentAthleteError, UpdateCurrentAthlete, UpdateCurrentAthleteError } from '$modules/me/model'
 import type { MeRepository } from '$modules/me/repository'
 import type { DatabaseQueryError } from '$utils/db-error'
 
 export type MeService = {
   getCurrentAthlete: (id: AthleteId) => ResultAsync<CurrentAthleteData, GetCurrentAthleteError>
+  updateCurrentAthlete: (id: AthleteId, data: UpdateCurrentAthlete) => ResultAsync<boolean, UpdateCurrentAthleteError>
   updateHRZones: (id: AthleteId, data: HRZonesData) => ResultAsync<boolean, DatabaseQueryError>
   updatePowerZones: (id: AthleteId, data: PowerZonesData) => ResultAsync<boolean, DatabaseQueryError>
 }
@@ -18,6 +19,10 @@ export class MeServiceImpl implements MeService {
 
   getCurrentAthlete(id: AthleteId): ResultAsync<CurrentAthleteData, GetCurrentAthleteError> {
     return this.repository.getCurrentAthlete(id)
+  }
+
+  updateCurrentAthlete(id: AthleteId, data: UpdateCurrentAthlete): ResultAsync<boolean, UpdateCurrentAthleteError> {
+    return this.repository.updateCurrentAthlete(id, data)
   }
 
   updateHRZones(id: AthleteId, data: HRZonesData): ResultAsync<boolean, DatabaseQueryError> {
