@@ -43,25 +43,15 @@ export class DbMeRepository implements MeRepository {
 
   updateHRZones(id: AthleteId, data: HRZonesData): ResultAsync<boolean, DatabaseQueryError> {
     return ResultAsync.fromPromise(
-      this.execUpdateHrZones(id, data),
+      this.db.update(athletes).set({ hrZones: data }).where(eq(athletes.id, id)),
       mapDbError
-    )
+    ).map(() => true)
   }
 
   updatePowerZones(id: AthleteId, data: PowerZonesData): ResultAsync<boolean, DatabaseQueryError> {
     return ResultAsync.fromPromise(
-      this.execUpdatePowerZones(id, data),
+      this.db.update(athletes).set({ powerZones: data }).where(eq(athletes.id, id)),
       mapDbError
-    )
-  }
-
-  private async execUpdateHrZones(id: AthleteId, hrZones: HRZonesData): Promise<boolean> {
-    await this.db.update(athletes).set({ hrZones }).where(eq(athletes.id, id))
-    return true
-  }
-
-  private async execUpdatePowerZones(id: AthleteId, powerZones: PowerZonesData): Promise<boolean> {
-    await this.db.update(athletes).set({ powerZones }).where(eq(athletes.id, id))
-    return true
+    ).map(() => true)
   }
 }
