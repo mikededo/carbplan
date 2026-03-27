@@ -1,6 +1,7 @@
 import { createRepositoryDbMock } from '@carbplan/auth/testing'
 
 import { DbAthleteFavoritesRepository } from '$modules/favorites/repository'
+import { DatabaseErrorCodeEnum, DatabaseQueryError } from '$utils/db-error'
 
 describe('product repository', () => {
   it('queries favorite products and maps rows with brand data', async () => {
@@ -38,10 +39,7 @@ describe('product repository', () => {
 
     const repository = new DbAthleteFavoritesRepository(dbMock.db)
 
-    const result = await repository.listFavoriteProductsWithBrands('athlete-id')
-
-    expect(result).toHaveLength(1)
-    expect(result[0]).toEqual({
+    await expect(repository.listFavoriteProductsWithBrands('athlete-id')).toBeOkAsyncWith([{
       brand: {
         id: 'brand-1',
         logoUrl: 'https://example.com/logo.png',
@@ -69,7 +67,7 @@ describe('product repository', () => {
       sodiumMg: 50,
       sugarG: 20,
       updatedAt: new Date('2024-01-02T00:00:00.000Z')
-    })
+    }])
   })
 
   it('filters out rows missing joined brand or product data', async () => {
@@ -99,12 +97,11 @@ describe('product repository', () => {
         updatedAt: new Date('2024-01-02T00:00:00.000Z')
       }
     }])
-
     const repository = new DbAthleteFavoritesRepository(dbMock.db)
 
-    const result = await repository.listFavoriteProductsWithBrands('athlete-id')
-
-    expect(result).toEqual([])
+    await expect(
+      repository.listFavoriteProductsWithBrands('athlete-id')
+    ).toBeOkAsyncWith([])
   })
 
   it('propagates db failures', async () => {
@@ -112,6 +109,12 @@ describe('product repository', () => {
     dbMock.queueError(new Error('db failed'))
     const repository = new DbAthleteFavoritesRepository(dbMock.db)
 
-    await expect(repository.listFavoriteProductsWithBrands('athlete-id')).rejects.toThrow('db failed')
+    await expect(repository.listFavoriteProductsWithBrands('athlete-id')).toBeErrAsyncWith(
+      new DatabaseQueryError({
+        cause: new Error('db failed'),
+        code: DatabaseErrorCodeEnum.UNKNOWN,
+        message: 'db failed'
+      })
+    )
   })
 })
