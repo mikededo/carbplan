@@ -97,6 +97,7 @@
       "version": "0.0.0",
       "dependencies": {
         "@carbplan/domain": "workspace:*",
+        "@carbplan/utils": "workspace:*",
         "zod": "catalog:",
       },
       "devDependencies": {
@@ -161,6 +162,7 @@
         "@types/bun": "latest",
         "eslint": "catalog:",
         "typescript": "catalog:",
+        "zod": "catalog:",
       },
     },
     "packages/vitest-neverthrow": {

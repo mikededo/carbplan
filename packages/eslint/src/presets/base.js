@@ -91,7 +91,13 @@ export const baseConfig = (args) => antfu({
       entryPoint: './src/app.css'
     }
   }
-}, zod.configs.recommended)
+}, {
+  ...zod.configs.recommended,
+  rules: {
+    ...zod.configs.recommended.rules,
+    'zod/require-error-message': 'off'
+  }
+})
   .override('antfu/stylistic/rules', {
     rules: {
       'style/arrow-parens': ['error', 'always'],

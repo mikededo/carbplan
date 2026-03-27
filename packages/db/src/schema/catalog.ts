@@ -34,6 +34,7 @@ export const brands = pgTable('brands', {
   index('brands_slug_idx').on(table.slug),
   index('brands_is_active_idx').on(table.isActive)
 ])
+export type BrandId = typeof brands.$inferSelect.id
 
 export const products = pgTable('products', {
   brandId: uuid('brand_id').notNull().references(() => brands.id, { onDelete: 'cascade' }),

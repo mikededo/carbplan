@@ -33,7 +33,7 @@ type CreateServicesOptions = {
 
 export const createServices = ({ auth, repositories }: CreateServicesOptions): AppServices => ({
   auth,
-  catalog: new CatalogServiceImpl(repositories.catalog),
+  catalog: new CatalogServiceImpl(repositories.catalog, repositories.user),
   favorites: new AthletesFavoritesServiceImpl(repositories.favorites),
   me: new MeServiceImpl(repositories.me),
   onboarding: new OnboardingServiceImpl(repositories.onboarding),

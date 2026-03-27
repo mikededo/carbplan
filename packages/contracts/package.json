@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@carbplan/domain": "workspace:*",
+    "@carbplan/utils": "workspace:*",
     "zod": "catalog:"
   },
   "devDependencies": {

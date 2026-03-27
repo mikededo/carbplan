@@ -1,6 +1,6 @@
 import type { Brand, Product } from '@carbplan/db'
 
-import type { DatabaseQueryError, EntityNotInserted } from '$utils/db-error'
+import type { DatabaseQueryError, EntityNotFound, EntityNotInserted } from '$utils/db-error'
 
 export type ProductWithBrand = {
   brand: Pick<Brand, 'id' | 'logoUrl' | 'name' | 'slug'>
@@ -26,3 +26,13 @@ export type CreateBrandDataResult = {
   website: null | string
 }
 export type CreateBrandError = DatabaseQueryError | EntityNotInserted
+
+export type UpdateBrandData = {
+  description?: string
+  isActive?: boolean
+  logoUrl?: string
+  name?: string
+  slug?: string
+  website?: string
+}
+export type UpdateBrandError = DatabaseQueryError | EntityNotFound

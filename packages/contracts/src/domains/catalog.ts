@@ -1,4 +1,7 @@
+import { atLeastOneProperty } from '@carbplan/utils/validation'
 import * as z from 'zod'
+
+import { ApiEmptyResponseSchema } from '../api'
 
 export const CreateBrandRequestSchema = z.object({
   description: z.string().trim().optional(),
@@ -21,3 +24,20 @@ export const CreateBrandResponseSchema = z.object({
   website: z.string().trim().nullable()
 })
 export type CreateBrandResponse = z.infer<typeof CreateBrandRequestSchema>
+
+export const UpdateBrandRequestParamsSchema = z.object({
+  brandId: z.uuid()
+})
+export const UpdateBrandRequestSchema = atLeastOneProperty(
+  z.object({
+    description: z.string().trim().optional(),
+    isActive: z.boolean().optional(),
+    logoUrl: z.string().trim().optional(),
+    name: z.string().trim().optional(),
+    slug: z.string().trim().optional(),
+    website: z.string().trim().optional()
+  })
+)
+export type UpdateBrandRequest = z.infer<typeof UpdateBrandRequestSchema>
+export const UpdateBrandResponseSchema = ApiEmptyResponseSchema
+export type UpdateBrandResponse = z.infer<typeof UpdateBrandResponseSchema>
