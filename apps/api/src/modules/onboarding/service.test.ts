@@ -1,7 +1,7 @@
 import { errAsync, okAsync } from 'neverthrow'
 
 import { OnboardingServiceImpl } from '$modules/onboarding/service'
-import { DatabaseQueryError } from '$utils/db-error'
+import { DatabaseErrorCodeEnum, DatabaseQueryError } from '$utils/db-error'
 
 describe('onboarding service', () => {
   it('returns completed status from repository', async () => {
@@ -45,17 +45,14 @@ describe('onboarding service', () => {
     }
     const service = new OnboardingServiceImpl(repository)
 
-    const result = await service.saveAthleteOnboarding({
-      fullName: 'Jane Rider',
-      height: 170,
-      id: 'athlete-id',
-      sex: 'female',
-      weight: 58
-    })
-
-    expect(result.isErr()).toBe(true)
-    const error = result._unsafeUnwrapErr()
-    expect(error).toBeInstanceOf(DatabaseQueryError)
-    expect(error.code).toBe('UNKNOWN_DB_ERROR')
+    await expect(
+      service.saveAthleteOnboarding({
+        fullName: 'Jane Rider',
+        height: 170,
+        id: 'athlete-id',
+        sex: 'female',
+        weight: 58
+      })
+    ).toBeErrAsyncWith(new DatabaseQueryError({ cause: '', code: DatabaseErrorCodeEnum.UNKNOWN }))
   })
 })

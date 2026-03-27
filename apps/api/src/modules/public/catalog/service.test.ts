@@ -20,9 +20,7 @@ describe('public catalog service', () => {
       sort: 'name:asc'
     }
 
-    const result = await service.getCatalogProducts(query)
-
-    expect(result._unsafeUnwrap()).toEqual({
+    await expect(service.getCatalogProducts(query)).toBeOkAsyncWith({
       data: [],
       meta: { limit: 20, offset: 0, total: 0 }
     })

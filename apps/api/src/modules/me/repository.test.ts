@@ -32,7 +32,7 @@ describe('db me repository', () => {
       dbMock.queueResult([model])
       const repository = new DbMeRepository(dbMock.db)
 
-      expect(repository.getCurrentAthlete('athlete-id')).toBeOkAsyncWith(model)
+      await expect(repository.getCurrentAthlete('athlete-id')).toBeOkAsyncWith(model)
     })
 
     entityNotFoundTest(
@@ -56,7 +56,7 @@ describe('db me repository', () => {
       dbMock.queueResult([model])
       const repository = new DbMeRepository(dbMock.db)
 
-      expect(repository.updateCurrentAthlete('athlete-id', model)).toBeOkAsyncWith(true)
+      await expect(repository.updateCurrentAthlete('athlete-id', model)).toBeOkAsyncWith(true)
     })
 
     entityNotFoundTest(
@@ -74,6 +74,6 @@ describe('db me repository', () => {
       model: HRZoneModelEnum.custom,
       zones: [{ color: '#HEXCOL', maxBpm: 200, maxPercent: 100, minBpm: 50, minPercent: 0, name: 'Z1' }]
     })
-    expect(result).toBeOkAsyncWith(true)
+    await expect(result).toBeOkAsyncWith(true)
   })
 })

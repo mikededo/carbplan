@@ -2,9 +2,8 @@
 import { createRepositoryDbMock } from '@carbplan/auth/testing'
 import { describe, expect, it } from 'vitest'
 
-import { DatabaseQueryError } from '$utils/db-error'
-
-import { DbPublicCatalogRepository } from './repository'
+import { DbPublicCatalogRepository } from '$modules/public/catalog/repository'
+import { DatabaseErrorCodeEnum, DatabaseQueryError } from '$utils/db-error'
 
 const baseRow = {
   brandDescription: null,
@@ -37,19 +36,11 @@ describe('public catalog repository', () => {
     dbMock.queueResult([{ total: 2 }])
     const repository = new DbPublicCatalogRepository(dbMock.db)
 
-    const result = await repository.listCatalogProducts({
-      limit: 1,
-      offset: 0,
-      sort: 'name:asc'
-    })
-    expect(result.isOk()).toBe(true)
-    const value = result._unsafeUnwrap()
-
-    expect(value.data).toHaveLength(1)
-    expect(value.meta).toEqual({
-      limit: 1,
-      offset: 0,
-      total: 2
+    await expect(
+      repository.listCatalogProducts({ limit: 1, offset: 0, sort: 'name:asc' })
+    ).toBeOkAsyncWith({
+      data: expect.any(Array),
+      meta: { limit: 1, offset: 0, total: 2 }
     })
   })
 
@@ -59,19 +50,11 @@ describe('public catalog repository', () => {
     dbMock.queueResult([{ total: 10 }])
     const repository = new DbPublicCatalogRepository(dbMock.db)
 
-    const result = await repository.listCatalogProducts({
-      limit: 5,
-      offset: 5,
-      sort: 'name:asc'
-    })
-    expect(result.isOk()).toBe(true)
-    const value = result._unsafeUnwrap()
-
-    expect(value.data).toHaveLength(1)
-    expect(value.meta).toEqual({
-      limit: 5,
-      offset: 5,
-      total: 10
+    await expect(
+      repository.listCatalogProducts({ limit: 5, offset: 5, sort: 'name:asc' })
+    ).toBeOkAsyncWith({
+      data: expect.any(Array),
+      meta: { limit: 5, offset: 5, total: 10 }
     })
   })
 
@@ -80,16 +63,10 @@ describe('public catalog repository', () => {
     dbMock.queueError(new Error('db failed'))
     const repository = new DbPublicCatalogRepository(dbMock.db)
 
-    const result = await repository.listCatalogProducts({
-      limit: 20,
-      offset: 0,
-      sort: 'name:asc'
-    })
-
-    expect(result.isErr()).toBe(true)
-    const error = result._unsafeUnwrapErr()
-    expect(error).toBeInstanceOf(DatabaseQueryError)
-    expect(error.code).toBe('UNKNOWN_DB_ERROR')
-    expect(error.cause).toEqual(expect.objectContaining({ message: 'db failed' }))
+    await expect(
+      repository.listCatalogProducts({ limit: 20, offset: 0, sort: 'name:asc' })
+    ).toBeErrAsyncWith(
+      new DatabaseQueryError({ cause: new Error('db failed'), code: DatabaseErrorCodeEnum.UNKNOWN, message: 'db failed' })
+    )
   })
 })

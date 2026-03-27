@@ -1,4 +1,4 @@
-import type { CreateBrandData } from '$modules/catalog/model'
+import type { CreateBrandData, CreateBrandDataResult } from '$modules/catalog/model'
 
 import { createRepositoryDbMock } from '@carbplan/auth/testing'
 
@@ -7,7 +7,7 @@ import { entityNotFoundTest } from '$test/utils.test'
 
 describe('catalog repository', () => {
   describe('.createBrand', () => {
-    const model: CreateBrandData = {
+    const model: Required<CreateBrandData> = {
       description: 'Test brand',
       isActive: true,
       logoUrl: 'https://example.com/logo.png',
@@ -15,14 +15,19 @@ describe('catalog repository', () => {
       slug: 'brand',
       website: 'https://example.com'
     }
+    const result: CreateBrandDataResult = {
+      ...model,
+      createdAt: new Date(),
+      id: 'brand-id',
+      updatedAt: new Date()
+    }
 
     it('creates a new brand', async () => {
       const dbMock = createRepositoryDbMock()
-      dbMock.queueResult([model])
+      dbMock.queueResult([result])
       const repository = new DbCatalogRepository(dbMock.db)
 
-      const result = await repository.createBrand(model)
-      expect(result._unsafeUnwrap()).toBeTruthy()
+      await expect(repository.createBrand(model)).toBeOkAsyncWith(result)
     })
 
     entityNotFoundTest(

@@ -32,13 +32,15 @@ describe('onboarding repository', () => {
     dbMock.queueResult(undefined)
     const repository = new DbOnboardingRepository(dbMock.db)
 
-    await repository.saveAthleteOnboarding({
-      fullName: 'Jane Rider',
-      height: 170,
-      id: 'athlete-id',
-      sex: 'female',
-      weight: 58
-    })
+    await expect(
+      repository.saveAthleteOnboarding({
+        fullName: 'Jane Rider',
+        height: 170,
+        id: 'athlete-id',
+        sex: 'female',
+        weight: 58
+      })
+    ).toBeOkAsync()
   })
 
   it('propagates db errors when updating onboarding data', async () => {
@@ -46,15 +48,14 @@ describe('onboarding repository', () => {
     dbMock.queueError(new Error('Error'))
     const repository = new DbOnboardingRepository(dbMock.db)
 
-    await repository.saveAthleteOnboarding({
-      fullName: 'Jane Rider',
-      height: 170,
-      id: 'athlete-id',
-      sex: 'female',
-      weight: 58
-    }).match(
-      () => expect.fail('Got ok when should result to err'),
-      (error) => expect(error).toBeInstanceOf(Error)
-    )
+    await expect(
+      repository.saveAthleteOnboarding({
+        fullName: 'Jane Rider',
+        height: 170,
+        id: 'athlete-id',
+        sex: 'female',
+        weight: 58
+      })
+    ).toBeErrAsync()
   })
 })
