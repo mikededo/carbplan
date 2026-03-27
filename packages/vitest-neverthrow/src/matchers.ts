@@ -6,12 +6,15 @@ type MatcherResult = {
   pass: boolean
 }
 
+type MatcherUtils = {
+  printExpected: (value: unknown) => string
+  printReceived: (value: unknown) => string
+  diff: (expected: unknown, received: unknown) => string | undefined
+}
+
 type MatcherContext = {
   equals: (actual: unknown, expected: unknown) => boolean
-  utils: {
-    printExpected: (value: unknown) => string
-    printReceived: (value: unknown) => string
-  }
+  utils: MatcherUtils
 }
 
 type NeverthrowMatchers<R = unknown> = {
@@ -26,24 +29,26 @@ type NeverthrowMatchers<R = unknown> = {
 }
 
 declare module 'vitest' {
-  interface Matchers<T = any> extends NeverthrowMatchers<T> {}
+  // eslint-disable-next-line ts/consistent-type-definitions
+  interface Matchers<T = any> extends NeverthrowMatchers<T> { }
 }
 
 const isOkResult = (value: unknown): value is Ok<unknown, unknown> => value instanceof Ok
 const isErrResult = (value: unknown): value is Err<unknown, unknown> => value instanceof Err
-const isResult = (value: unknown): value is Err<unknown, unknown> | Ok<unknown, unknown> => (
-  isOkResult(value) || isErrResult(value)
-)
+const isResult = (value: unknown): value is Err<unknown, unknown> | Ok<unknown, unknown> => isOkResult(value) || isErrResult(value)
 
-const ensureResult = (value: unknown, matcherName: string) => {
-  if (isResult(value)) {
-    return
+const ensureResult = (value: unknown, matcherName: string): void => {
+  if (!isResult(value)) {
+    throw new TypeError(
+      `You must provide a Result to expect() when using .${matcherName}.`
+    )
   }
-
-  throw new TypeError(`You must provide a Result to expect() when using .${matcherName}.`)
 }
 
-const ensureResultAsync = (value: unknown, matcherName: string): ResultAsync<unknown, unknown> => {
+const ensureResultAsync = (
+  value: unknown,
+  matcherName: string
+): ResultAsync<unknown, unknown> => {
   if (value instanceof ResultAsync) {
     return value
   }
@@ -57,29 +62,34 @@ const matchesExpected = (
   equals: MatcherContext['equals'],
   actual: unknown,
   expected: unknown
-) => {
+): boolean => {
   if (isConstructor(expected) && typeof actual === 'object' && actual !== null) {
     return actual instanceof expected
   }
-
   return equals(actual, expected)
 }
 
-const passMessage = (matcher: string, expected: string, received: string) =>
-  `expected ${received} not to ${matcher}${expected.length > 0 ? ` ${expected}` : ''}`
+const passMsg = (variant: string, received: string) => `expected ${received} not to be ${variant}`
+const failMsg = (variant: string, received: string) => `expected ${received} to be ${variant}`
 
-const failMessage = (matcher: string, expected: string, received: string) =>
-  `expected ${received} to ${matcher}${expected.length > 0 ? ` ${expected}` : ''}`
+const failMsgWith = (
+  variant: string,
+  expected: unknown,
+  actual: unknown,
+  utils: MatcherUtils
+): string => {
+  const diffOutput = utils.diff(expected, actual)
+  const detail = diffOutput ?? `Expected: ${utils.printExpected(expected)}\nReceived: ${utils.printReceived(actual)}`
+  return `expected value to be ${variant}:\n${detail}`
+}
 
 export const neverthrowMatchers = {
   toBeOk(this: MatcherContext, received: unknown): MatcherResult {
     ensureResult(received, 'toBeOk')
     const pass = isOkResult(received)
-
+    const printed = this.utils.printReceived(received)
     return {
-      message: () => (pass
-        ? passMessage('be Ok', '', this.utils.printReceived(received))
-        : failMessage('be Ok', '', this.utils.printReceived(received))),
+      message: () => pass ? passMsg('Ok', printed) : failMsg('Ok', printed),
       pass
     }
   },
@@ -87,11 +97,9 @@ export const neverthrowMatchers = {
   toBeErr(this: MatcherContext, received: unknown): MatcherResult {
     ensureResult(received, 'toBeErr')
     const pass = isErrResult(received)
-
+    const printed = this.utils.printReceived(received)
     return {
-      message: () => (pass
-        ? passMessage('be Err', '', this.utils.printReceived(received))
-        : failMessage('be Err', '', this.utils.printReceived(received))),
+      message: () => pass ? passMsg('Err', printed) : failMsg('Err', printed),
       pass
     }
   },
@@ -103,12 +111,11 @@ export const neverthrowMatchers = {
     return {
       message: () => {
         if (!isOkResult(received)) {
-          return failMessage('be Ok with', this.utils.printExpected(expected), this.utils.printReceived(received))
+          return failMsg('Ok', this.utils.printReceived(received))
         }
-
         return pass
-          ? passMessage('be Ok with', this.utils.printExpected(expected), this.utils.printReceived(received.value))
-          : failMessage('be Ok with', this.utils.printExpected(expected), this.utils.printReceived(received.value))
+          ? passMsg('Ok', this.utils.printReceived(received.value))
+          : failMsgWith('Ok with', expected, received.value, this.utils)
       },
       pass
     }
@@ -121,12 +128,11 @@ export const neverthrowMatchers = {
     return {
       message: () => {
         if (!isErrResult(received)) {
-          return failMessage('be Err with', this.utils.printExpected(expected), this.utils.printReceived(received))
+          return failMsg('Err', this.utils.printReceived(received))
         }
-
         return pass
-          ? passMessage('be Err with', this.utils.printExpected(expected), this.utils.printReceived(received.error))
-          : failMessage('be Err with', this.utils.printExpected(expected), this.utils.printReceived(received.error))
+          ? passMsg('Err', this.utils.printReceived(received.error))
+          : failMsgWith('Err with', expected, received.error, this.utils)
       },
       pass
     }
@@ -136,11 +142,9 @@ export const neverthrowMatchers = {
     const resultAsync = ensureResultAsync(received, 'toBeOkAsync')
     const resolved = await resultAsync
     const pass = isOkResult(resolved)
-
+    const printed = this.utils.printReceived(resolved)
     return {
-      message: () => (pass
-        ? passMessage('be Ok', '', this.utils.printReceived(resolved))
-        : failMessage('be Ok', '', this.utils.printReceived(resolved))),
+      message: () => pass ? passMsg('Ok', printed) : failMsg('Ok', printed),
       pass
     }
   },
@@ -149,11 +153,9 @@ export const neverthrowMatchers = {
     const resultAsync = ensureResultAsync(received, 'toBeErrAsync')
     const resolved = await resultAsync
     const pass = isErrResult(resolved)
-
+    const printed = this.utils.printReceived(resolved)
     return {
-      message: () => (pass
-        ? passMessage('be Err', '', this.utils.printReceived(resolved))
-        : failMessage('be Err', '', this.utils.printReceived(resolved))),
+      message: () => pass ? passMsg('Err', printed) : failMsg('Err', printed),
       pass
     }
   },
@@ -170,12 +172,11 @@ export const neverthrowMatchers = {
     return {
       message: () => {
         if (!isOkResult(resolved)) {
-          return failMessage('be Ok with', this.utils.printExpected(expected), this.utils.printReceived(resolved))
+          return failMsg('Ok', this.utils.printReceived(resolved))
         }
-
         return pass
-          ? passMessage('be Ok with', this.utils.printExpected(expected), this.utils.printReceived(resolved.value))
-          : failMessage('be Ok with', this.utils.printExpected(expected), this.utils.printReceived(resolved.value))
+          ? passMsg('Ok', this.utils.printReceived(resolved.value))
+          : failMsgWith('Ok with', expected, resolved.value, this.utils)
       },
       pass
     }
@@ -193,12 +194,11 @@ export const neverthrowMatchers = {
     return {
       message: () => {
         if (!isErrResult(resolved)) {
-          return failMessage('be Err with', this.utils.printExpected(expected), this.utils.printReceived(resolved))
+          return failMsg('Err', this.utils.printReceived(resolved))
         }
-
         return pass
-          ? passMessage('be Err with', this.utils.printExpected(expected), this.utils.printReceived(resolved.error))
-          : failMessage('be Err with', this.utils.printExpected(expected), this.utils.printReceived(resolved.error))
+          ? passMsg('Err', this.utils.printReceived(resolved.error))
+          : failMsgWith('Err with', expected, resolved.error, this.utils)
       },
       pass
     }
@@ -211,7 +211,6 @@ export const registerNeverthrowMatchers = () => {
   if (didRegisterMatchers) {
     return
   }
-
   expect.extend(neverthrowMatchers)
   didRegisterMatchers = true
 }
