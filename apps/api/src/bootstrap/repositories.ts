@@ -6,6 +6,7 @@ import type { AthleteFavoritesRepository } from '$modules/favorites/repository'
 import type { MeRepository } from '$modules/me/repository'
 import type { OnboardingRepository } from '$modules/onboarding/repository'
 import type { PublicCatalogRepository } from '$modules/public/catalog/repository'
+import type { UserRepository } from '$modules/user/repository'
 
 import { DbAthleteProvisioningRepository } from '$modules/auth/provision-athlete'
 import { DbCatalogRepository } from '$modules/catalog/repository'
@@ -13,6 +14,7 @@ import { DbAthleteFavoritesRepository } from '$modules/favorites/repository'
 import { DbMeRepository } from '$modules/me/repository'
 import { DbOnboardingRepository } from '$modules/onboarding/repository'
 import { DbPublicCatalogRepository } from '$modules/public/catalog/repository'
+import { DbUserRepository } from '$modules/user/repository'
 
 export type AuthRepositories = {
   athleteProvisioning: AthleteProvisioningRepository
@@ -29,6 +31,7 @@ export type AppRepositories = {
   public: PublicRepositories
   catalog: CatalogRepository
   me: MeRepository
+  user: UserRepository
 }
 
 export const createRepositories = (db: Db): AppRepositories => ({
@@ -41,5 +44,6 @@ export const createRepositories = (db: Db): AppRepositories => ({
   onboarding: new DbOnboardingRepository(db),
   public: {
     catalog: new DbPublicCatalogRepository(db)
-  }
+  },
+  user: new DbUserRepository(db)
 })

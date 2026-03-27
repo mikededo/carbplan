@@ -21,6 +21,7 @@ export const users = pgTable('user', {
   uniqueIndex('user_email_unique').on(table.email),
   index('user_email_idx').on(table.email)
 ])
+export type UserId = typeof users.$inferSelect.id
 
 export const sessions = pgTable('session', {
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
