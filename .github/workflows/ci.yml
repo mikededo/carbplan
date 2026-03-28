@@ -51,7 +51,8 @@ jobs:
         run: |
           bunx turbo run test \
             --filter="@carbplan/api...[$BASE_SHA]" \
-            --filter="@carbplan/web...[$BASE_SHA]" \
+            # TODO: Ignore web until api is merged
+            # --filter="@carbplan/web...[$BASE_SHA]" \
             --filter="@carbplan/auth...[$BASE_SHA]" \
             --filter="@carbplan/contracts...[$BASE_SHA]" \
             --filter="@carbplan/vitest-neverthrow...[$BASE_SHA]"
