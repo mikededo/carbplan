@@ -49,5 +49,11 @@
       "persistent": true
     },
     "test": {},
+    "typecheck": {
+      "dependsOn": [
+        "^typecheck"
+      ],
+      "outputs": []
+    }
   }
 }

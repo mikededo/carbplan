@@ -11,6 +11,7 @@
     "gen:i18n": "echo 'No i18n generation configured'",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "typecheck": "bun run check",
     "db:types": "bun scripts/db-types.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

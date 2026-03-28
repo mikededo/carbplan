@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "module": "src/index.js",
   "scripts": {
+    "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "bun vitest",
@@ -34,6 +35,7 @@
     "eslint": "catalog:",
     "logixlysia": "^6.2.2",
     "neverthrow": "8.2.0",
+    "typescript": "catalog:",
     "vitest": "catalog:"
   }
 }

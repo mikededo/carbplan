@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    env:
+      PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-placeholder-key
+      PUBLIC_SUPABASE_URL: https://example.com
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.11
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Resolve base commit
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            base_sha="${{ github.event.pull_request.base.sha }}"
+          else
+            base_sha="${{ github.event.before }}"
+          fi
+
+          if [[ -z "$base_sha" || "$base_sha" == "0000000000000000000000000000000000000000" ]]; then
+            base_sha="$(git rev-parse HEAD~1)"
+          fi
+
+          echo "BASE_SHA=$base_sha" >> "$GITHUB_ENV"
+          echo "Using BASE_SHA=$base_sha"
+
+      - name: Typecheck and lint affected projects
+        run: bunx turbo run typecheck lint --filter="...[$BASE_SHA]"
+
+      - name: Test affected projects
+        run: |
+          bunx turbo run test \
+            --filter="@carbplan/api...[$BASE_SHA]" \
+            --filter="@carbplan/web...[$BASE_SHA]" \
+            --filter="@carbplan/auth...[$BASE_SHA]" \
+            --filter="@carbplan/contracts...[$BASE_SHA]" \
+            --filter="@carbplan/vitest-neverthrow...[$BASE_SHA]"

@@ -9,6 +9,7 @@
   "scripts": {
     "build": "echo 'No build step for @carbplan/domain'",
     "check": "tsc --noEmit",
+    "typecheck": "bun run check",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },

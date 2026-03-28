@@ -10,6 +10,7 @@
   "scripts": {
     "build": "echo 'No build step for @carbplan/contracts'",
     "check": "tsc --noEmit",
+    "typecheck": "bun run check",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest"
