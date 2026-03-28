@@ -10,7 +10,7 @@ describe('products list contracts', () => {
     const parsed = CatalogProductsListQuerySchema.parse({
       brand: ['brand-a', 'brand-b'],
       carbsGte: '20',
-      form: ['gel'],
+      form: 'gel',
       limit: '16',
       offset: '8'
     })
