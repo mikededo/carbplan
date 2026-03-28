@@ -43,14 +43,14 @@ describe('catalog HTTP contract', () => {
     vi.resetAllMocks()
   })
 
-  describe('[POST] /v1/catalog/brand ', () => {
+  describe('[POST] /v1/catalogs/brands ', () => {
     const requestBody = {
       isActive: true,
       name: 'Brand One',
       slug: 'brand-one'
     }
 
-    shouldBeAdminProtected((app) => app.v1.catalog.brand.post(requestBody))
+    shouldBeAdminProtected((app) => app.v1.catalogs.brands.post(requestBody))
 
     it('allows admin users', async () => {
       const model: CatalogContracts.CreateBrandResponse = {
@@ -67,17 +67,17 @@ describe('catalog HTTP contract', () => {
       catalogService.createBrand.mockReturnValue(okAsync(model))
 
       const app = createCatalogApp({ isAdmin: true })
-      const response = await app.v1.catalog.brand.post(requestBody)
+      const response = await app.v1.catalogs.brands.post(requestBody)
       expect(response.status).toBe(200)
       CatalogContracts.CreateBrandResponseSchema.parse(response.data)
     })
   })
 
-  describe('[PATCH] /v1/catalog/brand/:brandId', () => {
+  describe('[PATCH] /v1/catalogs/brands/:brandId', () => {
     const brandId = crypto.randomUUID()
 
     shouldBeAdminProtected(
-      (app) => app.v1.catalog.brand({ brandId }).patch({ name: 'brand name' })
+      (app) => app.v1.catalogs.brands({ brandId }).patch({ name: 'brand name' })
     )
 
     // FIXME: NoContent fail when passing null/undefined: https://github.com/elysiajs/elysia/pull/1810
@@ -85,7 +85,7 @@ describe('catalog HTTP contract', () => {
       catalogService.updateBrand.mockReturnValue(okAsync(true))
 
       const app = createCatalogApp({ isAdmin: true })
-      const response = await app.v1.catalog.brand({ brandId }).patch({ name: 'brand name' })
+      const response = await app.v1.catalogs.brands({ brandId }).patch({ name: 'brand name' })
       expect(response.status).toBe(200)
       CatalogContracts.UpdateBrandResponseSchema.parse(response.data)
     })

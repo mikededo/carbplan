@@ -15,7 +15,7 @@ const app = (result: CatalogListPageResult) => treaty(publicModule({
 }))
 
 describe('public catalog HTTP contract', () => {
-  it('[GET] /v1/public/catalog returns a paginated flat list envelope', async () => {
+  it('[GET] /v1/public/catalogs returns a paginated flat list envelope', async () => {
     const response = await app({
       data: [{
         brandDescription: null,
@@ -45,7 +45,7 @@ describe('public catalog HTTP contract', () => {
         offset: 0,
         total: 1
       }
-    }).v1.public.catalog.get({ query: { limit: 1, offset: 1, sort: 'name:asc' } })
+    }).v1.public.catalogs.get({ query: { limit: 1, offset: 1, sort: 'name:asc' } })
 
     expect(response.status).toBe(200)
     expect(PublicCatalogContracts.CatalogProductsListResponseSchema.safeParse(response.data).success).toBe(true)
@@ -81,8 +81,8 @@ describe('public catalog HTTP contract', () => {
     })
   })
 
-  it('[GET] /v1/public/catalog returns bad request for invalid query', async () => {
-    const response = await app({ data: [], meta: { limit: 0, offset: 0, total: 0 } }).v1.public.catalog.get({
+  it('[GET] /v1/public/catalogs returns bad request for invalid query', async () => {
+    const response = await app({ data: [], meta: { limit: 0, offset: 0, total: 0 } }).v1.public.catalogs.get({
       // @ts-expect-error For testing purposes
       query: { sort: 'invalid:asc' }
     })

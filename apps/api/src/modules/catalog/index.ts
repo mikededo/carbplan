@@ -30,12 +30,12 @@ export const catalogModule = ({ auth, services }: CatalogModuleOptions) => new E
     tags: ['Catalog']
   },
   name: 'catalog',
-  prefix: '/v1/catalog'
+  prefix: '/v1/catalogs'
 })
   .use(authModule({ auth }))
   .guard({ auth: true })
   .group(
-    '/brand',
+    '/brands',
     { admin: true },
     (app) => app
       .post(

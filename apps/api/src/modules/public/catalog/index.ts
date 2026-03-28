@@ -31,7 +31,7 @@ export type PublicCatalogModuleOptions = {
 }
 
 export const publicCatalogModule = ({ limiter, service }: PublicCatalogModuleOptions) => new Elysia({ name: 'public-catalog' })
-  .get('/catalog', async ({ query, request, server, set, status }) => {
+  .get('/catalogs', async ({ query, request, server, set, status }) => {
     const clientKey = resolveRateLimitClientKey(request, server)
     const isAllowed = limiter.consume({
       clientKey,
