@@ -14,7 +14,7 @@ jobs:
       PUBLIC_SUPABASE_URL: https://example.com
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -44,15 +44,33 @@ jobs:
           echo "BASE_SHA=$base_sha" >> "$GITHUB_ENV"
           echo "Using BASE_SHA=$base_sha"
 
+      - name: Detect affected typecheck/lint tasks
+        id: detect_checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          count="$(bunx turbo run typecheck lint --dry=json --filter="...[$BASE_SHA]" | jq '.tasks | length')"
+          echo "count=$count" >> "$GITHUB_OUTPUT"
       - name: Typecheck and lint affected projects
         run: bunx turbo run typecheck lint --filter="...[$BASE_SHA]"
 
+      # TODO: Ignore web until api is finished
+      # --filter="@carbplan/web...[$BASE_SHA]"
+      - name: Detect affected test tasks
+        id: detect_tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          count="$(bunx turbo run test --dry=json \
+            --filter="@carbplan/api...[$BASE_SHA]" \
+            --filter="@carbplan/auth...[$BASE_SHA]" \
+            --filter="@carbplan/contracts...[$BASE_SHA]" \
+            --filter="@carbplan/vitest-neverthrow...[$BASE_SHA]" | jq '.tasks | length')"
+          echo "count=$count" >> "$GITHUB_OUTPUT"
       - name: Test affected projects
         run: |
           bunx turbo run test \
             --filter="@carbplan/api...[$BASE_SHA]" \
-            # TODO: Ignore web until api is merged
-            # --filter="@carbplan/web...[$BASE_SHA]" \
             --filter="@carbplan/auth...[$BASE_SHA]" \
             --filter="@carbplan/contracts...[$BASE_SHA]" \
             --filter="@carbplan/vitest-neverthrow...[$BASE_SHA]"
