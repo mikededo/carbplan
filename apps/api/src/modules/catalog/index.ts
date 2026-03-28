@@ -36,8 +36,8 @@ export const catalogModule = ({ auth, services }: CatalogModuleOptions) => new E
   .guard({ auth: true })
   .group(
     '/brand',
+    { admin: true },
     (app) => app
-      .guard({ admin: true })
       .post(
         '',
         ({ body, status, user }) => services.catalog.createBrand({ data: body, userId: user.id })

@@ -1,4 +1,4 @@
-import type { CreateBrandData, CreateBrandDataResult } from '$modules/catalog/model'
+import type { CreateBrandData, CreateBrandDataResult, UpdateBrandData } from '$modules/catalog/model'
 
 import { createRepositoryDbMock } from '@carbplan/auth/testing'
 
@@ -33,6 +33,24 @@ describe('catalog repository', () => {
     entityNotFoundTest(
       DbCatalogRepository,
       (repository) => repository.createBrand(model)
+    )
+  })
+
+  describe('.updateBrand', () => {
+    const model: UpdateBrandData = { name: 'Brand' }
+
+    it('updates a new brand', async () => {
+      const id = crypto.randomUUID()
+      const dbMock = createRepositoryDbMock()
+      dbMock.queueResult([{ id, name: 'Brand' }])
+      const repository = new DbCatalogRepository(dbMock.db)
+
+      await expect(repository.updateBrand(id, model)).toBeOkAsyncWith(true)
+    })
+
+    entityNotFoundTest(
+      DbCatalogRepository,
+      (repository) => repository.updateBrand(crypto.randomUUID(), model)
     )
   })
 })

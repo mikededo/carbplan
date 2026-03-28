@@ -23,7 +23,7 @@ export const CreateBrandResponseSchema = z.object({
   updatedAt: z.date().nullable(),
   website: z.string().trim().nullable()
 })
-export type CreateBrandResponse = z.infer<typeof CreateBrandRequestSchema>
+export type CreateBrandResponse = z.infer<typeof CreateBrandResponseSchema>
 
 export const UpdateBrandRequestParamsSchema = z.object({
   brandId: z.uuid()

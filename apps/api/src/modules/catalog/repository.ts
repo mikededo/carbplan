@@ -7,7 +7,7 @@ import { eq } from 'drizzle-orm'
 import { head } from 'es-toolkit'
 import { err, ok, ResultAsync } from 'neverthrow'
 
-import { EntityNotFound, EntityNotInserted, mapDbError } from '$utils/db-error'
+import { EntityNotInserted, mapDbError } from '$utils/db-error'
 
 export type CatalogRepository = {
   createBrand: (data: CreateBrandData) => ResultAsync<CreateBrandDataResult, CreateBrandError>
@@ -29,8 +29,11 @@ export class DbCatalogRepository implements CatalogRepository {
 
   updateBrand(id: BrandId, data: UpdateBrandData): ResultAsync<boolean, UpdateBrandError> {
     return ResultAsync.fromPromise(
-      this.db.update(brands).set(data).where(eq(brands.id, id)),
+      this.db.update(brands).set(data).where(eq(brands.id, id)).returning(),
       mapDbError
-    ).map(() => true).mapErr(() => EntityNotFound.withEntityName('Brand'))
+    ).andThen((result) => {
+      const item = head(result)
+      return item ? ok(true) : err(EntityNotInserted.withEntityName('Brand'))
+    })
   }
 }

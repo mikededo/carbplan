@@ -22,7 +22,7 @@ export type CreateBrandDataResult = {
   logoUrl: null | string
   name: string
   slug: string
-  updatedAt: Date
+  updatedAt: Date | null
   website: null | string
 }
 export type CreateBrandError = DatabaseQueryError | EntityNotInserted
