@@ -80,3 +80,23 @@ export type CreateProductDataResult = {
   sugarG: null | number
 }
 export type CreateProductError = DatabaseQueryError | EntityNotInserted
+
+export type UpdateProductData = {
+  brandId: BrandId
+  caffeineMg?: number
+  calories?: number
+  carbsG?: number
+  fatG?: number
+  flavor?: string
+  form?: ProductForm
+  name?: string
+  notes?: string
+  proteinG?: number
+  servingSize?: number
+  servingsPerPackage?: number
+  servingUnit: string
+  slug?: string
+  sodiumMg?: number
+  sugarG?: number
+}
+export type UpdateProductError = DatabaseQueryError | EntityNotFound

@@ -68,6 +68,36 @@ export const catalogModule = ({ auth, services }: CatalogModuleOptions) => new E
           }
         }
       )
+      .patch(
+        '/:productId',
+        ({ body, params, status, user }) => services.catalog.updateProduct({ data: body, productId: params.productId, userId: user.id })
+          .match(
+            () => status(StatusMap.NoContent, undefined),
+            (error) => {
+              if (error instanceof EntityNotFound) {
+                return status(StatusMap.NotFound, apiErrorFactory.notFound({ message: `Product not found: ${params.productId}` }))
+              }
+
+              return status(StatusMap.InternalServerError, apiErrorFactory.internal())
+            }
+          ),
+        {
+          body: CatalogContracts.UpdateProductRequestSchema,
+          detail: {
+            description: 'Allows admin users to update a product',
+            summary: 'Update product'
+          },
+          params: CatalogContracts.UpdateProductRequestParamsSchema,
+          response: {
+            [StatusMap.Conflict]: ConflictErrorModel,
+            [StatusMap.Forbidden]: ForbiddenErrorModel,
+            [StatusMap.InternalServerError]: InternalServerErrorModel,
+            [StatusMap.NoContent]: CatalogContracts.UpdateProductResponseSchema,
+            [StatusMap.NotFound]: NotFoundErrorModel,
+            [StatusMap.Unauthorized]: UnauthorizedErrorModel
+          }
+        }
+      )
   )
   .group(
     '/brands',
@@ -110,7 +140,7 @@ export const catalogModule = ({ auth, services }: CatalogModuleOptions) => new E
             () => status(StatusMap.NoContent, undefined),
             (error) => {
               if (error instanceof EntityNotFound) {
-                return status(StatusMap.NotFound, apiErrorFactory.notFound({ message: `Brand not found${params.brandId}` }))
+                return status(StatusMap.NotFound, apiErrorFactory.notFound({ message: `Brand not found: ${params.brandId}` }))
               }
 
               return status(StatusMap.InternalServerError, apiErrorFactory.internal())
