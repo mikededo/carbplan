@@ -35,6 +35,41 @@ export const catalogModule = ({ auth, services }: CatalogModuleOptions) => new E
   .use(authModule({ auth }))
   .guard({ auth: true })
   .group(
+    '/products',
+    { admin: true },
+    (app) => app
+      .post(
+        '',
+        ({ body, status, user }) => services.catalog.createProduct({ data: body, userId: user.id })
+          .match(
+            (result) => status(StatusMap.OK, result),
+            (error) => {
+              if (error instanceof DatabaseQueryError) {
+                if (error.code === DatabaseErrorCodeEnum.UNIQUE_VIOLATION) {
+                  return status(StatusMap.Conflict, apiErrorFactory.conflict())
+                }
+              }
+
+              return status(StatusMap.InternalServerError, apiErrorFactory.internal())
+            }
+          ),
+        {
+          body: CatalogContracts.CreateProductRequestSchema,
+          detail: {
+            description: 'Allows admin users to create a product',
+            summary: 'Create product'
+          },
+          response: {
+            [StatusMap.Conflict]: ConflictErrorModel,
+            [StatusMap.Forbidden]: ForbiddenErrorModel,
+            [StatusMap.InternalServerError]: InternalServerErrorModel,
+            [StatusMap.OK]: CatalogContracts.CreateProductResponseSchema,
+            [StatusMap.Unauthorized]: UnauthorizedErrorModel
+          }
+        }
+      )
+  )
+  .group(
     '/brands',
     { admin: true },
     (app) => app

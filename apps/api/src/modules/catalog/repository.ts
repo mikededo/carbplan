@@ -1,8 +1,17 @@
 import type { BrandId, Db } from '@carbplan/db'
 
-import type { CreateBrandData, CreateBrandDataResult, CreateBrandError, UpdateBrandData, UpdateBrandError } from '$modules/catalog/model'
+import type {
+  CreateBrandData,
+  CreateBrandDataResult,
+  CreateBrandError,
+  CreateProductData,
+  CreateProductDataResult,
+  CreateProductError,
+  UpdateBrandData,
+  UpdateBrandError
+} from '$modules/catalog/model'
 
-import { brands } from '@carbplan/db'
+import { brands, products } from '@carbplan/db'
 import { eq } from 'drizzle-orm'
 import { head } from 'es-toolkit'
 import { err, ok, ResultAsync } from 'neverthrow'
@@ -11,6 +20,7 @@ import { EntityNotInserted, mapDbError } from '$utils/db-error'
 
 export type CatalogRepository = {
   createBrand: (data: CreateBrandData) => ResultAsync<CreateBrandDataResult, CreateBrandError>
+  createProduct: (data: CreateProductData) => ResultAsync<CreateProductDataResult, CreateProductError>
   updateBrand: (brandId: BrandId, data: UpdateBrandData) => ResultAsync<boolean, UpdateBrandError>
 }
 
@@ -20,6 +30,16 @@ export class DbCatalogRepository implements CatalogRepository {
   createBrand(data: CreateBrandData): ResultAsync<CreateBrandDataResult, CreateBrandError> {
     return ResultAsync.fromPromise(
       this.db.insert(brands).values(data).returning(),
+      mapDbError
+    ).andThen((result) => {
+      const item = head(result)
+      return item ? ok(item) : err(EntityNotInserted.withEntityName('Brand'))
+    })
+  }
+
+  createProduct(data: CreateProductData): ResultAsync<CreateProductDataResult, CreateProductError> {
+    return ResultAsync.fromPromise(
+      this.db.insert(products).values(data).returning(),
       mapDbError
     ).andThen((result) => {
       const item = head(result)

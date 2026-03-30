@@ -65,6 +65,7 @@ export const products = pgTable('products', {
   index('products_is_active_idx').on(table.isActive),
   index('products_caffeine_idx').on(table.caffeineMg).where(sql`${table.caffeineMg} is not null`)
 ])
+export type ProductId = typeof products.$inferSelect.id
 
 export const favoriteBrands = pgTable('favorite_brands', {
   athleteId: uuid('athlete_id').notNull().references(() => athletes.id, { onDelete: 'cascade' }),
