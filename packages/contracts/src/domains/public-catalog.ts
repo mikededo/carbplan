@@ -1,4 +1,4 @@
-import { PRODUCT_FORM } from '@carbplan/domain/product'
+import { ProductFormSchema } from '@carbplan/domain/product'
 import * as z from 'zod'
 
 import { ApiEmptyResponseSchema, ApiSuccessSchema, PaginationApiMeta } from '../api'
@@ -23,7 +23,7 @@ export const CatalogProductsFilterSchema = z.object({
   caloriesLte: z.coerce.number().nonnegative().optional(),
   carbsGte: z.coerce.number().nonnegative().optional(),
   carbsLte: z.coerce.number().nonnegative().optional(),
-  form: createFilterArraySchema(z.enum(PRODUCT_FORM)).optional(),
+  form: createFilterArraySchema(ProductFormSchema).optional(),
   q: z.string().trim().min(1).max(120).optional()
 })
   .refine((value) => value.caloriesGte === undefined || value.caloriesLte === undefined || value.caloriesGte <= value.caloriesLte, {
@@ -53,7 +53,7 @@ export const CatalogProductListItemSchema = z.object({
   carbsG: z.number().nullable(),
   fatG: z.number().nullable(),
   flavor: z.string().trim().nullable(),
-  form: z.enum(PRODUCT_FORM),
+  form: ProductFormSchema,
   id: z.uuid(),
   name: z.string().trim(),
   proteinG: z.number().nullable(),

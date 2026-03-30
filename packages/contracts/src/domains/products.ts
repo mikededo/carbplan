@@ -1,4 +1,4 @@
-import { PRODUCT_FORM } from '@carbplan/domain/product'
+import { ProductFormSchema } from '@carbplan/domain/product'
 import * as z from 'zod'
 
 export const FavoriteProductsListResponseSchema = z.array(
@@ -15,7 +15,7 @@ export const FavoriteProductsListResponseSchema = z.array(
     createdAt: z.date(),
     fatG: z.number().nullable(),
     flavor: z.string().trim().nullable(),
-    form: z.enum(PRODUCT_FORM),
+    form: ProductFormSchema,
     id: z.uuid(),
     isActive: z.boolean(),
     isFavorite: z.boolean(),

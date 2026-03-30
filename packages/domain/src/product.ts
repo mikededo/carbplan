@@ -1,4 +1,6 @@
-export const PRODUCT_FORM = [
+import * as z from 'zod'
+
+export const ProductFormSchema = z.enum([
   'gel',
   'bar',
   'chew',
@@ -7,5 +9,6 @@ export const PRODUCT_FORM = [
   'capsule',
   'liquid',
   'solid'
-] as const
-export type ProductForm = (typeof PRODUCT_FORM)[number]
+])
+export const ProductFormEnum = ProductFormSchema.enum
+export type ProductForm = z.infer<typeof ProductFormSchema>
