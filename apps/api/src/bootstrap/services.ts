@@ -4,12 +4,14 @@ import type { AppRepositories } from '$bootstrap/repositories'
 import type { CatalogService } from '$modules/catalog/services'
 import type { AthleteFavoritesService } from '$modules/favorites/service'
 import type { MeService } from '$modules/me/service'
+import type { NutritionPlansService } from '$modules/nutrition-plans/service'
 import type { OnboardingService } from '$modules/onboarding/service'
 import type { PublicCatalogService } from '$modules/public/catalog/service'
 
 import { CatalogServiceImpl } from '$modules/catalog/services'
 import { AthletesFavoritesServiceImpl } from '$modules/favorites/service'
 import { MeServiceImpl } from '$modules/me/service'
+import { NutritionPlanServiceImpl } from '$modules/nutrition-plans/service'
 import { OnboardingServiceImpl } from '$modules/onboarding/service'
 import { PublicCatalogServiceImpl } from '$modules/public/catalog/service'
 
@@ -24,6 +26,7 @@ export type AppServices = {
   onboarding: OnboardingService
   favorites: AthleteFavoritesService
   catalog: CatalogService
+  nutritionPlans: NutritionPlansService
 }
 
 type CreateServicesOptions = {
@@ -36,6 +39,7 @@ export const createServices = ({ auth, repositories }: CreateServicesOptions): A
   catalog: new CatalogServiceImpl(repositories.catalog, repositories.user),
   favorites: new AthletesFavoritesServiceImpl(repositories.favorites),
   me: new MeServiceImpl(repositories.me),
+  nutritionPlans: new NutritionPlanServiceImpl(repositories.nutritionPlans),
   onboarding: new OnboardingServiceImpl(repositories.onboarding),
   public: {
     catalog: new PublicCatalogServiceImpl(repositories.public.catalog)

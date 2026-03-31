@@ -1,7 +1,7 @@
 import { ProductFormSchema } from '@carbplan/domain/product'
 import * as z from 'zod'
 
-import { ApiEmptyResponseSchema, ApiSuccessSchema, PaginationApiMeta } from '../api'
+import { ApiEmptyResponseSchema, createPaginationSuccessSchema, PaginationApiMeta } from '../api'
 import { createFilterArraySchema, StringFilterArraySchema } from './filtering'
 import { createListQuerySchema } from './pagination'
 
@@ -66,7 +66,7 @@ export const CatalogProductListItemSchema = z.object({
 })
 export type CatalogProductListItem = z.infer<typeof CatalogProductListItemSchema>
 
-export const CatalogProductsListResponseSchema = ApiSuccessSchema(
+export const CatalogProductsListResponseSchema = createPaginationSuccessSchema(
   z.array(CatalogProductListItemSchema),
   PaginationApiMeta
 )

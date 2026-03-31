@@ -13,6 +13,7 @@ import { authModule } from '$modules/auth'
 import { OpenAPI } from '$modules/auth/openapi'
 import { catalogModule } from '$modules/catalog'
 import { meModule } from '$modules/me'
+import { nutritionPlansModule } from '$modules/nutrition-plans'
 import { onboardingModule } from '$modules/onboarding'
 import { publicModule } from '$modules/public'
 import { StatusMap } from '$utils/codes'
@@ -83,6 +84,7 @@ export const createApp = async ({ corsOrigins, services }: CreateAppOptions) => 
     services: { favorites: services.favorites, me: services.me }
   }))
   .use(catalogModule({ auth: services.auth, services: { catalog: services.catalog } }))
+  .use(nutritionPlansModule({ auth: services.auth, services: { nutritionPlans: services.nutritionPlans } }))
 
 export const createAppFromEnv = async () => {
   const runtimeConfig = loadRuntimeConfig()

@@ -1,6 +1,6 @@
 import * as z from 'zod'
 
-import { ApiSuccessSchema } from '../api'
+import { createPaginationSuccessSchema } from '../api'
 
 export const LogInRequestSchema = z.object({
   email: z.email(),
@@ -20,9 +20,9 @@ const SessionUserSchema = z.object({
 })
 export const SessionSchema = z.object({ user: SessionUserSchema.nullable() })
 export type Session = z.infer<typeof SessionSchema>
-export const GetSessionResponseSchema = ApiSuccessSchema(SessionSchema)
+export const GetSessionResponseSchema = createPaginationSuccessSchema(SessionSchema)
 
 export const SignOutSchema = z.object({ success: z.literal(true) })
-export const SignOutResponseSchema = ApiSuccessSchema(
+export const SignOutResponseSchema = createPaginationSuccessSchema(
   SignOutSchema
 )

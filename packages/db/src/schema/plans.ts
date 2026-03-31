@@ -18,7 +18,7 @@ import { workouts } from './workouts'
 export const nutritionPlans = pgTable('nutrition_plans', {
   athleteId: uuid('athlete_id').notNull().references(() => athletes.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-  date: date('date').notNull(),
+  date: date('date', { mode: 'date' }).notNull(),
   durationMinutes: integer('duration_minutes').notNull(),
   id: uuid('id').defaultRandom().primaryKey(),
   isActive: boolean('is_active').default(true).notNull(),

@@ -8,12 +8,12 @@ export const PaginationApiMeta = ApiMetaSchema.extend({
   offset: z.int().min(0).optional(),
   total: z.int().nonnegative().optional()
 })
-
-export const ApiEmptyResponseSchema = z.undefined()
-export const ApiSuccessSchema = <T extends z.ZodTypeAny, M extends z.ZodObject<z.ZodRawShape>>(
+export const createPaginationSuccessSchema = <T extends z.ZodTypeAny, M extends z.ZodObject<z.ZodRawShape>>(
   data: T,
   meta: M = ApiMetaSchema.optional() as unknown as M
 ) => z.object({ data, meta })
+
+export const ApiEmptyResponseSchema = z.undefined()
 
 export const ApiErrorCodeSchema = z.enum([
   'AUTH_FORBIDDEN',
