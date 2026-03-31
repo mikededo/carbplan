@@ -6,10 +6,10 @@ import * as PublicCatalogContracts from '@carbplan/contracts/public-catalog'
 import { Elysia } from 'elysia'
 
 import { CatalogQueryValidationError } from '$modules/public/catalog/model'
-import { apiErrorFactory, BadRequestErrorModel, InternalServerErrorModel, PreconditionFailedErrorModel } from '$modules/public/model'
 import { applyEndpointHeaders } from '$modules/public/utils/headers'
 import { resolveRateLimitClientKey } from '$modules/public/utils/rate-limit'
 import { StatusMap } from '$utils/codes'
+import { apiErrorFactory, BadRequestErrorSchema, InternalServerErrorSchema, PreconditionFailedErrorSchema } from '$utils/error'
 
 const CATALOG_ENDPOINT_KEY = 'catalog'
 
@@ -73,10 +73,10 @@ export const publicCatalogModule = ({ limiter, service }: PublicCatalogModuleOpt
     },
     query: PublicCatalogContracts.CatalogProductsListQuerySchema,
     response: {
-      [StatusMap.BadRequest]: BadRequestErrorModel,
-      [StatusMap.InternalServerError]: InternalServerErrorModel,
+      [StatusMap.BadRequest]: BadRequestErrorSchema,
+      [StatusMap.InternalServerError]: InternalServerErrorSchema,
       [StatusMap.NotModified]: PublicCatalogContracts.CatalogProductListCachedResponseSchema,
       [StatusMap.OK]: PublicCatalogContracts.CatalogProductsListResponseSchema,
-      [StatusMap.PreconditionFailed]: PreconditionFailedErrorModel
+      [StatusMap.PreconditionFailed]: PreconditionFailedErrorSchema
     }
   })

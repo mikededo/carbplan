@@ -15,8 +15,8 @@ import { catalogModule } from '$modules/catalog'
 import { meModule } from '$modules/me'
 import { onboardingModule } from '$modules/onboarding'
 import { publicModule } from '$modules/public'
-import { apiErrorFactory, ApiErrorModel } from '$modules/public/model'
 import { StatusMap } from '$utils/codes'
+import { apiErrorFactory, ApiErrorModelSchema } from '$utils/error'
 
 type CreateAppOptions = {
   corsOrigins: string[]
@@ -27,7 +27,7 @@ type CreateAppOptions = {
 const normalizeStatus = (status: number): number => status >= StatusMap.BadRequest ? status : StatusMap.InternalServerError
 
 export const createApp = async ({ corsOrigins, services }: CreateAppOptions) => new Elysia({ name: 'carbplan-api', prefix: '/api' })
-  .model({ ApiError: ApiErrorModel })
+  .model({ ApiError: ApiErrorModelSchema })
   .use(await createLogger())
   .use(cors({
     allowedHeaders: ['Content-Type', 'If-None-Match', 'X-Request-Id'],

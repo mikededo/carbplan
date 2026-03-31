@@ -8,15 +8,15 @@ import * as ProductsContracts from '@carbplan/contracts/products'
 import { Elysia } from 'elysia'
 
 import { authModule } from '$modules/auth'
-import {
-  apiErrorFactory,
-  ForbiddenErrorModel,
-  InternalServerErrorModel,
-  NotFoundErrorModel,
-  UnauthorizedErrorModel
-} from '$modules/public/model'
 import { StatusMap } from '$utils/codes'
 import { EntityNotFound } from '$utils/db-error'
+import {
+  apiErrorFactory,
+  ForbiddenErrorSchema,
+  InternalServerErrorSchema,
+  NotFoundErrorSchema,
+  UnauthorizedErrorSchema
+} from '$utils/error'
 
 export type MeModuleOptions = {
   auth: AuthServer
@@ -55,11 +55,11 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
         summary: 'Current athlete'
       },
       response: {
-        [StatusMap.Forbidden]: ForbiddenErrorModel,
-        [StatusMap.InternalServerError]: InternalServerErrorModel,
-        [StatusMap.NotFound]: NotFoundErrorModel,
+        [StatusMap.Forbidden]: ForbiddenErrorSchema,
+        [StatusMap.InternalServerError]: InternalServerErrorSchema,
+        [StatusMap.NotFound]: NotFoundErrorSchema,
         [StatusMap.OK]: MeContracts.GetCurrentAthleteResponseSchema,
-        [StatusMap.Unauthorized]: UnauthorizedErrorModel
+        [StatusMap.Unauthorized]: UnauthorizedErrorSchema
       }
     }
   )
@@ -83,11 +83,11 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
         summary: 'Current athlete'
       },
       response: {
-        [StatusMap.Forbidden]: ForbiddenErrorModel,
-        [StatusMap.InternalServerError]: InternalServerErrorModel,
+        [StatusMap.Forbidden]: ForbiddenErrorSchema,
+        [StatusMap.InternalServerError]: InternalServerErrorSchema,
         [StatusMap.NoContent]: MeContracts.UpdateCurrentAthleteResponseSchema,
-        [StatusMap.NotFound]: NotFoundErrorModel,
-        [StatusMap.Unauthorized]: UnauthorizedErrorModel
+        [StatusMap.NotFound]: NotFoundErrorSchema,
+        [StatusMap.Unauthorized]: UnauthorizedErrorSchema
       }
     }
   )
@@ -105,10 +105,10 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
         summary: 'Update HR'
       },
       response: {
-        [StatusMap.Forbidden]: ForbiddenErrorModel,
-        [StatusMap.InternalServerError]: InternalServerErrorModel,
+        [StatusMap.Forbidden]: ForbiddenErrorSchema,
+        [StatusMap.InternalServerError]: InternalServerErrorSchema,
         [StatusMap.NoContent]: MeContracts.UpdateHRZonesResponseSchema,
-        [StatusMap.Unauthorized]: UnauthorizedErrorModel
+        [StatusMap.Unauthorized]: UnauthorizedErrorSchema
       }
     }
   )
@@ -126,10 +126,10 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
         summary: 'Update power'
       },
       response: {
-        [StatusMap.Forbidden]: ForbiddenErrorModel,
-        [StatusMap.InternalServerError]: InternalServerErrorModel,
+        [StatusMap.Forbidden]: ForbiddenErrorSchema,
+        [StatusMap.InternalServerError]: InternalServerErrorSchema,
         [StatusMap.NoContent]: MeContracts.UpdatePowerZonesResponseSchema,
-        [StatusMap.Unauthorized]: UnauthorizedErrorModel
+        [StatusMap.Unauthorized]: UnauthorizedErrorSchema
       }
     }
   )
@@ -148,10 +148,10 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
           summary: 'Favorite products'
         },
         response: {
-          [StatusMap.Forbidden]: ForbiddenErrorModel,
-          [StatusMap.InternalServerError]: InternalServerErrorModel,
+          [StatusMap.Forbidden]: ForbiddenErrorSchema,
+          [StatusMap.InternalServerError]: InternalServerErrorSchema,
           [StatusMap.OK]: ProductsContracts.FavoriteProductsListResponseSchema,
-          [StatusMap.Unauthorized]: UnauthorizedErrorModel
+          [StatusMap.Unauthorized]: UnauthorizedErrorSchema
         }
       }
     )

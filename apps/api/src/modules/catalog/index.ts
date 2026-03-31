@@ -6,16 +6,16 @@ import * as CatalogContracts from '@carbplan/contracts/catalog'
 import Elysia from 'elysia'
 
 import { authModule } from '$modules/auth'
-import {
-  apiErrorFactory,
-  ConflictErrorModel,
-  ForbiddenErrorModel,
-  InternalServerErrorModel,
-  NotFoundErrorModel,
-  UnauthorizedErrorModel
-} from '$modules/public/model'
 import { StatusMap } from '$utils/codes'
 import { DatabaseErrorCodeEnum, DatabaseQueryError, EntityNotFound } from '$utils/db-error'
+import {
+  apiErrorFactory,
+  ConflictErrorSchema,
+  ForbiddenErrorSchema,
+  InternalServerErrorSchema,
+  NotFoundErrorSchema,
+  UnauthorizedErrorSchema
+} from '$utils/error'
 
 type CatalogModuleOptions = {
   auth: AuthServer
@@ -60,11 +60,11 @@ export const catalogModule = ({ auth, services }: CatalogModuleOptions) => new E
             summary: 'Create product'
           },
           response: {
-            [StatusMap.Conflict]: ConflictErrorModel,
-            [StatusMap.Forbidden]: ForbiddenErrorModel,
-            [StatusMap.InternalServerError]: InternalServerErrorModel,
+            [StatusMap.Conflict]: ConflictErrorSchema,
+            [StatusMap.Forbidden]: ForbiddenErrorSchema,
+            [StatusMap.InternalServerError]: InternalServerErrorSchema,
             [StatusMap.OK]: CatalogContracts.CreateProductResponseSchema,
-            [StatusMap.Unauthorized]: UnauthorizedErrorModel
+            [StatusMap.Unauthorized]: UnauthorizedErrorSchema
           }
         }
       )
@@ -90,12 +90,12 @@ export const catalogModule = ({ auth, services }: CatalogModuleOptions) => new E
           },
           params: CatalogContracts.UpdateProductRequestParamsSchema,
           response: {
-            [StatusMap.Conflict]: ConflictErrorModel,
-            [StatusMap.Forbidden]: ForbiddenErrorModel,
-            [StatusMap.InternalServerError]: InternalServerErrorModel,
+            [StatusMap.Conflict]: ConflictErrorSchema,
+            [StatusMap.Forbidden]: ForbiddenErrorSchema,
+            [StatusMap.InternalServerError]: InternalServerErrorSchema,
             [StatusMap.NoContent]: CatalogContracts.UpdateProductResponseSchema,
-            [StatusMap.NotFound]: NotFoundErrorModel,
-            [StatusMap.Unauthorized]: UnauthorizedErrorModel
+            [StatusMap.NotFound]: NotFoundErrorSchema,
+            [StatusMap.Unauthorized]: UnauthorizedErrorSchema
           }
         }
       )
@@ -119,12 +119,12 @@ export const catalogModule = ({ auth, services }: CatalogModuleOptions) => new E
           },
           params: CatalogContracts.DeactivateProductRequestParamsSchema,
           response: {
-            [StatusMap.Conflict]: ConflictErrorModel,
-            [StatusMap.Forbidden]: ForbiddenErrorModel,
-            [StatusMap.InternalServerError]: InternalServerErrorModel,
+            [StatusMap.Conflict]: ConflictErrorSchema,
+            [StatusMap.Forbidden]: ForbiddenErrorSchema,
+            [StatusMap.InternalServerError]: InternalServerErrorSchema,
             [StatusMap.NoContent]: CatalogContracts.DeactivateProductResponseSchema,
-            [StatusMap.NotFound]: NotFoundErrorModel,
-            [StatusMap.Unauthorized]: UnauthorizedErrorModel
+            [StatusMap.NotFound]: NotFoundErrorSchema,
+            [StatusMap.Unauthorized]: UnauthorizedErrorSchema
           }
         }
       )
@@ -155,11 +155,11 @@ export const catalogModule = ({ auth, services }: CatalogModuleOptions) => new E
             summary: 'Create brand'
           },
           response: {
-            [StatusMap.Conflict]: ConflictErrorModel,
-            [StatusMap.Forbidden]: ForbiddenErrorModel,
-            [StatusMap.InternalServerError]: InternalServerErrorModel,
+            [StatusMap.Conflict]: ConflictErrorSchema,
+            [StatusMap.Forbidden]: ForbiddenErrorSchema,
+            [StatusMap.InternalServerError]: InternalServerErrorSchema,
             [StatusMap.OK]: CatalogContracts.CreateBrandResponseSchema,
-            [StatusMap.Unauthorized]: UnauthorizedErrorModel
+            [StatusMap.Unauthorized]: UnauthorizedErrorSchema
           }
         }
       )
@@ -184,12 +184,12 @@ export const catalogModule = ({ auth, services }: CatalogModuleOptions) => new E
           },
           params: CatalogContracts.UpdateBrandRequestParamsSchema,
           response: {
-            [StatusMap.Conflict]: ConflictErrorModel,
-            [StatusMap.Forbidden]: ForbiddenErrorModel,
-            [StatusMap.InternalServerError]: InternalServerErrorModel,
+            [StatusMap.Conflict]: ConflictErrorSchema,
+            [StatusMap.Forbidden]: ForbiddenErrorSchema,
+            [StatusMap.InternalServerError]: InternalServerErrorSchema,
             [StatusMap.NoContent]: CatalogContracts.UpdateBrandResponseSchema,
-            [StatusMap.NotFound]: NotFoundErrorModel,
-            [StatusMap.Unauthorized]: UnauthorizedErrorModel
+            [StatusMap.NotFound]: NotFoundErrorSchema,
+            [StatusMap.Unauthorized]: UnauthorizedErrorSchema
           }
         }
       )

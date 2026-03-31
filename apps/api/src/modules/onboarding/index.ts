@@ -7,14 +7,14 @@ import { Elysia } from 'elysia'
 
 import { getMeAthletesPath } from '$modules/athletes/routes'
 import { authModule } from '$modules/auth'
+import { StatusMap } from '$utils/codes'
 import {
   apiErrorFactory,
-  BadRequestErrorModel,
-  ForbiddenErrorModel,
-  InternalServerErrorModel,
-  UnauthorizedErrorModel
-} from '$modules/public/model'
-import { StatusMap } from '$utils/codes'
+  BadRequestErrorSchema,
+  ForbiddenErrorSchema,
+  InternalServerErrorSchema,
+  UnauthorizedErrorSchema
+} from '$utils/error'
 
 export type OnboardingModuleOptions = {
   auth: AuthServer
@@ -44,10 +44,10 @@ export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => 
         summary: 'Has completed onboarding'
       },
       response: {
-        [StatusMap.Forbidden]: ForbiddenErrorModel,
-        [StatusMap.InternalServerError]: InternalServerErrorModel,
+        [StatusMap.Forbidden]: ForbiddenErrorSchema,
+        [StatusMap.InternalServerError]: InternalServerErrorSchema,
         [StatusMap.OK]: OnboardingContracts.HasCompletedOnboardingResponseSchema,
-        [StatusMap.Unauthorized]: UnauthorizedErrorModel
+        [StatusMap.Unauthorized]: UnauthorizedErrorSchema
       }
     }
   )
@@ -75,11 +75,11 @@ export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => 
         tags: ['Athletes']
       },
       response: {
-        [StatusMap.BadRequest]: BadRequestErrorModel,
-        [StatusMap.Forbidden]: ForbiddenErrorModel,
-        [StatusMap.InternalServerError]: InternalServerErrorModel,
+        [StatusMap.BadRequest]: BadRequestErrorSchema,
+        [StatusMap.Forbidden]: ForbiddenErrorSchema,
+        [StatusMap.InternalServerError]: InternalServerErrorSchema,
         [StatusMap.NoContent]: OnboardingContracts.SaveOnboardingResponseSchema,
-        [StatusMap.Unauthorized]: UnauthorizedErrorModel
+        [StatusMap.Unauthorized]: UnauthorizedErrorSchema
       }
     }
   )

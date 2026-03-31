@@ -2,8 +2,8 @@ import type { AuthServer } from '@carbplan/auth'
 
 import { Elysia } from 'elysia'
 
-import { apiErrorFactory } from '$modules/public/model'
 import { StatusMap } from '$utils/codes'
+import { apiErrorFactory } from '$utils/error'
 
 type AuthModuleOptions = {
   auth: AuthServer
