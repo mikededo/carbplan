@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@lucide/svelte": "^0.577.0",
-    "@supabase/ssr": "0.9.0",
+    "@supabase/ssr": "0.10.0",
     "@supabase/supabase-js": "2.99.2",
     "@tanstack/svelte-query": "6.1.1",
     "@tanstack/svelte-query-devtools": "6.0.4",
@@ -42,10 +42,10 @@
     "globals": "17.4.0",
     "supabase": "2.81.3",
     "svelte": "5.54.0",
-    "svelte-check": "4.4.5",
+    "svelte-check": "4.4.6",
     "tailwindcss": "4.2.2",
     "typescript": "5.9.3",
     "vite": "8.0.1",
-    "vitest": "4.1.0"
+    "vitest": "4.1.2"
   }
 }

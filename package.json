@@ -18,6 +18,14 @@
     "turbo": "2.8.19",
     "eslint": "catalog:"
   },
+  "overrides": {
+    "brace-expansion": "1.1.13",
+    "cookie": "1.1.1",
+    "esbuild": "0.27.4",
+    "kysely": "0.28.15",
+    "picomatch": "4.0.4",
+    "yaml": "1.10.3"
+  },
   "workspaces": {
     "packages": [
       "apps/*",
@@ -26,7 +34,7 @@
     "catalog": {
       "eslint": "10.0.3",
       "typescript": "5.9.3",
-      "vitest": "4.1.1",
+      "vitest": "4.1.2",
       "zod": "4.3.6"
     }
   }
