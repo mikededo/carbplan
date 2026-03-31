@@ -2,10 +2,11 @@ import type { Db } from '@carbplan/db'
 import type { BetterAuthOptions } from 'better-auth'
 
 import { drizzleAdapter } from '@better-auth/drizzle-adapter'
-import { schema } from '@carbplan/db'
+import { schema, users } from '@carbplan/db'
 import { betterAuth } from 'better-auth'
 import { toNodeHandler } from 'better-auth/node'
-import { openAPI } from 'better-auth/plugins'
+import { customSession, openAPI } from 'better-auth/plugins'
+import { eq } from 'drizzle-orm'
 
 export type AuthSessionQuery = {
   disableCookieCache?: boolean
@@ -30,6 +31,17 @@ export const getRequestSession = async <TAuth extends GenericAuth>(
 ): Promise<Awaited<ReturnType<TAuth['api']['getSession']>>> => auth.api.getSession({
   headers: request.headers,
   query
+})
+
+const customGetSessionPlugin = (db: Db) => customSession(async ({ session, user }) => {
+  const [{ isAdmin }] = await db.select().from(users).where(eq(users.id, user.id)).limit(1)
+  return {
+    session,
+    user: {
+      ...user,
+      isAdmin
+    }
+  }
 })
 
 export type CreateAuthServerOptions = {
@@ -63,7 +75,7 @@ export const createAuthServer = ({
     emailAndPassword: {
       enabled: true
     },
-    plugins: [openAPI()],
+    plugins: [customGetSessionPlugin(db), openAPI()],
     secret,
     trustedOrigins,
     user: {
