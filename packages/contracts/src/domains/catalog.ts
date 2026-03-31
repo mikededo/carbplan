@@ -88,13 +88,13 @@ export type CreateProductResponse = z.infer<typeof CreateProductResponseSchema>
 export const UpdateProductRequestParamsSchema = z.object({ productId: z.uuid() })
 export const UpdateProductRequestSchema = atLeastOneProperty(
   z.object({
-    brandId: z.uuid(),
     caffeineMg: z.int().positive().optional(),
     calories: z.int().positive().optional(),
     carbsG: z.number().positive().optional(),
     fatG: z.number().positive().optional(),
     flavor: z.string().trim().optional(),
     form: ProductFormSchema.optional(),
+    isActive: z.boolean().optional(),
     name: z.string().trim().nonempty().optional(),
     notes: z.string().trim().optional(),
     proteinG: z.number().positive().optional(),
@@ -106,6 +106,10 @@ export const UpdateProductRequestSchema = atLeastOneProperty(
     sugarG: z.number().positive().optional()
   })
 )
-export type UpdateProductRequest = z.infer<typeof CreateProductRequestSchema>
+export type UpdateProductRequest = z.infer<typeof UpdateProductRequestSchema>
 export const UpdateProductResponseSchema = ApiEmptyResponseSchema
-export type UpdateProductResponse = z.infer<typeof CreateProductResponseSchema>
+export type UpdateProductResponse = z.infer<typeof UpdateProductResponseSchema>
+
+export const DeactivateProductRequestParamsSchema = z.object({ productId: z.uuid() })
+export const DeactivateProductResponseSchema = ApiEmptyResponseSchema
+export type DeactivateProductResponse = z.infer<typeof DeactivateProductResponseSchema>

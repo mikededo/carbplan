@@ -82,7 +82,6 @@ export type CreateProductDataResult = {
 export type CreateProductError = DatabaseQueryError | EntityNotInserted
 
 export type UpdateProductData = {
-  brandId: BrandId
   caffeineMg?: number
   calories?: number
   carbsG?: number
@@ -94,9 +93,10 @@ export type UpdateProductData = {
   proteinG?: number
   servingSize?: number
   servingsPerPackage?: number
-  servingUnit: string
+  servingUnit?: string
   slug?: string
   sodiumMg?: number
   sugarG?: number
+  isActive?: boolean
 }
 export type UpdateProductError = DatabaseQueryError | EntityNotFound

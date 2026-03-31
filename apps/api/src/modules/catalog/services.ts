@@ -28,6 +28,7 @@ export type CatalogService = {
   createProduct: (args: AuthGuardedArgs<CreateProductData>) => ResultAsync<CreateProductDataResult, CreateProductError | UserNotPlatformAdminError>
   updateBrand: (args: UpdateBrandArgs) => ResultAsync<boolean, UpdateBrandError | UserNotPlatformAdminError>
   updateProduct: (args: UpdateProductArgs) => ResultAsync<boolean, UpdateProductError | UserNotPlatformAdminError>
+  deactivateProduct: (productId: AuthGuardedArgs<ProductId>) => ResultAsync<boolean, UpdateProductError | UserNotPlatformAdminError>
 }
 
 export class CatalogServiceImpl implements CatalogService {
@@ -42,6 +43,10 @@ export class CatalogServiceImpl implements CatalogService {
 
   createProduct({ data, userId }: AuthGuardedArgs<CreateProductData>): ResultAsync<CreateProductDataResult, CreateProductError | UserNotPlatformAdminError> {
     return this.withAdminGuard(userId, () => this.repository.createProduct(data))
+  }
+
+  deactivateProduct({ data, userId }: AuthGuardedArgs<ProductId>): ResultAsync<boolean, UpdateProductError | UserNotPlatformAdminError> {
+    return this.withAdminGuard(userId, () => this.repository.updateProduct(data, { isActive: false }))
   }
 
   updateBrand({ brandId, data, userId }: UpdateBrandArgs): ResultAsync<boolean, UpdateBrandError | UserNotPlatformAdminError> {

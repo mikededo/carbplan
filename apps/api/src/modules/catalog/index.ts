@@ -70,7 +70,8 @@ export const catalogModule = ({ auth, services }: CatalogModuleOptions) => new E
       )
       .patch(
         '/:productId',
-        ({ body, params, status, user }) => services.catalog.updateProduct({ data: body, productId: params.productId, userId: user.id })
+        ({ body, params, status, user }) => services.catalog
+          .updateProduct({ data: body, productId: params.productId, userId: user.id })
           .match(
             () => status(StatusMap.NoContent, undefined),
             (error) => {
@@ -93,6 +94,35 @@ export const catalogModule = ({ auth, services }: CatalogModuleOptions) => new E
             [StatusMap.Forbidden]: ForbiddenErrorModel,
             [StatusMap.InternalServerError]: InternalServerErrorModel,
             [StatusMap.NoContent]: CatalogContracts.UpdateProductResponseSchema,
+            [StatusMap.NotFound]: NotFoundErrorModel,
+            [StatusMap.Unauthorized]: UnauthorizedErrorModel
+          }
+        }
+      )
+      .patch(
+        '/:productId/deactivate',
+        ({ params, status, user }) => services.catalog.deactivateProduct({ data: params.productId, userId: user.id })
+          .match(
+            () => status(StatusMap.NoContent, undefined),
+            (error) => {
+              if (error instanceof EntityNotFound) {
+                return status(StatusMap.NotFound, apiErrorFactory.notFound({ message: `Product not found: ${params.productId}` }))
+              }
+
+              return status(StatusMap.InternalServerError, apiErrorFactory.internal())
+            }
+          ),
+        {
+          detail: {
+            description: 'Allows admin users to deactivate a product. Deactivated products will not be available for selection when logging consumption, but historical consumption records will not be affected.',
+            summary: 'Deactivate product'
+          },
+          params: CatalogContracts.DeactivateProductRequestParamsSchema,
+          response: {
+            [StatusMap.Conflict]: ConflictErrorModel,
+            [StatusMap.Forbidden]: ForbiddenErrorModel,
+            [StatusMap.InternalServerError]: InternalServerErrorModel,
+            [StatusMap.NoContent]: CatalogContracts.DeactivateProductResponseSchema,
             [StatusMap.NotFound]: NotFoundErrorModel,
             [StatusMap.Unauthorized]: UnauthorizedErrorModel
           }

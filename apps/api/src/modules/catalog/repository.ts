@@ -14,17 +14,17 @@ import type {
 } from '$modules/catalog/model'
 
 import { brands, products } from '@carbplan/db'
-import { and, eq } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import { head } from 'es-toolkit'
 import { err, ok, ResultAsync } from 'neverthrow'
 
-import { EntityNotInserted, mapDbError } from '$utils/db-error'
+import { EntityNotFound, EntityNotInserted, mapDbError } from '$utils/db-error'
 
 export type CatalogRepository = {
   createBrand: (data: CreateBrandData) => ResultAsync<CreateBrandDataResult, CreateBrandError>
   createProduct: (data: CreateProductData) => ResultAsync<CreateProductDataResult, CreateProductError>
   updateBrand: (brandId: BrandId, data: UpdateBrandData) => ResultAsync<boolean, UpdateBrandError>
-  updateProduct: (brandId: ProductId, data: UpdateProductData) => ResultAsync<boolean, UpdateProductError>
+  updateProduct: (productId: ProductId, data: UpdateProductData) => ResultAsync<boolean, UpdateProductError>
 }
 
 export class DbCatalogRepository implements CatalogRepository {
@@ -56,17 +56,17 @@ export class DbCatalogRepository implements CatalogRepository {
       mapDbError
     ).andThen((result) => {
       const item = head(result)
-      return item ? ok(true) : err(EntityNotInserted.withEntityName('Brand'))
+      return item ? ok(true) : err(EntityNotFound.withEntityName('Brand'))
     })
   }
 
   updateProduct(id: ProductId, data: UpdateProductData): ResultAsync<boolean, UpdateProductError> {
     return ResultAsync.fromPromise(
-      this.db.update(products).set(data).where(and(eq(products.id, id), eq(brands.id, data.brandId))).returning(),
+      this.db.update(products).set(data).where(eq(products.id, id)).returning(),
       mapDbError
     ).andThen((result) => {
       const item = head(result)
-      return item ? ok(true) : err(EntityNotInserted.withEntityName('Product'))
+      return item ? ok(true) : err(EntityNotFound.withEntityName('Product'))
     })
   }
 }
