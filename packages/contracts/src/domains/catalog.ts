@@ -1,4 +1,4 @@
-import { ProductFormEnum, ProductFormSchema } from '@carbplan/domain/product'
+import { ProductFormSchema } from '@carbplan/domain/product'
 import { atLeastOneProperty } from '@carbplan/utils/validation'
 import * as z from 'zod'
 
@@ -69,7 +69,7 @@ export const CreateProductResponseSchema = z.object({
   createdAt: z.date(),
   fatG: z.number().positive().nullable(),
   flavor: z.string().trim().nullable(),
-  form: ProductFormEnum,
+  form: ProductFormSchema,
   id: z.uuid(),
   isActive: z.boolean().default(true),
   name: z.string().trim(),

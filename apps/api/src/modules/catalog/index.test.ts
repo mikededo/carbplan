@@ -10,7 +10,13 @@ import { catalogModule } from '$modules/catalog'
 import { createAuthServerStub } from '$test/stubs/auth-server'
 import { createStub } from '$test/stubs/helpers'
 
-const catalogService = createStub<CatalogService>(['createBrand', 'updateBrand'])
+const catalogService = createStub<CatalogService>([
+  'createBrand',
+  'createProduct',
+  'deactivateProduct',
+  'updateBrand',
+  'updateProduct'
+])
 const createCatalogApp = ({ isAdmin }: { isAdmin?: boolean } = {}) => treaty(catalogModule({
   auth: createAuthServerStub({
     authSession: isAdmin === undefined
@@ -88,6 +94,87 @@ describe('catalog HTTP contract', () => {
       const response = await app.v1.catalogs.brands({ brandId }).patch({ name: 'brand name' })
       expect(response.status).toBe(200)
       CatalogContracts.UpdateBrandResponseSchema.parse(response.data)
+    })
+  })
+
+  describe('[POST] /v1/catalogs/products', () => {
+    const requestBody = {
+      brandId: crypto.randomUUID(),
+      form: 'gel' as const,
+      isActive: true,
+      name: 'Product One',
+      servingSize: 60,
+      servingUnit: 'g',
+      slug: 'product-one'
+    }
+
+    shouldBeAdminProtected((app) => app.v1.catalogs.products.post(requestBody))
+
+    it('allows admin users', async () => {
+      const model: CatalogContracts.CreateProductResponse = {
+        brandId: requestBody.brandId,
+        caffeineMg: null,
+        calories: null,
+        carbsG: null,
+        createdAt: new Date('2024-01-01T00:00:00.000Z'),
+        fatG: null,
+        flavor: null,
+        form: 'gel',
+        id: crypto.randomUUID(),
+        isActive: true,
+        name: 'Product One',
+        notes: null,
+        proteinG: null,
+        servingSize: 60,
+        servingsPerPackage: null,
+        servingUnit: 'g',
+        slug: 'product-one',
+        sodiumMg: null,
+        sugarG: null,
+        updatedAt: new Date('2024-01-02T00:00:00.000Z')
+      }
+      catalogService.createProduct.mockReturnValue(okAsync(model))
+
+      const app = createCatalogApp({ isAdmin: true })
+      const response = await app.v1.catalogs.products.post(requestBody)
+      expect(response.status).toBe(200)
+      CatalogContracts.CreateProductResponseSchema.parse(response.data)
+    })
+  })
+
+  describe('[PATCH] /v1/catalogs/products/:productId', () => {
+    const productId = crypto.randomUUID()
+
+    shouldBeAdminProtected(
+      (app) => app.v1.catalogs.products({ productId }).patch({ name: 'product name' })
+    )
+
+    // FIXME: NoContent fail when passing null/undefined: https://github.com/elysiajs/elysia/pull/1810
+    it.skip('allows admin users', async () => {
+      catalogService.updateProduct.mockReturnValue(okAsync(true))
+
+      const app = createCatalogApp({ isAdmin: true })
+      const response = await app.v1.catalogs.products({ productId }).patch({ name: 'product name' })
+      expect(response.status).toBe(200)
+      CatalogContracts.UpdateProductResponseSchema.parse(response.data)
+    })
+  })
+
+  describe('[PATCH] /v1/catalogs/products/:productId/deactivate', () => {
+    const productId = crypto.randomUUID()
+
+    shouldBeAdminProtected(
+      (app) => app.v1.catalogs.products({ productId }).deactivate.patch()
+    )
+
+    // FIXME: NoContent fail when passing null/undefined: https://github.com/elysiajs/elysia/pull/1810
+    it.skip('allows admin users', async () => {
+      catalogService.deactivateProduct.mockReturnValue(okAsync(true))
+
+      const app = createCatalogApp({ isAdmin: true })
+      const response = await app.v1.catalogs.products({ productId }).deactivate.patch()
+      expect(response.status).toBe(200)
+      CatalogContracts.DeactivateProductResponseSchema.parse(response.data)
     })
   })
 })
