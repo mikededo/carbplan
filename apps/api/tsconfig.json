@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "baseUrl": ".",
     "module": "ES2022",
     "moduleResolution": "bundler",
     "paths": {

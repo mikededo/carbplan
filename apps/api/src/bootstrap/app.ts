@@ -51,7 +51,6 @@ export const createApp = async ({ corsOrigins, services }: CreateAppOptions) => 
     // otherwise empty responses do not show up in docs
     mapJsonSchema: { zod: (schema: z.ZodType) => z.toJSONSchema(schema, { unrepresentable: 'any' }) },
     path: '/docs',
-    // @ts-expect-error This is correct, to overwrite elysiajs styles
     scalar: {
       customCss: '',
       persistAuth: true

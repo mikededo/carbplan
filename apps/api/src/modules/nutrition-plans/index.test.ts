@@ -94,7 +94,7 @@ describe('nutrition plans HTTP contract', () => {
   it('[GET] /v1/nutrition-plans/me returns bad request for invalid query', async () => {
     const app = createNutritionPlansApp()
     const response = await app.v1['nutrition-plans'].me.get({
-      query: { limit: 0, offset: 0 }
+      query: { limit: 0, offset: 0, sort: 'date:desc' }
     })
 
     expect(response.status).toBe(422)
