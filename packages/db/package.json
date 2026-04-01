@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@carbplan/domain": "workspace:*",
-    "drizzle-orm": "0.45.1",
+    "drizzle-orm": "catalog:",
     "postgres": "3.4.8"
   },
   "devDependencies": {

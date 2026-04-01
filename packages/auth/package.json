@@ -20,7 +20,7 @@
     "@carbplan/db": "workspace:*",
     "@carbplan/utils": "workspace:*",
     "better-auth": "^1.5.6",
-    "drizzle-orm": "0.45.1"
+    "drizzle-orm": "catalog:"
   },
   "devDependencies": {
     "@carbplan/eslint": "workspace:*",
