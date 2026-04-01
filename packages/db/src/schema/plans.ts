@@ -41,7 +41,10 @@ export const planGroups = pgTable('plan_groups', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: text('name').notNull(),
   notes: text('notes'),
-  planId: uuid('plan_id').notNull().references(() => nutritionPlans.id, { onDelete: 'cascade' }),
+  planId: uuid('plan_id').notNull().references(() => nutritionPlans.id, {
+    onDelete: 'cascade',
+    onUpdate: 'cascade'
+  }),
   sortOrder: integer('sort_order').default(0).notNull(),
   startOffsetMinutes: integer('start_offset_minutes').default(0).notNull(),
   targetCaffeineMgPerHr: integer('target_caffeine_mg_per_hr'),
@@ -58,7 +61,10 @@ export const planItems = pgTable('plan_items', {
   groupId: uuid('group_id').references(() => planGroups.id, { onDelete: 'set null' }),
   id: uuid('id').defaultRandom().primaryKey(),
   notes: text('notes'),
-  planId: uuid('plan_id').notNull().references(() => nutritionPlans.id, { onDelete: 'cascade' }),
+  planId: uuid('plan_id').notNull().references(() => nutritionPlans.id, {
+    onDelete: 'cascade',
+    onUpdate: 'cascade'
+  }),
   productId: uuid('product_id').notNull().references(() => products.id, { onDelete: 'restrict' }),
   servings: numeric('servings', { mode: 'number', precision: 4, scale: 2 }).default(1).notNull(),
   timingMinutes: integer('timing_minutes').notNull(),
