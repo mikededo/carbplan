@@ -17,7 +17,8 @@ describe('nutrition plans service', () => {
     const athleteId = 'athlete-id'
     const query: NutritionPlanListQuery = {
       limit: 20,
-      offset: 0
+      offset: 0,
+      sort: 'date:desc'
     }
     const result: NutritionPlanListResult = {
       data: [],

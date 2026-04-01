@@ -6,9 +6,11 @@ import * as NutritionPlansContracts from '@carbplan/contracts/nutrition-plans'
 import Elysia from 'elysia'
 
 import { authModule } from '$modules/auth'
+import { NutritionPlanQueryValidationError } from '$modules/nutrition-plans/model'
 import { StatusMap } from '$utils/codes'
 import {
   apiErrorFactory,
+  BadRequestErrorSchema,
   ConflictErrorSchema,
   ForbiddenErrorSchema,
   InternalServerErrorSchema,
@@ -37,7 +39,13 @@ export const nutritionPlansModule = ({ auth, services }: PlanModuleOptions) => n
     ({ query, status, user }) => services.nutritionPlans.listAthleteNutritionPlans(user.id, query)
       .match(
         (response) => status(StatusMap.OK, response),
-        (error) => status(StatusMap.InternalServerError, apiErrorFactory.internal({ message: error.message }))
+        (error) => {
+          if (error instanceof NutritionPlanQueryValidationError) {
+            return status(StatusMap.BadRequest, apiErrorFactory.badRequest({ message: error.message }))
+          }
+
+          return status(StatusMap.InternalServerError, apiErrorFactory.internal({ message: error.message }))
+        }
       ),
     {
       detail: {
@@ -46,6 +54,7 @@ export const nutritionPlansModule = ({ auth, services }: PlanModuleOptions) => n
       },
       query: NutritionPlansContracts.NutritionPlansListQuerySchema,
       response: {
+        [StatusMap.BadRequest]: BadRequestErrorSchema,
         [StatusMap.Conflict]: ConflictErrorSchema,
         [StatusMap.Forbidden]: ForbiddenErrorSchema,
         [StatusMap.InternalServerError]: InternalServerErrorSchema,

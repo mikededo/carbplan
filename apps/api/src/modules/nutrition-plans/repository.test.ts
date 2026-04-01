@@ -44,7 +44,7 @@ describe('nutrition plans repository', () => {
       }]
     )
 
-    await expect(repository.listAthleteNutritionPlans('athlete-id', { limit: 1, offset: 0 })).toBeOkAsyncWith({
+    await expect(repository.listAthleteNutritionPlans('athlete-id', { limit: 1, offset: 0, sort: 'date:desc' })).toBeOkAsyncWith({
       data: [{
         ...basePlan,
         nutrition: {
@@ -61,7 +61,7 @@ describe('nutrition plans repository', () => {
     const { dbMock, repository } = createRepository()
     dbMock.nQueueResult([basePlan], [{ total: 1 }], [])
 
-    await expect(repository.listAthleteNutritionPlans('athlete-id', { limit: 1, offset: 0 })).toBeOkAsyncWith({
+    await expect(repository.listAthleteNutritionPlans('athlete-id', { limit: 1, offset: 0, sort: 'date:desc' })).toBeOkAsyncWith({
       data: [{
         ...basePlan,
         nutrition: {
@@ -78,7 +78,7 @@ describe('nutrition plans repository', () => {
     const { dbMock, repository } = createRepository()
     dbMock.nQueueResult([], [{ total: 0 }])
 
-    await expect(repository.listAthleteNutritionPlans('athlete-id', { limit: 20, offset: 40 })).toBeOkAsyncWith({
+    await expect(repository.listAthleteNutritionPlans('athlete-id', { limit: 20, offset: 40, sort: 'date:desc' })).toBeOkAsyncWith({
       data: [],
       meta: { limit: 20, offset: 40, total: 0 }
     })
@@ -88,12 +88,34 @@ describe('nutrition plans repository', () => {
     const { dbMock, repository } = createRepository()
     dbMock.nQueueError(new Error('db failed'), new Error('db failed'))
 
-    await expect(repository.listAthleteNutritionPlans('athlete-id', { limit: 20, offset: 0 })).toBeErrAsyncWith(
+    await expect(repository.listAthleteNutritionPlans('athlete-id', { limit: 20, offset: 0, sort: 'date:desc' })).toBeErrAsyncWith(
       new DatabaseQueryError({
         cause: new Error('db failed'),
         code: DatabaseErrorCodeEnum.UNKNOWN,
         message: 'db failed'
       })
     )
+  })
+
+  it('applies date filters and deterministic date sorting to list queries', async () => {
+    const { dbMock, repository } = createRepository()
+    dbMock.nQueueResult([], [{ total: 0 }])
+
+    await expect(repository.listAthleteNutritionPlans('athlete-id', {
+      date: '2024-01-10',
+      dateGte: '2024-01-01',
+      dateLte: '2024-01-31',
+      limit: 20,
+      offset: 0,
+      sort: 'date:asc'
+    })).toBeOkAsyncWith({
+      data: [],
+      meta: { limit: 20, offset: 0, total: 0 }
+    })
+
+    expect(dbMock.capturedSql[0]).toContain('"nutrition_plans"."date" =')
+    expect(dbMock.capturedSql[0]).toContain('"nutrition_plans"."date" >=')
+    expect(dbMock.capturedSql[0]).toContain('"nutrition_plans"."date" <=')
+    expect(dbMock.capturedSql[0]).toContain('order by "nutrition_plans"."date" asc, "nutrition_plans"."id" asc')
   })
 })

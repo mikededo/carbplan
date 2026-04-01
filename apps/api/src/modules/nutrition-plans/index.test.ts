@@ -35,7 +35,7 @@ describe('nutrition plans HTTP contract', () => {
 
   it('[GET] /v1/nutrition-plans/me returns 401 for unauthenticated users', async () => {
     const app = createNutritionPlansApp({ authSession: null })
-    const response = await app.v1['nutrition-plans'].me.get({ query: { limit: 1, offset: 0 } })
+    const response = await app.v1['nutrition-plans'].me.get({ query: { limit: 1, offset: 0, sort: 'date:desc' } })
 
     expect(response.status).toBe(401)
   })
@@ -76,7 +76,14 @@ describe('nutrition plans HTTP contract', () => {
         user: { id: athleteId }
       }
     })
-    const query = { limit: 1, offset: 0 } as const
+    const query = {
+      date: '2024-01-10',
+      dateGte: '2024-01-01',
+      dateLte: '2024-01-31',
+      limit: 1,
+      offset: 0,
+      sort: 'date:asc'
+    } as const
     const response = await app.v1['nutrition-plans'].me.get({ query })
 
     expect(response.status).toBe(200)
@@ -88,6 +95,16 @@ describe('nutrition plans HTTP contract', () => {
     const app = createNutritionPlansApp()
     const response = await app.v1['nutrition-plans'].me.get({
       query: { limit: 0, offset: 0 }
+    })
+
+    expect(response.status).toBe(422)
+  })
+
+  it('[GET] /v1/nutrition-plans/me returns bad request for invalid sort', async () => {
+    const app = createNutritionPlansApp()
+    const response = await app.v1['nutrition-plans'].me.get({
+      // @ts-expect-error for contract validation coverage
+      query: { limit: 1, offset: 0, sort: 'name:asc' }
     })
 
     expect(response.status).toBe(422)

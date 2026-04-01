@@ -1,9 +1,24 @@
 import * as z from 'zod'
 
 import { createPaginationSuccessSchema, PaginationApiMeta } from '../api'
-import { OffsetPaginationQuerySchema } from './pagination'
+import { createSortSchema, OffsetPaginationQuerySchema } from './pagination'
 
-export const NutritionPlansListQuerySchema = OffsetPaginationQuerySchema
+const DateOnlySchema = z.iso.date()
+export const NutritionPlansSortFields = ['date'] as const
+export type NutritionPlansSortField = (typeof NutritionPlansSortFields)[number]
+
+export const NutritionPlansListQuerySchema = OffsetPaginationQuerySchema.extend({
+  date: DateOnlySchema.optional(),
+  dateGte: DateOnlySchema.optional(),
+  dateLte: DateOnlySchema.optional(),
+  sort: createSortSchema({
+    defaultSort: 'date:desc',
+    fields: NutritionPlansSortFields
+  })
+}).refine(
+  (value) => value.dateGte === undefined || value.dateLte === undefined || value.dateGte <= value.dateLte,
+  { error: 'dateGte must be less than or equal to dateLte' }
+)
 export const NutritionPlansListResultSchema = createPaginationSuccessSchema(
   z.array(
     z.object({

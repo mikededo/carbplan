@@ -1,20 +1,29 @@
 import type { Db } from '@carbplan/db'
+import type { SQL } from 'drizzle-orm'
+import type { PgColumn } from 'drizzle-orm/pg-core'
 
 import type { NutritionPlanListQuery, NutritionPlanListResult } from '$modules/nutrition-plans/model'
 import type { DatabaseQueryError } from '$utils/db-error'
 
 import { nutritionPlans, planItems, products } from '@carbplan/db'
-import { count, eq, inArray, sql } from 'drizzle-orm'
-import { ResultAsync } from 'neverthrow'
+import { and, asc, count, desc, eq, gte, inArray, lte, sql } from 'drizzle-orm'
+import { errAsync, ResultAsync } from 'neverthrow'
 
+import { NutritionPlanQueryValidationError } from '$modules/nutrition-plans/model'
 import { mapDbError } from '$utils/db-error'
+import { parseQuerySort } from '$utils/sorting'
 
 const DEFAULT_ITEM_COUNT_VALUE = 0
 const DEFAULT_TOTAL_CAFFEINE_MG_VALUE = 0
 const DEFAULT_TOTAL_CARBS_G_VALUE = 0
+const SORT_FIELD_MAP: Record<'date', PgColumn> = {
+  date: nutritionPlans.date
+}
+
+const toDateOnlyValue = (value: string): Date => new Date(`${value}T00:00:00.000Z`)
 
 export type NutritionPlanRepository = {
-  listAthleteNutritionPlans: (athleteId: string, query: NutritionPlanListQuery) => ResultAsync<NutritionPlanListResult, DatabaseQueryError>
+  listAthleteNutritionPlans: (athleteId: string, query: NutritionPlanListQuery) => ResultAsync<NutritionPlanListResult, DatabaseQueryError | NutritionPlanQueryValidationError>
 }
 
 export class DbNutritionPlanRepository implements NutritionPlanRepository {
@@ -23,19 +32,44 @@ export class DbNutritionPlanRepository implements NutritionPlanRepository {
   listAthleteNutritionPlans(
     athleteId: string,
     query: NutritionPlanListQuery
-  ): ResultAsync<NutritionPlanListResult, DatabaseQueryError> {
+  ): ResultAsync<NutritionPlanListResult, DatabaseQueryError | NutritionPlanQueryValidationError> {
+    const parsedQuery = parseQuerySort(query.sort, SORT_FIELD_MAP)
+    if (parsedQuery.isErr()) {
+      return errAsync(new NutritionPlanQueryValidationError('Invalid sort param'))
+    }
+
+    const { direction, field } = parsedQuery.value
+    const directionSort = direction === 'asc' ? asc : desc
+    const filters: SQL[] = [eq(nutritionPlans.athleteId, athleteId)]
+
+    if (query.date !== undefined) {
+      filters.push(eq(nutritionPlans.date, toDateOnlyValue(query.date)))
+    }
+    if (query.dateGte !== undefined) {
+      filters.push(gte(nutritionPlans.date, toDateOnlyValue(query.dateGte)))
+    }
+    if (query.dateLte !== undefined) {
+      filters.push(lte(nutritionPlans.date, toDateOnlyValue(query.dateLte)))
+    }
+
+    const whereClause = and(...filters)
+
     return ResultAsync.fromPromise(
       this.db.transaction(async (tx) => {
         const [plans, totalRows] = await Promise.all([
           tx.select()
             .from(nutritionPlans)
-            .where(eq(nutritionPlans.athleteId, athleteId))
+            .where(whereClause)
+            .orderBy(
+              directionSort(SORT_FIELD_MAP[field]),
+              directionSort(nutritionPlans.id)
+            )
             .limit(query.limit)
             .offset(query.offset),
 
           tx.select({ total: count() })
             .from(nutritionPlans)
-            .where(eq(nutritionPlans.athleteId, athleteId))
+            .where(whereClause)
         ])
 
         if (plans.length === 0) {

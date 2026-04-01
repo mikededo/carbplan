@@ -1,8 +1,21 @@
+import type { SortDirection, SortOptions } from '@carbplan/contracts/pagination'
 import type { AthleteId } from '@carbplan/db'
 
 import type { PaginationModel, PaginationWithTotal } from '$utils/pagination'
 
-export type NutritionPlanListQuery = PaginationModel
+export type NutritionPlanSortField = 'date'
+export type NutritionPlanSortSelection = {
+  direction: SortDirection
+  field: NutritionPlanSortField
+}
+
+export type NutritionPlanListQuery = {
+  date?: string | undefined
+  dateGte?: string | undefined
+  dateLte?: string | undefined
+  sort: SortOptions<NutritionPlanSortField>
+} & PaginationModel
+
 export type NutritionPlanItem = {
   athleteId: AthleteId
   createdAt: Date
@@ -25,4 +38,11 @@ export type NutritionPlanItem = {
 export type NutritionPlanListResult = {
   data: NutritionPlanItem[]
   meta: PaginationWithTotal
+}
+
+export class NutritionPlanQueryValidationError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'NutritionPlanQueryValidationError'
+  }
 }
