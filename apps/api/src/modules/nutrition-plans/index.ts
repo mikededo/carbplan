@@ -41,8 +41,8 @@ export const nutritionPlansModule = ({ auth, services }: PlanModuleOptions) => n
       ),
     {
       detail: {
-        description: 'Allows admin users to create a product',
-        summary: 'Create product'
+        description: 'Returns a list of nutrition plans for the current athlete',
+        summary: 'List nutrition plans'
       },
       query: NutritionPlansContracts.NutritionPlansListQuerySchema,
       response: {
