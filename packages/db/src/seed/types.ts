@@ -1,4 +1,4 @@
-import type { productFormEnum } from '../schema'
+import type { ProductForm } from '@carbplan/domain/product'
 
 export type BrandSeedInput = {
   description: null | string
@@ -14,7 +14,7 @@ export type ProductSeedInput = {
   carbsG: null | number
   fatG: null | number
   flavor: null | string
-  form: (typeof productFormEnum.enumValues)[number]
+  form: ProductForm
   name: string
   notes: null | string
   proteinG: null | number
