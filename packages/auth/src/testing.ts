@@ -16,7 +16,9 @@ type MockDbWithSession = {
 export type RepositoryDbMock = {
   capturedSql: string[]
   db: Db
+  nQueueError: (...errors: Error[]) => void
   queueError: (error: Error) => void
+  nQueueResult: (...results: unknown[]) => void
   queueResult: (value: unknown) => void
   restore: () => void
 }
@@ -62,6 +64,12 @@ export const createRepositoryDbMock = (): RepositoryDbMock => {
   return {
     capturedSql,
     db: db as Db,
+    nQueueError: (...errors: Error[]) => {
+      queue.push(...errors.map<MockQueueItem>((result) => ({ kind: 'error', value: result })))
+    },
+    nQueueResult: (...results: unknown[]) => {
+      queue.push(...results.map<MockQueueItem>((result) => ({ kind: 'result', value: result })))
+    },
     queueError: (error: Error) => {
       queue.push({ kind: 'error', value: normalizeError(error) })
     },

@@ -7,7 +7,13 @@ import Elysia from 'elysia'
 
 import { authModule } from '$modules/auth'
 import { StatusMap } from '$utils/codes'
-import { apiErrorFactory, ConflictErrorSchema, ForbiddenErrorSchema, InternalServerErrorSchema, UnauthorizedErrorSchema } from '$utils/error'
+import {
+  apiErrorFactory,
+  ConflictErrorSchema,
+  ForbiddenErrorSchema,
+  InternalServerErrorSchema,
+  UnauthorizedErrorSchema
+} from '$utils/error'
 
 type PlanModuleOptions = {
   auth: AuthServer
