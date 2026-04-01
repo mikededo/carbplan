@@ -15,7 +15,7 @@
     "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
-    "turbo": "2.8.19",
+    "turbo": "2.9.3",
     "eslint": "catalog:"
   },
   "overrides": {
