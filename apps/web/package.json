@@ -18,9 +18,8 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@carbplan/contracts": "workspace:*",
     "@lucide/svelte": "^0.577.0",
-    "@supabase/ssr": "0.10.0",
-    "@supabase/supabase-js": "2.99.2",
     "@tanstack/svelte-query": "6.1.1",
     "@tanstack/svelte-query-devtools": "6.0.4",
     "clsx": "2.1.1",
@@ -40,7 +39,6 @@
     "bits-ui": "2.16.3",
     "eslint": "catalog:",
     "globals": "17.4.0",
-    "supabase": "2.81.3",
     "svelte": "5.54.0",
     "svelte-check": "4.4.6",
     "tailwindcss": "4.2.2",

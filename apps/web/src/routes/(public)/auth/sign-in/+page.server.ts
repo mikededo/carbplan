@@ -12,29 +12,28 @@ export const actions = {
   default: async ({ cookies, locals: { authService }, request }) => {
     const formData = await request.formData()
     const email = formData.get('email')?.toString()
-    const result = AuthContracts.SignUpRequestSchema.safeParse({
+    const result = AuthContracts.SignInRequestSchema.safeParse({
       email,
       password: formData.get('password')
     })
 
     if (!result.success) {
-      const errors = z.flattenError(result.error)
+      const { fieldErrors } = z.flattenError(result.error)
       return fail(400, {
         errors: {
-          email: errors.fieldErrors.email ? 'Invalid email address' : undefined,
-          password: errors.fieldErrors.password ? 'Password must be at least 8 characters' : undefined
+          email: fieldErrors.email ? 'Invalid email address' : undefined,
+          password: fieldErrors.password ? 'Password must be at least 8 characters' : undefined
         },
         values: { email }
       })
     }
 
-    const response = await authService.signUp({
-      email: result.data.email,
-      name: result.data.email,
-      password: result.data.password
-    })
+    const response = await authService.signIn(result.data)
     if (response.isErr()) {
-      return fail(400, { message: response.error.message, values: { email } })
+      return fail(response.error.status, {
+        message: response.error.message,
+        values: { email: result.data.email }
+      })
     }
 
     forwardResponseCookies({ cookies, headers: response.value.headers })

@@ -13,12 +13,12 @@
 </script>
 
 <svelte:head>
-    <title>Log In — CarbPlan</title>
+    <title>Sign In — CarbPlan</title>
 </svelte:head>
 
 <Card class="w-full max-w-md">
     <CardHeader>
-        <CardTitle>Log in</CardTitle>
+        <CardTitle>Sign in</CardTitle>
         <CardDescription>Welcome back! Enter your credentials to continue</CardDescription>
     </CardHeader>
     <CardContent class="space-y-4">
@@ -56,7 +56,7 @@
             {#if form?.message}
                 <p class="text-sm text-destructive">{form.message}</p>
             {/if}
-            <Button class="mt-2" type="submit">Log in</Button>
+            <Button class="mt-2" type="submit">Sign in</Button>
         </form>
 
         <p class="text-center text-sm">

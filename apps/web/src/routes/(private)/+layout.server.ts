@@ -3,17 +3,22 @@ import type { LayoutServerLoad } from './$types'
 import { redirect } from '@sveltejs/kit'
 
 import { isOnboardingRoute, ROUTES } from '$lib/constants/routes'
-import { isOnboardingComplete } from '$lib/domain/onboarding/helpers'
+import { isSessionExpired } from '$lib/domain/auth/utils'
+import { noop } from '$lib/utils'
 
-export const load: LayoutServerLoad = async ({ locals: { supabase }, parent, url }) => {
-  const { user } = await parent()
-  if (!user) {
+export const load: LayoutServerLoad = async ({ locals, parent, url }) => {
+  const { session, user } = await parent()
+  if (!user || !session || isSessionExpired(session)) {
     redirect(303, ROUTES.auth.signup)
   }
 
-  const completedOnboarding = await isOnboardingComplete(supabase, user.id)
-  const onboardingRoute = isOnboardingRoute(url.pathname)
-  if (onboardingRoute === completedOnboarding) {
-    redirect(303, onboardingRoute ? ROUTES.dashboard : ROUTES.onboarding)
-  }
+  await locals.services.athletes.hasCompletedOnboarding().match(
+    ({ completed }) => {
+      const onboardingRoute = isOnboardingRoute(url.pathname)
+      if (onboardingRoute === completed) {
+        redirect(303, onboardingRoute ? ROUTES.dashboard : ROUTES.onboarding)
+      }
+    },
+    noop
+  )
 }

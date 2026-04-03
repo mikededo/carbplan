@@ -9,7 +9,7 @@ export const ROUTES = {
     supplements: route('/supplements')
   },
   auth: {
-    login: route('/auth/log-in'),
+    signin: route('/auth/sign-in'),
     signup: route('/auth/sign-up')
   },
   dashboard: route('/dashboard'),

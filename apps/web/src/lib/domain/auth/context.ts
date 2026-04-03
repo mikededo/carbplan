@@ -22,6 +22,8 @@ export const getAuthContext = (): Result<null | User, void> => {
   return ok(context)
 }
 
+export const getAuthUserOrNull = () => getAuthContext().unwrapOr(null)
+
 export const invalidateAuthContext = () => {
   setContext(CLIENT_CONTEXT_KEY, null)
 }

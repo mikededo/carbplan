@@ -2,9 +2,12 @@ import type { LayoutServerLoad } from './$types'
 
 export const load: LayoutServerLoad = async ({
   cookies,
-  locals: { safeGetSession }
+  locals
 }) => {
-  const { session, user } = await safeGetSession()
+  const { session, user } = await locals.authService.getSession().unwrapOr({
+    session: undefined,
+    user: undefined
+  })
 
   return {
     cookies: cookies.getAll(),

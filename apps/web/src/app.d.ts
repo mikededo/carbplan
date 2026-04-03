@@ -3,7 +3,9 @@ import type { Session } from '@supabase/supabase-js'
 import type { ComponentProps } from 'svelte'
 
 import type { Pathname } from '$app/types'
-import type { Client } from '$lib/database/types'
+import type { Transport } from '$lib/api/transport'
+import type { AthletesService } from '$lib/domain/athletes/service'
+import type { AuthService } from '$lib/domain/auth/service'
 
 declare global {
   type LucideIcon = typeof IconType
@@ -18,12 +20,12 @@ declare global {
 
   namespace App {
     interface Locals {
-      safeGetSession: () => Promise<{
-        session: null | Session
-        user?: null | Session['user']
-      }>
+      authService: AuthService
+      serverTransport: Transport
+      services: {
+        athletes: AthletesService
+      }
       session: null | Session
-      supabase: Client
     }
     interface PageData {
       session: null | Session
@@ -36,4 +38,4 @@ declare global {
   }
 }
 
-export {}
+export { }

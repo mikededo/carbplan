@@ -1,24 +1,10 @@
 <script lang="ts">
-    import { createBrowserClient } from '@supabase/ssr'
-    import { onMount } from 'svelte'
-
-    import { browser } from '$app/environment'
-    import { PUBLIC_SUPABASE_PUBLISHABLE_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public'
     import { ROUTES } from '$lib/constants/routes'
+    import { getAuthUserOrNull } from '$lib/domain/auth/context'
     import { Button } from '$lib/domain/ui/button'
     import { Logo } from '$lib/domain/ui/logo'
 
-    let isLoggedIn = $state(false)
-
-    onMount(async () => {
-        if (!browser) {
-            return
-        }
-
-        const supabase = createBrowserClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY)
-        const { data } = await supabase.auth.getSession()
-        isLoggedIn = !!data.session?.user
-    })
+    const authUser = getAuthUserOrNull()
 </script>
 
 <nav class="fixed inset-x-0 top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md">
@@ -52,10 +38,10 @@
         </div>
 
         <div class="flex items-center justify-end gap-3">
-            {#if isLoggedIn}
+            {#if authUser}
                 <Button href={ROUTES.dashboard} size="sm">Go to app</Button>
             {:else}
-                <Button href={ROUTES.auth.login} size="sm" variant="ghost">Log in</Button>
+                <Button href={ROUTES.auth.signin} size="sm" variant="ghost">Sign in</Button>
                 <Button href={ROUTES.auth.signup} size="sm">Get Started</Button>
             {/if}
         </div>

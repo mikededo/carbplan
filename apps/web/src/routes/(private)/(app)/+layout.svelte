@@ -20,7 +20,7 @@
         }
 
         supabaseResult.value.auth.signOut().finally(() => {
-            goto(ROUTES.auth.login)
+            goto(ROUTES.auth.signin)
         })
     }
 </script>

@@ -1,55 +1,37 @@
 import type { Handle } from '@sveltejs/kit'
 
-import type { Database } from '$lib/database/types.g'
-
-import { createServerClient } from '@supabase/ssr'
-
-import { PUBLIC_SUPABASE_PUBLISHABLE_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public'
+import { PUBLIC_API_URL } from '$env/static/public'
+import { createTransport } from '$lib/api/transport'
+import { createAthletesService } from '$lib/domain/athletes/service'
+import { AUTH_SESSION_COOKIE_NAME, AUTH_TOKEN_COOKIE_NAME } from '$lib/domain/auth/constants'
+import { createAuthService } from '$lib/domain/auth/service'
 
 export const handle: Handle = async ({ event, resolve }) => {
-  event.locals.supabase = createServerClient<Database>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY, {
-    cookies: {
-      getAll: () => event.cookies.getAll(),
-      /**
-       * Note: You have to add the `path` variable to the
-       * set and remove method due to sveltekit's cookie API
-       * requiring this to be set, setting the path to `/`
-       * will replicate previous/standard behaviour (https://kit.svelte.dev/docs/types#public-types-cookies)
-       */
-      setAll: (cookiesToSet) => {
-        cookiesToSet.forEach(({ name, options, value }) => {
-          event.cookies.set(name, value, { ...options, path: '/' })
-        })
+  event.locals.serverTransport = createTransport({
+    baseUrl: PUBLIC_API_URL,
+    fetch: event.fetch,
+    getHeaders: () => {
+      const sessionToken = event.cookies.get(AUTH_SESSION_COOKIE_NAME)
+      const authToken = event.cookies.get(AUTH_TOKEN_COOKIE_NAME)
+
+      if (!sessionToken || !authToken) {
+        return undefined
+      }
+
+      return {
+        Authorization: authToken,
+        Cookie: `better-auth.session_token=${sessionToken}`
       }
     }
   })
-
-  /**
-   * Unlike `supabase.auth.getSession`, which is unsafe on the server because it
-   * doesn't validate the JWT, this function validates the JWT by first calling
-   * `getUser` and aborts early if the JWT signature is invalid.
-   */
-  event.locals.safeGetSession = async () => {
-    const {
-      data: { user },
-      error
-    } = await event.locals.supabase.auth.getUser()
-    if (error) {
-      return { session: null, user: null }
-    }
-
-    const {
-      data: { session }
-    } = await event.locals.supabase.auth.getSession()
-    return { session, user }
+  event.locals.authService = createAuthService(event.locals.serverTransport)
+  event.locals.services = {
+    athletes: createAthletesService(event.locals.serverTransport)
   }
 
   const theme = event.cookies.get('theme') ?? 'light'
 
   return resolve(event, {
-    filterSerializedResponseHeaders(name: string) {
-      return name === 'content-range' || name === 'x-supabase-api-version'
-    },
     transformPageChunk: ({ html }) => html.replace('%theme%', theme)
   })
 }

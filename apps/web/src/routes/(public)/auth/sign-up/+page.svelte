@@ -61,7 +61,7 @@
 
         <p class="text-center text-sm">
             Already with an account?
-            <a class="text-primary hover:underline" href={ROUTES.auth.login}>Log in</a>
+            <a class="text-primary hover:underline" href={ROUTES.auth.signin}>Log in</a>
         </p>
     </CardContent>
 </Card>

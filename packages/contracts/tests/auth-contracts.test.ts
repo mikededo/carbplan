@@ -3,15 +3,16 @@ import { describe, expect, it } from 'vitest'
 import { ApiErrorSchema } from '../src/api'
 import {
   GetSessionResponseSchema,
-  LogInRequestSchema,
+  SignInRequestSchema,
   SignOutResponseSchema,
   SignUpRequestSchema
 } from '../src/domains/auth'
 
 describe('auth contracts', () => {
   it('validates sign-in request', () => {
-    const result = LogInRequestSchema.safeParse({
+    const result = SignInRequestSchema.safeParse({
       email: 'athlete@carbplan.app',
+      name: 'Athlete',
       password: 'secret'
     })
 
