@@ -82,7 +82,7 @@ export const createAuthServer = ({
       additionalFields: {
         isAdmin: {
           defaultValue: false,
-          fieldName: 'is_admin',
+          fieldName: 'isAdmin',
           input: false,
           required: false,
           type: 'boolean'
