@@ -1,6 +1,6 @@
 import type { Handle } from '@sveltejs/kit'
 
-import { PUBLIC_API_URL } from '$env/static/public'
+import { PRIVATE_API_ORIGIN } from '$env/static/private'
 import { createTransport } from '$lib/api/transport'
 import { createAthletesService } from '$lib/domain/athletes/service'
 import { AUTH_SESSION_COOKIE_NAME, AUTH_TOKEN_COOKIE_NAME } from '$lib/domain/auth/constants'
@@ -8,7 +8,7 @@ import { createAuthService } from '$lib/domain/auth/service'
 
 export const handle: Handle = async ({ event, resolve }) => {
   event.locals.serverTransport = createTransport({
-    baseUrl: PUBLIC_API_URL,
+    baseUrl: PRIVATE_API_ORIGIN,
     fetch: event.fetch,
     getHeaders: () => {
       const sessionToken = event.cookies.get(AUTH_SESSION_COOKIE_NAME)

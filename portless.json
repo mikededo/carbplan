@@ -1,0 +1,12 @@
+{
+  "apps": {
+    "apps/api": {
+      "appPort": 3000,
+      "name": "api.carbplan"
+    },
+    "apps/web": {
+      "appPort": 5173,
+      "name": "app.carbplan"
+    }
+  }
+}
