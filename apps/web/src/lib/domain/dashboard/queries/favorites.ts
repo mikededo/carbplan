@@ -1,30 +1,13 @@
-import type { Client } from '$lib/database/types'
+import type { Result } from 'neverthrow'
+
+import type { DashboardService } from '$lib/domain/dashboard/service'
 
 import { queryOptions, skipToken } from '@tanstack/svelte-query'
-import { ok } from 'neverthrow'
 
-import { getSupabaseClient } from '$lib/database/context'
 import { queryKeys } from '$lib/domain/query/keys'
+import { liftResultAsync } from '$lib/domain/query/utils'
 
-export const favoriteProductsOptions = (supabaseClient?: Client, limit = 6) => {
-  const supabase = supabaseClient ? ok(supabaseClient) : getSupabaseClient()
-
-  return queryOptions({
-    queryFn: supabase.isOk()
-      ? async () => {
-        const { data, error } = await supabase.value
-          .from('catalog_products')
-          .select('*')
-          .eq('is_favorite', true)
-          .limit(limit)
-
-        if (error) {
-          throw error
-        }
-
-        return data
-      }
-      : skipToken,
-    queryKey: queryKeys.favorites.products()
-  })
-}
+export const favoriteProductsOptions = (maybeService: Result<DashboardService, void>, limit = 6) => queryOptions({
+  queryFn: maybeService.isOk() ? liftResultAsync(() => maybeService.value.getFavoriteProducts(limit)) : skipToken,
+  queryKey: queryKeys.favorites.products()
+})

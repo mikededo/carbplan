@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { PlanWithSummary } from '$lib/database/types.g'
+    import type { DashboardPlan } from '$lib/domain/dashboard/types'
 
     import { CalendarIcon, ClockIcon, PenIcon, ZapIcon } from '@lucide/svelte'
 
@@ -8,7 +8,7 @@
     import { Button } from '$lib/domain/ui/button'
     import * as Card from '$lib/domain/ui/card'
 
-    type Props = { plan: null | PlanWithSummary }
+    type Props = { plan: DashboardPlan | null }
     const { plan }: Props = $props()
 
     const formatDuration = (minutes: null | number) => {
@@ -23,7 +23,7 @@
         return mins > 0 ? `${hours}h ${mins}min` : `${hours}h`
     }
 
-    const formatDate = (dateStr: null | string) => {
+    const formatDate = (dateStr: Date | null | string) => {
         if (!dateStr) {
             return '-'
         }
@@ -55,7 +55,7 @@
                         </span>
                         <span class="flex items-center gap-1.5">
                             <ClockIcon class="size-3.5" />
-                            {formatDuration(plan.duration_minutes)}
+                            {formatDuration(plan.durationMinutes)}
                         </span>
                     </div>
                 </div>
@@ -66,28 +66,28 @@
             </Card.Header>
             <Card.Content class="px-4">
                 <div class="flex flex-wrap gap-4">
-                    {#if plan.target_carbs_per_hour}
+                    {#if plan.targetCarbsPerHour}
                         <div class="flex items-center gap-2 rounded-md bg-background px-3 py-2">
                             <ZapIcon class="size-4 text-primary" />
                             <div>
                                 <p class="text-xs text-muted-foreground">Target</p>
-                                <p class="font-medium">{plan.target_carbs_per_hour} g/hr</p>
+                                <p class="font-medium">{plan.targetCarbsPerHour} g/hr</p>
                             </div>
                         </div>
                     {/if}
-                    {#if plan.total_carbs_g}
+                    {#if plan.nutrition.totalCarbsG}
                         <div class="flex items-center gap-2 rounded-md bg-background px-3 py-2">
                             <div>
                                 <p class="text-xs text-muted-foreground">Total carbs</p>
-                                <p class="font-medium">{Math.round(plan.total_carbs_g)} g</p>
+                                <p class="font-medium">{Math.round(plan.nutrition.totalCarbsG)} g</p>
                             </div>
                         </div>
                     {/if}
-                    {#if plan.item_count}
+                    {#if plan.nutrition.itemCount}
                         <div class="flex items-center gap-2 rounded-md bg-background px-3 py-2">
                             <div>
                                 <p class="text-xs text-muted-foreground">Items</p>
-                                <p class="font-medium">{plan.item_count}</p>
+                                <p class="font-medium">{plan.nutrition.itemCount}</p>
                             </div>
                         </div>
                     {/if}

@@ -27,6 +27,8 @@ export type CatalogProductsListQuery = {
   carbsGte?: number | undefined
   carbsLte?: number | undefined
   form?: ProductForm[] | undefined
+  proteinGte?: number | undefined
+  proteinLte?: number | undefined
   q?: string | undefined
 } & PaginationModel
 

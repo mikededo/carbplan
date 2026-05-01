@@ -1,6 +1,7 @@
 import type { NutritionPlanListQuery, NutritionPlanListResult } from '$modules/nutrition-plans/model'
 import type { NutritionPlanRepository } from '$modules/nutrition-plans/repository'
 
+import { parseAthleteId } from '@carbplan/domain/athlete'
 import { okAsync } from 'neverthrow'
 
 import { NutritionPlanServiceImpl } from '$modules/nutrition-plans/service'
@@ -14,7 +15,7 @@ describe('nutrition plans service', () => {
   })
 
   it('delegates list query to repository', async () => {
-    const athleteId = 'athlete-id'
+    const athleteId = parseAthleteId('00000000-0000-4000-8000-000000000000')
     const query: NutritionPlanListQuery = {
       limit: 20,
       offset: 0,

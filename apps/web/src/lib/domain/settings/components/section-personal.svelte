@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { PROFILE_VALUES } from '$lib/domain/settings/constants'
-    import { SexEnum } from '$lib/domain/settings/schemas'
+    import { PROFILE_FIELD_CONSTRAINTS, SexEnum } from '@carbplan/domain/profile'
+
     import { Input } from '$lib/domain/ui/input'
     import { Label } from '$lib/domain/ui/label'
     import * as RadioGroup from '$lib/domain/ui/radio-group'
@@ -65,8 +65,8 @@
             <Input
                 bind:value={height}
                 id="height"
-                max={PROFILE_VALUES.height.max}
-                min={PROFILE_VALUES.height.min}
+                max={PROFILE_FIELD_CONSTRAINTS.height.max}
+                min={PROFILE_FIELD_CONSTRAINTS.height.min}
                 name="height"
                 type="number"
             />
@@ -76,8 +76,8 @@
             <Input
                 bind:value={weight}
                 id="weight"
-                max={PROFILE_VALUES.weight.max}
-                min={PROFILE_VALUES.weight.min}
+                max={PROFILE_FIELD_CONSTRAINTS.weight.max}
+                min={PROFILE_FIELD_CONSTRAINTS.weight.min}
                 name="weight"
                 step="0.1"
                 type="number"

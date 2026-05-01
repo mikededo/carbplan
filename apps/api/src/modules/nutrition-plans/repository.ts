@@ -1,4 +1,4 @@
-import type { Db } from '@carbplan/db'
+import type { AthleteId, Db } from '@carbplan/db'
 import type { SQL } from 'drizzle-orm'
 import type { PgColumn } from 'drizzle-orm/pg-core'
 
@@ -23,14 +23,14 @@ const SORT_FIELD_MAP: Record<'date', PgColumn> = {
 const toDateOnlyValue = (value: string): Date => new Date(`${value}T00:00:00.000Z`)
 
 export type NutritionPlanRepository = {
-  listAthleteNutritionPlans: (athleteId: string, query: NutritionPlanListQuery) => ResultAsync<NutritionPlanListResult, DatabaseQueryError | NutritionPlanQueryValidationError>
+  listAthleteNutritionPlans: (athleteId: AthleteId, query: NutritionPlanListQuery) => ResultAsync<NutritionPlanListResult, DatabaseQueryError | NutritionPlanQueryValidationError>
 }
 
 export class DbNutritionPlanRepository implements NutritionPlanRepository {
   constructor(private readonly db: Db) { }
 
   listAthleteNutritionPlans(
-    athleteId: string,
+    athleteId: AthleteId,
     query: NutritionPlanListQuery
   ): ResultAsync<NutritionPlanListResult, DatabaseQueryError | NutritionPlanQueryValidationError> {
     const parsedQuery = parseQuerySort(query.sort, SORT_FIELD_MAP)

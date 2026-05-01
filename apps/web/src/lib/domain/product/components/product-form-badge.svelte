@@ -1,5 +1,5 @@
 <script lang="ts" module>
-    import type { ProductFormType } from '$lib/database/types.g'
+    import type { ProductForm } from '@carbplan/domain/product'
 
     import {
         BoxIcon,
@@ -13,7 +13,7 @@
     } from '@lucide/svelte'
     import { tv } from 'tailwind-variants'
 
-    export const FORM_ICONS: Record<ProductFormType, typeof BoxIcon> = {
+    export const FORM_ICONS: Record<ProductForm, typeof BoxIcon> = {
         bar: CookieIcon,
         capsule: PillIcon,
         chew: CandyIcon,
@@ -48,7 +48,7 @@
 </script>
 
 <script lang="ts">
-    type Props = { form: ProductFormType }
+    type Props = { form: ProductForm }
     const { form }: Props = $props()
 
     const Icon = $derived(FORM_ICONS[form])

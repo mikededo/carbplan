@@ -1,6 +1,7 @@
 import type { FavoriteProductWithBrand } from '$modules/favorites/model'
 import type { AthleteFavoritesRepository } from '$modules/favorites/repository'
 
+import { parseAthleteId } from '@carbplan/domain/athlete'
 import { errAsync, okAsync } from 'neverthrow'
 
 import { AthletesFavoritesServiceImpl } from '$modules/favorites/service'
@@ -8,6 +9,7 @@ import { createStub } from '$test/stubs/helpers'
 import { DatabaseErrorCodeEnum, DatabaseQueryError } from '$utils/db-error'
 
 const repository = createStub<AthleteFavoritesRepository>(['listFavoriteProductsWithBrands'])
+const athleteId = parseAthleteId('00000000-0000-4000-8000-000000000000')
 
 describe('athlete favorites service', () => {
   it('maps repository rows to favorite product response', async () => {
@@ -44,7 +46,7 @@ describe('athlete favorites service', () => {
     repository.listFavoriteProductsWithBrands.mockReturnValue(okAsync([model]))
     const service = new AthletesFavoritesServiceImpl(repository)
 
-    await expect(service.getAllFavoriteProducts('athlete-id')).toBeOkAsyncWith([model])
+    await expect(service.getAllFavoriteProducts(athleteId)).toBeOkAsyncWith([model])
   })
 
   it('maps repository errors to a database error', async () => {
@@ -54,7 +56,7 @@ describe('athlete favorites service', () => {
     const service = new AthletesFavoritesServiceImpl(repository)
 
     await expect(
-      service.getAllFavoriteProducts('athlete-id')
+      service.getAllFavoriteProducts(athleteId)
     ).toBeErrAsyncWith(new DatabaseQueryError({ cause: new Error('Db error'), code: DatabaseErrorCodeEnum.UNKNOWN }))
   })
 })

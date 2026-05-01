@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Product } from '$lib/database/types.g'
+    import type { CatalogProduct } from '@carbplan/contracts/catalog'
 
     import type { CatalogBrand, CatalogResult } from '../../queries'
 
@@ -22,14 +22,14 @@
     type Props = {
         brands: CatalogResult
         onEditBrand?: (brand: CatalogBrand) => void
-        onEditProduct?: (product: Product) => void
+        onEditProduct?: (product: CatalogProduct) => void
     }
     const { brands, onEditBrand, onEditProduct }: Props = $props()
 
     const table = createProductsTableContext(() => brands)
 
-    const formatServing = (product: Product) =>
-        `${product.serving_size}${product.serving_unit}`
+    const formatServing = (product: CatalogProduct) =>
+        `${product.servingSize}${product.servingUnit}`
 
     const formatValue = (value: null | number, unit: string) =>
         value !== null ? `${value}${unit}` : '-'
@@ -39,7 +39,7 @@
         onEditBrand?.(brand)
     }
 
-    const handleEditProduct = (product: Product) => () => {
+    const handleEditProduct = (product: CatalogProduct) => () => {
         onEditProduct?.(product)
     }
 </script>
@@ -104,11 +104,11 @@
                                 </Table.Cell>
                                 <Table.Cell>{formatServing(product)}</Table.Cell>
                                 <Table.Cell>{formatValue(product.calories, 'kcal') ?? '-'}</Table.Cell>
-                                <Table.Cell>{formatValue(product.carbs_g, 'g')}</Table.Cell>
-                                <Table.Cell>{formatValue(product.sugar_g, 'g')}</Table.Cell>
-                                <Table.Cell>{formatValue(product.sodium_mg, 'mg')}</Table.Cell>
+                                <Table.Cell>{formatValue(product.carbsG, 'g')}</Table.Cell>
+                                <Table.Cell>{formatValue(product.sugarG, 'g')}</Table.Cell>
+                                <Table.Cell>{formatValue(product.sodiumMg, 'mg')}</Table.Cell>
                                 <Table.Cell>
-                                    <CaffeineCell caffeine={product.caffeine_mg} />
+                                    <CaffeineCell caffeine={product.caffeineMg} />
                                 </Table.Cell>
                             </Table.Row>
                         {/each}

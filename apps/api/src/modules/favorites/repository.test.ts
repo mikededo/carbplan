@@ -1,7 +1,10 @@
 import { createRepositoryDbMock } from '@carbplan/auth/testing'
+import { parseAthleteId } from '@carbplan/domain/athlete'
 
 import { DbAthleteFavoritesRepository } from '$modules/favorites/repository'
 import { DatabaseErrorCodeEnum, DatabaseQueryError } from '$utils/db-error'
+
+const athleteId = parseAthleteId('00000000-0000-4000-8000-000000000000')
 
 describe('product repository', () => {
   it('queries favorite products and maps rows with brand data', async () => {
@@ -39,7 +42,7 @@ describe('product repository', () => {
 
     const repository = new DbAthleteFavoritesRepository(dbMock.db)
 
-    await expect(repository.listFavoriteProductsWithBrands('athlete-id')).toBeOkAsyncWith([{
+    await expect(repository.listFavoriteProductsWithBrands(athleteId)).toBeOkAsyncWith([{
       brand: {
         id: 'brand-1',
         logoUrl: 'https://example.com/logo.png',
@@ -100,7 +103,7 @@ describe('product repository', () => {
     const repository = new DbAthleteFavoritesRepository(dbMock.db)
 
     await expect(
-      repository.listFavoriteProductsWithBrands('athlete-id')
+      repository.listFavoriteProductsWithBrands(athleteId)
     ).toBeOkAsyncWith([])
   })
 
@@ -109,7 +112,7 @@ describe('product repository', () => {
     dbMock.queueError(new Error('db failed'))
     const repository = new DbAthleteFavoritesRepository(dbMock.db)
 
-    await expect(repository.listFavoriteProductsWithBrands('athlete-id')).toBeErrAsyncWith(
+    await expect(repository.listFavoriteProductsWithBrands(athleteId)).toBeErrAsyncWith(
       new DatabaseQueryError({
         cause: new Error('db failed'),
         code: DatabaseErrorCodeEnum.UNKNOWN,

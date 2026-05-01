@@ -1,15 +1,14 @@
 <script lang="ts">
-    import type { HRZoneModel, HRZonesData } from '../schemas'
+    import type { HRZoneModel, HRZonesData } from '@carbplan/domain/hr'
 
+    import { HR_MODEL_INFO, HR_MODEL_LABELS, HR_ZONE_PRESETS } from '@carbplan/domain/hr'
     import { ExternalLinkIcon, HeartIcon, InfoIcon } from '@lucide/svelte'
 
     import * as Select from '$lib/domain/ui/select'
     import * as Tooltip from '$lib/domain/ui/tooltip'
     import { ZoneBar, ZoneListItem, ZonePlaceholder } from '$lib/domain/zones/zone/components'
 
-    import { HR_MODEL_INFO, HR_MODEL_LABELS, HR_ZONE_PRESETS } from '../presets'
-    import { isHRPresetZoneModel } from '../schemas'
-    import { calculateHRZones, formatHRRange } from '../utils'
+    import { calculateHRZones, formatHRRange, isHRPresetZoneModel } from '../utils'
 
     type Props = {
         hrMax: number | undefined

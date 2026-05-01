@@ -21,6 +21,7 @@ const userId: UserId = crypto.randomUUID()
 const catalogRepository = createStub<CatalogRepository>([
   'createBrand',
   'createProduct',
+  'listCatalog',
   'updateBrand',
   'updateProduct'
 ])

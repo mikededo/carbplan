@@ -87,7 +87,7 @@ const isApiSuccess = <T>(value: unknown): value is ApiSuccess<T> => {
 
 type IsEmptyResponseParams = { method: RequestMethod, response: Response }
 const isEmptyResponse = ({ response }: IsEmptyResponseParams) =>
-  response.status !== 204 && response.status !== 205 && response.status !== 304
+  response.status === 204 || response.status === 205 || response.status === 304
 
 type ToApiErrorArgs = {
   fallback?: {

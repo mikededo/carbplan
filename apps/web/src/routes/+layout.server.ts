@@ -5,8 +5,8 @@ export const load: LayoutServerLoad = async ({
   locals
 }) => {
   const { session, user } = await locals.authService.getSession().unwrapOr({
-    session: undefined,
-    user: undefined
+    session: null,
+    user: null
   })
 
   return {

@@ -1,10 +1,14 @@
 import type { LayoutLoad } from './$types'
 
+import { ok } from 'neverthrow'
+
+import { browser } from '$app/environment'
 import { athleteOptions } from '$lib/domain/settings/queries'
 
 export const load: LayoutLoad = async ({ parent }) => {
-  const { queryClient, supabase } = await parent()
+  const { privateServices, queryClient } = await parent()
 
-  queryClient.prefetchQuery(athleteOptions(supabase))
+  if (browser) {
+    queryClient.prefetchQuery(athleteOptions(ok(privateServices.me)))
+  }
 }
-

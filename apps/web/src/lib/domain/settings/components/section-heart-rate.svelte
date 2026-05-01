@@ -1,11 +1,11 @@
 <script lang="ts">
+    import type { AthleteId } from '@carbplan/domain/athlete'
+    import type { HRZoneModel, HRZonesData } from '@carbplan/domain/hr'
+    import type { Maybe } from '@carbplan/domain/utils'
 
-    import type { Athlete } from '$lib/database/types.g'
-    import type { HRZoneModel, HRZonesData } from '$lib/domain/zones/hr/schemas'
-
+    import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
     import { HeartIcon, HeartPlusIcon, HeartPulseIcon, LoaderCircleIcon } from '@lucide/svelte'
 
-    import { PROFILE_VALUES } from '$lib/domain/settings/constants'
     import { Button } from '$lib/domain/ui/button'
     import { Input } from '$lib/domain/ui/input'
     import { Label } from '$lib/domain/ui/label'
@@ -17,10 +17,10 @@
     import SettingsSection from './settings-section.svelte'
 
     type Props = {
-        athleteId?: Athlete['id']
+        athleteId?: AthleteId
         hrMax?: number
         hrRest?: number
-        hrZones?: HRZonesData
+        hrZones?: Maybe<HRZonesData>
     }
     let {
         athleteId,
@@ -30,7 +30,7 @@
     }: Props = $props()
 
     // svelte-ignore state_referenced_locally
-    let hrZones = $state<HRZonesData | undefined>(initialHRZones)
+    let hrZones = $state<Maybe<HRZonesData>>(initialHRZones)
 
     const mutate = $derived(createAthleteHRZonesMutation(athleteId))
 
@@ -62,8 +62,8 @@
             <Input
                 bind:value={hrRest}
                 id="hrRest"
-                max={PROFILE_VALUES.hrRest.max}
-                min={PROFILE_VALUES.hrRest.min}
+                max={PROFILE_FIELD_CONSTRAINTS.hrRest.max}
+                min={PROFILE_FIELD_CONSTRAINTS.hrRest.min}
                 name="hrRest"
                 placeholder="e.g., 50"
                 type="number"
@@ -74,8 +74,8 @@
             <Input
                 bind:value={hrMax}
                 id="hrMax"
-                max={PROFILE_VALUES.hrMax.max}
-                min={PROFILE_VALUES.hrMax.min}
+                max={PROFILE_FIELD_CONSTRAINTS.hrMax.max}
+                min={PROFILE_FIELD_CONSTRAINTS.hrMax.min}
                 name="hrMax"
                 placeholder="e.g., 185"
                 type="number"

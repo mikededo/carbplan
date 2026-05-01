@@ -1,3 +1,4 @@
+import type { AthleteId as DomainAthleteId } from '@carbplan/domain/athlete'
 import type { HRZonesData } from '@carbplan/domain/hr'
 import type { PowerZonesData } from '@carbplan/domain/power'
 
@@ -32,7 +33,7 @@ export const athletes = pgTable('athletes', {
   hrMax: integer('hr_max'),
   hrRest: integer('hr_rest'),
   hrZones: jsonb('hr_zones').$type<HRZonesData>(),
-  id: uuid('id').primaryKey().references(() => users.id, { onDelete: 'cascade' }),
+  id: uuid('id').$type<DomainAthleteId>().primaryKey().references(() => users.id, { onDelete: 'cascade' }),
   maxCarbIntakeGPerHr: integer('max_carb_intake_g_per_hr'),
   onboardingCompleted: boolean('onboarding_completed').default(false).notNull(),
   powerZones: jsonb('power_zones').$type<PowerZonesData>(),
@@ -42,12 +43,12 @@ export const athletes = pgTable('athletes', {
 }, (table) => [
   index('athletes_email_idx').on(table.email)
 ])
-export type AthleteId = typeof athletes.$inferSelect.id
+export type AthleteId = DomainAthleteId
 
 export const coachingRelationships = pgTable('coaching_relationships', {
   acceptedAt: timestamp('accepted_at', { withTimezone: true }),
-  athleteId: uuid('athlete_id').notNull().references(() => athletes.id, { onDelete: 'cascade' }),
-  coachId: uuid('coach_id').notNull().references(() => athletes.id, { onDelete: 'cascade' }),
+  athleteId: uuid('athlete_id').$type<DomainAthleteId>().notNull().references(() => athletes.id, { onDelete: 'cascade' }),
+  coachId: uuid('coach_id').$type<DomainAthleteId>().notNull().references(() => athletes.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   id: uuid('id').defaultRandom().primaryKey()
 }, (table) => [

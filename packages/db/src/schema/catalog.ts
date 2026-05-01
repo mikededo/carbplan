@@ -1,3 +1,5 @@
+import type { AthleteId } from '@carbplan/domain/athlete'
+
 import { ProductFormEnum } from '@carbplan/domain/product'
 import { sql } from 'drizzle-orm'
 import {
@@ -68,7 +70,7 @@ export const products = pgTable('products', {
 export type ProductId = typeof products.$inferSelect.id
 
 export const favoriteBrands = pgTable('favorite_brands', {
-  athleteId: uuid('athlete_id').notNull().references(() => athletes.id, { onDelete: 'cascade' }),
+  athleteId: uuid('athlete_id').$type<AthleteId>().notNull().references(() => athletes.id, { onDelete: 'cascade' }),
   brandId: uuid('brand_id').notNull().references(() => brands.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull()
 }, (table) => [
@@ -78,7 +80,7 @@ export const favoriteBrands = pgTable('favorite_brands', {
 ])
 
 export const favoriteProducts = pgTable('favorite_products', {
-  athleteId: uuid('athlete_id').notNull().references(() => athletes.id, { onDelete: 'cascade' }),
+  athleteId: uuid('athlete_id').$type<AthleteId>().notNull().references(() => athletes.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   productId: uuid('product_id').notNull().references(() => products.id, { onDelete: 'cascade' })
 }, (table) => [

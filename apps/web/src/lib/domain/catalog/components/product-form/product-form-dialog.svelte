@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Product } from '$lib/database/types.g'
+    import type { CatalogProduct } from '@carbplan/contracts/catalog'
 
     import { LoaderCircleIcon, SaveIcon, Trash2Icon } from '@lucide/svelte'
 
@@ -17,7 +17,7 @@
 
     type Props = {
         open: boolean
-        product?: Product
+        product?: CatalogProduct
         onOpenChange: (open: boolean) => void
     }
     const { onOpenChange, open, product }: Props = $props()

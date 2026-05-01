@@ -7,6 +7,10 @@ export type ProductWithBrand = {
   brand: Pick<Brand, 'id' | 'logoUrl' | 'name' | 'slug'>
 } & Product
 
+export type CatalogProduct = Product
+export type CatalogBrand = Brand & { products: CatalogProduct[] }
+export type ListCatalogError = DatabaseQueryError
+
 export type CreateBrandData = {
   description?: string
   isActive?: boolean

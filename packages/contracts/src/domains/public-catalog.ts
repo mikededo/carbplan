@@ -24,6 +24,8 @@ export const CatalogProductsFilterSchema = z.object({
   carbsGte: z.coerce.number().nonnegative().optional(),
   carbsLte: z.coerce.number().nonnegative().optional(),
   form: createFilterArraySchema(ProductFormSchema).optional(),
+  proteinGte: z.coerce.number().nonnegative().optional(),
+  proteinLte: z.coerce.number().nonnegative().optional(),
   q: z.string().trim().min(1).max(120).optional()
 })
   .refine((value) => value.caloriesGte === undefined || value.caloriesLte === undefined || value.caloriesGte <= value.caloriesLte, {
@@ -31,6 +33,9 @@ export const CatalogProductsFilterSchema = z.object({
   })
   .refine((value) => value.carbsGte === undefined || value.carbsLte === undefined || value.carbsGte <= value.carbsLte, {
     message: 'carbsGte must be less than or equal to carbsLte'
+  })
+  .refine((value) => value.proteinGte === undefined || value.proteinLte === undefined || value.proteinGte <= value.proteinLte, {
+    message: 'proteinGte must be less than or equal to proteinLte'
   })
 export type CatalogProductsFilter = z.infer<typeof CatalogProductsFilterSchema>
 

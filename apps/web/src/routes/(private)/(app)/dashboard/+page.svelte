@@ -1,7 +1,7 @@
 <script lang="ts">
     import { createQuery } from '@tanstack/svelte-query'
+    import { err, ok } from 'neverthrow'
 
-    import { getSupabaseClient } from '$lib/database/context'
     import {
         FavoritesSection,
         NextPlanCard,
@@ -15,15 +15,16 @@
         recentPlansOptions
     } from '$lib/domain/dashboard/queries'
     import { PageHeader, PageScrollarea } from '$lib/domain/layout/components'
+    import { getPrivateServicesContext } from '$lib/domain/services/context'
     import { useAthleteQuery } from '$lib/domain/settings/queries'
 
-    const supabaseResult = getSupabaseClient()
-    const supabase = supabaseResult.isOk() ? supabaseResult.value : undefined
+    const servicesResult = getPrivateServicesContext()
+    const dashboardService = servicesResult.isOk() ? ok(servicesResult.value.dashboard) : err()
 
     const athleteQuery = useAthleteQuery()
-    const nextPlanQuery = createQuery(() => nextPlanOptions(supabase))
-    const recentPlansQuery = createQuery(() => recentPlansOptions(supabase, 5))
-    const favoritesQuery = createQuery(() => favoriteProductsOptions(supabase, 6))
+    const nextPlanQuery = createQuery(() => nextPlanOptions(dashboardService))
+    const recentPlansQuery = createQuery(() => recentPlansOptions(dashboardService, 5))
+    const favoritesQuery = createQuery(() => favoriteProductsOptions(dashboardService, 6))
 </script>
 
 <svelte:head>

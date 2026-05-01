@@ -1,6 +1,9 @@
 import { createRepositoryDbMock } from '@carbplan/auth/testing'
+import { parseAthleteId } from '@carbplan/domain/athlete'
 
 import { DbOnboardingRepository } from '$modules/onboarding/repository'
+
+const athleteId = parseAthleteId('00000000-0000-4000-8000-000000000000')
 
 describe('onboarding repository', () => {
   it('queries onboarding completion by athlete id', async () => {
@@ -8,7 +11,7 @@ describe('onboarding repository', () => {
     dbMock.queueResult([{ completed: true }])
     const repository = new DbOnboardingRepository(dbMock.db)
 
-    await repository.findCompletionByAthleteId('athlete-id')
+    await repository.findCompletionByAthleteId(athleteId)
       .match(
         (result) => expect(result).toEqual({ completed: true }),
         () => expect.fail('Got error when should result to ok')
@@ -20,7 +23,7 @@ describe('onboarding repository', () => {
     dbMock.queueResult([])
     const repository = new DbOnboardingRepository(dbMock.db)
 
-    await repository.findCompletionByAthleteId('athlete-id')
+    await repository.findCompletionByAthleteId(athleteId)
       .match(
         (result) => expect(result).toBeUndefined(),
         () => expect.fail('Got error when should result to ok')
@@ -36,7 +39,7 @@ describe('onboarding repository', () => {
       repository.saveAthleteOnboarding({
         fullName: 'Jane Rider',
         height: 170,
-        id: 'athlete-id',
+        id: athleteId,
         sex: 'female',
         weight: 58
       })
@@ -52,7 +55,7 @@ describe('onboarding repository', () => {
       repository.saveAthleteOnboarding({
         fullName: 'Jane Rider',
         height: 170,
-        id: 'athlete-id',
+        id: athleteId,
         sex: 'female',
         weight: 58
       })

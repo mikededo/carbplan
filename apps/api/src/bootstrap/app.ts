@@ -31,11 +31,11 @@ export const createApp = async ({ corsOrigins, services }: CreateAppOptions) => 
   .model({ ApiError: ApiErrorModelSchema })
   .use(await createLogger())
   .use(cors({
-    allowedHeaders: ['Content-Type', 'If-None-Match', 'X-Request-Id'],
-    credentials: false,
+    allowedHeaders: ['Authorization', 'Content-Type', 'If-None-Match', 'X-Request-Id'],
+    credentials: true,
     exposeHeaders: ['ETag', 'X-Request-Id'],
     maxAge: 300,
-    methods: ['GET', 'OPTIONS'],
+    methods: ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT'],
     origin: corsOrigins
   }))
   .use(openapi({

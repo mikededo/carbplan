@@ -1,11 +1,5 @@
-import type { PlanWithSummary } from '$lib/database/types.g'
+import type { NutritionPlanListItem } from '@carbplan/contracts/nutrition-plans'
+import type { FavoriteProductsListResponse } from '@carbplan/contracts/products'
 
-export type DashboardPlan = {
-  items?: Array<{
-    brandName: string
-    id: string
-    productName: string
-    servings: number
-    timingMinutes: number
-  }>
-} & PlanWithSummary
+export type DashboardPlan = NutritionPlanListItem
+export type DashboardFavoriteProduct = FavoriteProductsListResponse[number]

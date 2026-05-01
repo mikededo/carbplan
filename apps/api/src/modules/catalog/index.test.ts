@@ -14,6 +14,7 @@ const catalogService = createStub<CatalogService>([
   'createBrand',
   'createProduct',
   'deactivateProduct',
+  'listCatalog',
   'updateBrand',
   'updateProduct'
 ])

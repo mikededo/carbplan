@@ -5,6 +5,7 @@
 
     import { setAuthContext } from '$lib/domain/auth/context'
     import QueryProvider from '$lib/domain/query/provider.svelte'
+    import { createPublicServicesContext } from '$lib/domain/services/context.js'
     import { createThemeContext } from '$lib/domain/theme'
 
     const { children, data } = $props()
@@ -12,7 +13,8 @@
 
     const theme = createThemeContext()
 
-    setAuthContext(() => data.session?.user ?? null)
+    setAuthContext(() => data.user ?? null)
+    createPublicServicesContext(() => data.publicServices)
 
     onMount(() => {
         const cleanupThemeListener = theme.setupSystemListener()

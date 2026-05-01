@@ -1,7 +1,8 @@
 <script lang="ts">
-    import type { ProductFormType } from '$lib/database/types.g'
+    import type { ProductForm } from '@carbplan/domain/product'
 
-    import { ProductFormValues } from '$lib/database/types.g'
+    import { ProductFormSchema } from '@carbplan/domain/product'
+
     import { PRODUCT_FORM_LABELS } from '$lib/domain/catalog/schemas'
     import * as Field from '$lib/domain/ui/field'
     import { Input } from '$lib/domain/ui/input'
@@ -25,8 +26,10 @@
     }
 
     const onChangeProductForm = (value: string) => {
-        context.updateField('form', (value ?? '') as '' | ProductFormType)
+        context.updateField('form', (value ?? '') as '' | ProductForm)
     }
+
+    const productFormValues = ProductFormSchema.options
 </script>
 
 <div class="grid grid-cols-2 gap-2 sm:gap-4">
@@ -61,7 +64,7 @@
                 {context.state.form ? PRODUCT_FORM_LABELS[context.state.form] : 'Select a form'}
             </Select.Trigger>
             <Select.Content>
-                {#each ProductFormValues as productForm (productForm)}
+                {#each productFormValues as productForm (productForm)}
                     <Select.Item label={PRODUCT_FORM_LABELS[productForm]} value={productForm} />
                 {/each}
             </Select.Content>

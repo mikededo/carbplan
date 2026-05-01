@@ -1,5 +1,6 @@
 <script lang="ts">
-    import type { Product } from '$lib/database/types.g'
+    import type { CatalogProduct } from '@carbplan/contracts/catalog'
+
     import type { CatalogBrand } from '$lib/domain/catalog/queries'
 
     import { PackagePlusIcon, PlusIcon } from '@lucide/svelte'
@@ -17,7 +18,7 @@
         item: undefined,
         open: false
     })
-    const productFormState = $state<DialogState<Product>>({
+    const productFormState = $state<DialogState<CatalogProduct>>({
         item: undefined,
         open: false
     })
@@ -44,7 +45,7 @@
         productFormState.open = true
     }
 
-    const onEditProduct = (product: Product) => {
+    const onEditProduct = (product: CatalogProduct) => {
         productFormState.item = product
         productFormState.open = true
     }

@@ -1,7 +1,8 @@
 <script lang="ts">
     import type { StepThreeData } from '$lib/domain/onboarding/types'
 
-    import { PROFILE_VALUES } from '$lib/domain/settings/constants'
+    import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
+
     import { Label } from '$lib/domain/ui/label'
     import { Slider } from '$lib/domain/ui/slider'
 
@@ -18,9 +19,9 @@
         <Slider
             bind:value={maxCarbIntake}
             id="maxCarbIntake"
-            max={PROFILE_VALUES.maxCarbIntake.max}
-            min={PROFILE_VALUES.maxCarbIntake.min}
-            step={PROFILE_VALUES.maxCarbIntake.step}
+            max={PROFILE_FIELD_CONSTRAINTS.maxCarbIntake.max}
+            min={PROFILE_FIELD_CONSTRAINTS.maxCarbIntake.min}
+            step={PROFILE_FIELD_CONSTRAINTS.maxCarbIntake.step}
             type="single"
         />
         <p class="text-xs text-muted-foreground">

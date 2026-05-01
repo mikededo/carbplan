@@ -1,7 +1,10 @@
+import { parseAthleteId } from '@carbplan/domain/athlete'
 import { errAsync, okAsync } from 'neverthrow'
 
 import { OnboardingServiceImpl } from '$modules/onboarding/service'
 import { DatabaseErrorCodeEnum, DatabaseQueryError } from '$utils/db-error'
+
+const athleteId = parseAthleteId('00000000-0000-4000-8000-000000000000')
 
 describe('onboarding service', () => {
   it('returns completed status from repository', async () => {
@@ -11,7 +14,7 @@ describe('onboarding service', () => {
     }
     const service = new OnboardingServiceImpl(repository)
 
-    const result = await service.hasCompletedOnboarding('athlete-id')
+    const result = await service.hasCompletedOnboarding(athleteId)
 
     expect(result.isOk()).toBe(true)
     expect(result._unsafeUnwrap()).toEqual({ completed: true })
@@ -27,7 +30,7 @@ describe('onboarding service', () => {
     const result = await service.saveAthleteOnboarding({
       fullName: 'Jane Rider',
       height: 170,
-      id: 'athlete-id',
+      id: athleteId,
       sex: 'female',
       weight: 58
     })
@@ -49,7 +52,7 @@ describe('onboarding service', () => {
       service.saveAthleteOnboarding({
         fullName: 'Jane Rider',
         height: 170,
-        id: 'athlete-id',
+        id: athleteId,
         sex: 'female',
         weight: 58
       })

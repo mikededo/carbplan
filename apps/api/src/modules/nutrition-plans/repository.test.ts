@@ -1,12 +1,15 @@
 import type { NutritionPlanItem } from '$modules/nutrition-plans/model'
 
 import { createRepositoryDbMock } from '@carbplan/auth/testing'
+import { parseAthleteId } from '@carbplan/domain/athlete'
 
 import { DbNutritionPlanRepository } from '$modules/nutrition-plans/repository'
 import { DatabaseErrorCodeEnum, DatabaseQueryError } from '$utils/db-error'
 
+const athleteId = parseAthleteId('00000000-0000-4000-8000-000000000000')
+
 const basePlan: Omit<NutritionPlanItem, 'nutrition'> = {
-  athleteId: 'athlete-id',
+  athleteId,
   createdAt: new Date('2024-01-01T00:00:00.000Z'),
   date: new Date('2024-01-10T00:00:00.000Z'),
   durationMinutes: 120,
@@ -44,7 +47,7 @@ describe('nutrition plans repository', () => {
       }]
     )
 
-    await expect(repository.listAthleteNutritionPlans('athlete-id', { limit: 1, offset: 0, sort: 'date:desc' })).toBeOkAsyncWith({
+    await expect(repository.listAthleteNutritionPlans(athleteId, { limit: 1, offset: 0, sort: 'date:desc' })).toBeOkAsyncWith({
       data: [{
         ...basePlan,
         nutrition: {
@@ -61,7 +64,7 @@ describe('nutrition plans repository', () => {
     const { dbMock, repository } = createRepository()
     dbMock.nQueueResult([basePlan], [{ total: 1 }], [])
 
-    await expect(repository.listAthleteNutritionPlans('athlete-id', { limit: 1, offset: 0, sort: 'date:desc' })).toBeOkAsyncWith({
+    await expect(repository.listAthleteNutritionPlans(athleteId, { limit: 1, offset: 0, sort: 'date:desc' })).toBeOkAsyncWith({
       data: [{
         ...basePlan,
         nutrition: {
@@ -78,7 +81,7 @@ describe('nutrition plans repository', () => {
     const { dbMock, repository } = createRepository()
     dbMock.nQueueResult([], [{ total: 0 }])
 
-    await expect(repository.listAthleteNutritionPlans('athlete-id', { limit: 20, offset: 40, sort: 'date:desc' })).toBeOkAsyncWith({
+    await expect(repository.listAthleteNutritionPlans(athleteId, { limit: 20, offset: 40, sort: 'date:desc' })).toBeOkAsyncWith({
       data: [],
       meta: { limit: 20, offset: 40, total: 0 }
     })
@@ -88,7 +91,7 @@ describe('nutrition plans repository', () => {
     const { dbMock, repository } = createRepository()
     dbMock.nQueueError(new Error('db failed'), new Error('db failed'))
 
-    await expect(repository.listAthleteNutritionPlans('athlete-id', { limit: 20, offset: 0, sort: 'date:desc' })).toBeErrAsyncWith(
+    await expect(repository.listAthleteNutritionPlans(athleteId, { limit: 20, offset: 0, sort: 'date:desc' })).toBeErrAsyncWith(
       new DatabaseQueryError({
         cause: new Error('db failed'),
         code: DatabaseErrorCodeEnum.UNKNOWN,
@@ -101,7 +104,7 @@ describe('nutrition plans repository', () => {
     const { dbMock, repository } = createRepository()
     dbMock.nQueueResult([], [{ total: 0 }])
 
-    await expect(repository.listAthleteNutritionPlans('athlete-id', {
+    await expect(repository.listAthleteNutritionPlans(athleteId, {
       date: '2024-01-10',
       dateGte: '2024-01-01',
       dateLte: '2024-01-31',

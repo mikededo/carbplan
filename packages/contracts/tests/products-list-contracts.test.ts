@@ -30,6 +30,18 @@ describe('products list contracts', () => {
     expect(parsed.success).toBe(false)
   })
 
+  it('validates protein range filters', () => {
+    const parsed = CatalogProductsListQuerySchema.parse({
+      offset: 0,
+      proteinGte: '1',
+      proteinLte: '10'
+    })
+
+    expect(parsed.offset).toBe(0)
+    expect(parsed.proteinGte).toBe(1)
+    expect(parsed.proteinLte).toBe(10)
+  })
+
   it('validates paginated catalog response envelope', () => {
     const parsed = CatalogProductsListResponseSchema.safeParse({
       data: [{

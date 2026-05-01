@@ -1,9 +1,8 @@
 <script lang="ts">
-
     import type { PageData } from './$types'
 
-    import { LoaderCircleIcon } from '@lucide/svelte'
-    import SaveIcon from '@lucide/svelte/icons/save'
+    import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
+    import { LoaderCircleIcon, SaveIcon } from '@lucide/svelte'
 
     import { PageHeader } from '$lib/domain/layout/components'
     import {
@@ -12,7 +11,6 @@
         SectionPersonal,
         SectionPower
     } from '$lib/domain/settings/components'
-    import { PROFILE_VALUES } from '$lib/domain/settings/constants'
     import { createAthleteMutation, useAthleteQuery } from '$lib/domain/settings/queries'
     import { Button } from '$lib/domain/ui/button'
 
@@ -20,19 +18,19 @@
     const { data }: Props = $props()
 
     const athleteQuery = useAthleteQuery()
-    const mutation = $derived(createAthleteMutation(data.session?.user.id))
+    const mutation = $derived(createAthleteMutation(data.user?.id))
     const isPending = $derived(!!mutation?.isPending)
 
-    let fullName = $derived(athleteQuery.data?.full_name ?? '')
+    let fullName = $derived(athleteQuery.data?.fullName ?? '')
     let sex = $derived<'' | 'female' | 'male'>(athleteQuery?.data?.sex ?? '')
-    let height = $derived(athleteQuery.data?.height_cm ?? undefined)
-    let weight = $derived(athleteQuery.data?.weight_kg ?? undefined)
+    let heightCm = $derived(athleteQuery.data?.heightCm ?? undefined)
+    let weightKg = $derived(athleteQuery.data?.weightKg ?? undefined)
     let ftp = $derived(athleteQuery.data?.ftp ?? undefined)
-    let hrRest = $derived(athleteQuery.data?.hr_rest ?? undefined)
-    let hrMax = $derived(athleteQuery.data?.hr_max ?? undefined)
-    const hrZones = $derived(athleteQuery.data?.hr_zones)
-    const powerZones = $derived(athleteQuery.data?.power_zones)
-    let maxCarbIntake = $derived(athleteQuery.data?.max_carb_intake_g_per_hr ?? PROFILE_VALUES.maxCarbIntake.default)
+    let hrRest = $derived(athleteQuery.data?.hrRest ?? undefined)
+    let hrMax = $derived(athleteQuery.data?.hrMax ?? undefined)
+    const hrZones = $derived(athleteQuery.data?.hrZones)
+    const powerZones = $derived(athleteQuery.data?.powerZones)
+    let maxCarbIntakeGPerHr = $derived(athleteQuery.data?.maxCarbIntakeGPerHr ?? PROFILE_FIELD_CONSTRAINTS.maxCarbIntake.default)
 
     const hasChanged = $derived.by(() => {
         const data = athleteQuery.data
@@ -41,15 +39,14 @@
         }
 
         return ftp !== data.ftp ||
-            fullName !== data.full_name ||
-            height !== data.height_cm ||
-            hrMax !== data.hr_max ||
-            hrRest !== data.hr_rest ||
-            maxCarbIntake !== data.max_carb_intake_g_per_hr ||
+            fullName !== data.fullName ||
+            heightCm !== data.heightCm ||
+            hrMax !== data.hrMax ||
+            hrRest !== data.hrRest ||
+            maxCarbIntakeGPerHr !== data.maxCarbIntakeGPerHr ||
             sex !== data.sex ||
-            weight !== data.weight_kg
-    }
-    )
+            weightKg !== data.weightKg
+    })
 
     const onSave = () => {
         if (!mutation) {
@@ -59,12 +56,12 @@
         mutation.mutate({
             ftp,
             fullName,
-            height,
+            heightCm,
             hrMax,
             hrRest,
-            maxCarbIntake,
+            maxCarbIntakeGPerHr,
             sex: sex === '' ? undefined : sex,
-            weight
+            weightKg
         })
     }
 </script>
@@ -99,15 +96,15 @@
         <div class="divide-y divide-border px-8">
             <SectionPersonal
                 bind:fullName
-                bind:height
+                bind:height={heightCm}
                 bind:sex
-                bind:weight
+                bind:weight={weightKg}
                 email={athleteQuery.data?.email ?? ''}
             />
 
             <SectionPower
                 bind:ftp
-                bind:weight
+                bind:weight={weightKg}
                 athleteId={athleteQuery.data?.id ?? undefined}
                 {powerZones}
             />
@@ -119,7 +116,7 @@
                 {hrZones}
             />
 
-            <SectionNutrition bind:maxCarbIntake />
+            <SectionNutrition bind:maxCarbIntake={maxCarbIntakeGPerHr} />
         </div>
     </div>
 </section>

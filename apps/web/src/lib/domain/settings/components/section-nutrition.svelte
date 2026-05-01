@@ -1,7 +1,7 @@
 <script lang="ts">
+    import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
     import { Clock2Icon, Clock3Icon, Clock6Icon, InfoIcon } from '@lucide/svelte'
 
-    import { PROFILE_VALUES } from '$lib/domain/settings/constants'
     import { Alert, AlertDescription, AlertTitle } from '$lib/domain/ui/alert'
     import { Label } from '$lib/domain/ui/label'
     import { Slider } from '$lib/domain/ui/slider'
@@ -32,9 +32,9 @@
         <input name="maxCarbIntake" type="hidden" value={maxCarbIntake} />
         <Slider
             bind:value={maxCarbIntake}
-            max={PROFILE_VALUES.maxCarbIntake.max}
-            min={PROFILE_VALUES.maxCarbIntake.min}
-            step={PROFILE_VALUES.maxCarbIntake.step}
+            max={PROFILE_FIELD_CONSTRAINTS.maxCarbIntake.max}
+            min={PROFILE_FIELD_CONSTRAINTS.maxCarbIntake.min}
+            step={PROFILE_FIELD_CONSTRAINTS.maxCarbIntake.step}
             type="single"
         />
         <ul class="flex justify-between font-mono text-tiny font-medium text-muted-foreground uppercase">

@@ -1,46 +1,14 @@
+import type { Result } from 'neverthrow'
 
-import type { Client } from '$lib/database/types'
+import type { MeService } from '$lib/domain/me/service'
 
 import { queryOptions, skipToken } from '@tanstack/svelte-query'
-import { ok } from 'neverthrow'
 
-import { getSupabaseClient } from '$lib/database/context'
 import { queryKeys } from '$lib/domain/query/keys'
-import { parseHRZones } from '$lib/domain/zones/hr/schemas'
-import { parsePowerZones } from '$lib/domain/zones/power/schemas'
+import { liftResultAsync } from '$lib/domain/query/utils'
 
-export const athleteOptions = (supabaseClient?: Client) => {
-  const supabase = supabaseClient ? ok(supabaseClient) : getSupabaseClient()
-
-  return queryOptions({
-    queryFn: supabase.isOk()
-      ? async () => {
-        const { data, error } = await supabase.value
-          .from('current_athlete')
-          .select('*')
-          .single()
-
-        if (error) {
-          throw error
-        }
-
-        return data
-      }
-      : skipToken,
-    queryKey: queryKeys.athlete.current(),
-    select: (data) => {
-      if (!data) {
-        return data
-      }
-
-      const parsedHRZones = parseHRZones(JSON.parse(data.hr_zones as string ?? '{}'))
-      const parsedPowerZones = parsePowerZones(JSON.parse(data.power_zones as string ?? '{}'))
-      return {
-        ...data,
-        hr_zones: parsedHRZones.success ? parsedHRZones.data : undefined,
-        power_zones: parsedPowerZones.success ? parsedPowerZones.data : undefined
-      }
-    },
-    staleTime: Infinity
-  })
-}
+export const athleteOptions = (maybeService: Result<MeService, void>) => queryOptions({
+  queryFn: maybeService.isOk() ? liftResultAsync(maybeService.value.getCurrentAthlete) : skipToken,
+  queryKey: queryKeys.athlete.current(),
+  staleTime: Infinity
+})

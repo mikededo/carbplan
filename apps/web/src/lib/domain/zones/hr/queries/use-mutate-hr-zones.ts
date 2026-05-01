@@ -1,40 +1,31 @@
-import type { Athlete, CurrentAthlete } from '$lib/database/types.g'
-
-import type { HRZonesData } from '../schemas'
+import type * as MeContracts from '@carbplan/contracts/me'
+import type { AthleteId } from '@carbplan/domain/athlete'
+import type { HRZonesData } from '@carbplan/domain/hr'
 
 import { createMutation, useQueryClient } from '@tanstack/svelte-query'
+import { err, ok } from 'neverthrow'
 
-import { getSupabaseClient } from '$lib/database/context'
+import { resultAsyncValueOrThrow } from '$lib/domain/query/utils'
+import { getPrivateServicesContext } from '$lib/domain/services/context'
+import { requireServicesWith } from '$lib/domain/services/helpers'
 import { athleteOptions } from '$lib/domain/settings/queries'
 
-type MutateContext = { previous?: CurrentAthlete }
+type MutateContext = { previous?: MeContracts.GetCurrentAthleteResponse }
 
-export const createAthleteHRZonesMutation = (athleteId?: Athlete['id']) => {
-  const supabaseResult = getSupabaseClient()
+export const createAthleteHRZonesMutation = (athleteId?: AthleteId) => {
+  const privateServicesResult = getPrivateServicesContext()
   const queryClient = useQueryClient()
-  const options = athleteOptions()
+  const options = athleteOptions(
+    privateServicesResult.isOk() ? ok(privateServicesResult.value.me) : err()
+  )
 
-  const isEnabled = supabaseResult.isOk() && !!athleteId
-  const supabase = isEnabled ? supabaseResult.value : null
+  const isEnabled = privateServicesResult.isOk() && !!athleteId
+  const services = isEnabled ? privateServicesResult.value : null
 
   return createMutation(() => ({
-    mutationFn: async (input: HRZonesData) => {
-      if (!supabase || !athleteId) {
-        throw new Error('Supabase client or athlete id not available')
-      }
-
-      const { data, error } = await supabase
-        .from('athletes')
-        .update({ hr_zones: JSON.stringify(input) })
-        .eq('id', athleteId)
-        .select()
-        .single()
-
-      if (error) {
-        throw error
-      }
-
-      return data
+    mutationFn: async (input: MeContracts.UpdateHRZonesRequest) => {
+      requireServicesWith(services, !!athleteId)
+      return resultAsyncValueOrThrow(services.me.updateHRZones(input))
     },
     onError: (_, __, context: MutateContext | undefined) => {
       if (context?.previous) {
@@ -50,10 +41,7 @@ export const createAthleteHRZonesMutation = (athleteId?: Athlete['id']) => {
           return old
         }
 
-        return {
-          ...old,
-          hr_zones: JSON.stringify(input)
-        }
+        return { ...old, hrZones: input }
       })
 
       return { previous }

@@ -1,5 +1,5 @@
+import type { Session, User } from '@carbplan/contracts/auth'
 import type { Icon as IconType } from '@lucide/svelte'
-import type { Session } from '@supabase/supabase-js'
 import type { ComponentProps } from 'svelte'
 
 import type { Pathname } from '$app/types'
@@ -25,11 +25,10 @@ declare global {
       services: {
         athletes: AthletesService
       }
-      session: null | Session
     }
     interface PageData {
-      session: null | Session
-      user?: null | Session['user']
+      session?: null | Session
+      user?: null | User
     }
 
     // interface Error {}

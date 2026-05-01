@@ -9,7 +9,7 @@ CarbPlan is an athlete nutrition planning web app where athletes and coaches con
 - **Language**: TypeScript (strict, ESM)
 - **Runtime**: Bun
 - **Framework**: SvelteKit 2.x + Svelte 5 (runes only)
-- **Database**: Supabase (Postgres + Auth)
+- **Data access**: backend API via domain services and TanStack Query
 - **Styling**: Tailwind CSS 4.x + tailwind-variants
 - **Components**: bits-ui (shadcn-svelte pattern)
 - **Validation**: Zod
@@ -22,7 +22,6 @@ CarbPlan is an athlete nutrition planning web app where athletes and coaches con
 ### Initial Setup
 1. Run `bun install` to install dependencies
 2. Run `bun dev` to start the dev server
-3. As of now, there's no local supabase instance
 
 Other helpful scripts:
 - Always make sure the project is linted: `bun lint`
@@ -38,7 +37,7 @@ Focus only in one task, and the task should be developed using TDD. While tests 
 - `src/lib/domain/ui/` — UI components (shadcn-svelte style)
 - `src/lib/domain/query/` — TanStack Query utilities (client, keys, provider)
 - `src/lib/constants/` — App constants (routes, etc.)
-- `src/lib/database/` — Supabase types and client helpers, which are generated from the database
+- `src/lib/domain/services/` — API service context and factories
 - `src/lib/hooks/` — Shared Svelte hooks
 - `src/lib/utils.ts` — Utility functions (`cn`, type helpers)
 
@@ -118,7 +117,7 @@ Prefer `neverthrow` over `try-catch` pattern
 - Query hooks: `useXQuery` (e.g., `useAthleteQuery`, `useSupplementsQuery`)
 - Mutation hooks: `createXMutation` (e.g., `createAthleteMutation`)
 - Query options: `xOptions` (e.g., `athleteOptions`)
-- Context getters: `getX` (e.g., `getSupabaseClient`) — not `useX`
+- Context getters: `getX` (e.g., `getPrivateServicesContext`) — not `useX`
 
 ### Query Keys
 Define all keys in `src/lib/domain/query/keys.ts`:
@@ -139,15 +138,9 @@ import { queryOptions } from '@tanstack/svelte-query'
 
 import { queryKeys } from '$lib/domain/query/keys'
 
-export const getAthleteOptions = (supabase: Client) =>
+export const athleteOptions = (maybeService: Result<MeService, void>) =>
   queryOptions({
-    queryFn: async () => {
-      const { data, error } = await supabase.from('table').select('*').single()
-      if (error) {
-        throw error
-      }
-      return data
-    },
+    queryFn: maybeService.isOk() ? liftResultAsync(maybeService.value.getCurrentAthlete) : skipToken,
     queryKey: queryKeys.athlete.current()
   })
 ```
@@ -157,15 +150,13 @@ export const getAthleteOptions = (supabase: Client) =>
 ```ts
 import { createQuery } from '@tanstack/svelte-query'
 
-import { getAthleteOptions } from './athlete'
+import { getPrivateServicesContext } from '$lib/domain/services/context'
+
+import { athleteOptions } from './athlete'
 
 export const useAthleteQuery = () => {
-  const supabaseResult = getSupabaseClient()
-  if (supabaseResult.isErr()) {
-    return null
-  }
-
-  return createQuery(() => getAthleteOptions(supabaseResult.value))
+  const services = getPrivateServicesContext()
+  return createQuery(() => athleteOptions(services.isOk() ? ok(services.value.me) : err()))
 }
 ```
 
@@ -174,25 +165,20 @@ export const useAthleteQuery = () => {
 ```ts
 import { createMutation, useQueryClient } from '@tanstack/svelte-query'
 
+import { getPrivateServicesContext } from '$lib/domain/services/context'
+import { resultAsyncValueOrThrow } from '$lib/domain/query/utils'
+
 import { athleteOptions } from './athlete'
 
 export const createAthleteMutation = (athleteId?: string) => {
   const queryClient = useQueryClient()
-  const supabaseResult = getSupabaseClient()
-
-  if (supabaseResult.isErr()) {
-    return null
-  }
-
-  const supabase = supabaseResult.value
-  const options = getAthleteOptions(supabase)
+  const servicesResult = getPrivateServicesContext()
+  const services = servicesResult.isOk() ? servicesResult.value : null
+  const options = athleteOptions(servicesResult.isOk() ? ok(servicesResult.value.me) : err())
   return createMutation({
     mutationFn: async (input) => {
-      const { data, error } = await supabase.from('table').update(input).eq('id', athleteId).select().single()
-      if (error) {
-        throw error
-      }
-      return data
+      requireServicesWith(services, !!athleteId)
+      return resultAsyncValueOrThrow(services.me.updateCurrentAthlete(input))
     },
     onError: (_, __, context) => {
       if (context?.previous) {
@@ -216,8 +202,8 @@ export const createAthleteMutation = (athleteId?: string) => {
 Prefetch data in `+layout.ts` or `+page.ts`:
 ```ts
 export const load: LayoutLoad = async ({ parent }) => {
-  const { queryClient, supabase } = await parent()
-  await queryClient.prefetchQuery(athleteOptions(supabase))
+  const { privateServices, queryClient } = await parent()
+  await queryClient.prefetchQuery(athleteOptions(ok(privateServices.me)))
 }
 ```
 
@@ -240,7 +226,7 @@ import { z } from 'zod'
 const Schema = z.object({ ... })
 
 export const actions = {
-  default: async ({ locals: { supabase }, request }) => {
+  default: async ({ locals, request }) => {
     const formData = await request.formData()
     const result = Schema.safeParse({ ... })
 
@@ -248,10 +234,7 @@ export const actions = {
       return fail(400, { errors: result.error.flatten(), values: { ... } })
     }
 
-    const { error } = await supabase...
-    if (error) {
-      return fail(400, { message: error.message })
-    }
+    const result = await locals.services.athletes.saveOnboarding(values)
 
     redirect(303, ROUTES.destination)
   }
@@ -279,12 +262,11 @@ export const actions = {
 </element>
 ```
 
-### Supabase Access
-- **Server**: `locals.supabase` (from hooks.server.ts)
-- **Client**: `data.supabase` (from layout load)
-- **Safe session**: `locals.safeGetSession()` (validates JWT)
-- **Client type**: `Client` from `$lib/database/types`
-- **Query result helper**: `Result<T>` for typing query results
+### API Services
+- **Server**: use `locals.authService`, `locals.serverTransport`, and `locals.services`
+- **Client**: use `getPrivateServicesContext()` or `getPublicServicesContext()`
+- **Types**: prefer contract types from `@carbplan/contracts/*` and branded domain IDs from `@carbplan/domain/*`
+- **Query result helper**: `liftResultAsync` / `resultAsyncValueOrThrow`
 
 ### Routes Constants
 ```ts
@@ -298,7 +280,6 @@ href={ROUTES.auth.login}
 
 ### Common Issues
 - Ensure Bun is used (not npm/yarn)
-- Run `bun db:types` after schema changes
 
 ### Code Quality Checks
 - Run `bun lint` for linting errors

@@ -3,26 +3,19 @@
 
     import type { LayoutData } from './$types'
 
-    import { goto } from '$app/navigation'
-    import { ROUTES } from '$lib/constants/routes'
-    import { getSupabaseClient } from '$lib/database/context'
     import { AppSidebar } from '$lib/domain/layout/components'
+    import { createPrivateServicesContext } from '$lib/domain/services/context'
     import * as Sidebar from '$lib/domain/ui/sidebar'
 
-    type Props = { children: Snippet, data: LayoutData }
-    const { children }: Props = $props()
-
-    const supabaseResult = getSupabaseClient()
-
-    const onLogOut = () => {
-        if (supabaseResult.isErr()) {
-            return
-        }
-
-        supabaseResult.value.auth.signOut().finally(() => {
-            goto(ROUTES.auth.signin)
-        })
+    type Props = {
+        children: Snippet
+        data: LayoutData
     }
+    const { children, data }: Props = $props()
+
+    createPrivateServicesContext(() => data.privateServices)
+
+    const onLogOut = () => {}
 </script>
 
 <Sidebar.Provider>

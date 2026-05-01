@@ -1,15 +1,14 @@
 <script lang="ts">
-    import type { PowerZoneModel, PowerZonesData } from '../schemas'
+    import type { PowerZoneModel, PowerZonesData } from '@carbplan/domain/power'
 
+    import { POWER_MODEL_INFO, POWER_MODEL_LABELS, POWER_ZONE_PRESETS } from '@carbplan/domain/power'
     import { ExternalLinkIcon, InfoIcon, ZapIcon } from '@lucide/svelte'
 
     import * as Select from '$lib/domain/ui/select'
     import * as Tooltip from '$lib/domain/ui/tooltip'
     import { ZoneBar, ZoneListItem, ZonePlaceholder } from '$lib/domain/zones/zone/components'
 
-    import { POWER_MODEL_INFO, POWER_MODEL_LABELS, POWER_ZONE_PRESETS } from '../presets'
-    import { isPowerPresetZoneModel } from '../schemas'
-    import { calculatePowerZones, formatPowerRange } from '../utils'
+    import { calculatePowerZones, formatPowerRange, isPowerPresetZoneModel } from '../utils'
 
     type Props = {
         ftp: number | undefined

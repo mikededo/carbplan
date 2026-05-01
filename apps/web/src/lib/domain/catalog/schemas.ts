@@ -1,6 +1,7 @@
-import * as z from 'zod'
+import type { ProductForm } from '@carbplan/domain/product'
 
-import { ProductForm, ProductFormValues } from '$lib/database/types.g'
+import { ProductFormEnum, ProductFormSchema } from '@carbplan/domain/product'
+import * as z from 'zod'
 
 const SLUG_INVALID_CHARS_REGEX = /[^a-z0-9\s-]/g
 const SLUG_WHITESPACE_REGEX = /\s+/g
@@ -21,29 +22,29 @@ export const generateSlug = (input: string): string =>
 
 export const BrandSchema = z.object({
   description: z.string().trim().max(500, 'Description must be at most 500 characters').optional(),
-  logoUrl: z.string().trim().url('Please enter a valid URL').optional(),
+  logoUrl: z.url('Please enter a valid URL').optional(),
   name: z.string().trim().min(1, 'Brand name is required').max(100, 'Brand name must be at most 100 characters'),
   slug: z.string().trim().min(1, 'Slug is required').max(100, 'Slug must be at most 100 characters').regex(SLUG_VALIDATION_REGEX, 'Slug can only contain lowercase letters, numbers, and hyphens'),
-  website: z.string().trim().url('Please enter a valid URL').optional()
+  website: z.url('Please enter a valid URL').optional()
 })
 
 export type BrandSchemaInput = z.input<typeof BrandSchema>
 export type BrandSchemaOutput = z.output<typeof BrandSchema>
 
 export const PRODUCT_FORM_LABELS: Record<ProductForm, string> = {
-  [ProductForm.Bar]: 'Bar',
-  [ProductForm.Capsule]: 'Capsule',
-  [ProductForm.Chew]: 'Chew',
-  [ProductForm.DrinkMix]: 'Drink Mix',
-  [ProductForm.Gel]: 'Gel',
-  [ProductForm.Liquid]: 'Liquid',
-  [ProductForm.Powder]: 'Powder',
-  [ProductForm.Solid]: 'Solid'
+  [ProductFormEnum.bar]: 'Bar',
+  [ProductFormEnum.capsule]: 'Capsule',
+  [ProductFormEnum.chew]: 'Chew',
+  [ProductFormEnum.drink_mix]: 'Drink Mix',
+  [ProductFormEnum.gel]: 'Gel',
+  [ProductFormEnum.liquid]: 'Liquid',
+  [ProductFormEnum.powder]: 'Powder',
+  [ProductFormEnum.solid]: 'Solid'
 }
 
 export const ProductSchema = z.object({
   brandId: z.string().trim().min(1, 'Brand is required'),
-  caffeineGm: z.number()
+  caffeineMg: z.number()
     .min(0, 'Caffeine must be positive')
     .optional(),
   calories: z.number()
@@ -56,7 +57,7 @@ export const ProductSchema = z.object({
     .min(0, 'Fat must be positive')
     .optional(),
   flavor: z.string().trim().max(100, 'Flavor must be at most 100 characters').optional(),
-  form: z.enum(ProductFormValues, 'Please select a product form'),
+  form: ProductFormSchema,
   name: z.string().trim().min(1, 'Product name is required').max(200, 'Product name must be at most 200 characters'),
   notes: z.string().trim().max(1000, 'Notes must be at most 1000 characters').optional(),
   proteinG: z.number()

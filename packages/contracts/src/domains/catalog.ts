@@ -3,6 +3,7 @@ import { atLeastOneProperty } from '@carbplan/utils/validation'
 import * as z from 'zod'
 
 import { ApiEmptyResponseSchema } from '../api'
+import { DateSchema } from './date'
 
 export const CreateBrandRequestSchema = z.object({
   description: z.string().trim().optional(),
@@ -14,17 +15,57 @@ export const CreateBrandRequestSchema = z.object({
 })
 export type CreateBrandRequest = z.infer<typeof CreateBrandRequestSchema>
 export const CreateBrandResponseSchema = z.object({
-  createdAt: z.date(),
+  createdAt: DateSchema,
   description: z.string().trim().nullable(),
   id: z.uuid(),
   isActive: z.boolean(),
   logoUrl: z.string().trim().nullable(),
   name: z.string().trim(),
   slug: z.string().trim(),
-  updatedAt: z.date().nullable(),
+  updatedAt: DateSchema.nullable(),
   website: z.string().trim().nullable()
 })
 export type CreateBrandResponse = z.infer<typeof CreateBrandResponseSchema>
+
+export const CatalogProductSchema = z.object({
+  brandId: z.uuid(),
+  caffeineMg: z.int().nonnegative().nullable(),
+  calories: z.int().nonnegative().nullable(),
+  carbsG: z.number().nonnegative().nullable(),
+  createdAt: DateSchema,
+  fatG: z.number().nonnegative().nullable(),
+  flavor: z.string().trim().nullable(),
+  form: ProductFormSchema,
+  id: z.uuid(),
+  isActive: z.boolean(),
+  name: z.string().trim(),
+  notes: z.string().trim().nullable(),
+  proteinG: z.number().nonnegative().nullable(),
+  servingSize: z.number().positive(),
+  servingsPerPackage: z.int().positive().nullable(),
+  servingUnit: z.string().trim(),
+  slug: z.string().trim(),
+  sodiumMg: z.int().nonnegative().nullable(),
+  sugarG: z.number().nonnegative().nullable(),
+  updatedAt: DateSchema.nullable()
+})
+export type CatalogProduct = z.infer<typeof CatalogProductSchema>
+
+export const CatalogBrandSchema = z.object({
+  createdAt: DateSchema,
+  description: z.string().trim().nullable(),
+  id: z.uuid(),
+  isActive: z.boolean(),
+  logoUrl: z.string().trim().nullable(),
+  name: z.string().trim(),
+  products: z.array(CatalogProductSchema),
+  slug: z.string().trim(),
+  updatedAt: DateSchema.nullable(),
+  website: z.string().trim().nullable()
+})
+export type CatalogBrand = z.infer<typeof CatalogBrandSchema>
+export const CatalogListResponseSchema = z.array(CatalogBrandSchema)
+export type CatalogListResponse = z.infer<typeof CatalogListResponseSchema>
 
 export const UpdateBrandRequestParamsSchema = z.object({ brandId: z.uuid() })
 export const UpdateBrandRequestSchema = atLeastOneProperty(
@@ -63,25 +104,25 @@ export const CreateProductRequestSchema = z.object({
 export type CreateProductRequest = z.infer<typeof CreateProductRequestSchema>
 export const CreateProductResponseSchema = z.object({
   brandId: z.uuid(),
-  caffeineMg: z.int().positive().nullable(),
-  calories: z.int().positive().nullable(),
-  carbsG: z.number().positive().nullable(),
-  createdAt: z.date(),
-  fatG: z.number().positive().nullable(),
+  caffeineMg: z.int().nonnegative().nullable(),
+  calories: z.int().nonnegative().nullable(),
+  carbsG: z.number().nonnegative().nullable(),
+  createdAt: DateSchema,
+  fatG: z.number().nonnegative().nullable(),
   flavor: z.string().trim().nullable(),
   form: ProductFormSchema,
   id: z.uuid(),
   isActive: z.boolean().default(true),
   name: z.string().trim(),
   notes: z.string().trim().nullable(),
-  proteinG: z.number().positive().nullable(),
+  proteinG: z.number().nonnegative().nullable(),
   servingSize: z.number().positive(),
   servingsPerPackage: z.int().positive().nullable(),
   servingUnit: z.string().trim().default('g'),
   slug: z.string().trim(),
-  sodiumMg: z.int().positive().nullable(),
-  sugarG: z.number().positive().nullable(),
-  updatedAt: z.date().nullable()
+  sodiumMg: z.int().nonnegative().nullable(),
+  sugarG: z.number().nonnegative().nullable(),
+  updatedAt: DateSchema.nullable()
 })
 export type CreateProductResponse = z.infer<typeof CreateProductResponseSchema>
 

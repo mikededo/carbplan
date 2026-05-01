@@ -1,11 +1,11 @@
 <script lang="ts">
-    import type { Athlete } from '$lib/database/types.g'
-    import type { PowerZoneModel, PowerZonesData } from '$lib/domain/zones/power/schemas'
+    import type { AthleteId } from '@carbplan/domain/athlete'
+    import type { PowerZoneModel, PowerZonesData } from '@carbplan/domain/power'
+    import type { Maybe } from '@carbplan/domain/utils'
 
-    import { BatteryFullIcon, BatteryLowIcon, LoaderCircleIcon, ZapIcon } from '@lucide/svelte'
-    import ActivityIcon from '@lucide/svelte/icons/activity'
+    import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
+    import { ActivityIcon, BatteryFullIcon, BatteryLowIcon, LoaderCircleIcon, ZapIcon } from '@lucide/svelte'
 
-    import { PROFILE_VALUES } from '$lib/domain/settings/constants'
     import { Button } from '$lib/domain/ui/button'
     import { Input } from '$lib/domain/ui/input'
     import { Label } from '$lib/domain/ui/label'
@@ -17,9 +17,9 @@
     import SettingsSection from './settings-section.svelte'
 
     type Props = {
-        athleteId?: Athlete['id']
+        athleteId?: AthleteId
         ftp?: number
-        powerZones?: PowerZonesData
+        powerZones?: Maybe<PowerZonesData>
         weight?: number
     }
     let {
@@ -30,7 +30,7 @@
     }: Props = $props()
 
     // svelte-ignore state_referenced_locally
-    let powerZones = $state<PowerZonesData | undefined>(initialPowerZones)
+    let powerZones = $state<Maybe<PowerZonesData>>(initialPowerZones)
 
     const mutate = $derived(createAthletePowerZonesMutation(athleteId))
 
@@ -66,8 +66,8 @@
         <Input
             bind:value={ftp}
             id="ftp"
-            max={PROFILE_VALUES.ftp.max}
-            min={PROFILE_VALUES.ftp.min}
+            max={PROFILE_FIELD_CONSTRAINTS.ftp.max}
+            min={PROFILE_FIELD_CONSTRAINTS.ftp.min}
             name="ftp"
             placeholder="Enter your FTP in watts"
             type="number"

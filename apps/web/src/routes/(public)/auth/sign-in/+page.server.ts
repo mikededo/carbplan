@@ -6,10 +6,10 @@ import * as z from 'zod'
 
 import { ROUTES } from '$lib/constants/routes'
 import { AUTH_TOKEN_COOKIE_NAME } from '$lib/domain/auth/constants'
-import { forwardResponseCookies } from '$lib/domain/auth/cookies.server'
+import { forwardResponseCookies, getSharedCookieDomain } from '$lib/domain/auth/cookies.server'
 
 export const actions = {
-  default: async ({ cookies, locals: { authService }, request }) => {
+  default: async ({ cookies, locals: { authService }, request, url }) => {
     const formData = await request.formData()
     const email = formData.get('email')?.toString()
     const result = AuthContracts.SignInRequestSchema.safeParse({
@@ -36,9 +36,13 @@ export const actions = {
       })
     }
 
-    forwardResponseCookies({ cookies, headers: response.value.headers })
+    const cookieDomain = getSharedCookieDomain(url.hostname)
+    const authToken = response.value.headers.get('set-auth-token') ?? response.value.data.token
 
-    cookies.set(AUTH_TOKEN_COOKIE_NAME, response.value.data.token, {
+    forwardResponseCookies({ cookies, domain: cookieDomain, headers: response.value.headers })
+
+    cookies.set(AUTH_TOKEN_COOKIE_NAME, authToken, {
+      domain: cookieDomain,
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7,
       path: '/',

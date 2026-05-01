@@ -1,48 +1,25 @@
-import type { Client, Result } from '$lib/database/types'
+import type { CatalogBrand, CatalogListResponse } from '@carbplan/contracts/catalog'
+import type { Result } from 'neverthrow'
+
+import type { CatalogService, PublicCatalogService } from '$lib/domain/catalog/service'
 
 import { queryOptions, skipToken } from '@tanstack/svelte-query'
-import { ok } from 'neverthrow'
 
-import { getSupabaseClient } from '$lib/database/context'
 import { queryKeys } from '$lib/domain/query/keys'
+import { QUERY_STALE_TIME_DEFAULT } from '$lib/domain/query/times'
+import { liftResultAsync } from '$lib/domain/query/utils'
 
-const getCatalogQuery = (supabase: Client) => supabase
-  .from('brands')
-  .select(`
-    id,
-    name,
-    slug,
-    logo_url,
-    website,
-    description,
-    products (*)
-  `)
-  .eq('is_active', true)
-  .eq('products.is_active', true)
-  .order('name')
+export const publicCatalogOptions = (maybeService: Result<PublicCatalogService, void>) => queryOptions({
+  queryFn: maybeService.isOk() ? liftResultAsync(maybeService.value.getCatalog) : skipToken,
+  queryKey: queryKeys.catalog.all,
+  staleTime: QUERY_STALE_TIME_DEFAULT
+})
 
-export const catalogOptions = (supabaseClient?: Client) => {
-  const supabase = supabaseClient ? ok(supabaseClient) : getSupabaseClient()
+export const catalogOptions = (maybeService: Result<CatalogService, void>) => queryOptions({
+  queryFn: maybeService.isOk() ? liftResultAsync(maybeService.value.getCatalog) : skipToken,
+  queryKey: queryKeys.catalog.all,
+  staleTime: QUERY_STALE_TIME_DEFAULT
+})
 
-  return queryOptions({
-    queryFn: supabase.isOk()
-      ? async () => {
-        const { data, error } = await getCatalogQuery(supabase.value)
-
-        if (error) {
-          throw error
-        }
-
-        return data.map((brand) => ({
-          ...brand,
-          products: brand.products.sort((a, b) => a.name.localeCompare(b.name))
-        }))
-      }
-      : skipToken,
-    queryKey: queryKeys.catalog.all,
-    staleTime: 1000 * 60 * 5
-  })
-}
-
-export type CatalogResult = Result<typeof getCatalogQuery>
-export type CatalogBrand = CatalogResult[number]
+export type CatalogResult = CatalogListResponse
+export type { CatalogBrand }

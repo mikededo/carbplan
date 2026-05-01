@@ -32,7 +32,7 @@
 </script>
 
 <script lang="ts">
-    import type { ProductFormType } from '$lib/database/types.g'
+    import type { ProductForm } from '@carbplan/domain/product'
 
     import { BuildingIcon, SlidersHorizontalIcon } from '@lucide/svelte'
 
@@ -85,7 +85,7 @@
             : `${sodiumRange[0]}mg - ${sodiumRange[1]}mg`
     )
 
-    const onToggleProductForm = (value: ProductFormType) => () => {
+    const onToggleProductForm = (value: ProductForm) => () => {
         table.onToggleProductForm(value)
     }
 

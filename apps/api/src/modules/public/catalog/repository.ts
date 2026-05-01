@@ -92,6 +92,12 @@ export class DbPublicCatalogRepository implements PublicCatalogRepository {
     if (query.caloriesLte !== undefined) {
       filters.push(lte(products.calories, query.caloriesLte))
     }
+    if (query.proteinGte !== undefined) {
+      filters.push(gte(products.proteinG, query.proteinGte))
+    }
+    if (query.proteinLte !== undefined) {
+      filters.push(lte(products.proteinG, query.proteinLte))
+    }
 
     const whereClause = and(...filters)
 

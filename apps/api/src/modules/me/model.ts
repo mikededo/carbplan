@@ -1,3 +1,4 @@
+import type { AthleteId } from '@carbplan/db'
 import type { HRZonesData } from '@carbplan/domain/hr'
 import type { PowerZonesData } from '@carbplan/domain/power'
 import type { Sex } from '@carbplan/domain/profile'
@@ -14,7 +15,7 @@ export type CurrentAthleteData = {
   hrMax: null | number
   hrRest: null | number
   hrZones: HRZonesData | null
-  id: string
+  id: AthleteId
   updatedAt: Date
   maxCarbIntakeGPerHr: null | number
   onboardingCompleted: boolean

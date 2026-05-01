@@ -1,56 +1,22 @@
-import type { Client } from '$lib/database/types'
+import type { Result } from 'neverthrow'
+
+import type { DashboardService } from '$lib/domain/dashboard/service'
 
 import { queryOptions, skipToken } from '@tanstack/svelte-query'
-import { ok } from 'neverthrow'
 
-import { getSupabaseClient } from '$lib/database/context'
 import { queryKeys } from '$lib/domain/query/keys'
+import { liftResultAsync } from '$lib/domain/query/utils'
 
-export const recentPlansOptions = (supabaseClient?: Client, limit = 5) => {
-  const supabase = supabaseClient ? ok(supabaseClient) : getSupabaseClient()
+export const recentPlansOptions = (maybeService: Result<DashboardService, void>, limit = 5) => queryOptions({
+  queryFn: maybeService.isOk() ? liftResultAsync(() => maybeService.value.getRecentPlans(limit)) : skipToken,
+  queryKey: queryKeys.plans.recent(limit)
+})
 
-  return queryOptions({
-    queryFn: supabase.isOk()
-      ? async () => {
-        const { data, error } = await supabase.value
-          .from('plans_with_summary')
-          .select('*')
-          .order('date', { ascending: false })
-          .limit(limit)
-
-        if (error) {
-          throw error
-        }
-
-        return data
-      }
-      : skipToken,
-    queryKey: queryKeys.plans.recent(limit)
-  })
-}
-
-export const nextPlanOptions = (supabaseClient?: Client) => {
-  const supabase = supabaseClient ? ok(supabaseClient) : getSupabaseClient()
+export const nextPlanOptions = (maybeService: Result<DashboardService, void>) => {
   const today = new Date().toISOString().split('T')[0]
 
   return queryOptions({
-    queryFn: supabase.isOk()
-      ? async () => {
-        const { data, error } = await supabase.value
-          .from('plans_with_summary')
-          .select('*')
-          .gte('date', today)
-          .order('date', { ascending: true })
-          .limit(1)
-          .maybeSingle()
-
-        if (error) {
-          throw error
-        }
-
-        return data
-      }
-      : skipToken,
+    queryFn: maybeService.isOk() ? liftResultAsync(() => maybeService.value.getNextPlan(today)) : skipToken,
     queryKey: queryKeys.plans.next()
   })
 }

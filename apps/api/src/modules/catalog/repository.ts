@@ -7,6 +7,8 @@ import type {
   CreateProductData,
   CreateProductDataResult,
   CreateProductError,
+  CatalogBrand,
+  ListCatalogError,
   UpdateBrandData,
   UpdateBrandError,
   UpdateProductData,
@@ -23,6 +25,7 @@ import { EntityNotFound, EntityNotInserted, mapDbError } from '$utils/db-error'
 export type CatalogRepository = {
   createBrand: (data: CreateBrandData) => ResultAsync<CreateBrandDataResult, CreateBrandError>
   createProduct: (data: CreateProductData) => ResultAsync<CreateProductDataResult, CreateProductError>
+  listCatalog: () => ResultAsync<CatalogBrand[], ListCatalogError>
   updateBrand: (brandId: BrandId, data: UpdateBrandData) => ResultAsync<boolean, UpdateBrandError>
   updateProduct: (productId: ProductId, data: UpdateProductData) => ResultAsync<boolean, UpdateProductError>
 }
@@ -48,6 +51,19 @@ export class DbCatalogRepository implements CatalogRepository {
       const item = head(result)
       return item ? ok(item) : err(EntityNotInserted.withEntityName('Product'))
     })
+  }
+
+  listCatalog(): ResultAsync<CatalogBrand[], ListCatalogError> {
+    return ResultAsync.fromPromise(
+      Promise.all([
+        this.db.select().from(brands).where(eq(brands.isActive, true)).orderBy(brands.name),
+        this.db.select().from(products).where(eq(products.isActive, true)).orderBy(products.name)
+      ]),
+      mapDbError
+    ).map(([brandRows, productRows]) => brandRows.map((brand) => ({
+      ...brand,
+      products: productRows.filter((product) => product.brandId === brand.id)
+    })))
   }
 
   updateBrand(id: BrandId, data: UpdateBrandData): ResultAsync<boolean, UpdateBrandError> {

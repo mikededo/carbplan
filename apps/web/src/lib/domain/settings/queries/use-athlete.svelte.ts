@@ -1,77 +1,70 @@
-import type { CurrentAthlete } from '$lib/database/types.g'
-import type { ProfileSchemaOutput } from '$lib/domain/settings/schemas'
+import type * as MeContracts from '@carbplan/contracts/me'
 
 import { createMutation, createQuery, useQueryClient } from '@tanstack/svelte-query'
+import { err, ok } from 'neverthrow'
 
-import { getSupabaseClient } from '$lib/database/context'
+import { getPrivateServicesContext } from '$lib/domain/services/context'
+import { requireServicesWith } from '$lib/domain/services/helpers'
 
 import { athleteOptions } from './athlete'
 
-export const useAthleteQuery = () => createQuery(() => athleteOptions())
+export const useAthleteQuery = () => {
+  const privateServices = getPrivateServicesContext()
 
-export type MutateAthleteInput = ProfileSchemaOutput
-type MutateContext = { previous?: CurrentAthlete }
+  return createQuery(() => athleteOptions(
+    privateServices.isOk() ? ok(privateServices.value.me) : err()
+  ))
+}
+
+type MutateContext = { previous?: MeContracts.GetCurrentAthleteResponse }
 
 export const createAthleteMutation = (athleteId?: string) => {
-  const supabaseResult = getSupabaseClient()
+  const privateServicesResult = getPrivateServicesContext()
   const queryClient = useQueryClient()
-  const options = athleteOptions()
+  const options = athleteOptions(
+    privateServicesResult.isOk() ? ok(privateServicesResult.value.me) : err()
+  )
 
-  const isEnabled = supabaseResult.isOk() && !!athleteId
-  const supabase = isEnabled ? supabaseResult.value : null
+  const isEnabled = privateServicesResult.isOk() && !!athleteId
+  const services = isEnabled ? privateServicesResult.value : null
 
   return createMutation(() => ({
-    mutationFn: async (input: MutateAthleteInput) => {
-      if (!supabase || !athleteId) {
-        throw new Error('Supabase client or athlete ID not available')
+    mutationFn: async (input: MeContracts.UpdateCurrentAthleteRequest) => {
+      requireServicesWith(services, !!athleteId)
+
+      const result = await services.me.updateCurrentAthlete(input)
+      if (result.isErr()) {
+        throw result.error
       }
 
-      const { data, error } = await supabase
-        .from('athletes')
-        .update({
-          ftp: input.ftp,
-          full_name: input.fullName,
-          height_cm: input.height,
-          hr_max: input.hrMax,
-          hr_rest: input.hrRest,
-          max_carb_intake_g_per_hr: input.maxCarbIntake,
-          sex: input.sex,
-          weight_kg: input.weight
-        })
-        .eq('id', athleteId)
-        .select()
-        .single()
-
-      if (error) {
-        throw error
-      }
-      return data
+      return result.value
     },
     onError: (_, __, context: MutateContext | undefined) => {
       if (context?.previous) {
         queryClient.setQueryData(options.queryKey, context.previous)
       }
     },
-    onMutate: async (input: MutateAthleteInput) => {
+    onMutate: async (input) => {
       await queryClient.cancelQueries({ queryKey: options.queryKey })
       const previous = queryClient.getQueryData(options.queryKey)
 
-      queryClient.setQueryData(
-        options.queryKey,
-        (old) => old
-          ? {
-              ...old,
-              ftp: input.ftp ?? old.ftp,
-              full_name: input.fullName ?? old.full_name,
-              height_cm: input.height ?? old.height_cm,
-              hr_max: input.hrMax ?? old.hr_max,
-              hr_rest: input.hrRest ?? old.hr_rest,
-              max_carb_intake_g_per_hr: input.maxCarbIntake ?? old.max_carb_intake_g_per_hr,
-              sex: input.sex ?? old.sex,
-              weight_kg: input.weight ?? old.weight_kg
-            }
-          : old
-      )
+      queryClient.setQueryData(options.queryKey, (old) => {
+        if (!old) {
+          return old
+        }
+
+        return {
+          ...old,
+          ftp: input.ftp ?? old.ftp,
+          fullName: input.fullName ?? old.fullName,
+          heightCm: input.heightCm ?? old.heightCm,
+          hrMax: input.hrMax ?? old.hrMax,
+          hrRest: input.hrRest ?? old.hrRest,
+          maxCarbIntakeGPerHr: input.maxCarbIntakeGPerHr ?? old.maxCarbIntakeGPerHr,
+          sex: input.sex ?? old.sex,
+          weightKg: input.weightKg ?? old.weightKg
+        }
+      })
 
       return { previous }
     },

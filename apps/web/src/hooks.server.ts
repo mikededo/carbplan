@@ -19,12 +19,13 @@ export const handle: Handle = async ({ event, resolve }) => {
       }
 
       return {
-        Authorization: authToken,
-        Cookie: `better-auth.session_token=${sessionToken}`
+        Authorization: `Bearer ${authToken}`,
+        Cookie: `${AUTH_SESSION_COOKIE_NAME}=${sessionToken}`
       }
     }
   })
   event.locals.authService = createAuthService(event.locals.serverTransport)
+  // TODO: Remove since we are using private services
   event.locals.services = {
     athletes: createAthletesService(event.locals.serverTransport)
   }

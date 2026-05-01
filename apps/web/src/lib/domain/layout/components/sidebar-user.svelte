@@ -22,9 +22,9 @@
 
     const sidebar = useSidebar()
     const initials = $derived(
-        athlete?.full_name
+        athlete?.fullName
             ?.split(' ')
-            .map((n) => n[0])
+            .map((name) => name[0])
             .join('')
             .slice(0, 2)
             .toUpperCase() ?? '?'
@@ -42,11 +42,11 @@
                         size="lg"
                     >
                         <Avatar.Root class="size-8 rounded-lg">
-                            <Avatar.Image alt={athlete?.full_name ?? 'Avatar'} src={athlete?.avatar_url} />
+                            <Avatar.Image alt={athlete?.fullName ?? 'Avatar'} src={athlete?.avatarUrl} />
                             <Avatar.Fallback class="rounded-lg">{initials}</Avatar.Fallback>
                         </Avatar.Root>
                         <div class="grid flex-1 text-start text-sm/tight">
-                            <span class="truncate font-medium">{athlete?.full_name ?? 'User'}</span>
+                            <span class="truncate font-medium">{athlete?.fullName ?? 'User'}</span>
                         </div>
                         <ChevronsUpDownIcon class="ms-auto size-4" />
                     </Sidebar.MenuButton>

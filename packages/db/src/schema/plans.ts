@@ -1,3 +1,5 @@
+import type { AthleteId } from '@carbplan/domain/athlete'
+
 import {
   boolean,
   date,
@@ -16,7 +18,7 @@ import { products } from './catalog'
 import { workouts } from './workouts'
 
 export const nutritionPlans = pgTable('nutrition_plans', {
-  athleteId: uuid('athlete_id').notNull().references(() => athletes.id, { onDelete: 'cascade' }),
+  athleteId: uuid('athlete_id').$type<AthleteId>().notNull().references(() => athletes.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   date: date('date', { mode: 'date' }).notNull(),
   durationMinutes: integer('duration_minutes').notNull(),

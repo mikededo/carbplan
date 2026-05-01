@@ -2,12 +2,14 @@ import type { BrandId, ProductId, UserId } from '@carbplan/db'
 import type { ResultAsync } from 'neverthrow'
 
 import type {
+  CatalogBrand,
   CreateBrandData,
   CreateBrandDataResult,
   CreateBrandError,
   CreateProductData,
   CreateProductDataResult,
   CreateProductError,
+  ListCatalogError,
   UpdateBrandData,
   UpdateBrandError,
   UpdateProductData,
@@ -26,6 +28,7 @@ type UpdateProductArgs = { productId: ProductId } & AuthGuardedArgs<UpdateProduc
 export type CatalogService = {
   createBrand: (args: AuthGuardedArgs<CreateBrandData>) => ResultAsync<CreateBrandDataResult, CreateBrandError | UserNotPlatformAdminError>
   createProduct: (args: AuthGuardedArgs<CreateProductData>) => ResultAsync<CreateProductDataResult, CreateProductError | UserNotPlatformAdminError>
+  listCatalog: (userId: UserId) => ResultAsync<CatalogBrand[], ListCatalogError | UserNotPlatformAdminError>
   updateBrand: (args: UpdateBrandArgs) => ResultAsync<boolean, UpdateBrandError | UserNotPlatformAdminError>
   updateProduct: (args: UpdateProductArgs) => ResultAsync<boolean, UpdateProductError | UserNotPlatformAdminError>
   deactivateProduct: (productId: AuthGuardedArgs<ProductId>) => ResultAsync<boolean, UpdateProductError | UserNotPlatformAdminError>
@@ -47,6 +50,10 @@ export class CatalogServiceImpl implements CatalogService {
 
   deactivateProduct({ data, userId }: AuthGuardedArgs<ProductId>): ResultAsync<boolean, UpdateProductError | UserNotPlatformAdminError> {
     return this.withAdminGuard(userId, () => this.repository.updateProduct(data, { isActive: false }))
+  }
+
+  listCatalog(userId: UserId): ResultAsync<CatalogBrand[], ListCatalogError | UserNotPlatformAdminError> {
+    return this.withAdminGuard(userId, () => this.repository.listCatalog())
   }
 
   updateBrand({ brandId, data, userId }: UpdateBrandArgs): ResultAsync<boolean, UpdateBrandError | UserNotPlatformAdminError> {

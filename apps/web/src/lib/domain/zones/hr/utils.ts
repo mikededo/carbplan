@@ -1,6 +1,9 @@
-import type { HRZone, HRZoneModel, HRZonesData } from './schemas'
+import type { HRZone, HRZoneModel, HRZonesData } from '@carbplan/domain/hr'
 
-import { HR_ZONE_PRESETS } from './presets'
+import { HR_ZONE_PRESETS, HRZoneModelSchema, HRZonesDataSchema } from '@carbplan/domain/hr'
+
+export const isHRPresetZoneModel = (value: unknown): value is HRZoneModel => HRZoneModelSchema.safeParse(value).success
+export const parseHRZones = (data: unknown) => HRZonesDataSchema.safeParse(data)
 
 type CalculateHRZonesParams = {
   hrMax: number

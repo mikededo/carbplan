@@ -1,15 +1,17 @@
 <script lang="ts">
-    import type { PlanWithSummary } from '$lib/database/types.g'
+    import type { GetCurrentAthleteResponse } from '@carbplan/contracts/me'
+
+    import type { DashboardPlan } from '$lib/domain/dashboard/types'
 
     import { CircleCheckBigIcon, CoffeeIcon, TriangleAlertIcon, ZapIcon } from '@lucide/svelte'
 
     import * as Alert from '$lib/domain/ui/alert'
 
-    type AthleteData = { max_carb_intake_g_per_hr: null | number }
+    type AthleteData = Pick<GetCurrentAthleteResponse, 'maxCarbIntakeGPerHr'>
 
     type Props = {
         athlete: AthleteData | null
-        plan: null | PlanWithSummary
+        plan: DashboardPlan | null
     }
     const { athlete, plan }: Props = $props()
 
@@ -20,21 +22,21 @@
             return list
         }
 
-        if (athlete.max_carb_intake_g_per_hr && plan.total_carbs_g && plan.duration_minutes) {
-            const actualCarbsPerHour = (plan.total_carbs_g / plan.duration_minutes) * 60
-            if (actualCarbsPerHour > athlete.max_carb_intake_g_per_hr) {
+        if (athlete.maxCarbIntakeGPerHr && plan.nutrition.totalCarbsG && plan.durationMinutes) {
+            const actualCarbsPerHour = (plan.nutrition.totalCarbsG / plan.durationMinutes) * 60
+            if (actualCarbsPerHour > athlete.maxCarbIntakeGPerHr) {
                 list.push({
                     icon: ZapIcon,
-                    message: `Plan exceeds your max intake (${Math.round(actualCarbsPerHour)} g/hr vs ${athlete.max_carb_intake_g_per_hr} g/hr limit)`,
+                    message: `Plan exceeds your max intake (${Math.round(actualCarbsPerHour)} g/hr vs ${athlete.maxCarbIntakeGPerHr} g/hr limit)`,
                     type: 'carbs'
                 })
             }
         }
 
-        if (plan.total_caffeine_mg && plan.total_caffeine_mg > 400) {
+        if (plan.nutrition.totalCaffeineMg && plan.nutrition.totalCaffeineMg > 400) {
             list.push({
                 icon: CoffeeIcon,
-                message: `High caffeine total (${Math.round(plan.total_caffeine_mg)} mg)`,
+                message: `High caffeine total (${Math.round(plan.nutrition.totalCaffeineMg)} mg)`,
                 type: 'caffeine'
             })
         }
@@ -55,7 +57,7 @@
                     <Alert.Description>{warning.message}</Alert.Description>
                 </Alert.Root>
             {/each}
-        {:else if plan.item_count && plan.item_count > 0}
+        {:else if plan.nutrition.itemCount && plan.nutrition.itemCount > 0}
             <Alert.Root class="border-green-500/20 bg-green-500/5 text-green-700 dark:text-green-400">
                 <CircleCheckBigIcon class="size-4" />
                 <Alert.Title>Plan looks good</Alert.Title>

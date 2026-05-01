@@ -5,7 +5,7 @@ import { drizzleAdapter } from '@better-auth/drizzle-adapter'
 import { schema, users } from '@carbplan/db'
 import { betterAuth } from 'better-auth'
 import { toNodeHandler } from 'better-auth/node'
-import { customSession, openAPI } from 'better-auth/plugins'
+import { bearer, customSession, openAPI } from 'better-auth/plugins'
 import { eq } from 'drizzle-orm'
 
 export type AuthSessionQuery = {
@@ -75,7 +75,7 @@ export const createAuthServer = ({
     emailAndPassword: {
       enabled: true
     },
-    plugins: [customGetSessionPlugin(db), openAPI()],
+    plugins: [customGetSessionPlugin(db), bearer(), openAPI()],
     secret,
     trustedOrigins,
     user: {

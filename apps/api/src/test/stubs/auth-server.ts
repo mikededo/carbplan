@@ -16,7 +16,7 @@ type CreateAuthServerStubOptions = {
 
 const defaultAuthSession: AuthSession = {
   session: { id: 'session-id' },
-  user: { id: 'athlete-id' }
+  user: { id: '00000000-0000-4000-8000-000000000000' }
 }
 
 export const createAuthServerStub = ({

@@ -45,6 +45,7 @@
       "version": "0.0.0",
       "dependencies": {
         "@carbplan/contracts": "workspace:*",
+        "@carbplan/domain": "workspace:",
         "@lucide/svelte": "^0.577.0",
         "@tanstack/svelte-query": "6.1.1",
         "@tanstack/svelte-query-devtools": "6.0.4",

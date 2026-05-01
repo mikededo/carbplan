@@ -3,6 +3,7 @@ import type { Cookies } from '@sveltejs/kit'
 import * as z from 'zod'
 
 const SameSiteSchema = z.enum(['lax', 'none', 'strict'])
+const IPV4_HOSTNAME_REGEX = /^\d{1,3}(?:\.\d{1,3}){3}$/
 
 const getSetCookieHeaders = (headers: Headers): string[] => {
   if ('getSetCookie' in headers && typeof headers.getSetCookie === 'function') {
@@ -35,8 +36,10 @@ const parseSetCookie = (value: string) => {
   const parsedValue = valueParts.join('=').trim()
 
   const cookie = {
+    domain: undefined as string | undefined,
     name: name.trim(),
     options: {
+      domain: undefined as string | undefined,
       expires: undefined as Date | undefined,
       httpOnly: false,
       maxAge: undefined as number | undefined,
@@ -54,6 +57,11 @@ const parseSetCookie = (value: string) => {
 
     if (key === 'expires') {
       cookie.options.expires = parseExpires(attributeValue)
+      continue
+    }
+
+    if (key === 'domain' && attributeValue) {
+      cookie.options.domain = attributeValue
       continue
     }
 
@@ -86,14 +94,35 @@ const parseSetCookie = (value: string) => {
   return cookie
 }
 
-type ForwardResponseCookiesParams = { cookies: Cookies, headers: Headers }
-export const forwardResponseCookies = ({ cookies, headers }: ForwardResponseCookiesParams) => {
+export const getSharedCookieDomain = (hostname: string): string | undefined => {
+  if (hostname === 'localhost' || IPV4_HOSTNAME_REGEX.test(hostname)) {
+    return undefined
+  }
+
+  const labels = hostname.split('.').filter(Boolean)
+
+  if (labels.length < 3) {
+    return undefined
+  }
+
+  return labels.slice(1).join('.')
+}
+
+type ForwardResponseCookiesParams = {
+  cookies: Cookies
+  domain?: string
+  headers: Headers
+}
+export const forwardResponseCookies = ({ cookies, domain, headers }: ForwardResponseCookiesParams) => {
   for (const setCookieHeader of getSetCookieHeaders(headers)) {
     const cookie = parseSetCookie(setCookieHeader)
     if (!cookie.name) {
       continue
     }
 
-    cookies.set(cookie.name, cookie.value, cookie.options)
+    cookies.set(cookie.name, cookie.value, {
+      ...cookie.options,
+      domain: domain ?? cookie.options.domain
+    })
   }
 }

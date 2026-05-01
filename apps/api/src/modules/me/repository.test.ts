@@ -2,10 +2,13 @@
 import type { CurrentAthleteData, UpdateCurrentAthlete } from '$modules/me/model'
 
 import { createRepositoryDbMock } from '@carbplan/auth/testing'
+import { parseAthleteId } from '@carbplan/domain/athlete'
 import { HRZoneModelEnum } from '@carbplan/domain/hr'
 
 import { DbMeRepository } from '$modules/me/repository'
 import { entityNotFoundTest } from '$test/utils.test'
+
+const athleteId = parseAthleteId('00000000-0000-4000-8000-000000000000')
 
 describe('db me repository', () => {
   describe('.getCurrentAthlete', () => {
@@ -20,7 +23,7 @@ describe('db me repository', () => {
         hrMax: 200,
         hrRest: 40,
         hrZones: null,
-        id: crypto.randomUUID(),
+        id: athleteId,
         maxCarbIntakeGPerHr: 80,
         onboardingCompleted: true,
         powerZones: null,
@@ -32,12 +35,12 @@ describe('db me repository', () => {
       dbMock.queueResult([model])
       const repository = new DbMeRepository(dbMock.db)
 
-      await expect(repository.getCurrentAthlete('athlete-id')).toBeOkAsyncWith(model)
+      await expect(repository.getCurrentAthlete(athleteId)).toBeOkAsyncWith(model)
     })
 
     entityNotFoundTest(
       DbMeRepository,
-      (repository) => repository.getCurrentAthlete('athlete-id')
+      (repository) => repository.getCurrentAthlete(athleteId)
     )
   })
 
@@ -56,12 +59,12 @@ describe('db me repository', () => {
       dbMock.queueResult([model])
       const repository = new DbMeRepository(dbMock.db)
 
-      await expect(repository.updateCurrentAthlete('athlete-id', model)).toBeOkAsyncWith(true)
+      await expect(repository.updateCurrentAthlete(athleteId, model)).toBeOkAsyncWith(true)
     })
 
     entityNotFoundTest(
       DbMeRepository,
-      (repository) => repository.updateCurrentAthlete('athlete-id', { fullName: 'Test user' })
+      (repository) => repository.updateCurrentAthlete(athleteId, { fullName: 'Test user' })
     )
   })
 
@@ -70,7 +73,7 @@ describe('db me repository', () => {
     dbMock.queueResult(undefined)
     const repository = new DbMeRepository(dbMock.db)
 
-    const result = repository.updateHRZones('athlete-id', {
+    const result = repository.updateHRZones(athleteId, {
       model: HRZoneModelEnum.custom,
       zones: [{ color: '#HEXCOL', maxBpm: 200, maxPercent: 100, minBpm: 50, minPercent: 0, name: 'Z1' }]
     })

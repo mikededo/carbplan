@@ -1,10 +1,11 @@
 import type { PageLoad } from './$types'
 
-import { catalogOptions } from '$lib/domain/catalog/queries'
+import { ok } from 'neverthrow'
+
+import { catalogOptions } from '$lib/domain/catalog/queries/catalog'
 
 export const load: PageLoad = async ({ parent }) => {
-  const { queryClient, supabase } = await parent()
+  const { privateServices, queryClient } = await parent()
 
-  await queryClient.prefetchQuery(catalogOptions(supabase))
+  await queryClient.prefetchQuery(catalogOptions(ok(privateServices.catalog)))
 }
-

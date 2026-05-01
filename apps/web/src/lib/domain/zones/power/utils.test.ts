@@ -1,4 +1,4 @@
-import type { PowerZone } from './schemas'
+import type { PowerZone } from '@carbplan/domain/power'
 
 import { describe, expect, it } from 'vitest'
 

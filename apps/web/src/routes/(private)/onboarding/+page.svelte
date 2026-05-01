@@ -3,6 +3,7 @@
 
     import type { ActionData, PageData } from './$types'
 
+    import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
     import { CircleCheckBigIcon, MoveLeftIcon, MoveRightIcon } from '@lucide/svelte'
     import { sineOut } from 'svelte/easing'
     import { fade } from 'svelte/transition'
@@ -15,7 +16,6 @@
         StepTraining
     } from '$lib/domain/onboarding/components'
     import { ONBOARDING_STEPS } from '$lib/domain/onboarding/types'
-    import { PROFILE_VALUES } from '$lib/domain/settings/constants'
     import { Button } from '$lib/domain/ui/button'
     import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$lib/domain/ui/card'
 
@@ -35,7 +35,7 @@
         height: data.previous?.height,
         hrMax: data.previous?.hrMax,
         hrRest: data.previous?.hrRest,
-        maxCarbIntake: data.previous?.maxCarbIntake ?? PROFILE_VALUES.maxCarbIntake.default,
+        maxCarbIntake: data.previous?.maxCarbIntake ?? PROFILE_FIELD_CONSTRAINTS.maxCarbIntake.default,
         sex: data.previous?.sex ?? ('' as const),
         weight: data.previous?.weight
     })

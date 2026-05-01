@@ -1,8 +1,10 @@
-import { athletes } from '@carbplan/db'
+import { athletes, parseAthleteId } from '@carbplan/db'
 import { eq } from 'drizzle-orm'
 import { describe, expect, it } from 'vitest'
 
 import { createRepositoryDbMock } from '../src/testing'
+
+const athleteId = parseAthleteId('00000000-0000-4000-8000-000000000000')
 
 describe('repository db mock', () => {
   it('returns queued results in order', async () => {
@@ -13,12 +15,12 @@ describe('repository db mock', () => {
     const first = await mock.db
       .select({ completed: athletes.onboardingCompleted })
       .from(athletes)
-      .where(eq(athletes.id, 'athlete-id'))
+      .where(eq(athletes.id, athleteId))
 
     const second = await mock.db
       .select({ completed: athletes.onboardingCompleted })
       .from(athletes)
-      .where(eq(athletes.id, 'athlete-id'))
+      .where(eq(athletes.id, athleteId))
 
     expect(first).toEqual([{ completed: true }])
     expect(second).toEqual([])
@@ -33,7 +35,7 @@ describe('repository db mock', () => {
       await mock.db
         .select({ completed: athletes.onboardingCompleted })
         .from(athletes)
-        .where(eq(athletes.id, 'athlete-id'))
+        .where(eq(athletes.id, athleteId))
     })()).rejects.toThrow('db failed')
 
     mock.restore()
@@ -46,7 +48,7 @@ describe('repository db mock', () => {
     await mock.db
       .select({ completed: athletes.onboardingCompleted })
       .from(athletes)
-      .where(eq(athletes.id, 'athlete-id'))
+      .where(eq(athletes.id, athleteId))
 
     expect(mock.capturedSql).toHaveLength(1)
     expect(mock.capturedSql[0]).toContain('from "athletes"')

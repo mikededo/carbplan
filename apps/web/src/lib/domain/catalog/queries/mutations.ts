@@ -1,336 +1,250 @@
-import type { Brand, BrandInsert, BrandUpdate, Product, ProductInsert, ProductUpdate } from '$lib/database/types.g'
+import type {
+  CatalogProduct,
+  CreateBrandRequest,
+  CreateProductRequest,
+  UpdateBrandRequest,
+  UpdateProductRequest
+} from '@carbplan/contracts/catalog'
 
 import type { CatalogResult } from './catalog'
 
 import { createMutation, useQueryClient } from '@tanstack/svelte-query'
+import { err, ok } from 'neverthrow'
 
-import { getSupabaseClient } from '$lib/database/context'
-
-import { catalogOptions } from './catalog'
+import { queryKeys } from '$lib/domain/query/keys'
+import { resultAsyncValueOrThrow } from '$lib/domain/query/utils'
+import { getPrivateServicesContext } from '$lib/domain/services/context'
 
 type CatalogMutateContext = { previous?: CatalogResult }
 
-export const createBrandMutation = () => {
-  const supabaseResult = getSupabaseClient()
-  const queryClient = useQueryClient()
-  const options = catalogOptions()
+const getCatalogService = () => {
+  const services = getPrivateServicesContext()
+  return services.isOk() ? ok(services.value.catalog) : err()
+}
 
-  const isEnabled = supabaseResult.isOk()
-  const supabase = isEnabled ? supabaseResult.value : null
+export const createBrandMutation = () => {
+  const service = getCatalogService()
+  const queryClient = useQueryClient()
 
   return createMutation(() => ({
-    mutationFn: async (input: Omit<BrandInsert, 'created_at' | 'id' | 'updated_at'>) => {
-      if (!supabase) {
-        throw new Error('Supabase client not available')
+    mutationFn: async (input: CreateBrandRequest) => {
+      if (service.isErr()) {
+        throw new Error('Catalog service not available')
       }
 
-      const { data, error } = await supabase
-        .from('brands')
-        .insert(input)
-        .select()
-        .single()
-
-      if (error) {
-        throw error
-      }
-
-      return data
+      return resultAsyncValueOrThrow(service.value.createBrand(input))
     },
     onError: (_, __, context: CatalogMutateContext | undefined) => {
       if (context?.previous) {
-        queryClient.setQueryData(options.queryKey, context.previous)
+        queryClient.setQueryData(queryKeys.catalog.all, context.previous)
       }
     },
     onMutate: async (input) => {
-      await queryClient.cancelQueries({ queryKey: options.queryKey })
+      await queryClient.cancelQueries({ queryKey: queryKeys.catalog.all })
 
-      const previous = queryClient.getQueryData(options.queryKey)
-      queryClient.setQueryData(options.queryKey, (old) => {
+      const previous = queryClient.getQueryData<CatalogResult>(queryKeys.catalog.all)
+      queryClient.setQueryData<CatalogResult>(queryKeys.catalog.all, (old) => {
         if (!old) {
           return old
         }
 
-        const newBrand = {
+        return [...old, {
+          createdAt: new Date(),
           description: input.description ?? null,
           id: crypto.randomUUID(),
-          logo_url: input.logo_url ?? null,
+          isActive: input.isActive,
+          logoUrl: input.logoUrl ?? null,
           name: input.name,
           products: [],
           slug: input.slug,
+          updatedAt: null,
           website: input.website ?? null
-        }
-
-        return [...old, newBrand].sort((a, b) => a.name.localeCompare(b.name))
+        }].sort((a, b) => a.name.localeCompare(b.name))
       })
 
       return { previous }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: options.queryKey })
+      queryClient.invalidateQueries({ queryKey: queryKeys.catalog.all })
     }
   }))
 }
 
-export const updateBrandMutation = (brandId?: Brand['id']) => {
-  const supabaseResult = getSupabaseClient()
+export const updateBrandMutation = (brandId?: string) => {
+  const service = getCatalogService()
   const queryClient = useQueryClient()
-  const options = catalogOptions()
-
-  const isEnabled = supabaseResult.isOk() && !!brandId
-  const supabase = isEnabled ? supabaseResult.value : null
 
   return createMutation(() => ({
-    mutationFn: async (input: Omit<BrandUpdate, 'created_at' | 'id' | 'updated_at'>) => {
-      if (!supabase || !brandId) {
-        throw new Error('Supabase client or brand ID not available')
+    mutationFn: async (input: UpdateBrandRequest) => {
+      if (service.isErr() || !brandId) {
+        throw new Error('Catalog service or brand ID not available')
       }
 
-      const { data, error } = await supabase
-        .from('brands')
-        .update(input)
-        .eq('id', brandId)
-        .select()
-        .single()
-
-      if (error) {
-        throw error
-      }
-
-      return data
+      return resultAsyncValueOrThrow(service.value.updateBrand(brandId, input))
     },
     onError: (_, __, context: CatalogMutateContext | undefined) => {
       if (context?.previous) {
-        queryClient.setQueryData(options.queryKey, context.previous)
+        queryClient.setQueryData(queryKeys.catalog.all, context.previous)
       }
     },
     onMutate: async (input) => {
-      await queryClient.cancelQueries({ queryKey: options.queryKey })
+      await queryClient.cancelQueries({ queryKey: queryKeys.catalog.all })
 
-      const previous = queryClient.getQueryData(options.queryKey)
-      queryClient.setQueryData(options.queryKey, (old) => {
+      const previous = queryClient.getQueryData<CatalogResult>(queryKeys.catalog.all)
+      queryClient.setQueryData<CatalogResult>(queryKeys.catalog.all, (old) => {
         if (!old) {
           return old
         }
 
-        return old.map((brand) => {
-          if (brand.id !== brandId) {
-            return brand
-          }
-
-          return {
-            ...brand,
-            logo_url: input.logo_url !== undefined ? input.logo_url : brand.logo_url,
-            name: input.name ?? brand.name,
-            slug: input.slug ?? brand.slug
-          }
-        }).sort((a, b) => a.name.localeCompare(b.name))
+        return old.map((brand) => brand.id === brandId
+          ? {
+              ...brand,
+              description: input.description ?? brand.description,
+              logoUrl: input.logoUrl ?? brand.logoUrl,
+              name: input.name ?? brand.name,
+              slug: input.slug ?? brand.slug,
+              website: input.website ?? brand.website
+            }
+          : brand).sort((a, b) => a.name.localeCompare(b.name))
       })
 
       return { previous }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: options.queryKey })
+      queryClient.invalidateQueries({ queryKey: queryKeys.catalog.all })
     }
   }))
 }
 
 export const createProductMutation = () => {
-  const supabaseResult = getSupabaseClient()
+  const service = getCatalogService()
   const queryClient = useQueryClient()
-  const options = catalogOptions()
-
-  const isEnabled = supabaseResult.isOk()
-  const supabase = isEnabled ? supabaseResult.value : null
 
   return createMutation(() => ({
-    mutationFn: async (input: Omit<ProductInsert, 'created_at' | 'id' | 'updated_at'>) => {
-      if (!supabase) {
-        throw new Error('Supabase client not available')
+    mutationFn: async (input: CreateProductRequest) => {
+      if (service.isErr()) {
+        throw new Error('Catalog service not available')
       }
 
-      const { data, error } = await supabase
-        .from('products')
-        .insert(input)
-        .select()
-        .single()
-
-      if (error) {
-        throw error
-      }
-
-      return data
+      return resultAsyncValueOrThrow(service.value.createProduct(input))
     },
     onError: (_, __, context: CatalogMutateContext | undefined) => {
       if (context?.previous) {
-        queryClient.setQueryData(options.queryKey, context.previous)
+        queryClient.setQueryData(queryKeys.catalog.all, context.previous)
       }
     },
     onMutate: async (input) => {
-      await queryClient.cancelQueries({ queryKey: options.queryKey })
+      await queryClient.cancelQueries({ queryKey: queryKeys.catalog.all })
 
-      const previous = queryClient.getQueryData(options.queryKey)
-      queryClient.setQueryData(options.queryKey, (old) => {
+      const previous = queryClient.getQueryData<CatalogResult>(queryKeys.catalog.all)
+      queryClient.setQueryData<CatalogResult>(queryKeys.catalog.all, (old) => {
         if (!old) {
           return old
         }
 
-        const newProduct: Product = {
-          brand_id: input.brand_id,
-          caffeine_mg: input.caffeine_mg ?? null,
+        const newProduct: CatalogProduct = {
+          ...input,
+          caffeineMg: input.caffeineMg ?? null,
           calories: input.calories ?? null,
-          carbs_g: input.carbs_g ?? null,
-          created_at: new Date().toISOString(),
-          fat_g: input.fat_g ?? null,
+          carbsG: input.carbsG ?? null,
+          createdAt: new Date(),
+          fatG: input.fatG ?? null,
           flavor: input.flavor ?? null,
-          form: input.form,
           id: crypto.randomUUID(),
-          is_active: input.is_active ?? true,
-          name: input.name,
+          isActive: input.isActive,
           notes: input.notes ?? null,
-          protein_g: input.protein_g ?? null,
-          serving_size: input.serving_size,
-          serving_unit: input.serving_unit ?? 'g',
-          servings_per_package: input.servings_per_package ?? null,
-          slug: input.slug,
-          sodium_mg: input.sodium_mg ?? null,
-          sugar_g: input.sugar_g ?? null,
-          updated_at: new Date().toISOString()
+          proteinG: input.proteinG ?? null,
+          servingsPerPackage: input.servingsPerPackage ?? null,
+          sodiumMg: input.sodiumMg ?? null,
+          sugarG: input.sugarG ?? null,
+          updatedAt: null
         }
 
-        return old.map((brand) => {
-          if (brand.id !== input.brand_id) {
-            return brand
-          }
-
-          return {
-            ...brand,
-            products: [...brand.products, newProduct].sort((a, b) => a.name.localeCompare(b.name))
-          }
-        })
+        return old.map((brand) => brand.id === input.brandId
+          ? { ...brand, products: [...brand.products, newProduct].sort((a, b) => a.name.localeCompare(b.name)) }
+          : brand)
       })
 
       return { previous }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: options.queryKey })
+      queryClient.invalidateQueries({ queryKey: queryKeys.catalog.all })
     }
   }))
 }
 
-export const updateProductMutation = (productId?: Product['id']) => {
-  const supabaseResult = getSupabaseClient()
+export const updateProductMutation = (productId?: string) => {
+  const service = getCatalogService()
   const queryClient = useQueryClient()
-  const options = catalogOptions()
-
-  const isEnabled = supabaseResult.isOk() && !!productId
-  const supabase = isEnabled ? supabaseResult.value : null
 
   return createMutation(() => ({
-    mutationFn: async (input: Omit<ProductUpdate, 'created_at' | 'id' | 'updated_at'>) => {
-      if (!supabase || !productId) {
-        throw new Error('Supabase client or product ID not available')
+    mutationFn: async (input: UpdateProductRequest) => {
+      if (service.isErr() || !productId) {
+        throw new Error('Catalog service or product ID not available')
       }
 
-      const { data, error } = await supabase
-        .from('products')
-        .update(input)
-        .eq('id', productId)
-        .select()
-        .single()
-
-      if (error) {
-        throw error
-      }
-
-      return data
+      return resultAsyncValueOrThrow(service.value.updateProduct(productId, input))
     },
     onError: (_, __, context: CatalogMutateContext | undefined) => {
       if (context?.previous) {
-        queryClient.setQueryData(options.queryKey, context.previous)
+        queryClient.setQueryData(queryKeys.catalog.all, context.previous)
       }
     },
     onMutate: async (input) => {
-      await queryClient.cancelQueries({ queryKey: options.queryKey })
+      await queryClient.cancelQueries({ queryKey: queryKeys.catalog.all })
 
-      const previous = queryClient.getQueryData(options.queryKey)
-      queryClient.setQueryData(options.queryKey, (old) => {
+      const previous = queryClient.getQueryData<CatalogResult>(queryKeys.catalog.all)
+      queryClient.setQueryData<CatalogResult>(queryKeys.catalog.all, (old) => {
         if (!old) {
           return old
         }
 
         return old.map((brand) => ({
           ...brand,
-          products: brand.products.map((product) => {
-            if (product.id !== productId) {
-              return product
-            }
-
-            return {
-              ...product,
-              ...input,
-              updated_at: new Date().toISOString()
-            }
-          }).sort((a, b) => a.name.localeCompare(b.name))
+          products: brand.products.map((product) => product.id === productId
+            ? { ...product, ...input, updatedAt: new Date() }
+            : product).sort((a, b) => a.name.localeCompare(b.name))
         }))
       })
 
       return { previous }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: options.queryKey })
+      queryClient.invalidateQueries({ queryKey: queryKeys.catalog.all })
     }
   }))
 }
 
-export const deactivateProductMutation = (productId?: Product['id']) => {
-  const supabaseResult = getSupabaseClient()
+export const deactivateProductMutation = (productId?: string) => {
+  const service = getCatalogService()
   const queryClient = useQueryClient()
-  const options = catalogOptions()
-
-  const isEnabled = supabaseResult.isOk() && !!productId
-  const supabase = isEnabled ? supabaseResult.value : null
 
   return createMutation(() => ({
     mutationFn: async () => {
-      if (!supabase || !productId) {
-        throw new Error('Supabase client or product ID not available')
+      if (service.isErr() || !productId) {
+        throw new Error('Catalog service or product ID not available')
       }
 
-      const { data, error } = await supabase.rpc(
-        'deactivate_product',
-        { p_product_id: productId }
-      )
-
-      if (error) {
-        throw error
-      }
-
-      return data
+      return resultAsyncValueOrThrow(service.value.deactivateProduct(productId))
     },
     onError: (_, __, context: CatalogMutateContext | undefined) => {
       if (context?.previous) {
-        queryClient.setQueryData(options.queryKey, context.previous)
+        queryClient.setQueryData(queryKeys.catalog.all, context.previous)
       }
     },
     onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: options.queryKey })
+      await queryClient.cancelQueries({ queryKey: queryKeys.catalog.all })
 
-      const previous = queryClient.getQueryData(options.queryKey)
-      queryClient.setQueryData(options.queryKey, (old) => {
-        if (!old) {
-          return old
-        }
-
-        return old.map((brand) => ({
-          ...brand,
-          products: brand.products.filter((product) => product.id !== productId)
-        }))
-      })
+      const previous = queryClient.getQueryData<CatalogResult>(queryKeys.catalog.all)
+      queryClient.setQueryData<CatalogResult>(queryKeys.catalog.all, (old) => old?.map((brand) => ({
+        ...brand,
+        products: brand.products.filter((product) => product.id !== productId)
+      })))
 
       return { previous }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: options.queryKey })
+      queryClient.invalidateQueries({ queryKey: queryKeys.catalog.all })
     }
   }))
 }

@@ -38,7 +38,7 @@ type CreateBrandFormContextArgs = () => {
 
 const createInitialState = (brand?: CatalogBrand): BrandFormState => ({
   description: brand?.description ?? '',
-  logoUrl: brand?.logo_url ?? '',
+  logoUrl: brand?.logoUrl ?? '',
   name: brand?.name ?? '',
   slug: brand?.slug ?? '',
   website: brand?.website ?? ''
@@ -86,11 +86,12 @@ export const createBrandFormContext = (getter: CreateBrandFormContextArgs): Bran
 
     await ResultAsync.fromPromise(
       mutation.mutateAsync({
-        description: data.description ?? null,
-        logo_url: data.logoUrl ?? null,
+        description: data.description,
+        isActive: true,
+        logoUrl: data.logoUrl,
         name: data.name,
         slug: data.slug,
-        website: data.website ?? null
+        website: data.website
       }),
       (error) => error as Error
     ).match(

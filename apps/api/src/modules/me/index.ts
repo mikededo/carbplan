@@ -5,6 +5,7 @@ import type { MeService } from '$modules/me/service'
 
 import * as MeContracts from '@carbplan/contracts/me'
 import * as ProductsContracts from '@carbplan/contracts/products'
+import { parseAthleteId } from '@carbplan/domain/athlete'
 import { Elysia } from 'elysia'
 
 import { authModule } from '$modules/auth'
@@ -38,7 +39,7 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
   .guard({ auth: true })
   .get(
     '',
-    ({ status, user }) => services.me.getCurrentAthlete(user.id)
+    ({ status, user }) => services.me.getCurrentAthlete(parseAthleteId(user.id))
       .match(
         (result) => status(StatusMap.OK, result),
         (error) => {
@@ -65,7 +66,7 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
   )
   .patch(
     '',
-    ({ body, status, user }) => services.me.updateCurrentAthlete(user.id, body)
+    ({ body, status, user }) => services.me.updateCurrentAthlete(parseAthleteId(user.id), body)
       .match(
         () => status(StatusMap.NoContent, undefined),
         (error) => {
@@ -93,7 +94,7 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
   )
   .patch(
     '/hr',
-    async ({ body, status, user }) => await services.me.updateHRZones(user.id, body)
+    async ({ body, status, user }) => await services.me.updateHRZones(parseAthleteId(user.id), body)
       .match(
         () => status(StatusMap.NoContent, undefined),
         () => status(StatusMap.InternalServerError, apiErrorFactory.internal())
@@ -114,7 +115,7 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
   )
   .patch(
     '/power',
-    ({ body, status, user }) => services.me.updatePowerZones(user.id, body)
+    ({ body, status, user }) => services.me.updatePowerZones(parseAthleteId(user.id), body)
       .match(
         () => status(StatusMap.NoContent, undefined),
         () => status(StatusMap.InternalServerError, apiErrorFactory.internal())
@@ -137,7 +138,7 @@ export const meModule = ({ auth, services }: MeModuleOptions) => new Elysia({
     '/favorites',
     (app) => app.get(
       '/products',
-      ({ status, user }) => services.favorites.getAllFavoriteProducts(user.id)
+      ({ status, user }) => services.favorites.getAllFavoriteProducts(parseAthleteId(user.id))
         .match(
           (value) => status(StatusMap.OK, value),
           () => status(StatusMap.InternalServerError, apiErrorFactory.internal())

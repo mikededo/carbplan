@@ -34,6 +34,27 @@ export const catalogModule = ({ auth, services }: CatalogModuleOptions) => new E
 })
   .use(authModule({ auth }))
   .guard({ auth: true })
+  .get(
+    '',
+    ({ status, user }) => services.catalog.listCatalog(user.id)
+      .match(
+        (result) => status(StatusMap.OK, result),
+        () => status(StatusMap.InternalServerError, apiErrorFactory.internal())
+      ),
+    {
+      admin: true,
+      detail: {
+        description: 'Allows admin users to list brands and active products',
+        summary: 'List catalog'
+      },
+      response: {
+        [StatusMap.Forbidden]: ForbiddenErrorSchema,
+        [StatusMap.InternalServerError]: InternalServerErrorSchema,
+        [StatusMap.OK]: CatalogContracts.CatalogListResponseSchema,
+        [StatusMap.Unauthorized]: UnauthorizedErrorSchema
+      }
+    }
+  )
   .group(
     '/products',
     { admin: true },

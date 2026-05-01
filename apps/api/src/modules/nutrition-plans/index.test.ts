@@ -2,6 +2,7 @@ import type { NutritionPlanListResult } from '$modules/nutrition-plans/model'
 import type { NutritionPlansService } from '$modules/nutrition-plans/service'
 
 import * as NutritionPlansContracts from '@carbplan/contracts/nutrition-plans'
+import { parseAthleteId } from '@carbplan/domain/athlete'
 import { treaty } from '@elysiajs/eden'
 import { okAsync } from 'neverthrow'
 
@@ -41,7 +42,7 @@ describe('nutrition plans HTTP contract', () => {
   })
 
   it('[GET] /v1/nutrition-plans/me keeps response contract', async () => {
-    const athleteId = 'f8dbd028-c4ed-4e10-8142-a5c4bd8af83d'
+    const athleteId = parseAthleteId('f8dbd028-c4ed-4e10-8142-a5c4bd8af83d')
     const result: NutritionPlanListResult = {
       data: [{
         athleteId,

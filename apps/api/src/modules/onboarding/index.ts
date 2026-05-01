@@ -3,6 +3,7 @@ import type { AuthServer } from '@carbplan/auth'
 import type { OnboardingService } from '$modules/onboarding/service'
 
 import * as OnboardingContracts from '@carbplan/contracts/onboarding'
+import { parseAthleteId } from '@carbplan/domain/athlete'
 import { Elysia } from 'elysia'
 
 import { getMeAthletesPath } from '$modules/athletes/routes'
@@ -34,7 +35,7 @@ export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => 
   .get(
     '',
     ({ status, user }) =>
-      service.hasCompletedOnboarding(user.id).match(
+      service.hasCompletedOnboarding(parseAthleteId(user.id)).match(
         (result) => status(StatusMap.OK, result),
         () => status(StatusMap.InternalServerError, apiErrorFactory.internal())
       ),
@@ -59,8 +60,8 @@ export const onboardingModule = ({ auth, service }: OnboardingModuleOptions) => 
         return status(StatusMap.BadRequest, apiErrorFactory.badRequest())
       }
 
-      service.saveAthleteOnboarding({
-        id: user.id,
+      return service.saveAthleteOnboarding({
+        id: parseAthleteId(user.id),
         ...parsed.data
       }).match(
         () => status(StatusMap.NoContent, undefined),

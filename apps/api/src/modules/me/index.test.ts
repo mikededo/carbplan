@@ -2,12 +2,15 @@ import type { FavoriteProductsListResponse } from '$modules/favorites/model'
 
 import * as MeContracts from '@carbplan/contracts/me'
 import * as ProductsContracts from '@carbplan/contracts/products'
+import { parseAthleteId } from '@carbplan/domain/athlete'
 import { HRZoneModelEnum } from '@carbplan/domain/hr'
 import { treaty } from '@elysiajs/eden'
 import { okAsync } from 'neverthrow'
 
 import { meModule } from '$modules/me'
 import { createAuthServerStub } from '$test/stubs/auth-server'
+
+const athleteId = parseAthleteId('00000000-0000-4000-8000-000000000000')
 
 const app = treaty(meModule({
   auth: createAuthServerStub(),
@@ -54,7 +57,7 @@ const app = treaty(meModule({
         hrMax: 200,
         hrRest: 40,
         hrZones: null,
-        id: crypto.randomUUID(),
+        id: athleteId,
         maxCarbIntakeGPerHr: 80,
         onboardingCompleted: true,
         powerZones: null,

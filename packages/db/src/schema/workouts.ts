@@ -1,3 +1,5 @@
+import type { AthleteId } from '@carbplan/domain/athlete'
+
 import {
   bigint,
   index,
@@ -17,7 +19,7 @@ import { athletes } from './athletes'
 export const workoutSourceEnum = pgEnum('workout_source', ['manual', 'intervals_icu'])
 
 export const workouts = pgTable('workouts', {
-  athleteId: uuid('athlete_id').notNull().references(() => athletes.id, { onDelete: 'cascade' }),
+  athleteId: uuid('athlete_id').$type<AthleteId>().notNull().references(() => athletes.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   endDateLocal: timestamp('end_date_local', { withTimezone: true }),
   externalId: text('external_id'),

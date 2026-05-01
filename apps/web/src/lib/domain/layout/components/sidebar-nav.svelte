@@ -3,7 +3,7 @@
 
     import { page } from '$app/state'
     import { ROUTES } from '$lib/constants/routes'
-    import { useAthleteQuery } from '$lib/domain/settings/queries'
+    import { getAuthContext } from '$lib/domain/auth/context'
     import * as Sidebar from '$lib/domain/ui/sidebar'
 
     const BASE_ROUTES = [
@@ -11,10 +11,15 @@
         { href: ROUTES.settings, icon: SettingsIcon, title: 'Settings' }
     ]
 
-    const athleteQuery = useAthleteQuery()
+    const userContext = getAuthContext()
 
     const adminItems = $derived.by(() => {
-        if (!athleteQuery.data?.is_admin) {
+        if (userContext.isErr()) {
+            return []
+        }
+
+        const user = userContext.value
+        if (!user || !user.isAdmin) {
             return []
         }
 

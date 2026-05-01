@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { PlanWithSummary } from '$lib/database/types.g'
+    import type { DashboardPlan } from '$lib/domain/dashboard/types'
 
     import { FileText, Plus } from '@lucide/svelte'
 
@@ -8,7 +8,7 @@
     import { Button } from '$lib/domain/ui/button'
     import * as Card from '$lib/domain/ui/card'
 
-    type Props = { plans: PlanWithSummary[] }
+    type Props = { plans: DashboardPlan[] }
     const { plans }: Props = $props()
 
     const formatDuration = (minutes: null | number) => {
@@ -23,7 +23,7 @@
         return mins > 0 ? `${hours}h ${mins}min` : `${hours}h`
     }
 
-    const formatDate = (dateStr: null | string) => {
+    const formatDate = (dateStr: Date | null | string) => {
         if (!dateStr) {
             return '-'
         }
@@ -66,9 +66,9 @@
                             </div>
                         </div>
                         <div class="text-right text-sm text-muted-foreground">
-                            <p>{formatDuration(plan.duration_minutes)}</p>
-                            {#if plan.target_carbs_per_hour}
-                                <p>{plan.target_carbs_per_hour} g/hr</p>
+                            <p>{formatDuration(plan.durationMinutes)}</p>
+                            {#if plan.targetCarbsPerHour}
+                                <p>{plan.targetCarbsPerHour} g/hr</p>
                             {/if}
                         </div>
                     </Card.Content>

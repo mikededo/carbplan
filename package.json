@@ -8,6 +8,7 @@
     "build": "turbo run build",
     "ci": "bun run typecheck && bun run lint && bun run test",
     "dev": "turbo run dev",
+    "dev:raw": "turbo run dev",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "preview": "turbo run preview",

@@ -3,6 +3,7 @@ import type { AuthServer } from '@carbplan/auth'
 import type { NutritionPlansService } from '$modules/nutrition-plans/service'
 
 import * as NutritionPlansContracts from '@carbplan/contracts/nutrition-plans'
+import { parseAthleteId } from '@carbplan/domain/athlete'
 import Elysia from 'elysia'
 
 import { authModule } from '$modules/auth'
@@ -36,7 +37,7 @@ export const nutritionPlansModule = ({ auth, services }: PlanModuleOptions) => n
   .guard({ auth: true })
   .get(
     '/me',
-    ({ query, status, user }) => services.nutritionPlans.listAthleteNutritionPlans(user.id, query)
+    ({ query, status, user }) => services.nutritionPlans.listAthleteNutritionPlans(parseAthleteId(user.id), query)
       .match(
         (response) => status(StatusMap.OK, response),
         (error) => {

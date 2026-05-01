@@ -1,4 +1,6 @@
-import type { Product, ProductFormType } from '$lib/database/types.g'
+import type { CatalogProduct } from '@carbplan/contracts/catalog'
+import type { ProductForm } from '@carbplan/domain/product'
+
 import type { CatalogBrand } from '$lib/domain/catalog/queries'
 
 import { ResultAsync } from 'neverthrow'
@@ -17,7 +19,7 @@ export type ProductFormState = {
   carbsG: string
   fatG: string
   flavor: string
-  form: '' | ProductFormType
+  form: '' | ProductForm
   name: string
   notes: string
   proteinG: string
@@ -48,7 +50,7 @@ export type ProductFormContext = {
 
 type CreateProductFormContextArgs = () => {
   open: boolean
-  product?: Product
+  product?: CatalogProduct
   onOpenChange: (open: boolean) => void
 }
 
@@ -60,23 +62,23 @@ const parseNumber = (value: string): number | undefined => {
   return Number.isNaN(parsed) ? undefined : parsed
 }
 
-const createInitialState = (product?: Product): ProductFormState => ({
-  brandId: product?.brand_id ?? '',
-  caffeineMg: product?.caffeine_mg?.toString() ?? '',
+const createInitialState = (product?: CatalogProduct): ProductFormState => ({
+  brandId: product?.brandId ?? '',
+  caffeineMg: product?.caffeineMg?.toString() ?? '',
   calories: product?.calories?.toString() ?? '',
-  carbsG: product?.carbs_g?.toString() ?? '',
-  fatG: product?.fat_g?.toString() ?? '',
+  carbsG: product?.carbsG?.toString() ?? '',
+  fatG: product?.fatG?.toString() ?? '',
   flavor: product?.flavor ?? '',
   form: product?.form ?? '',
   name: product?.name ?? '',
   notes: product?.notes ?? '',
-  proteinG: product?.protein_g?.toString() ?? '',
-  servingSize: product?.serving_size?.toString() ?? '',
-  servingsPerPackage: product?.servings_per_package?.toString() ?? '',
-  servingUnit: product?.serving_unit ?? 'g',
+  proteinG: product?.proteinG?.toString() ?? '',
+  servingSize: product?.servingSize?.toString() ?? '',
+  servingsPerPackage: product?.servingsPerPackage?.toString() ?? '',
+  servingUnit: product?.servingUnit ?? 'g',
   slug: product?.slug ?? '',
-  sodiumMg: product?.sodium_mg?.toString() ?? '',
-  sugarG: product?.sugar_g?.toString() ?? ''
+  sodiumMg: product?.sodiumMg?.toString() ?? '',
+  sugarG: product?.sugarG?.toString() ?? ''
 })
 
 export const createProductFormContext = (getter: CreateProductFormContextArgs): ProductFormContext => {
@@ -98,7 +100,7 @@ export const createProductFormContext = (getter: CreateProductFormContextArgs): 
   const validate = () => {
     const result = ProductSchema.safeParse({
       brandId: state.brandId,
-      caffeineGm: parseNumber(state.caffeineMg),
+      caffeineMg: parseNumber(state.caffeineMg),
       calories: parseNumber(state.calories),
       carbsG: parseNumber(state.carbsG),
       fatG: parseNumber(state.fatG),
@@ -135,22 +137,23 @@ export const createProductFormContext = (getter: CreateProductFormContextArgs): 
 
     await ResultAsync.fromPromise(
       mutation.mutateAsync({
-        brand_id: data.brandId,
-        caffeine_mg: data.caffeineGm ?? null,
-        calories: data.calories ?? null,
-        carbs_g: data.carbsG ?? null,
-        fat_g: data.fatG ?? null,
-        flavor: data.flavor ?? null,
+        brandId: data.brandId,
+        caffeineMg: data.caffeineMg,
+        calories: data.calories,
+        carbsG: data.carbsG,
+        fatG: data.fatG,
+        flavor: data.flavor,
         form: data.form,
+        isActive: true,
         name: data.name,
-        notes: data.notes ?? null,
-        protein_g: data.proteinG ?? null,
-        serving_size: data.servingSize,
-        serving_unit: data.servingUnit,
-        servings_per_package: data.servingsPerPackage ?? null,
+        notes: data.notes,
+        proteinG: data.proteinG,
+        servingSize: data.servingSize,
+        servingsPerPackage: data.servingsPerPackage,
+        servingUnit: data.servingUnit,
         slug: data.slug,
-        sodium_mg: data.sodiumMg ?? null,
-        sugar_g: data.sugarG ?? null
+        sodiumMg: data.sodiumMg,
+        sugarG: data.sugarG
       }),
       (error) => error as Error
     ).match(

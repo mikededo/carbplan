@@ -55,6 +55,6 @@ export const createListQuerySchema = <
   maxLimit = 100
 }: CreateListQuerySchemaInput<TFilterShape, TSortField>) => filters.extend({
   limit: z.coerce.number().int().positive().max(maxLimit).default(20),
-  offset: z.coerce.number().int().positive().min(0).default(0),
+  offset: z.coerce.number().int().min(0).default(0),
   sort: createSortSchema({ defaultSort, fields })
 })

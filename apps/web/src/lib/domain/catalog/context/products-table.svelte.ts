@@ -1,11 +1,12 @@
-import type { Brand, Product, ProductFormType } from '$lib/database/types.g'
+import type { CatalogProduct } from '@carbplan/contracts/catalog'
+import type { ProductForm } from '@carbplan/domain/product'
 
 import type { CatalogResult } from '../queries'
 
 import { getContext, setContext } from 'svelte'
 import { SvelteSet } from 'svelte/reactivity'
 
-export type SortColumn = 'serving' | keyof Product
+export type SortColumn = 'serving' | keyof CatalogProduct
 type SortDirection = 'asc' | 'desc'
 
 type TableColumn = {
@@ -20,10 +21,10 @@ export const TABLE_COLUMNS: TableColumn[] = [
   { key: 'form', label: 'Type', minSize: 96, sortable: true },
   { key: 'serving', label: 'Serving', sortable: false },
   { key: 'calories', label: 'Calories', sortable: true },
-  { key: 'carbs_g', label: 'Carbs', sortable: true },
-  { key: 'sugar_g', label: 'Sugar', sortable: true },
-  { key: 'sodium_mg', label: 'Sodium', sortable: true },
-  { key: 'caffeine_mg', label: 'Caffeine', sortable: true }
+  { key: 'carbsG', label: 'Carbs', sortable: true },
+  { key: 'sugarG', label: 'Sugar', sortable: true },
+  { key: 'sodiumMg', label: 'Sodium', sortable: true },
+  { key: 'caffeineMg', label: 'Caffeine', sortable: true }
 ]
 
 export const CAFFEINE_MAX = 200
@@ -32,7 +33,7 @@ export const CALORIES_MAX = 1000
 type TableState = {
   brandFilter: Set<string>
   collapsedBrands: Set<string>
-  formFilter: Set<'' | ProductFormType>
+  formFilter: Set<'' | ProductForm>
   globalFilter: string
   maxCaffeine: null | number
   maxCalories: null | number
@@ -78,10 +79,10 @@ const createProductsTableState = (getBrands: () => CatalogResult) => {
           if (state.formFilter.size > 0 && !state.formFilter.has(product.form)) {
             return false
           }
-          if (state.minCaffeine !== null && (product.caffeine_mg === null || product.caffeine_mg < state.minCaffeine)) {
+          if (state.minCaffeine !== null && (product.caffeineMg === null || product.caffeineMg < state.minCaffeine)) {
             return false
           }
-          if (state.maxCaffeine !== null && (product.caffeine_mg === null || product.caffeine_mg > state.maxCaffeine)) {
+          if (state.maxCaffeine !== null && (product.caffeineMg === null || product.caffeineMg > state.maxCaffeine)) {
             return false
           }
           if (state.minCalories !== null && (product.calories === null || product.calories < state.minCalories)) {
@@ -90,16 +91,16 @@ const createProductsTableState = (getBrands: () => CatalogResult) => {
           if (state.maxCalories !== null && (product.calories === null || product.calories > state.maxCalories)) {
             return false
           }
-          if (state.minCarbs !== null && (product.carbs_g === null || product.carbs_g < state.minCarbs)) {
+          if (state.minCarbs !== null && (product.carbsG === null || product.carbsG < state.minCarbs)) {
             return false
           }
-          if (state.maxCarbs !== null && (product.carbs_g === null || product.carbs_g > state.maxCarbs)) {
+          if (state.maxCarbs !== null && (product.carbsG === null || product.carbsG > state.maxCarbs)) {
             return false
           }
-          if (state.minSodium !== null && (product.sodium_mg === null || product.sodium_mg < state.minSodium)) {
+          if (state.minSodium !== null && (product.sodiumMg === null || product.sodiumMg < state.minSodium)) {
             return false
           }
-          if (state.maxSodium !== null && (product.sodium_mg === null || product.sodium_mg > state.maxSodium)) {
+          if (state.maxSodium !== null && (product.sodiumMg === null || product.sodiumMg > state.maxSodium)) {
             return false
           }
           if (state.globalFilter) {
@@ -117,11 +118,11 @@ const createProductsTableState = (getBrands: () => CatalogResult) => {
 
       const sortedProducts = filteredProducts.toSorted((a, b) => {
         const aVal = state.sortColumn === 'serving'
-          ? `${a.serving_size}${a.serving_unit}`
+          ? `${a.servingSize}${a.servingUnit}`
           : a[state.sortColumn]
 
         const bVal = state.sortColumn === 'serving'
-          ? `${b.serving_size}${b.serving_unit}`
+          ? `${b.servingSize}${b.servingUnit}`
           : b[state.sortColumn]
 
         if (aVal === null) {
@@ -143,10 +144,10 @@ const createProductsTableState = (getBrands: () => CatalogResult) => {
   const filteredProductsCount = $derived(filteredBrands.reduce((acc, b) => acc + b.products.length, 0))
 
   const onProductFormChange = (value: string[]) => {
-    state.formFilter = new SvelteSet(value as ('' | ProductFormType)[])
+    state.formFilter = new SvelteSet(value as ('' | ProductForm)[])
   }
 
-  const onToggleProductForm = (form: '' | ProductFormType) => {
+  const onToggleProductForm = (form: '' | ProductForm) => {
     if (state.formFilter.has(form)) {
       state.formFilter.delete(form)
     } else {
@@ -210,7 +211,7 @@ const createProductsTableState = (getBrands: () => CatalogResult) => {
     state.sortDirection = 'asc'
   }
 
-  const onToggleCollapseBrand = (id: Brand['id']) => () => {
+  const onToggleCollapseBrand = (id: string) => () => {
     if (state.collapsedBrands.has(id)) {
       state.collapsedBrands.delete(id)
     } else {
@@ -307,4 +308,3 @@ export const getProductsTableContext = () => {
   }
   return ctx
 }
-

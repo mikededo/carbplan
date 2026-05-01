@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { CatalogProduct } from '$lib/database/types.g'
+    import type { DashboardFavoriteProduct } from '$lib/domain/dashboard/types'
 
     import { HeartIcon } from '@lucide/svelte'
 
@@ -9,7 +9,7 @@
     import { Button } from '$lib/domain/ui/button'
     import * as Card from '$lib/domain/ui/card'
 
-    type Props = { products: CatalogProduct[] }
+    type Props = { products: DashboardFavoriteProduct[] }
     const { products }: Props = $props()
 </script>
 
@@ -41,7 +41,7 @@
                     <Card.Content class="flex items-center gap-3 px-3">
                         <div class="min-w-0 flex-1">
                             <p class="truncate text-sm font-medium">{product.name}</p>
-                            <p class="truncate text-xs text-muted-foreground">{product.brand_name}</p>
+                            <p class="truncate text-xs text-muted-foreground">{product.brand.name}</p>
                         </div>
                         {#if product.form}
                             <ProductFormBadge form={product.form} />

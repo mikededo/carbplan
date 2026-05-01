@@ -1,4 +1,4 @@
-import type { HRZone } from './schemas'
+import type { HRZone } from '@carbplan/domain/hr'
 
 import { describe, expect, it } from 'vitest'
 

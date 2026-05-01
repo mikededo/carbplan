@@ -1,3 +1,4 @@
+import { AthleteIdSchema } from '@carbplan/domain/athlete'
 import { HRZonesDataSchema } from '@carbplan/domain/hr'
 import { PowerZonesDataSchema } from '@carbplan/domain/power'
 import {
@@ -12,10 +13,11 @@ import {
 import * as z from 'zod'
 
 import { ApiEmptyResponseSchema } from '../api'
+import { DateSchema } from './date'
 
 export const GetCurrentAthleteResponseSchema = z.object({
   avatarUrl: z.string().trim().nullable(),
-  createdAt: z.date(),
+  createdAt: DateSchema,
   email: z.email(),
   ftp: FTPFieldSchema.nullable(),
   fullName: z.string().trim().nullable(),
@@ -23,12 +25,12 @@ export const GetCurrentAthleteResponseSchema = z.object({
   hrMax: HRMaxFieldSchema.nullable(),
   hrRest: HRRestFieldSchema.nullable(),
   hrZones: HRZonesDataSchema.nullable(),
-  id: z.uuid(),
+  id: AthleteIdSchema,
   maxCarbIntakeGPerHr: MaxCarbIntakeFieldSchema.nullable(),
   onboardingCompleted: z.boolean().default(false),
   powerZones: PowerZonesDataSchema.nullable(),
   sex: SexSchema.nullable(),
-  updatedAt: z.date(),
+  updatedAt: DateSchema,
   weightKg: WeightSchema.nullable()
 })
 export type GetCurrentAthleteResponse = z.infer<typeof GetCurrentAthleteResponseSchema>

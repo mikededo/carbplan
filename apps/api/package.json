@@ -3,12 +3,18 @@
   "type": "module",
   "version": "0.0.0",
   "module": "src/index.js",
+  "portless": {
+    "appPort": 3000,
+    "name": "api.carbplan",
+    "script": "dev:app"
+  },
   "scripts": {
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "bun vitest",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "portless",
+    "dev:app": "bun run --watch src/index.ts"
   },
   "dependencies": {
     "@carbplan/auth": "workspace:*",

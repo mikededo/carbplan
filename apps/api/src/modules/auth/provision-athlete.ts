@@ -1,6 +1,7 @@
-import type { Db } from '@carbplan/db'
+import type { AthleteId, Db } from '@carbplan/db'
 
 import { athletes } from '@carbplan/db'
+import { parseAthleteId } from '@carbplan/domain/athlete'
 
 export type AuthUserPayload = {
   email?: null | string
@@ -9,7 +10,7 @@ export type AuthUserPayload = {
 
 export type AthletePayload = {
   email: string
-  id: string
+  id: AthleteId
 }
 
 export type AthleteProvisioningRepository = {
@@ -27,7 +28,7 @@ export const toAthletePayload = (user: AuthUserPayload): AthletePayload | null =
 
   return {
     email: user.email,
-    id: user.id
+    id: parseAthleteId(user.id)
   }
 }
 

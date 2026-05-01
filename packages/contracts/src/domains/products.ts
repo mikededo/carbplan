@@ -1,6 +1,8 @@
 import { ProductFormSchema } from '@carbplan/domain/product'
 import * as z from 'zod'
 
+import { DateSchema } from './date'
+
 export const FavoriteProductsListResponseSchema = z.array(
   z.object({
     brand: z.object({
@@ -12,7 +14,7 @@ export const FavoriteProductsListResponseSchema = z.array(
     caffeineMg: z.number().nullable(),
     calories: z.number().nullable(),
     carbsG: z.number().nullable(),
-    createdAt: z.date(),
+    createdAt: DateSchema,
     fatG: z.number().nullable(),
     flavor: z.string().trim().nullable(),
     form: ProductFormSchema,
@@ -28,8 +30,7 @@ export const FavoriteProductsListResponseSchema = z.array(
     slug: z.string().trim(),
     sodiumMg: z.number().nullable(),
     sugarG: z.number().nullable(),
-    updatedAt: z.date()
+    updatedAt: DateSchema
   })
 )
 export type FavoriteProductsListResponse = z.infer<typeof FavoriteProductsListResponseSchema>
-

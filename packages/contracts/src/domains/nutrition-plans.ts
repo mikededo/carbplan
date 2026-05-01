@@ -1,6 +1,7 @@
 import * as z from 'zod'
 
 import { createPaginationSuccessSchema, PaginationApiMeta } from '../api'
+import { DateSchema } from './date'
 import { createSortSchema, OffsetPaginationQuerySchema } from './pagination'
 
 const DateOnlySchema = z.iso.date()
@@ -23,8 +24,8 @@ export const NutritionPlansListResultSchema = createPaginationSuccessSchema(
   z.array(
     z.object({
       athleteId: z.uuid(),
-      createdAt: z.date(),
-      date: z.date(),
+      createdAt: DateSchema,
+      date: DateSchema,
       durationMinutes: z.number().nullable(),
       id: z.uuid(),
       isActive: z.boolean(),
@@ -36,10 +37,12 @@ export const NutritionPlansListResultSchema = createPaginationSuccessSchema(
         totalCarbsG: z.number().min(0).default(0)
       }),
       targetCarbsPerHour: z.number().nullable(),
-      updatedAt: z.date(),
+      updatedAt: DateSchema,
       workoutId: z.uuid().nullable(),
       workoutSnapshot: z.unknown().nullable()
     })
   ),
   PaginationApiMeta
 )
+export type NutritionPlansListResult = z.infer<typeof NutritionPlansListResultSchema>
+export type NutritionPlanListItem = NutritionPlansListResult['data'][number]

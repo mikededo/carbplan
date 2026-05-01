@@ -1,6 +1,10 @@
-import type { PowerZone, PowerZoneModel, PowerZonesData } from './schemas'
+import type { PowerZone, PowerZoneModel, PowerZonesData } from '@carbplan/domain/power'
 
-import { POWER_ZONE_PRESETS } from './presets'
+import { POWER_ZONE_PRESETS, PowerZoneModelSchema, PowerZonesDataSchema } from '@carbplan/domain/power'
+
+export const isPowerPresetZoneModel = (value: unknown): value is PowerZoneModel =>
+  PowerZoneModelSchema.safeParse(value).success
+export const parsePowerZones = (data: unknown) => PowerZonesDataSchema.safeParse(data)
 
 type CalculatePowerZonesParams = {
   ftp: number
