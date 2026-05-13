@@ -1,6 +1,6 @@
 <script lang="ts">
     import { ROUTES } from '$lib/constants/routes'
-    import { Logo } from '$lib/domain/ui/logo'
+    import Logo from '$lib/domain/ui/logo/logo.svelte'
 
     import { FOOTER_LINKS } from '../constants'
 </script>

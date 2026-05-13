@@ -1,7 +1,9 @@
 <script lang="ts">
     import type { ZonePreset } from '../types'
 
-    import * as Tooltip from '$lib/domain/ui/tooltip'
+    import TooltipContent from '$lib/domain/ui/tooltip/tooltip-content.svelte'
+    import TooltipTrigger from '$lib/domain/ui/tooltip/tooltip-trigger.svelte'
+    import TooltipRoot from '$lib/domain/ui/tooltip/tooltip.svelte'
 
     type Props = {
         zones: ZonePreset[]
@@ -23,17 +25,16 @@
 
 <div class="flex h-8 w-full overflow-hidden rounded-md">
     {#each zones as zone, i}
-        <Tooltip.Root>
-            <Tooltip.Trigger
+        <TooltipRoot>
+            <TooltipTrigger
                 class="flex items-center justify-center text-xs font-medium text-white transition-opacity hover:opacity-80"
                 style="width: {zoneWidths()[i]}%; background-color: {zone.color};"
             >
                 <span class="truncate px-1">Z{i + 1}</span>
-            </Tooltip.Trigger>
-            <Tooltip.Content>
+            </TooltipTrigger>
+            <TooltipContent>
                 <p class="font-medium">{zone.name}</p>
-            </Tooltip.Content>
-        </Tooltip.Root>
+            </TooltipContent>
+        </TooltipRoot>
     {/each}
 </div>
-

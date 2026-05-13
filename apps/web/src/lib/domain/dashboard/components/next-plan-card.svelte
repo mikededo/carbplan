@@ -4,9 +4,12 @@
     import { CalendarIcon, ClockIcon, PenIcon, ZapIcon } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'
-    import { PageSection } from '$lib/domain/layout/components'
-    import { Button } from '$lib/domain/ui/button'
-    import * as Card from '$lib/domain/ui/card'
+    import PageSection from '$lib/domain/layout/components/page-section.svelte'
+    import Button from '$lib/domain/ui/button/button.svelte'
+    import CardContent from '$lib/domain/ui/card/card-content.svelte'
+    import CardHeader from '$lib/domain/ui/card/card-header.svelte'
+    import CardTitle from '$lib/domain/ui/card/card-title.svelte'
+    import CardRoot from '$lib/domain/ui/card/card.svelte'
 
     type Props = { plan: DashboardPlan | null }
     const { plan }: Props = $props()
@@ -44,10 +47,10 @@
 
 <PageSection header="Next plan">
     {#if plan}
-        <Card.Root class="gap-0 rounded-md border-primary/20 bg-primary/5 py-4">
-            <Card.Header class="flex-row items-start justify-between space-y-0 px-4 pb-3">
+        <CardRoot class="gap-0 rounded-md border-primary/20 bg-primary/5 py-4">
+            <CardHeader class="flex-row items-start justify-between space-y-0 px-4 pb-3">
                 <div>
-                    <Card.Title class="text-lg">{plan.name}</Card.Title>
+                    <CardTitle class="text-lg">{plan.name}</CardTitle>
                     <div class="mt-1 flex items-center gap-4 text-sm text-muted-foreground">
                         <span class="flex items-center gap-1.5">
                             <CalendarIcon class="size-3.5" />
@@ -63,8 +66,8 @@
                     <PenIcon class="size-3.5" />
                     Edit
                 </Button>
-            </Card.Header>
-            <Card.Content class="px-4">
+            </CardHeader>
+            <CardContent class="px-4">
                 <div class="flex flex-wrap gap-4">
                     {#if plan.targetCarbsPerHour}
                         <div class="flex items-center gap-2 rounded-md bg-background px-3 py-2">
@@ -92,15 +95,15 @@
                         </div>
                     {/if}
                 </div>
-            </Card.Content>
-        </Card.Root>
+            </CardContent>
+        </CardRoot>
     {:else}
-        <Card.Root class="gap-2 rounded-md border-dashed py-6">
-            <Card.Content class="flex flex-col items-center justify-center px-4 text-center">
+        <CardRoot class="gap-2 rounded-md border-dashed py-6">
+            <CardContent class="flex flex-col items-center justify-center px-4 text-center">
                 <p class="text-sm text-muted-foreground">
                     No upcoming plans. Create one to see it here.
                 </p>
-            </Card.Content>
-        </Card.Root>
+            </CardContent>
+        </CardRoot>
     {/if}
 </PageSection>

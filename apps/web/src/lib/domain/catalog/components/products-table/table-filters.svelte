@@ -4,11 +4,15 @@
         SearchIcon
     } from '@lucide/svelte'
 
-    import { Input } from '$lib/domain/ui/input'
-    import { Kbd, KbdGroup } from '$lib/domain/ui/kbd'
-    import * as Select from '$lib/domain/ui/select'
+    import Input from '$lib/domain/ui/input/input.svelte'
+    import KbdGroup from '$lib/domain/ui/kbd/kbd-group.svelte'
+    import Kbd from '$lib/domain/ui/kbd/kbd.svelte'
+    import SelectContent from '$lib/domain/ui/select/select-content.svelte'
+    import SelectItem from '$lib/domain/ui/select/select-item.svelte'
+    import SelectTrigger from '$lib/domain/ui/select/select-trigger.svelte'
+    import SelectRoot from '$lib/domain/ui/select/select.svelte'
 
-    import { getProductsTableContext } from '../../context'
+    import { getProductsTableContext } from '../../context/products-table.svelte'
     import AllFilters, { ALL_TYPES_OPTION, formOptions } from './all-filters.svelte'
 
     let inputRef = $state<HTMLInputElement | null>(null)
@@ -57,12 +61,12 @@
             <Kbd>L</Kbd>
         </KbdGroup>
     </div>
-    <Select.Root
+    <SelectRoot
         type="multiple"
         value={selectedProductForms}
         onValueChange={table.onProductFormChange}
     >
-        <Select.Trigger class="hidden w-36 shrink-0 @xl/page-content:inline-flex">
+        <SelectTrigger class="hidden w-36 shrink-0 @xl/page-content:inline-flex">
             {#if selectedProductForms.length > 0}
                 <span class="w-28 truncate text-left">
                     {selectedProductForms
@@ -76,19 +80,19 @@
                     All types
                 </span>
             {/if}
-        </Select.Trigger>
-        <Select.Content>
-            <Select.Item value={ALL_TYPES_OPTION.value}>
+        </SelectTrigger>
+        <SelectContent>
+            <SelectItem value={ALL_TYPES_OPTION.value}>
                 <ALL_TYPES_OPTION.Icon class="size-3.5" />
                 {ALL_TYPES_OPTION.label}
-            </Select.Item>
+            </SelectItem>
             {#each formOptions as option (option.value)}
-                <Select.Item value={option.value}>
+                <SelectItem value={option.value}>
                     <option.Icon class="size-3.5" />
                     {option.label}
-                </Select.Item>
+                </SelectItem>
             {/each}
-        </Select.Content>
-    </Select.Root>
+        </SelectContent>
+    </SelectRoot>
     <AllFilters />
 </div>

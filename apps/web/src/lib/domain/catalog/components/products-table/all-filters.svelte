@@ -13,7 +13,7 @@
 
     import { formatProductForm } from '$lib/domain/product/components/product-form-badge.svelte'
 
-    import { CAFFEINE_MAX, CALORIES_MAX } from '../../context'
+    import { CAFFEINE_MAX, CALORIES_MAX } from '../../context/products-table.svelte'
 
     export const ALL_TYPES_OPTION = { Icon: ComponentIcon, label: 'All types', value: '' }
     export const formOptions = [
@@ -36,21 +36,22 @@
 
     import { BuildingIcon, SlidersHorizontalIcon } from '@lucide/svelte'
 
-    import { Button } from '$lib/domain/ui/button'
-    import { Label } from '$lib/domain/ui/label'
-    import * as Select from '$lib/domain/ui/select'
-    import {
-        Sheet,
-        SheetContent,
-        SheetFooter,
-        SheetHeader,
-        SheetTitle,
-        SheetTrigger
-    } from '$lib/domain/ui/sheet'
-    import { Slider } from '$lib/domain/ui/slider'
-    import { Toggle } from '$lib/domain/ui/toggle'
+    import Button from '$lib/domain/ui/button/button.svelte'
+    import Label from '$lib/domain/ui/label/label.svelte'
+    import SelectContent from '$lib/domain/ui/select/select-content.svelte'
+    import SelectItem from '$lib/domain/ui/select/select-item.svelte'
+    import SelectTrigger from '$lib/domain/ui/select/select-trigger.svelte'
+    import SelectRoot from '$lib/domain/ui/select/select.svelte'
+    import SheetContent from '$lib/domain/ui/sheet/sheet-content.svelte'
+    import SheetFooter from '$lib/domain/ui/sheet/sheet-footer.svelte'
+    import SheetHeader from '$lib/domain/ui/sheet/sheet-header.svelte'
+    import SheetTitle from '$lib/domain/ui/sheet/sheet-title.svelte'
+    import SheetTrigger from '$lib/domain/ui/sheet/sheet-trigger.svelte'
+    import Sheet from '$lib/domain/ui/sheet/sheet.svelte'
+    import Slider from '$lib/domain/ui/slider/slider.svelte'
+    import Toggle from '$lib/domain/ui/toggle/toggle.svelte'
 
-    import { getProductsTableContext } from '../../context'
+    import { getProductsTableContext } from '../../context/products-table.svelte'
 
     const table = getProductsTableContext()
 
@@ -240,12 +241,12 @@
 
             <div class="flex flex-col gap-2">
                 <Label>Brands</Label>
-                <Select.Root
+                <SelectRoot
                     type="multiple"
                     value={selectedBrands}
                     onValueChange={table.onBrandFilterChange}
                 >
-                    <Select.Trigger class="w-full">
+                    <SelectTrigger class="w-full">
                         {#if selectedBrands.length > 0}
                             <span class="truncate text-left">
                                 {selectedBrands
@@ -259,18 +260,18 @@
                                 All brands
                             </span>
                         {/if}
-                    </Select.Trigger>
-                    <Select.Content class="max-h-64">
+                    </SelectTrigger>
+                    <SelectContent class="max-h-64">
                         {#each sortedBrands as brand (brand.id)}
-                            <Select.Item value={brand.id}>
+                            <SelectItem value={brand.id}>
                                 {brand.name}
                                 <span class="ml-auto text-xs text-muted-foreground">
                                     {brand.products.length}
                                 </span>
-                            </Select.Item>
+                            </SelectItem>
                         {/each}
-                    </Select.Content>
-                </Select.Root>
+                    </SelectContent>
+                </SelectRoot>
             </div>
         </div>
 

@@ -3,10 +3,16 @@
 
     import { LoaderCircleIcon, SaveIcon, Trash2Icon } from '@lucide/svelte'
 
-    import { Alert, AlertDescription } from '$lib/domain/ui/alert'
-    import { Button } from '$lib/domain/ui/button'
-    import * as Dialog from '$lib/domain/ui/dialog'
-    import { ScrollArea } from '$lib/domain/ui/scroll-area'
+    import AlertDescription from '$lib/domain/ui/alert/alert-description.svelte'
+    import Alert from '$lib/domain/ui/alert/alert.svelte'
+    import Button from '$lib/domain/ui/button/button.svelte'
+    import DialogContent from '$lib/domain/ui/dialog/dialog-content.svelte'
+    import DialogDescription from '$lib/domain/ui/dialog/dialog-description.svelte'
+    import DialogFooter from '$lib/domain/ui/dialog/dialog-footer.svelte'
+    import DialogHeader from '$lib/domain/ui/dialog/dialog-header.svelte'
+    import DialogTitle from '$lib/domain/ui/dialog/dialog-title.svelte'
+    import DialogRoot from '$lib/domain/ui/dialog/dialog.svelte'
+    import ScrollArea from '$lib/domain/ui/scroll-area/scroll-area.svelte'
 
     import { createProductFormContext } from './context.svelte'
     import DeactivateProductAlert from './deactivate-product-alert.svelte'
@@ -41,16 +47,16 @@
     }
 </script>
 
-<Dialog.Root {open} {onOpenChange}>
-    <Dialog.Content class="max-h-[90vh] gap-6 sm:max-w-2xl">
-        <Dialog.Header>
-            <Dialog.Title>
+<DialogRoot {open} {onOpenChange}>
+    <DialogContent class="max-h-[90vh] gap-6 sm:max-w-2xl">
+        <DialogHeader>
+            <DialogTitle>
                 {context.isEditing ? 'Edit Product' : 'Add Product'}
-            </Dialog.Title>
-            <Dialog.Description>
+            </DialogTitle>
+            <DialogDescription>
                 {context.isEditing ? 'Update the product details below.' : 'Fill in the product details below.'}
-            </Dialog.Description>
-        </Dialog.Header>
+            </DialogDescription>
+        </DialogHeader>
 
         <ScrollArea class="-mx-6 max-h-[60vh] border-y">
             <form class="flex flex-col gap-4 p-6 [&_input]:placeholder:text-sm" onsubmit={onSubmit}>
@@ -69,7 +75,7 @@
             </form>
         </ScrollArea>
 
-        <Dialog.Footer class="flex-row justify-between">
+        <DialogFooter class="flex-row justify-between">
             {#if context.isEditing}
                 <Button
                     class="mr-auto"
@@ -101,8 +107,8 @@
                     {/if}
                 </Button>
             </div>
-        </Dialog.Footer>
-    </Dialog.Content>
-</Dialog.Root>
+        </DialogFooter>
+    </DialogContent>
+</DialogRoot>
 
 <DeactivateProductAlert bind:open={showDeactivateConfirm} onConfirm={onDeactivateConfirm} />

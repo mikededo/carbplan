@@ -1,11 +1,17 @@
 <script lang="ts">
-    import type { CatalogBrand } from '$lib/domain/catalog/queries'
+    import type { CatalogBrand } from '$lib/domain/catalog/queries/catalog'
 
     import { LoaderCircleIcon, SaveIcon } from '@lucide/svelte'
 
-    import { Alert, AlertDescription } from '$lib/domain/ui/alert'
-    import { Button } from '$lib/domain/ui/button'
-    import * as Dialog from '$lib/domain/ui/dialog'
+    import AlertDescription from '$lib/domain/ui/alert/alert-description.svelte'
+    import Alert from '$lib/domain/ui/alert/alert.svelte'
+    import Button from '$lib/domain/ui/button/button.svelte'
+    import DialogContent from '$lib/domain/ui/dialog/dialog-content.svelte'
+    import DialogDescription from '$lib/domain/ui/dialog/dialog-description.svelte'
+    import DialogFooter from '$lib/domain/ui/dialog/dialog-footer.svelte'
+    import DialogHeader from '$lib/domain/ui/dialog/dialog-header.svelte'
+    import DialogTitle from '$lib/domain/ui/dialog/dialog-title.svelte'
+    import DialogRoot from '$lib/domain/ui/dialog/dialog.svelte'
 
     import BrandFormFields from './brand-form-fields.svelte'
     import { createBrandFormContext } from './context.svelte'
@@ -25,14 +31,14 @@
     }
 </script>
 
-<Dialog.Root {open} {onOpenChange}>
-    <Dialog.Content class="max-h-[90vh] sm:max-w-lg">
-        <Dialog.Header>
-            <Dialog.Title>{state.isEditing ? 'Edit Brand' : 'Add Brand'}</Dialog.Title>
-            <Dialog.Description>
+<DialogRoot {open} {onOpenChange}>
+    <DialogContent class="max-h-[90vh] sm:max-w-lg">
+        <DialogHeader>
+            <DialogTitle>{state.isEditing ? 'Edit Brand' : 'Add Brand'}</DialogTitle>
+            <DialogDescription>
                 {state.isEditing ? 'Update the brand details below.' : 'Fill in the brand details below.'}
-            </Dialog.Description>
-        </Dialog.Header>
+            </DialogDescription>
+        </DialogHeader>
 
         <form class="flex max-h-[60vh] flex-col gap-4" onsubmit={onSubmit}>
             <BrandFormFields />
@@ -46,7 +52,7 @@
             {/if}
         </form>
 
-        <Dialog.Footer>
+        <DialogFooter>
             <Button disabled={state.isPending} variant="ghost" onclick={state.close}>
                 Cancel
             </Button>
@@ -63,6 +69,6 @@
                     {state.isEditing ? 'Update Brand' : 'Add Brand'}
                 {/if}
             </Button>
-        </Dialog.Footer>
-    </Dialog.Content>
-</Dialog.Root>
+        </DialogFooter>
+    </DialogContent>
+</DialogRoot>

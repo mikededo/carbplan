@@ -1,8 +1,8 @@
 <script lang="ts">
     import { ArrowRightIcon, ChevronRightIcon } from '@lucide/svelte'
 
-    import { Badge } from '$lib/domain/ui/badge'
-    import { Button } from '$lib/domain/ui/button'
+    import Badge from '$lib/domain/ui/badge/badge.svelte'
+    import Button from '$lib/domain/ui/button/button.svelte'
     import { InView } from '$lib/hooks/in-view.svelte'
     import { cn } from '$lib/utils'
 

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { ChevronRightIcon } from '@lucide/svelte'
 
-    import { Badge } from '$lib/domain/ui/badge'
+    import Badge from '$lib/domain/ui/badge/badge.svelte'
     import { cn } from '$lib/utils'
 
     import { entryStyles } from '../../helpers'
@@ -25,7 +25,7 @@
     const FILTERS = ['Gels', 'Bars', 'Drinks', 'Chews', 'Caffeine']
 </script>
 
-<div class="overflow-hidden rounded-xl bg-accent shadow-2xl">
+<div class="overflow-hidden rounded-xl bg-accent">
     <span class="block pt-2 pb-1.5 pl-3 text-sm font-semibold uppercase">Supplements</span>
 
     <div class="rounded-xl border border-border bg-card">
@@ -68,7 +68,7 @@
                     >
                         <div class="flex items-center gap-3">
                             <div
-                                class={cn('flex size-10 items-center justify-center rounded-lg text-sm font-bold text-white shadow-sm', brand.color)}
+                                class={cn('flex size-10 items-center justify-center rounded-lg text-sm font-bold text-white', brand.color)}
                             >
                                 {brand.brand[0]}
                             </div>

@@ -1,6 +1,9 @@
 <script lang="ts">
-    import * as Field from '$lib/domain/ui/field'
-    import { Input } from '$lib/domain/ui/input'
+    import FieldError from '$lib/domain/ui/field/field-error.svelte'
+    import FieldLabel from '$lib/domain/ui/field/field-label.svelte'
+    import FieldSeparator from '$lib/domain/ui/field/field-separator.svelte'
+    import FieldRoot from '$lib/domain/ui/field/field.svelte'
+    import Input from '$lib/domain/ui/input/input.svelte'
 
     import { getProductFormContext } from './context.svelte'
 
@@ -19,12 +22,12 @@
     }
 </script>
 
-<Field.Separator />
+<FieldSeparator />
 <p class="text-sm font-medium">Serving Information</p>
 
 <div class="grid grid-cols-3 gap-2 sm:gap-4">
-    <Field.Field data-invalid={!!context.errors.servingSize || undefined}>
-        <Field.Label for="servingSize">Size *</Field.Label>
+    <FieldRoot data-invalid={!!context.errors.servingSize || undefined}>
+        <FieldLabel for="servingSize">Size *</FieldLabel>
         <Input
             id="servingSize"
             min="0"
@@ -35,11 +38,11 @@
             oninput={onServingSizeInput}
             aria-invalid={!!context.errors.servingSize}
         />
-        <Field.Error errors={context.errors.servingSize ? [{ message: context.errors.servingSize }] : undefined} />
-    </Field.Field>
+        <FieldError errors={context.errors.servingSize ? [{ message: context.errors.servingSize }] : undefined} />
+    </FieldRoot>
 
-    <Field.Field data-invalid={!!context.errors.servingUnit || undefined}>
-        <Field.Label for="servingUnit">Unit *</Field.Label>
+    <FieldRoot data-invalid={!!context.errors.servingUnit || undefined}>
+        <FieldLabel for="servingUnit">Unit *</FieldLabel>
         <Input
             id="servingUnit"
             placeholder="e.g. g, ml"
@@ -47,11 +50,11 @@
             oninput={onServingUnitInput}
             aria-invalid={!!context.errors.servingUnit}
         />
-        <Field.Error errors={context.errors.servingUnit ? [{ message: context.errors.servingUnit }] : undefined} />
-    </Field.Field>
+        <FieldError errors={context.errors.servingUnit ? [{ message: context.errors.servingUnit }] : undefined} />
+    </FieldRoot>
 
-    <Field.Field data-invalid={!!context.errors.servingsPerPackage || undefined}>
-        <Field.Label for="servingsPerPackage">Per Package</Field.Label>
+    <FieldRoot data-invalid={!!context.errors.servingsPerPackage || undefined}>
+        <FieldLabel for="servingsPerPackage">Per Package</FieldLabel>
         <Input
             id="servingsPerPackage"
             min="1"
@@ -61,6 +64,6 @@
             oninput={onServingsPerPackageInput}
             aria-invalid={!!context.errors.servingsPerPackage}
         />
-        <Field.Error errors={context.errors.servingsPerPackage ? [{ message: context.errors.servingsPerPackage }] : undefined} />
-    </Field.Field>
+        <FieldError errors={context.errors.servingsPerPackage ? [{ message: context.errors.servingsPerPackage }] : undefined} />
+    </FieldRoot>
 </div>

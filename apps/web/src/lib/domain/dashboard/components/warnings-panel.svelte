@@ -5,7 +5,9 @@
 
     import { CircleCheckBigIcon, CoffeeIcon, TriangleAlertIcon, ZapIcon } from '@lucide/svelte'
 
-    import * as Alert from '$lib/domain/ui/alert'
+    import AlertDescription from '$lib/domain/ui/alert/alert-description.svelte'
+    import AlertTitle from '$lib/domain/ui/alert/alert-title.svelte'
+    import AlertRoot from '$lib/domain/ui/alert/alert.svelte'
 
     type AthleteData = Pick<GetCurrentAthleteResponse, 'maxCarbIntakeGPerHr'>
 
@@ -51,18 +53,18 @@
     <section class="space-y-3">
         {#if hasWarnings}
             {#each warnings as warning (warning.type)}
-                <Alert.Root variant="destructive">
+                <AlertRoot variant="destructive">
                     <TriangleAlertIcon class="size-4" />
-                    <Alert.Title>Warning</Alert.Title>
-                    <Alert.Description>{warning.message}</Alert.Description>
-                </Alert.Root>
+                    <AlertTitle>Warning</AlertTitle>
+                    <AlertDescription>{warning.message}</AlertDescription>
+                </AlertRoot>
             {/each}
         {:else if plan.nutrition.itemCount && plan.nutrition.itemCount > 0}
-            <Alert.Root class="border-green-500/20 bg-green-500/5 text-green-700 dark:text-green-400">
+            <AlertRoot class="border-green-500/20 bg-green-500/5 text-green-700 dark:text-green-400">
                 <CircleCheckBigIcon class="size-4" />
-                <Alert.Title>Plan looks good</Alert.Title>
-                <Alert.Description>Your next plan is within your targets.</Alert.Description>
-            </Alert.Root>
+                <AlertTitle>Plan looks good</AlertTitle>
+                <AlertDescription>Your next plan is within your targets.</AlertDescription>
+            </AlertRoot>
         {/if}
     </section>
 {/if}

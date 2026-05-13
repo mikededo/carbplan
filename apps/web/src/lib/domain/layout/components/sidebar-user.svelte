@@ -4,13 +4,22 @@
     import SettingsIcon from '@lucide/svelte/icons/settings'
 
     import { ROUTES } from '$lib/constants/routes'
-    import { useAthleteQuery } from '$lib/domain/settings/queries'
-    import { ThemeToggle } from '$lib/domain/theme/components'
-    import * as Avatar from '$lib/domain/ui/avatar'
-    import { Button } from '$lib/domain/ui/button'
-    import * as DropdownMenu from '$lib/domain/ui/dropdown-menu'
-    import * as Sidebar from '$lib/domain/ui/sidebar'
-    import { useSidebar } from '$lib/domain/ui/sidebar'
+    import { useAthleteQuery } from '$lib/domain/settings/queries/use-athlete.svelte'
+    import ThemeToggle from '$lib/domain/theme/components/theme-toggle.svelte'
+    import AvatarFallback from '$lib/domain/ui/avatar/avatar-fallback.svelte'
+    import AvatarImage from '$lib/domain/ui/avatar/avatar-image.svelte'
+    import AvatarRoot from '$lib/domain/ui/avatar/avatar.svelte'
+    import Button from '$lib/domain/ui/button/button.svelte'
+    import DropdownMenuContent from '$lib/domain/ui/dropdown-menu/dropdown-menu-content.svelte'
+    import DropdownMenuGroup from '$lib/domain/ui/dropdown-menu/dropdown-menu-group.svelte'
+    import DropdownMenuItem from '$lib/domain/ui/dropdown-menu/dropdown-menu-item.svelte'
+    import DropdownMenuSeparator from '$lib/domain/ui/dropdown-menu/dropdown-menu-separator.svelte'
+    import DropdownMenuTrigger from '$lib/domain/ui/dropdown-menu/dropdown-menu-trigger.svelte'
+    import DropdownMenuRoot from '$lib/domain/ui/dropdown-menu/dropdown-menu.svelte'
+    import { useSidebar } from '$lib/domain/ui/sidebar/context.svelte.js'
+    import SidebarMenuButton from '$lib/domain/ui/sidebar/sidebar-menu-button.svelte'
+    import SidebarMenuItem from '$lib/domain/ui/sidebar/sidebar-menu-item.svelte'
+    import SidebarMenu from '$lib/domain/ui/sidebar/sidebar-menu.svelte'
 
     type Props = {
         onLogOut: () => void
@@ -31,48 +40,48 @@
     )
 </script>
 
-<Sidebar.Menu>
-    <Sidebar.MenuItem>
-        <DropdownMenu.Root>
-            <DropdownMenu.Trigger>
+<SidebarMenu>
+    <SidebarMenuItem>
+        <DropdownMenuRoot>
+            <DropdownMenuTrigger>
                 {#snippet child({ props })}
-                    <Sidebar.MenuButton
+                    <SidebarMenuButton
                         {...props}
                         class="hover:bg-background data-[state=open]:bg-background data-[state=open]:text-sidebar-accent-foreground"
                         size="lg"
                     >
-                        <Avatar.Root class="size-8 rounded-lg">
-                            <Avatar.Image alt={athlete?.fullName ?? 'Avatar'} src={athlete?.avatarUrl} />
-                            <Avatar.Fallback class="rounded-lg">{initials}</Avatar.Fallback>
-                        </Avatar.Root>
+                        <AvatarRoot class="size-8 rounded-lg">
+                            <AvatarImage alt={athlete?.fullName ?? 'Avatar'} src={athlete?.avatarUrl} />
+                            <AvatarFallback class="rounded-lg">{initials}</AvatarFallback>
+                        </AvatarRoot>
                         <div class="grid flex-1 text-start text-sm/tight">
                             <span class="truncate font-medium">{athlete?.fullName ?? 'User'}</span>
                         </div>
                         <ChevronsUpDownIcon class="ms-auto size-4" />
-                    </Sidebar.MenuButton>
+                    </SidebarMenuButton>
                 {/snippet}
-            </DropdownMenu.Trigger>
-            <DropdownMenu.Content
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
                 class="w-(--bits-dropdown-menu-anchor-width) min-w-56"
                 align="end"
                 side={sidebar.isMobile ? 'bottom' : 'top'}
                 sideOffset={4}
             >
-                <DropdownMenu.Group>
+                <DropdownMenuGroup>
                     <ThemeToggle />
-                </DropdownMenu.Group>
-                <DropdownMenu.Group>
-                    <DropdownMenu.Item>
+                </DropdownMenuGroup>
+                <DropdownMenuGroup>
+                    <DropdownMenuItem>
                         {#snippet child({ props })}
                             <a href={ROUTES.settings} {...props}>
                                 <SettingsIcon />
                                 Settings
                             </a>
                         {/snippet}
-                    </DropdownMenu.Item>
-                </DropdownMenu.Group>
-                <DropdownMenu.Separator />
-                <DropdownMenu.Item>
+                    </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
                     {#snippet child({ props })}
                         <Button
                             {...props}
@@ -85,9 +94,8 @@
                             Log out
                         </Button>
                     {/snippet}
-                </DropdownMenu.Item>
-            </DropdownMenu.Content>
-        </DropdownMenu.Root>
-    </Sidebar.MenuItem>
-</Sidebar.Menu>
-
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenuRoot>
+    </SidebarMenuItem>
+</SidebarMenu>

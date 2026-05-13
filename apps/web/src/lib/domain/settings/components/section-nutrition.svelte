@@ -2,9 +2,11 @@
     import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
     import { Clock2Icon, Clock3Icon, Clock6Icon, InfoIcon } from '@lucide/svelte'
 
-    import { Alert, AlertDescription, AlertTitle } from '$lib/domain/ui/alert'
-    import { Label } from '$lib/domain/ui/label'
-    import { Slider } from '$lib/domain/ui/slider'
+    import AlertDescription from '$lib/domain/ui/alert/alert-description.svelte'
+    import AlertTitle from '$lib/domain/ui/alert/alert-title.svelte'
+    import Alert from '$lib/domain/ui/alert/alert.svelte'
+    import Label from '$lib/domain/ui/label/label.svelte'
+    import Slider from '$lib/domain/ui/slider/slider.svelte'
 
     import MetricCard from './metric-card.svelte'
     import SettingsSection from './settings-section.svelte'
@@ -74,4 +76,3 @@
         />
     </div>
 </SettingsSection>
-

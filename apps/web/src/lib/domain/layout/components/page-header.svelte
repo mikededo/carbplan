@@ -9,16 +9,14 @@
 <script lang="ts">
     import type { Snippet } from 'svelte'
 
-    import {
-        Breadcrumb,
-        BreadcrumbItem,
-        BreadcrumbLink,
-        BreadcrumbList,
-        BreadcrumbPage,
-        BreadcrumbSeparator
-    } from '$lib/domain/ui/breadcrumb'
-    import { Separator } from '$lib/domain/ui/separator'
-    import * as Sidebar from '$lib/domain/ui/sidebar'
+    import BreadcrumbItem from '$lib/domain/ui/breadcrumb/breadcrumb-item.svelte'
+    import BreadcrumbLink from '$lib/domain/ui/breadcrumb/breadcrumb-link.svelte'
+    import BreadcrumbList from '$lib/domain/ui/breadcrumb/breadcrumb-list.svelte'
+    import BreadcrumbPage from '$lib/domain/ui/breadcrumb/breadcrumb-page.svelte'
+    import BreadcrumbSeparator from '$lib/domain/ui/breadcrumb/breadcrumb-separator.svelte'
+    import Breadcrumb from '$lib/domain/ui/breadcrumb/breadcrumb.svelte'
+    import Separator from '$lib/domain/ui/separator/separator.svelte'
+    import SidebarTrigger from '$lib/domain/ui/sidebar/sidebar-trigger.svelte'
 
     type Props = {
         crumbs: Crumb[]
@@ -36,7 +34,7 @@
     class="flex h-16 w-full shrink-0 items-center gap-2 border-b transition-[width,height] ease-out group-has-data-[collapsible=icon]/sidebar-wrapper:h-12"
 >
     <div class="flex w-full items-center gap-2 px-4">
-        <Sidebar.Trigger class="-ms-1" />
+        <SidebarTrigger class="-ms-1" />
         <Separator class="me-2 data-[orientation=vertical]:h-4" orientation="vertical" />
         <Breadcrumb>
             <BreadcrumbList>
@@ -70,4 +68,3 @@
         {@render children?.()}
     </div>
 </header>
-

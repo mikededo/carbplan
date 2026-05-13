@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { CatalogProduct } from '@carbplan/contracts/catalog'
 
-    import type { CatalogBrand, CatalogResult } from '../../queries'
+    import type { CatalogBrand, CatalogResult } from '../../queries/catalog'
 
     import {
         ArrowDownIcon,
@@ -11,11 +11,16 @@
         PlusIcon
     } from '@lucide/svelte'
 
-    import { ProductFormBadge } from '$lib/domain/product/components'
-    import * as Table from '$lib/domain/ui/table'
+    import ProductFormBadge from '$lib/domain/product/components/product-form-badge.svelte'
+    import TableBody from '$lib/domain/ui/table/table-body.svelte'
+    import TableCell from '$lib/domain/ui/table/table-cell.svelte'
+    import TableHead from '$lib/domain/ui/table/table-head.svelte'
+    import TableHeader from '$lib/domain/ui/table/table-header.svelte'
+    import TableRow from '$lib/domain/ui/table/table-row.svelte'
+    import TableRoot from '$lib/domain/ui/table/table.svelte'
     import { cn } from '$lib/utils'
 
-    import { createProductsTableContext, TABLE_COLUMNS } from '../../context'
+    import { createProductsTableContext, TABLE_COLUMNS } from '../../context/products-table.svelte'
     import CaffeineCell from './caffeine-cell.svelte'
     import TableFilters from './table-filters.svelte'
 
@@ -48,21 +53,21 @@
     <TableFilters />
 
     <div class="max-h-[calc(100vh-14rem)] overflow-auto rounded-md border" style="scrollbar-gutter: stable">
-        <Table.Root>
-            <Table.Header class="sticky top-0 z-10 bg-background">
-                <Table.Row>
+        <TableRoot>
+            <TableHeader class="sticky top-0 z-10 bg-background">
+                <TableRow>
                     {@render table_header()}
-                </Table.Row>
-            </Table.Header>
+                </TableRow>
+            </TableHeader>
 
-            <Table.Body>
+            <TableBody>
                 {#each table.filteredBrands as brand (brand.id)}
                     {@const isCollapsed = table.collapsedBrands.has(brand.id)}
-                    <Table.Row
+                    <TableRow
                         class="cursor-pointer bg-muted hover:bg-muted/80"
                         onclick={table.onToggleCollapseBrand(brand.id)}
                     >
-                        <Table.Cell colspan={TABLE_COLUMNS.length}>
+                        <TableCell colspan={TABLE_COLUMNS.length}>
                             <div class="flex items-center gap-2 font-medium">
                                 {#if isCollapsed}
                                     <PlusIcon class="size-3.5 shrink-0" />
@@ -80,12 +85,12 @@
                                     ({brand.products.length} products)
                                 </span>
                             </div>
-                        </Table.Cell>
-                    </Table.Row>
+                        </TableCell>
+                    </TableRow>
                     {#if !isCollapsed}
                         {#each brand.products as product (product.id)}
-                            <Table.Row>
-                                <Table.Cell class="min-w-120 pl-8">
+                            <TableRow>
+                                <TableCell class="min-w-120 pl-8">
                                     <button
                                         class="outline-none hover:underline"
                                         type="button"
@@ -98,30 +103,30 @@
                                             ({product.flavor})
                                         </span>
                                     {/if}
-                                </Table.Cell>
-                                <Table.Cell style="min-width: 96px">
+                                </TableCell>
+                                <TableCell style="min-width: 96px">
                                     <ProductFormBadge form={product.form} />
-                                </Table.Cell>
-                                <Table.Cell>{formatServing(product)}</Table.Cell>
-                                <Table.Cell>{formatValue(product.calories, 'kcal') ?? '-'}</Table.Cell>
-                                <Table.Cell>{formatValue(product.carbsG, 'g')}</Table.Cell>
-                                <Table.Cell>{formatValue(product.sugarG, 'g')}</Table.Cell>
-                                <Table.Cell>{formatValue(product.sodiumMg, 'mg')}</Table.Cell>
-                                <Table.Cell>
+                                </TableCell>
+                                <TableCell>{formatServing(product)}</TableCell>
+                                <TableCell>{formatValue(product.calories, 'kcal') ?? '-'}</TableCell>
+                                <TableCell>{formatValue(product.carbsG, 'g')}</TableCell>
+                                <TableCell>{formatValue(product.sugarG, 'g')}</TableCell>
+                                <TableCell>{formatValue(product.sodiumMg, 'mg')}</TableCell>
+                                <TableCell>
                                     <CaffeineCell caffeine={product.caffeineMg} />
-                                </Table.Cell>
-                            </Table.Row>
+                                </TableCell>
+                            </TableRow>
                         {/each}
                     {/if}
                 {:else}
-                    <Table.Row>
-                        <Table.Cell class="h-24 text-center" colspan={TABLE_COLUMNS.length}>
+                    <TableRow>
+                        <TableCell class="h-24 text-center" colspan={TABLE_COLUMNS.length}>
                             No products found.
-                        </Table.Cell>
-                    </Table.Row>
+                        </TableCell>
+                    </TableRow>
                 {/each}
-            </Table.Body>
-        </Table.Root>
+            </TableBody>
+        </TableRoot>
     </div>
 
     <p class="text-sm text-muted-foreground">
@@ -131,7 +136,7 @@
 
 {#snippet table_header()}
     {#each TABLE_COLUMNS as column (column.key)}
-        <Table.Head style={column.minSize ? `min-width: ${column.minSize}px` : undefined}>
+        <TableHead style={column.minSize ? `min-width: ${column.minSize}px` : undefined}>
             {#if column.sortable}
                 <button
                     class={cn('flex items-center gap-1.5 hover:text-foreground', column.key === 'name' && 'pl-6')}
@@ -152,6 +157,6 @@
             {:else}
                 {column.label}
             {/if}
-        </Table.Head>
+        </TableHead>
     {/each}
 {/snippet}

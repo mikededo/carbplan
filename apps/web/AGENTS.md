@@ -71,7 +71,8 @@ We should aim for a modular/atomic approach, minimizing shared logic, ensuring s
 - Use arrow function expressions
 - Prefer `satisfies` over `as`
 - Prefer object as parameters over positional parameters
-- Prefer absolute imports
+- Prefer relative imports within `apps/web/src`; use `$lib` only when a relative path would be impractical
+- Do not add barrel files (`index.ts`) or import from directory barrels
 
 ### Testing
 - Use `vitest` for unit tests
@@ -136,7 +137,7 @@ Use `queryOptions` for type-safe queries:
 ```ts
 import { queryOptions } from '@tanstack/svelte-query'
 
-import { queryKeys } from '$lib/domain/query/keys'
+import { queryKeys } from '../keys'
 
 export const athleteOptions = (maybeService: Result<MeService, void>) =>
   queryOptions({
@@ -150,7 +151,7 @@ export const athleteOptions = (maybeService: Result<MeService, void>) =>
 ```ts
 import { createQuery } from '@tanstack/svelte-query'
 
-import { getPrivateServicesContext } from '$lib/domain/services/context'
+import { getPrivateServicesContext } from '../../services/context'
 
 import { athleteOptions } from './athlete'
 

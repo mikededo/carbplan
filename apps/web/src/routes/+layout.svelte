@@ -6,7 +6,7 @@
     import { setAuthContext } from '$lib/domain/auth/context'
     import QueryProvider from '$lib/domain/query/provider.svelte'
     import { createPublicServicesContext } from '$lib/domain/services/context.js'
-    import { createThemeContext } from '$lib/domain/theme'
+    import { createThemeContext } from '$lib/domain/theme/context.svelte'
 
     const { children, data } = $props()
     const { queryClient } = $derived(data)

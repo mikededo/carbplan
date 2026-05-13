@@ -1,7 +1,7 @@
 import type { CatalogProduct } from '@carbplan/contracts/catalog'
 import type { ProductForm } from '@carbplan/domain/product'
 
-import type { CatalogResult } from '../queries'
+import type { CatalogResult } from '../queries/catalog'
 
 import { getContext, setContext } from 'svelte'
 import { SvelteSet } from 'svelte/reactivity'

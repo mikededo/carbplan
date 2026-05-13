@@ -1,7 +1,7 @@
 <script lang="ts">
     import '../root.css'
 
-    import { createThemeContext } from '$lib/domain/theme'
+    import { createThemeContext } from '$lib/domain/theme/context.svelte'
 
     const { children } = $props()
 

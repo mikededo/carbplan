@@ -1,9 +1,9 @@
-import type { CatalogBrand } from '$lib/domain/catalog/queries'
+import type { CatalogBrand } from '$lib/domain/catalog/queries/catalog'
 
 import { ResultAsync } from 'neverthrow'
 import { getContext, setContext } from 'svelte'
 
-import { createBrandMutation, updateBrandMutation } from '$lib/domain/catalog/queries'
+import { createBrandMutation, updateBrandMutation } from '$lib/domain/catalog/queries/mutations'
 import { BrandSchema, generateSlug } from '$lib/domain/catalog/schemas'
 import { noop } from '$lib/utils'
 

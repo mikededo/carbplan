@@ -3,7 +3,7 @@
 
     import type { WithElementRef } from '$lib/utils.js'
 
-    import * as Tooltip from '$lib/domain/ui/tooltip/index.js'
+    import TooltipProvider from '$lib/domain/ui/tooltip/tooltip-provider.svelte'
     import { cn } from '$lib/utils.js'
 
     import {
@@ -41,7 +41,7 @@
 
 <svelte:window onkeydown={sidebar.handleShortcutKeydown} />
 
-<Tooltip.Provider delayDuration={0}>
+<TooltipProvider delayDuration={0}>
     <div
         class={cn(
             'group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full',
@@ -54,4 +54,4 @@
     >
         {@render children?.()}
     </div>
-</Tooltip.Provider>
+</TooltipProvider>

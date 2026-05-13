@@ -50,7 +50,7 @@
     })
 </script>
 
-<div class="overflow-hidden rounded-xl bg-accent shadow-2xl">
+<div class="overflow-hidden rounded-xl bg-accent">
     <span class="block pt-2 pb-1.5 pl-3 text-sm font-semibold uppercase">Dashboard</span>
 
     <div class="rounded-xl border border-border bg-card">

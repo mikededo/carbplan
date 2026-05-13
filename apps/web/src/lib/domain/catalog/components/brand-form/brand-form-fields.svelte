@@ -1,6 +1,9 @@
 <script lang="ts">
-    import * as Field from '$lib/domain/ui/field'
-    import { Input } from '$lib/domain/ui/input'
+    import FieldDescription from '$lib/domain/ui/field/field-description.svelte'
+    import FieldError from '$lib/domain/ui/field/field-error.svelte'
+    import FieldLabel from '$lib/domain/ui/field/field-label.svelte'
+    import FieldRoot from '$lib/domain/ui/field/field.svelte'
+    import Input from '$lib/domain/ui/input/input.svelte'
 
     import { getBrandFormContext } from './context.svelte'
 
@@ -28,8 +31,8 @@
     }
 </script>
 
-<Field.Field data-invalid={!!context.errors.name || undefined}>
-    <Field.Label for="name">Name *</Field.Label>
+<FieldRoot data-invalid={!!context.errors.name || undefined}>
+    <FieldLabel for="name">Name *</FieldLabel>
     <Input
         id="name"
         placeholder="e.g. Science in Sport"
@@ -37,11 +40,11 @@
         oninput={onNameInput}
         aria-invalid={!!context.errors.name}
     />
-    <Field.Error errors={context.errors.name ? [{ message: context.errors.name }] : undefined} />
-</Field.Field>
+    <FieldError errors={context.errors.name ? [{ message: context.errors.name }] : undefined} />
+</FieldRoot>
 
-<Field.Field data-invalid={!!context.errors.slug || undefined}>
-    <Field.Label for="slug">Slug *</Field.Label>
+<FieldRoot data-invalid={!!context.errors.slug || undefined}>
+    <FieldLabel for="slug">Slug *</FieldLabel>
     <Input
         id="slug"
         placeholder="e.g. science-in-sport"
@@ -49,14 +52,14 @@
         oninput={onSlugInput}
         aria-invalid={!!context.errors.slug}
     />
-    <Field.Description>
+    <FieldDescription>
         URL-friendly identifier. Auto-generated from name.
-    </Field.Description>
-    <Field.Error errors={context.errors.slug ? [{ message: context.errors.slug }] : undefined} />
-</Field.Field>
+    </FieldDescription>
+    <FieldError errors={context.errors.slug ? [{ message: context.errors.slug }] : undefined} />
+</FieldRoot>
 
-<Field.Field data-invalid={!!context.errors.website || undefined}>
-    <Field.Label for="website">Website</Field.Label>
+<FieldRoot data-invalid={!!context.errors.website || undefined}>
+    <FieldLabel for="website">Website</FieldLabel>
     <Input
         id="website"
         placeholder="https://example.com"
@@ -65,11 +68,11 @@
         oninput={onWebsiteInput}
         aria-invalid={!!context.errors.website}
     />
-    <Field.Error errors={context.errors.website ? [{ message: context.errors.website }] : undefined} />
-</Field.Field>
+    <FieldError errors={context.errors.website ? [{ message: context.errors.website }] : undefined} />
+</FieldRoot>
 
-<Field.Field data-invalid={!!context.errors.logoUrl || undefined}>
-    <Field.Label for="logoUrl">Logo URL</Field.Label>
+<FieldRoot data-invalid={!!context.errors.logoUrl || undefined}>
+    <FieldLabel for="logoUrl">Logo URL</FieldLabel>
     <Input
         id="logoUrl"
         placeholder="https://example.com/logo.png"
@@ -78,11 +81,11 @@
         oninput={onLogoUrlInput}
         aria-invalid={!!context.errors.logoUrl}
     />
-    <Field.Error errors={context.errors.logoUrl ? [{ message: context.errors.logoUrl }] : undefined} />
-</Field.Field>
+    <FieldError errors={context.errors.logoUrl ? [{ message: context.errors.logoUrl }] : undefined} />
+</FieldRoot>
 
-<Field.Field data-invalid={!!context.errors.description || undefined}>
-    <Field.Label for="description">Description</Field.Label>
+<FieldRoot data-invalid={!!context.errors.description || undefined}>
+    <FieldLabel for="description">Description</FieldLabel>
     <textarea
         class="flex min-h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50"
         id="description"
@@ -92,5 +95,5 @@
         oninput={onDescriptionInput}
         aria-invalid={!!context.errors.description}
     ></textarea>
-    <Field.Error errors={context.errors.description ? [{ message: context.errors.description }] : undefined} />
-</Field.Field>
+    <FieldError errors={context.errors.description ? [{ message: context.errors.description }] : undefined} />
+</FieldRoot>

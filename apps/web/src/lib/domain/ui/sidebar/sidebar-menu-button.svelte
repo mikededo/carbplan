@@ -4,7 +4,7 @@
     import { tv } from 'tailwind-variants'
 
     export const sidebarMenuButtonVariants = tv({
-        base: 'peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-start text-sm ring-sidebar-ring outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pe-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
+        base: 'peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-start text-sm text-sidebar-foreground ring-sidebar-ring outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pe-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
         defaultVariants: {
             size: 'default',
             variant: 'default'
@@ -37,7 +37,9 @@
 
     import { mergeProps } from 'bits-ui'
 
-    import * as Tooltip from '$lib/domain/ui/tooltip/index.js'
+    import TooltipContent from '$lib/domain/ui/tooltip/tooltip-content.svelte'
+    import TooltipTrigger from '$lib/domain/ui/tooltip/tooltip-trigger.svelte'
+    import TooltipRoot from '$lib/domain/ui/tooltip/tooltip.svelte'
     import { cn } from '$lib/utils.js'
 
     import { useSidebar } from './context.svelte.js'
@@ -58,7 +60,7 @@
         isActive?: boolean
         size?: SidebarMenuButtonSize
         tooltipContent?: Snippet | string
-        tooltipContentProps?: WithoutChildrenOrChild<ComponentProps<typeof Tooltip.Content>>
+        tooltipContentProps?: WithoutChildrenOrChild<ComponentProps<typeof TooltipContent>>
         variant?: SidebarMenuButtonVariant
     } & WithElementRef<HTMLAttributes<HTMLButtonElement>, HTMLButtonElement> = $props()
 
@@ -88,13 +90,13 @@
 {#if !tooltipContent}
     {@render Button({})}
 {:else}
-    <Tooltip.Root>
-        <Tooltip.Trigger>
+    <TooltipRoot>
+        <TooltipTrigger>
             {#snippet child({ props })}
                 {@render Button({ props })}
             {/snippet}
-        </Tooltip.Trigger>
-        <Tooltip.Content
+        </TooltipTrigger>
+        <TooltipContent
             align="center"
             hidden={sidebar.state !== 'collapsed' || sidebar.isMobile}
             side="right"
@@ -105,6 +107,6 @@
             {:else if tooltipContent}
                 {@render tooltipContent()}
             {/if}
-        </Tooltip.Content>
-    </Tooltip.Root>
+        </TooltipContent>
+    </TooltipRoot>
 {/if}

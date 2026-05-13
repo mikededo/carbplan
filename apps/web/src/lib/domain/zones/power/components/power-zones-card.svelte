@@ -4,9 +4,17 @@
     import { POWER_MODEL_INFO, POWER_MODEL_LABELS, POWER_ZONE_PRESETS } from '@carbplan/domain/power'
     import { ExternalLinkIcon, InfoIcon, ZapIcon } from '@lucide/svelte'
 
-    import * as Select from '$lib/domain/ui/select'
-    import * as Tooltip from '$lib/domain/ui/tooltip'
-    import { ZoneBar, ZoneListItem, ZonePlaceholder } from '$lib/domain/zones/zone/components'
+    import SelectContent from '$lib/domain/ui/select/select-content.svelte'
+    import SelectItem from '$lib/domain/ui/select/select-item.svelte'
+    import SelectPortal from '$lib/domain/ui/select/select-portal.svelte'
+    import SelectTrigger from '$lib/domain/ui/select/select-trigger.svelte'
+    import SelectRoot from '$lib/domain/ui/select/select.svelte'
+    import TooltipContent from '$lib/domain/ui/tooltip/tooltip-content.svelte'
+    import TooltipTrigger from '$lib/domain/ui/tooltip/tooltip-trigger.svelte'
+    import TooltipRoot from '$lib/domain/ui/tooltip/tooltip.svelte'
+    import ZoneBar from '$lib/domain/zones/zone/components/zone-bar.svelte'
+    import ZoneListItem from '$lib/domain/zones/zone/components/zone-list-item.svelte'
+    import ZonePlaceholder from '$lib/domain/zones/zone/components/zone-placeholder.svelte'
 
     import { calculatePowerZones, formatPowerRange, isPowerPresetZoneModel } from '../utils'
 
@@ -60,11 +68,11 @@
         </div>
 
         <div class="flex items-center gap-2">
-            <Tooltip.Root>
-                <Tooltip.Trigger class="text-muted-foreground hover:text-foreground">
+            <TooltipRoot>
+                <TooltipTrigger class="text-muted-foreground hover:text-foreground">
                     <InfoIcon class="size-4" />
-                </Tooltip.Trigger>
-                <Tooltip.Content class="max-w-xs">
+                </TooltipTrigger>
+                <TooltipContent class="max-w-xs">
                     <p class="mb-2">{currentModelInfo.description}</p>
                     {#if currentModelInfo.referenceUrl}
                         <a
@@ -76,22 +84,22 @@
                             Learn more <ExternalLinkIcon class="size-3" />
                         </a>
                     {/if}
-                </Tooltip.Content>
-            </Tooltip.Root>
-            <Select.Root type="single" value={model} onValueChange={onPowerZonesChange}>
-                <Select.Trigger class="w-48">
+                </TooltipContent>
+            </TooltipRoot>
+            <SelectRoot type="single" value={model} onValueChange={onPowerZonesChange}>
+                <SelectTrigger class="w-48">
                     {POWER_MODEL_LABELS[model]}
-                </Select.Trigger>
-                <Select.Portal>
-                    <Select.Content>
+                </SelectTrigger>
+                <SelectPortal>
+                    <SelectContent>
                         {#each modelOptions as option}
-                            <Select.Item value={option.value}>
+                            <SelectItem value={option.value}>
                                 {option.label}
-                            </Select.Item>
+                            </SelectItem>
                         {/each}
-                    </Select.Content>
-                </Select.Portal>
-            </Select.Root>
+                    </SelectContent>
+                </SelectPortal>
+            </SelectRoot>
         </div>
     </div>
 
@@ -118,4 +126,3 @@
         />
     {/if}
 </div>
-

@@ -3,7 +3,11 @@
 
     import type { WithElementRef } from '$lib/utils.js'
 
-    import * as Sheet from '$lib/domain/ui/sheet/index.js'
+    import SheetContent from '$lib/domain/ui/sheet/sheet-content.svelte'
+    import SheetDescription from '$lib/domain/ui/sheet/sheet-description.svelte'
+    import SheetHeader from '$lib/domain/ui/sheet/sheet-header.svelte'
+    import SheetTitle from '$lib/domain/ui/sheet/sheet-title.svelte'
+    import SheetRoot from '$lib/domain/ui/sheet/sheet.svelte'
     import { cn } from '$lib/utils.js'
 
     import { SIDEBAR_WIDTH_MOBILE } from './constants.js'
@@ -38,11 +42,11 @@
         {@render children?.()}
     </div>
 {:else if sidebar.isMobile}
-    <Sheet.Root
+    <SheetRoot
         bind:open={() => sidebar.openMobile, (v) => sidebar.setOpenMobile(v)}
         {...restProps}
     >
-        <Sheet.Content
+        <SheetContent
             class="w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
             style="--sidebar-width: {SIDEBAR_WIDTH_MOBILE};"
             {side}
@@ -50,15 +54,15 @@
             data-sidebar="sidebar"
             data-slot="sidebar"
         >
-            <Sheet.Header class="sr-only">
-                <Sheet.Title>Sidebar</Sheet.Title>
-                <Sheet.Description>Displays the mobile sidebar.</Sheet.Description>
-            </Sheet.Header>
+            <SheetHeader class="sr-only">
+                <SheetTitle>Sidebar</SheetTitle>
+                <SheetDescription>Displays the mobile sidebar.</SheetDescription>
+            </SheetHeader>
             <div class="flex size-full flex-col">
                 {@render children?.()}
             </div>
-        </Sheet.Content>
-    </Sheet.Root>
+        </SheetContent>
+    </SheetRoot>
 {:else}
     <div
         class="group peer hidden text-sidebar-foreground md:block"

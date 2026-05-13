@@ -8,7 +8,7 @@ export type ProductWithBrand = {
 } & Product
 
 export type CatalogProduct = Product
-export type CatalogBrand = Brand & { products: CatalogProduct[] }
+export type CatalogBrand = { products: CatalogProduct[] } & Brand
 export type ListCatalogError = DatabaseQueryError
 
 export type CreateBrandData = {

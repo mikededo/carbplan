@@ -2,9 +2,10 @@
     import type { StepOneData } from '$lib/domain/onboarding/types'
 
     import { SexEnum } from '$lib/domain/onboarding/schemas'
-    import { Input } from '$lib/domain/ui/input'
-    import { Label } from '$lib/domain/ui/label'
-    import { RadioGroup, RadioGroupItem } from '$lib/domain/ui/radio-group'
+    import Input from '$lib/domain/ui/input/input.svelte'
+    import Label from '$lib/domain/ui/label/label.svelte'
+    import RadioGroupItem from '$lib/domain/ui/radio-group/radio-group-item.svelte'
+    import RadioGroup from '$lib/domain/ui/radio-group/radio-group.svelte'
 
     type Props = {
         // Allow sex to be an empty string since radiogroup expects the binded
@@ -71,4 +72,3 @@
         </div>
     </div>
 </div>
-

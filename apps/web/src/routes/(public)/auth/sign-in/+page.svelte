@@ -3,10 +3,14 @@
 
     import { enhance } from '$app/forms'
     import { ROUTES } from '$lib/constants/routes'
-    import { Button } from '$lib/domain/ui/button'
-    import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/domain/ui/card'
-    import { Input } from '$lib/domain/ui/input'
-    import { Label } from '$lib/domain/ui/label'
+    import Button from '$lib/domain/ui/button/button.svelte'
+    import CardContent from '$lib/domain/ui/card/card-content.svelte'
+    import CardDescription from '$lib/domain/ui/card/card-description.svelte'
+    import CardHeader from '$lib/domain/ui/card/card-header.svelte'
+    import CardTitle from '$lib/domain/ui/card/card-title.svelte'
+    import Card from '$lib/domain/ui/card/card.svelte'
+    import Input from '$lib/domain/ui/input/input.svelte'
+    import Label from '$lib/domain/ui/label/label.svelte'
 
     type Props = { form: ActionData }
     const { form }: Props = $props()

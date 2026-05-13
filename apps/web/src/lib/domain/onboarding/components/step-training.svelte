@@ -1,8 +1,8 @@
 <script lang="ts">
     import type { StepTwoData } from '$lib/domain/onboarding/types'
 
-    import { Input } from '$lib/domain/ui/input'
-    import { Label } from '$lib/domain/ui/label'
+    import Input from '$lib/domain/ui/input/input.svelte'
+    import Label from '$lib/domain/ui/label/label.svelte'
 
     type Props = Partial<StepTwoData>
     let {

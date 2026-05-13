@@ -6,11 +6,11 @@
     import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
     import { HeartIcon, HeartPlusIcon, HeartPulseIcon, LoaderCircleIcon } from '@lucide/svelte'
 
-    import { Button } from '$lib/domain/ui/button'
-    import { Input } from '$lib/domain/ui/input'
-    import { Label } from '$lib/domain/ui/label'
-    import { HRZonesCard } from '$lib/domain/zones/hr/components'
-    import { createAthleteHRZonesMutation } from '$lib/domain/zones/hr/queries'
+    import Button from '$lib/domain/ui/button/button.svelte'
+    import Input from '$lib/domain/ui/input/input.svelte'
+    import Label from '$lib/domain/ui/label/label.svelte'
+    import HRZonesCard from '$lib/domain/zones/hr/components/hr-zones-card.svelte'
+    import { createAthleteHRZonesMutation } from '$lib/domain/zones/hr/queries/use-mutate-hr-zones'
 
     import MetricCard from './metric-card.svelte'
     import SettingsSectionGroup from './settings-section-group.svelte'

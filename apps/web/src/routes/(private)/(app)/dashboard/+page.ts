@@ -2,11 +2,11 @@ import type { PageLoad } from './$types'
 
 import { ok } from 'neverthrow'
 
+import { favoriteProductsOptions } from '$lib/domain/dashboard/queries/favorites'
 import {
-  favoriteProductsOptions,
   nextPlanOptions,
   recentPlansOptions
-} from '$lib/domain/dashboard/queries'
+} from '$lib/domain/dashboard/queries/plans'
 
 export const load: PageLoad = async ({ parent }) => {
   const { privateServices, queryClient } = await parent()

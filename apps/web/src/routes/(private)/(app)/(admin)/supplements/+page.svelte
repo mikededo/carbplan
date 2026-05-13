@@ -1,14 +1,17 @@
 <script lang="ts">
     import type { CatalogProduct } from '@carbplan/contracts/catalog'
 
-    import type { CatalogBrand } from '$lib/domain/catalog/queries'
+    import type { CatalogBrand } from '$lib/domain/catalog/queries/catalog'
 
     import { PackagePlusIcon, PlusIcon } from '@lucide/svelte'
 
-    import { BrandFormDialog, ProductFormDialog, ProductsTable } from '$lib/domain/catalog/components'
-    import { useCatalogQuery } from '$lib/domain/catalog/queries'
-    import { PageHeader, PageScrollarea } from '$lib/domain/layout/components'
-    import { Button } from '$lib/domain/ui/button'
+    import BrandFormDialog from '$lib/domain/catalog/components/brand-form/brand-form-dialog.svelte'
+    import ProductFormDialog from '$lib/domain/catalog/components/product-form/product-form-dialog.svelte'
+    import ProductsTable from '$lib/domain/catalog/components/products-table/products-table.svelte'
+    import { useCatalogQuery } from '$lib/domain/catalog/queries/use-catalog-query.svelte'
+    import PageHeader from '$lib/domain/layout/components/page-header.svelte'
+    import PageScrollarea from '$lib/domain/layout/components/page-scrollarea.svelte'
+    import Button from '$lib/domain/ui/button/button.svelte'
 
     type DialogState<T> = { item: T | undefined, open: boolean }
 

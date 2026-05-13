@@ -3,9 +3,10 @@
 
     import type { LayoutData } from './$types'
 
-    import { AppSidebar } from '$lib/domain/layout/components'
+    import AppSidebar from '$lib/domain/layout/components/app-sidebar.svelte'
     import { createPrivateServicesContext } from '$lib/domain/services/context'
-    import * as Sidebar from '$lib/domain/ui/sidebar'
+    import SidebarInset from '$lib/domain/ui/sidebar/sidebar-inset.svelte'
+    import SidebarProvider from '$lib/domain/ui/sidebar/sidebar-provider.svelte'
 
     type Props = {
         children: Snippet
@@ -18,9 +19,9 @@
     const onLogOut = () => {}
 </script>
 
-<Sidebar.Provider>
+<SidebarProvider>
     <AppSidebar {onLogOut} />
-    <Sidebar.Inset class="overflow-hidden">
+    <SidebarInset class="overflow-hidden">
         {@render children()}
-    </Sidebar.Inset>
-</Sidebar.Provider>
+    </SidebarInset>
+</SidebarProvider>

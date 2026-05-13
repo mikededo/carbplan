@@ -1,8 +1,11 @@
 <script lang="ts">
     import type { ProductFormState } from './context.svelte'
 
-    import * as Field from '$lib/domain/ui/field'
-    import { Input } from '$lib/domain/ui/input'
+    import FieldError from '$lib/domain/ui/field/field-error.svelte'
+    import FieldLabel from '$lib/domain/ui/field/field-label.svelte'
+    import FieldSeparator from '$lib/domain/ui/field/field-separator.svelte'
+    import FieldRoot from '$lib/domain/ui/field/field.svelte'
+    import Input from '$lib/domain/ui/input/input.svelte'
 
     import { getProductFormContext } from './context.svelte'
 
@@ -30,13 +33,13 @@
     }
 </script>
 
-<Field.Separator />
+<FieldSeparator />
 <p class="text-sm font-medium">Nutrition per Serving</p>
 
 <div class="grid grid-cols-2 gap-4 gap-x-2 sm:grid-cols-4 sm:gap-x-4">
     {#each nutritionFields as field (field.id)}
-        <Field.Field data-invalid={!!context.errors[field.id] || undefined}>
-            <Field.Label for={field.id}>{field.label}</Field.Label>
+        <FieldRoot data-invalid={!!context.errors[field.id] || undefined}>
+            <FieldLabel for={field.id}>{field.label}</FieldLabel>
             <Input
                 id={field.id}
                 min="0"
@@ -47,7 +50,7 @@
                 oninput={onInput(field.id)}
                 aria-invalid={!!context.errors[field.id]}
             />
-            <Field.Error errors={context.errors[field.id] ? [{ message: context.errors[field.id] }] : undefined} />
-        </Field.Field>
+            <FieldError errors={context.errors[field.id] ? [{ message: context.errors[field.id] }] : undefined} />
+        </FieldRoot>
     {/each}
 </div>

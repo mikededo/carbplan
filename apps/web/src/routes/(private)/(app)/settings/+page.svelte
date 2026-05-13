@@ -4,15 +4,13 @@
     import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
     import { LoaderCircleIcon, SaveIcon } from '@lucide/svelte'
 
-    import { PageHeader } from '$lib/domain/layout/components'
-    import {
-        SectionHeartRate,
-        SectionNutrition,
-        SectionPersonal,
-        SectionPower
-    } from '$lib/domain/settings/components'
-    import { createAthleteMutation, useAthleteQuery } from '$lib/domain/settings/queries'
-    import { Button } from '$lib/domain/ui/button'
+    import PageHeader from '$lib/domain/layout/components/page-header.svelte'
+    import SectionHeartRate from '$lib/domain/settings/components/section-heart-rate.svelte'
+    import SectionNutrition from '$lib/domain/settings/components/section-nutrition.svelte'
+    import SectionPersonal from '$lib/domain/settings/components/section-personal.svelte'
+    import SectionPower from '$lib/domain/settings/components/section-power.svelte'
+    import { createAthleteMutation, useAthleteQuery } from '$lib/domain/settings/queries/use-athlete.svelte'
+    import Button from '$lib/domain/ui/button/button.svelte'
 
     type Props = { data: PageData }
     const { data }: Props = $props()

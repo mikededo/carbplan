@@ -1,20 +1,24 @@
 <script lang="ts">
     import type { ComponentProps } from 'svelte'
 
-    import { Logo } from '$lib/domain/ui/logo'
-    import * as Sidebar from '$lib/domain/ui/sidebar'
+    import Logo from '$lib/domain/ui/logo/logo.svelte'
+    import SidebarContent from '$lib/domain/ui/sidebar/sidebar-content.svelte'
+    import SidebarFooter from '$lib/domain/ui/sidebar/sidebar-footer.svelte'
+    import SidebarHeader from '$lib/domain/ui/sidebar/sidebar-header.svelte'
+    import SidebarRail from '$lib/domain/ui/sidebar/sidebar-rail.svelte'
+    import SidebarRoot from '$lib/domain/ui/sidebar/sidebar.svelte'
 
     import SidebarNav from './sidebar-nav.svelte'
     import SidebarUser from './sidebar-user.svelte'
 
     type Props = {
         onLogOut: () => void
-    } & ComponentProps<typeof Sidebar.Root>
+    } & ComponentProps<typeof SidebarRoot>
     const { onLogOut, ...restProps }: Props = $props()
 </script>
 
-<Sidebar.Root collapsible="icon" {...restProps}>
-    <Sidebar.Header
+<SidebarRoot collapsible="icon" {...restProps}>
+    <SidebarHeader
         class="flex h-16 flex-row items-center justify-start gap-0 border-b transition-[width,height] group-has-data-[collapsible=icon]/sidebar-wrapper:h-12"
     >
         <div class="flex size-8 items-center justify-center rounded-lg text-foreground">
@@ -23,12 +27,12 @@
         <div class="ml-1 grid flex-1 text-start leading-tight group-has-data-[collapsible=icon]/sidebar-wrapper:hidden">
             <span class="truncate font-semibold">CarbPlan</span>
         </div>
-    </Sidebar.Header>
-    <Sidebar.Content class="gap-0">
+    </SidebarHeader>
+    <SidebarContent class="gap-0">
         <SidebarNav />
-    </Sidebar.Content>
-    <Sidebar.Footer>
+    </SidebarContent>
+    <SidebarFooter>
         <SidebarUser {onLogOut} />
-    </Sidebar.Footer>
-    <Sidebar.Rail />
-</Sidebar.Root>
+    </SidebarFooter>
+    <SidebarRail />
+</SidebarRoot>

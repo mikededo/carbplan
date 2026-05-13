@@ -1,13 +1,13 @@
 import type { BrandId, Db, ProductId } from '@carbplan/db'
 
 import type {
+  CatalogBrand,
   CreateBrandData,
   CreateBrandDataResult,
   CreateBrandError,
   CreateProductData,
   CreateProductDataResult,
   CreateProductError,
-  CatalogBrand,
   ListCatalogError,
   UpdateBrandData,
   UpdateBrandError,

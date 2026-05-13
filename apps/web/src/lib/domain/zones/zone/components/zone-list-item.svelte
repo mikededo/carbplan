@@ -1,5 +1,7 @@
 <script lang="ts">
-    import * as Tooltip from '$lib/domain/ui/tooltip'
+    import TooltipContent from '$lib/domain/ui/tooltip/tooltip-content.svelte'
+    import TooltipTrigger from '$lib/domain/ui/tooltip/tooltip-trigger.svelte'
+    import TooltipRoot from '$lib/domain/ui/tooltip/tooltip.svelte'
 
     import { formatPercentRange } from '../types'
 
@@ -20,14 +22,14 @@
         <div class="size-3 rounded-full" style="background-color: {color};"></div>
         <span class="font-medium">Z{index + 1}</span>
         {#if description}
-            <Tooltip.Root>
-                <Tooltip.Trigger class="cursor-help text-muted-foreground underline decoration-dotted underline-offset-2">
+            <TooltipRoot>
+                <TooltipTrigger class="cursor-help text-muted-foreground underline decoration-dotted underline-offset-2">
                     {name}
-                </Tooltip.Trigger>
-                <Tooltip.Content class="max-w-xs">
+                </TooltipTrigger>
+                <TooltipContent class="max-w-xs">
                     <p>{description}</p>
-                </Tooltip.Content>
-            </Tooltip.Root>
+                </TooltipContent>
+            </TooltipRoot>
         {:else}
             <span class="text-muted-foreground">{name}</span>
         {/if}
@@ -39,4 +41,3 @@
         </span>
     </div>
 </div>
-

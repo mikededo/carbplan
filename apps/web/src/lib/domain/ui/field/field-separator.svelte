@@ -4,7 +4,7 @@
 
     import type { WithElementRef } from '$lib/utils.js'
 
-    import { Separator } from '$lib/domain/ui/separator/index.js'
+    import Separator from '$lib/domain/ui/separator/separator.svelte'
     import { cn } from '$lib/utils.js'
 
     let {

@@ -7,7 +7,7 @@ import { err, ok } from 'neverthrow'
 import { resultAsyncValueOrThrow } from '$lib/domain/query/utils'
 import { getPrivateServicesContext } from '$lib/domain/services/context'
 import { requireServicesWith } from '$lib/domain/services/helpers'
-import { athleteOptions } from '$lib/domain/settings/queries'
+import { athleteOptions } from '$lib/domain/settings/queries/athlete'
 
 type MutateContext = { previous?: MeContracts.GetCurrentAthleteResponse }
 

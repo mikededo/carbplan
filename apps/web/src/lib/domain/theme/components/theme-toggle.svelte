@@ -5,7 +5,10 @@
     import SunIcon from '@lucide/svelte/icons/sun'
 
     import { useTheme } from '$lib/domain/theme/context.svelte'
-    import * as DropdownMenu from '$lib/domain/ui/dropdown-menu'
+    import DropdownMenuItem from '$lib/domain/ui/dropdown-menu/dropdown-menu-item.svelte'
+    import DropdownMenuSubContent from '$lib/domain/ui/dropdown-menu/dropdown-menu-sub-content.svelte'
+    import DropdownMenuSubTrigger from '$lib/domain/ui/dropdown-menu/dropdown-menu-sub-trigger.svelte'
+    import DropdownMenuSub from '$lib/domain/ui/dropdown-menu/dropdown-menu-sub.svelte'
 
     const theme = useTheme()
 
@@ -16,25 +19,24 @@
     ] as const
 </script>
 
-<DropdownMenu.Sub>
-    <DropdownMenu.SubTrigger>
+<DropdownMenuSub>
+    <DropdownMenuSubTrigger>
         {#if theme.resolved === 'dark'}
             <MoonIcon />
         {:else}
             <SunIcon />
         {/if}
         Theme
-    </DropdownMenu.SubTrigger>
-    <DropdownMenu.SubContent sideOffset={8}>
+    </DropdownMenuSubTrigger>
+    <DropdownMenuSubContent sideOffset={8}>
         {#each OPTIONS as option (option.value)}
-            <DropdownMenu.Item onclick={() => theme.set(option.value)}>
+            <DropdownMenuItem onclick={() => theme.set(option.value)}>
                 <option.icon />
                 {option.label}
                 {#if theme.preference === option.value}
                     <CheckIcon class="ml-auto" />
                 {/if}
-            </DropdownMenu.Item>
+            </DropdownMenuItem>
         {/each}
-    </DropdownMenu.SubContent>
-</DropdownMenu.Sub>
-
+    </DropdownMenuSubContent>
+</DropdownMenuSub>

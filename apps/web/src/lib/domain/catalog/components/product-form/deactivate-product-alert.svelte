@@ -1,8 +1,14 @@
 <script lang="ts">
     import { LoaderCircleIcon } from '@lucide/svelte'
 
-    import * as AlertDialog from '$lib/domain/ui/alert-dialog'
-    import { Button } from '$lib/domain/ui/button'
+    import AlertDialogCancel from '$lib/domain/ui/alert-dialog/alert-dialog-cancel.svelte'
+    import AlertDialogContent from '$lib/domain/ui/alert-dialog/alert-dialog-content.svelte'
+    import AlertDialogDescription from '$lib/domain/ui/alert-dialog/alert-dialog-description.svelte'
+    import AlertDialogFooter from '$lib/domain/ui/alert-dialog/alert-dialog-footer.svelte'
+    import AlertDialogHeader from '$lib/domain/ui/alert-dialog/alert-dialog-header.svelte'
+    import AlertDialogTitle from '$lib/domain/ui/alert-dialog/alert-dialog-title.svelte'
+    import AlertDialogRoot from '$lib/domain/ui/alert-dialog/alert-dialog.svelte'
+    import Button from '$lib/domain/ui/button/button.svelte'
 
     import { getProductFormContext } from './context.svelte'
 
@@ -19,16 +25,16 @@
     }
 </script>
 
-<AlertDialog.Root bind:open>
-    <AlertDialog.Content>
-        <AlertDialog.Header>
-            <AlertDialog.Title>Deactivate Product</AlertDialog.Title>
-            <AlertDialog.Description>
+<AlertDialogRoot bind:open>
+    <AlertDialogContent>
+        <AlertDialogHeader>
+            <AlertDialogTitle>Deactivate Product</AlertDialogTitle>
+            <AlertDialogDescription>
                 Are you sure you want to deactivate this product? It will no longer appear in the catalog, but historical data will be preserved.
-            </AlertDialog.Description>
-        </AlertDialog.Header>
-        <AlertDialog.Footer>
-            <AlertDialog.Cancel onclick={onCloseDialog}>Cancel</AlertDialog.Cancel>
+            </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+            <AlertDialogCancel onclick={onCloseDialog}>Cancel</AlertDialogCancel>
             <Button
                 disabled={context.isDeactivating}
                 variant="destructive"
@@ -41,6 +47,6 @@
                     Deactivate
                 {/if}
             </Button>
-        </AlertDialog.Footer>
-    </AlertDialog.Content>
-</AlertDialog.Root>
+        </AlertDialogFooter>
+    </AlertDialogContent>
+</AlertDialogRoot>

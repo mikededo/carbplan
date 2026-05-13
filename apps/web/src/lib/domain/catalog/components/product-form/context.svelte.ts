@@ -1,12 +1,13 @@
 import type { CatalogProduct } from '@carbplan/contracts/catalog'
 import type { ProductForm } from '@carbplan/domain/product'
 
-import type { CatalogBrand } from '$lib/domain/catalog/queries'
+import type { CatalogBrand } from '$lib/domain/catalog/queries/catalog'
 
 import { ResultAsync } from 'neverthrow'
 import { getContext, setContext } from 'svelte'
 
-import { createProductMutation, deactivateProductMutation, updateProductMutation, useCatalogQuery } from '$lib/domain/catalog/queries'
+import { createProductMutation, deactivateProductMutation, updateProductMutation } from '$lib/domain/catalog/queries/mutations'
+import { useCatalogQuery } from '$lib/domain/catalog/queries/use-catalog-query.svelte'
 import { generateSlug, ProductSchema } from '$lib/domain/catalog/schemas'
 import { noop } from '$lib/utils'
 

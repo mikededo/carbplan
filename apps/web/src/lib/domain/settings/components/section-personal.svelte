@@ -1,9 +1,10 @@
 <script lang="ts">
     import { PROFILE_FIELD_CONSTRAINTS, SexEnum } from '@carbplan/domain/profile'
 
-    import { Input } from '$lib/domain/ui/input'
-    import { Label } from '$lib/domain/ui/label'
-    import * as RadioGroup from '$lib/domain/ui/radio-group'
+    import Input from '$lib/domain/ui/input/input.svelte'
+    import Label from '$lib/domain/ui/label/label.svelte'
+    import RadioGroupItem from '$lib/domain/ui/radio-group/radio-group-item.svelte'
+    import RadioGroupRoot from '$lib/domain/ui/radio-group/radio-group.svelte'
 
     import SettingsSectionGroup from './settings-section-group.svelte'
     import SettingsSection from './settings-section.svelte'
@@ -46,16 +47,16 @@
 
         <div class="space-y-3">
             <Label>Sex</Label>
-            <RadioGroup.Root class="flex gap-4" bind:value={sex} name="sex">
+            <RadioGroupRoot class="flex gap-4" bind:value={sex} name="sex">
                 <div class="flex items-center gap-2">
-                    <RadioGroup.Item id="male" value={SexEnum.male} />
+                    <RadioGroupItem id="male" value={SexEnum.male} />
                     <Label class="cursor-pointer font-normal" for="male">Male</Label>
                 </div>
                 <div class="flex items-center gap-2">
-                    <RadioGroup.Item id="female" value={SexEnum.female} />
+                    <RadioGroupItem id="female" value={SexEnum.female} />
                     <Label class="cursor-pointer font-normal" for="female">Female</Label>
                 </div>
-            </RadioGroup.Root>
+            </RadioGroupRoot>
         </div>
     </SettingsSectionGroup>
 
@@ -85,4 +86,3 @@
         </div>
     </SettingsSectionGroup>
 </SettingsSection>
-
