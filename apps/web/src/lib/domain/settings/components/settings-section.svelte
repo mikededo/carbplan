@@ -9,7 +9,7 @@
     const { children, description, title }: Props = $props()
 </script>
 
-<section class="grid gap-x-8 gap-y-4 py-6 @5xl/page-content:grid-cols-3">
+<section class="grid gap-x-8 gap-y-4 py-6 first-of-type:pt-2 @5xl/page-content:grid-cols-3">
     <header class="space-y-1">
         <h3 class="font-medium">{title}</h3>
         <p class="text-sm text-muted-foreground">{description}</p>

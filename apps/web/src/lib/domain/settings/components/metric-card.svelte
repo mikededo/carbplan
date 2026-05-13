@@ -18,7 +18,7 @@
             <Icon class="size-5 shrink-0" />
         {/if}
         <div class="flex items-baseline gap-1">
-            <span class="text-2xl font-semibold tabular-nums">{value}</span>
+            <span class="font-mono text-2xl font-semibold tabular-nums">{value}</span>
             <span class="text-sm text-muted-foreground">{unit}</span>
         </div>
     </div>

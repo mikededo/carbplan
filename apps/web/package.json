@@ -37,6 +37,7 @@
   "devDependencies": {
     "@carbplan/eslint": "workspace:*",
     "@fontsource-variable/geist": "5.2.8",
+    "@fontsource-variable/geist-mono": "5.2.7",
     "@internationalized/date": "3.12.0",
     "@sveltejs/adapter-auto": "7.0.1",
     "@sveltejs/kit": "2.55.0",

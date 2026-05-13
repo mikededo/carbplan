@@ -5,6 +5,7 @@
     import { LoaderCircleIcon, SaveIcon } from '@lucide/svelte'
 
     import PageHeader from '$lib/domain/layout/components/page-header.svelte'
+    import PageScrollarea from '$lib/domain/layout/components/page-scrollarea.svelte'
     import SectionHeartRate from '$lib/domain/settings/components/section-heart-rate.svelte'
     import SectionNutrition from '$lib/domain/settings/components/section-nutrition.svelte'
     import SectionPersonal from '$lib/domain/settings/components/section-personal.svelte'
@@ -85,36 +86,30 @@
     </Button>
 </PageHeader>
 
-<section class="space-y-4">
-    <div class="relative mx-auto flex flex-col">
-        <div class="sticky top-0 z-10 flex items-center justify-between border-b bg-background px-8 py-4">
-            <h2 class="font-semibold">Profile settings</h2>
-        </div>
+<PageScrollarea>
+    <section class="mx-auto max-w-6xl space-y-4 divide-y divide-border px-8">
+        <SectionPersonal
+            bind:fullName
+            bind:height={heightCm}
+            bind:sex
+            bind:weight={weightKg}
+            email={athleteQuery.data?.email ?? ''}
+        />
 
-        <div class="divide-y divide-border px-8">
-            <SectionPersonal
-                bind:fullName
-                bind:height={heightCm}
-                bind:sex
-                bind:weight={weightKg}
-                email={athleteQuery.data?.email ?? ''}
-            />
+        <SectionPower
+            bind:ftp
+            bind:weight={weightKg}
+            athleteId={athleteQuery.data?.id ?? undefined}
+            {powerZones}
+        />
 
-            <SectionPower
-                bind:ftp
-                bind:weight={weightKg}
-                athleteId={athleteQuery.data?.id ?? undefined}
-                {powerZones}
-            />
+        <SectionHeartRate
+            bind:hrMax
+            bind:hrRest
+            athleteId={athleteQuery.data?.id ?? undefined}
+            {hrZones}
+        />
 
-            <SectionHeartRate
-                bind:hrMax
-                bind:hrRest
-                athleteId={athleteQuery.data?.id ?? undefined}
-                {hrZones}
-            />
-
-            <SectionNutrition bind:maxCarbIntake={maxCarbIntakeGPerHr} />
-        </div>
-    </div>
-</section>
+        <SectionNutrition bind:maxCarbIntake={maxCarbIntakeGPerHr} />
+    </section>
+</PageScrollarea>
