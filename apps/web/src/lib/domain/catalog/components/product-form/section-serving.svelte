@@ -1,9 +1,6 @@
 <script lang="ts">
-    import FieldError from '$lib/domain/ui/field/field-error.svelte'
-    import FieldLabel from '$lib/domain/ui/field/field-label.svelte'
-    import FieldSeparator from '$lib/domain/ui/field/field-separator.svelte'
-    import FieldRoot from '$lib/domain/ui/field/field.svelte'
-    import Input from '$lib/domain/ui/input/input.svelte'
+    import { FieldError, FieldLabel, FieldRoot, FieldSeparator } from '$lib/domain/ui/field'
+    import { Input } from '$lib/domain/ui/input'
 
     import { getProductFormContext } from './context.svelte'
 

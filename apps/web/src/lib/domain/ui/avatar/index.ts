@@ -1,0 +1,6 @@
+export { default as AvatarFallback } from './avatar-fallback.svelte'
+export * from './avatar-fallback.svelte'
+export { default as AvatarImage } from './avatar-image.svelte'
+export * from './avatar-image.svelte'
+export { default as Avatar, default as AvatarRoot } from './avatar.svelte'
+export * from './avatar.svelte'

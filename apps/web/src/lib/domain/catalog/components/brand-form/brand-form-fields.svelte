@@ -1,9 +1,6 @@
 <script lang="ts">
-    import FieldDescription from '$lib/domain/ui/field/field-description.svelte'
-    import FieldError from '$lib/domain/ui/field/field-error.svelte'
-    import FieldLabel from '$lib/domain/ui/field/field-label.svelte'
-    import FieldRoot from '$lib/domain/ui/field/field.svelte'
-    import Input from '$lib/domain/ui/input/input.svelte'
+    import { FieldDescription, FieldError, FieldLabel, FieldRoot } from '$lib/domain/ui/field'
+    import { Input } from '$lib/domain/ui/input'
 
     import { getBrandFormContext } from './context.svelte'
 

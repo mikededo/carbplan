@@ -4,13 +4,9 @@
         SearchIcon
     } from '@lucide/svelte'
 
-    import Input from '$lib/domain/ui/input/input.svelte'
-    import KbdGroup from '$lib/domain/ui/kbd/kbd-group.svelte'
-    import Kbd from '$lib/domain/ui/kbd/kbd.svelte'
-    import SelectContent from '$lib/domain/ui/select/select-content.svelte'
-    import SelectItem from '$lib/domain/ui/select/select-item.svelte'
-    import SelectTrigger from '$lib/domain/ui/select/select-trigger.svelte'
-    import SelectRoot from '$lib/domain/ui/select/select.svelte'
+    import { Input } from '$lib/domain/ui/input'
+    import { Kbd, KbdGroup } from '$lib/domain/ui/kbd'
+    import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from '$lib/domain/ui/select'
 
     import { getProductsTableContext } from '../../context/products-table.svelte'
     import AllFilters, { ALL_TYPES_OPTION, formOptions } from './all-filters.svelte'

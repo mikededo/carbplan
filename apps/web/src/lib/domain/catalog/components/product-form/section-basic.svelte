@@ -4,15 +4,9 @@
     import { ProductFormSchema } from '@carbplan/domain/product'
 
     import { PRODUCT_FORM_LABELS } from '$lib/domain/catalog/schemas'
-    import FieldDescription from '$lib/domain/ui/field/field-description.svelte'
-    import FieldError from '$lib/domain/ui/field/field-error.svelte'
-    import FieldLabel from '$lib/domain/ui/field/field-label.svelte'
-    import FieldRoot from '$lib/domain/ui/field/field.svelte'
-    import Input from '$lib/domain/ui/input/input.svelte'
-    import SelectContent from '$lib/domain/ui/select/select-content.svelte'
-    import SelectItem from '$lib/domain/ui/select/select-item.svelte'
-    import SelectTrigger from '$lib/domain/ui/select/select-trigger.svelte'
-    import SelectRoot from '$lib/domain/ui/select/select.svelte'
+    import { FieldDescription, FieldError, FieldLabel, FieldRoot } from '$lib/domain/ui/field'
+    import { Input } from '$lib/domain/ui/input'
+    import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from '$lib/domain/ui/select'
 
     import { getProductFormContext } from './context.svelte'
 

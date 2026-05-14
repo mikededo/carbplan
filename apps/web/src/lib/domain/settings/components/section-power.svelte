@@ -6,9 +6,9 @@
     import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
     import { ActivityIcon, BatteryFullIcon, BatteryLowIcon, LoaderCircleIcon, ZapIcon } from '@lucide/svelte'
 
-    import Button from '$lib/domain/ui/button/button.svelte'
-    import Input from '$lib/domain/ui/input/input.svelte'
-    import Label from '$lib/domain/ui/label/label.svelte'
+    import { Button } from '$lib/domain/ui/button'
+    import { Input } from '$lib/domain/ui/input'
+    import { Label } from '$lib/domain/ui/label'
     import PowerZonesCard from '$lib/domain/zones/power/components/power-zones-card.svelte'
     import { createAthletePowerZonesMutation } from '$lib/domain/zones/power/queries/use-mutate-power-zones'
 

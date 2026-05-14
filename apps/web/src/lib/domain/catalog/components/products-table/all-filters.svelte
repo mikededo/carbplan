@@ -36,20 +36,12 @@
 
     import { BuildingIcon, SlidersHorizontalIcon } from '@lucide/svelte'
 
-    import Button from '$lib/domain/ui/button/button.svelte'
-    import Label from '$lib/domain/ui/label/label.svelte'
-    import SelectContent from '$lib/domain/ui/select/select-content.svelte'
-    import SelectItem from '$lib/domain/ui/select/select-item.svelte'
-    import SelectTrigger from '$lib/domain/ui/select/select-trigger.svelte'
-    import SelectRoot from '$lib/domain/ui/select/select.svelte'
-    import SheetContent from '$lib/domain/ui/sheet/sheet-content.svelte'
-    import SheetFooter from '$lib/domain/ui/sheet/sheet-footer.svelte'
-    import SheetHeader from '$lib/domain/ui/sheet/sheet-header.svelte'
-    import SheetTitle from '$lib/domain/ui/sheet/sheet-title.svelte'
-    import SheetTrigger from '$lib/domain/ui/sheet/sheet-trigger.svelte'
-    import Sheet from '$lib/domain/ui/sheet/sheet.svelte'
-    import Slider from '$lib/domain/ui/slider/slider.svelte'
-    import Toggle from '$lib/domain/ui/toggle/toggle.svelte'
+    import { Button } from '$lib/domain/ui/button'
+    import { Label } from '$lib/domain/ui/label'
+    import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from '$lib/domain/ui/select'
+    import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '$lib/domain/ui/sheet'
+    import { Slider } from '$lib/domain/ui/slider'
+    import { Toggle } from '$lib/domain/ui/toggle'
 
     import { getProductsTableContext } from '../../context/products-table.svelte'
 

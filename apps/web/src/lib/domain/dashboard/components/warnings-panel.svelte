@@ -5,9 +5,7 @@
 
     import { CircleCheckBigIcon, CoffeeIcon, TriangleAlertIcon, ZapIcon } from '@lucide/svelte'
 
-    import AlertDescription from '$lib/domain/ui/alert/alert-description.svelte'
-    import AlertTitle from '$lib/domain/ui/alert/alert-title.svelte'
-    import AlertRoot from '$lib/domain/ui/alert/alert.svelte'
+    import { AlertDescription, AlertRoot, AlertTitle } from '$lib/domain/ui/alert'
 
     type AthleteData = Pick<GetCurrentAthleteResponse, 'maxCarbIntakeGPerHr'>
 

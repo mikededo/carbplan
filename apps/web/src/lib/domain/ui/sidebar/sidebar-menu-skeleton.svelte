@@ -3,7 +3,7 @@
 
     import type { WithElementRef } from '$lib/utils.js'
 
-    import Skeleton from '$lib/domain/ui/skeleton/skeleton.svelte'
+    import { Skeleton } from '$lib/domain/ui/skeleton'
     import { cn } from '$lib/utils.js'
 
     let {

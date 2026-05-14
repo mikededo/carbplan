@@ -1,7 +1,7 @@
 <script lang="ts">
     import { Calendar as CalendarPrimitive } from 'bits-ui'
 
-    import { buttonVariants } from '$lib/domain/ui/button/button.svelte'
+    import { buttonVariants } from '$lib/domain/ui/button'
     import { cn } from '$lib/utils.js'
 
     let {

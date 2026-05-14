@@ -3,7 +3,7 @@
 
     import PanelLeftIcon from '@lucide/svelte/icons/panel-left'
 
-    import Button from '$lib/domain/ui/button/button.svelte'
+    import { Button } from '$lib/domain/ui/button'
     import { cn } from '$lib/utils.js'
 
     import { useSidebar } from './context.svelte.js'

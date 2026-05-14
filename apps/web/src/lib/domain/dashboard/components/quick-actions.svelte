@@ -2,12 +2,8 @@
     import { PillIcon, Plus } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'
-    import Button from '$lib/domain/ui/button/button.svelte'
-    import CardDescription from '$lib/domain/ui/card/card-description.svelte'
-    import CardFooter from '$lib/domain/ui/card/card-footer.svelte'
-    import CardHeader from '$lib/domain/ui/card/card-header.svelte'
-    import CardTitle from '$lib/domain/ui/card/card-title.svelte'
-    import CardRoot from '$lib/domain/ui/card/card.svelte'
+    import { Button } from '$lib/domain/ui/button'
+    import { CardDescription, CardFooter, CardHeader, CardRoot, CardTitle } from '$lib/domain/ui/card'
 </script>
 
 <section class="grid gap-4 md:grid-cols-2">

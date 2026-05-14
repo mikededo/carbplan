@@ -1,7 +1,7 @@
 import type { Icon } from '@lucide/svelte'
 
 import type { Pathname } from '$app/types'
-import type { ButtonVariant } from '$lib/domain/ui/button/button.svelte'
+import type { ButtonVariant } from '$lib/domain/ui/button'
 
 import {
   ActivityIcon,

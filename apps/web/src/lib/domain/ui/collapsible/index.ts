@@ -1,0 +1,6 @@
+export { default as CollapsibleContent } from './collapsible-content.svelte'
+export * from './collapsible-content.svelte'
+export { default as CollapsibleTrigger } from './collapsible-trigger.svelte'
+export * from './collapsible-trigger.svelte'
+export { default as Collapsible, default as CollapsibleRoot } from './collapsible.svelte'
+export * from './collapsible.svelte'

@@ -2,7 +2,7 @@
     import { ArrowRightIcon } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'
-    import Button from '$lib/domain/ui/button/button.svelte'
+    import { Button } from '$lib/domain/ui/button'
     import { InView } from '$lib/hooks/in-view.svelte'
 
     import { entryStyles } from '../helpers'

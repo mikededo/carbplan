@@ -9,14 +9,9 @@
 <script lang="ts">
     import type { Snippet } from 'svelte'
 
-    import BreadcrumbItem from '$lib/domain/ui/breadcrumb/breadcrumb-item.svelte'
-    import BreadcrumbLink from '$lib/domain/ui/breadcrumb/breadcrumb-link.svelte'
-    import BreadcrumbList from '$lib/domain/ui/breadcrumb/breadcrumb-list.svelte'
-    import BreadcrumbPage from '$lib/domain/ui/breadcrumb/breadcrumb-page.svelte'
-    import BreadcrumbSeparator from '$lib/domain/ui/breadcrumb/breadcrumb-separator.svelte'
-    import Breadcrumb from '$lib/domain/ui/breadcrumb/breadcrumb.svelte'
-    import Separator from '$lib/domain/ui/separator/separator.svelte'
-    import SidebarTrigger from '$lib/domain/ui/sidebar/sidebar-trigger.svelte'
+    import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '$lib/domain/ui/breadcrumb'
+    import { Separator } from '$lib/domain/ui/separator'
+    import { SidebarTrigger } from '$lib/domain/ui/sidebar'
 
     type Props = {
         crumbs: Crumb[]

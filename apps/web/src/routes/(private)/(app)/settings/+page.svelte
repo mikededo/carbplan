@@ -11,7 +11,7 @@
     import SectionPersonal from '$lib/domain/settings/components/section-personal.svelte'
     import SectionPower from '$lib/domain/settings/components/section-power.svelte'
     import { createAthleteMutation, useAthleteQuery } from '$lib/domain/settings/queries/use-athlete.svelte'
-    import Button from '$lib/domain/ui/button/button.svelte'
+    import { Button } from '$lib/domain/ui/button'
 
     type Props = { data: PageData }
     const { data }: Props = $props()

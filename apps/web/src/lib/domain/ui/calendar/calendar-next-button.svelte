@@ -1,10 +1,10 @@
 <script lang="ts">
-    import type { ButtonVariant } from '$lib/domain/ui/button/button.svelte'
+    import type { ButtonVariant } from '$lib/domain/ui/button'
 
     import ChevronRightIcon from '@lucide/svelte/icons/chevron-right'
     import { Calendar as CalendarPrimitive } from 'bits-ui'
 
-    import { buttonVariants } from '$lib/domain/ui/button/button.svelte'
+    import { buttonVariants } from '$lib/domain/ui/button'
     import { cn } from '$lib/utils.js'
 
     let {

@@ -2,8 +2,8 @@
     import { resolve } from '$app/paths'
     import { ROUTES } from '$lib/constants/routes'
     import { getAuthUserOrNull } from '$lib/domain/auth/context'
-    import Button from '$lib/domain/ui/button/button.svelte'
-    import Logo from '$lib/domain/ui/logo/logo.svelte'
+    import { Button } from '$lib/domain/ui/button'
+    import { Logo } from '$lib/domain/ui/logo'
 
     const authUser = getAuthUserOrNull()
 </script>

@@ -3,15 +3,9 @@
 
     import { LoaderCircleIcon, SaveIcon } from '@lucide/svelte'
 
-    import AlertDescription from '$lib/domain/ui/alert/alert-description.svelte'
-    import Alert from '$lib/domain/ui/alert/alert.svelte'
-    import Button from '$lib/domain/ui/button/button.svelte'
-    import DialogContent from '$lib/domain/ui/dialog/dialog-content.svelte'
-    import DialogDescription from '$lib/domain/ui/dialog/dialog-description.svelte'
-    import DialogFooter from '$lib/domain/ui/dialog/dialog-footer.svelte'
-    import DialogHeader from '$lib/domain/ui/dialog/dialog-header.svelte'
-    import DialogTitle from '$lib/domain/ui/dialog/dialog-title.svelte'
-    import DialogRoot from '$lib/domain/ui/dialog/dialog.svelte'
+    import { Alert, AlertDescription } from '$lib/domain/ui/alert'
+    import { Button } from '$lib/domain/ui/button'
+    import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogRoot, DialogTitle } from '$lib/domain/ui/dialog'
 
     import BrandFormFields from './brand-form-fields.svelte'
     import { createBrandFormContext } from './context.svelte'

@@ -37,9 +37,7 @@
 
     import { mergeProps } from 'bits-ui'
 
-    import TooltipContent from '$lib/domain/ui/tooltip/tooltip-content.svelte'
-    import TooltipTrigger from '$lib/domain/ui/tooltip/tooltip-trigger.svelte'
-    import TooltipRoot from '$lib/domain/ui/tooltip/tooltip.svelte'
+    import { TooltipContent, TooltipRoot, TooltipTrigger } from '$lib/domain/ui/tooltip'
     import { cn } from '$lib/utils.js'
 
     import { useSidebar } from './context.svelte.js'

@@ -1,7 +1,5 @@
 <script lang="ts">
-    import TooltipContent from '$lib/domain/ui/tooltip/tooltip-content.svelte'
-    import TooltipTrigger from '$lib/domain/ui/tooltip/tooltip-trigger.svelte'
-    import TooltipRoot from '$lib/domain/ui/tooltip/tooltip.svelte'
+    import { TooltipContent, TooltipRoot, TooltipTrigger } from '$lib/domain/ui/tooltip'
 
     import { formatPercentRange } from '../types'
 

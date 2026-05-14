@@ -6,9 +6,8 @@
     import { ROUTES } from '$lib/constants/routes'
     import PageSection from '$lib/domain/layout/components/page-section.svelte'
     import ProductFormBadge from '$lib/domain/product/components/product-form-badge.svelte'
-    import Button from '$lib/domain/ui/button/button.svelte'
-    import CardContent from '$lib/domain/ui/card/card-content.svelte'
-    import CardRoot from '$lib/domain/ui/card/card.svelte'
+    import { Button } from '$lib/domain/ui/button'
+    import { CardContent, CardRoot } from '$lib/domain/ui/card'
 
     type Props = { products: DashboardFavoriteProduct[] }
     const { products }: Props = $props()

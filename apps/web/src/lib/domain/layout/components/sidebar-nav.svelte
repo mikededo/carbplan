@@ -5,12 +5,7 @@
     import { page } from '$app/state'
     import { ROUTES } from '$lib/constants/routes'
     import { getAuthContext } from '$lib/domain/auth/context'
-    import SidebarGroupContent from '$lib/domain/ui/sidebar/sidebar-group-content.svelte'
-    import SidebarGroupLabel from '$lib/domain/ui/sidebar/sidebar-group-label.svelte'
-    import SidebarGroup from '$lib/domain/ui/sidebar/sidebar-group.svelte'
-    import SidebarMenuButton from '$lib/domain/ui/sidebar/sidebar-menu-button.svelte'
-    import SidebarMenuItem from '$lib/domain/ui/sidebar/sidebar-menu-item.svelte'
-    import SidebarMenu from '$lib/domain/ui/sidebar/sidebar-menu.svelte'
+    import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '$lib/domain/ui/sidebar'
 
     const BASE_ROUTES = [
         { href: ROUTES.dashboard, icon: LayoutDashboardIcon, title: 'Dashboard' },

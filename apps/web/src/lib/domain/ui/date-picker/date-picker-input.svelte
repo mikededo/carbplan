@@ -5,12 +5,10 @@
     import ChevronDownIcon from '@lucide/svelte/icons/chevron-down'
     import { cn } from 'tailwind-variants'
 
-    import Button from '$lib/domain/ui/button/button.svelte'
-    import Calendar from '$lib/domain/ui/calendar/calendar.svelte'
-    import Label from '$lib/domain/ui/label/label.svelte'
-    import PopoverContent from '$lib/domain/ui/popover/popover-content.svelte'
-    import PopoverTrigger from '$lib/domain/ui/popover/popover-trigger.svelte'
-    import PopoverRoot from '$lib/domain/ui/popover/popover.svelte'
+    import { Button } from '$lib/domain/ui/button'
+    import { Calendar } from '$lib/domain/ui/calendar'
+    import { Label } from '$lib/domain/ui/label'
+    import { PopoverContent, PopoverRoot, PopoverTrigger } from '$lib/domain/ui/popover'
 
     type Props = {
         label: string

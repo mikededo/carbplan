@@ -1,10 +1,9 @@
 <script lang="ts">
     import { PROFILE_FIELD_CONSTRAINTS, SexEnum } from '@carbplan/domain/profile'
 
-    import Input from '$lib/domain/ui/input/input.svelte'
-    import Label from '$lib/domain/ui/label/label.svelte'
-    import RadioGroupItem from '$lib/domain/ui/radio-group/radio-group-item.svelte'
-    import RadioGroupRoot from '$lib/domain/ui/radio-group/radio-group.svelte'
+    import { Input } from '$lib/domain/ui/input'
+    import { Label } from '$lib/domain/ui/label'
+    import { RadioGroupItem, RadioGroupRoot } from '$lib/domain/ui/radio-group'
 
     import SettingsSectionGroup from './settings-section-group.svelte'
     import SettingsSection from './settings-section.svelte'

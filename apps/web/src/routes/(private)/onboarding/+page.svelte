@@ -14,13 +14,8 @@
     import StepProgress from '$lib/domain/onboarding/components/step-progress.svelte'
     import StepTraining from '$lib/domain/onboarding/components/step-training.svelte'
     import { ONBOARDING_STEPS } from '$lib/domain/onboarding/types'
-    import Button from '$lib/domain/ui/button/button.svelte'
-    import CardContent from '$lib/domain/ui/card/card-content.svelte'
-    import CardDescription from '$lib/domain/ui/card/card-description.svelte'
-    import CardFooter from '$lib/domain/ui/card/card-footer.svelte'
-    import CardHeader from '$lib/domain/ui/card/card-header.svelte'
-    import CardTitle from '$lib/domain/ui/card/card-title.svelte'
-    import Card from '$lib/domain/ui/card/card.svelte'
+    import { Button } from '$lib/domain/ui/button'
+    import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$lib/domain/ui/card'
 
     type Props = { data: PageData, form: ActionData }
     const { data, form }: Props = $props()

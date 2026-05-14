@@ -1,12 +1,8 @@
 <script lang="ts">
     import type { ComponentProps } from 'svelte'
 
-    import Logo from '$lib/domain/ui/logo/logo.svelte'
-    import SidebarContent from '$lib/domain/ui/sidebar/sidebar-content.svelte'
-    import SidebarFooter from '$lib/domain/ui/sidebar/sidebar-footer.svelte'
-    import SidebarHeader from '$lib/domain/ui/sidebar/sidebar-header.svelte'
-    import SidebarRail from '$lib/domain/ui/sidebar/sidebar-rail.svelte'
-    import SidebarRoot from '$lib/domain/ui/sidebar/sidebar.svelte'
+    import { Logo } from '$lib/domain/ui/logo'
+    import { SidebarContent, SidebarFooter, SidebarHeader, SidebarRail, SidebarRoot } from '$lib/domain/ui/sidebar'
 
     import SidebarNav from './sidebar-nav.svelte'
     import SidebarUser from './sidebar-user.svelte'

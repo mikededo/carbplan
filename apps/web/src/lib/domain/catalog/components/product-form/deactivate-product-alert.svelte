@@ -1,14 +1,8 @@
 <script lang="ts">
     import { LoaderCircleIcon } from '@lucide/svelte'
 
-    import AlertDialogCancel from '$lib/domain/ui/alert-dialog/alert-dialog-cancel.svelte'
-    import AlertDialogContent from '$lib/domain/ui/alert-dialog/alert-dialog-content.svelte'
-    import AlertDialogDescription from '$lib/domain/ui/alert-dialog/alert-dialog-description.svelte'
-    import AlertDialogFooter from '$lib/domain/ui/alert-dialog/alert-dialog-footer.svelte'
-    import AlertDialogHeader from '$lib/domain/ui/alert-dialog/alert-dialog-header.svelte'
-    import AlertDialogTitle from '$lib/domain/ui/alert-dialog/alert-dialog-title.svelte'
-    import AlertDialogRoot from '$lib/domain/ui/alert-dialog/alert-dialog.svelte'
-    import Button from '$lib/domain/ui/button/button.svelte'
+    import { AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogRoot, AlertDialogTitle } from '$lib/domain/ui/alert-dialog'
+    import { Button } from '$lib/domain/ui/button'
 
     import { getProductFormContext } from './context.svelte'
 

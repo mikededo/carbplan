@@ -3,7 +3,7 @@
 
     import type { WithElementRef } from '$lib/utils.js'
 
-    import TooltipProvider from '$lib/domain/ui/tooltip/tooltip-provider.svelte'
+    import { TooltipProvider } from '$lib/domain/ui/tooltip'
     import { cn } from '$lib/utils.js'
 
     import {

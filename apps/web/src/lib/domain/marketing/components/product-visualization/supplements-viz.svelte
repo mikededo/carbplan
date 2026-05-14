@@ -1,7 +1,7 @@
 <script lang="ts">
     import { ChevronRightIcon } from '@lucide/svelte'
 
-    import Badge from '$lib/domain/ui/badge/badge.svelte'
+    import { Badge } from '$lib/domain/ui/badge'
     import { cn } from '$lib/utils'
 
     import { entryStyles } from '../../helpers'

@@ -5,10 +5,7 @@
     import SunIcon from '@lucide/svelte/icons/sun'
 
     import { useTheme } from '$lib/domain/theme/context.svelte'
-    import DropdownMenuItem from '$lib/domain/ui/dropdown-menu/dropdown-menu-item.svelte'
-    import DropdownMenuSubContent from '$lib/domain/ui/dropdown-menu/dropdown-menu-sub-content.svelte'
-    import DropdownMenuSubTrigger from '$lib/domain/ui/dropdown-menu/dropdown-menu-sub-trigger.svelte'
-    import DropdownMenuSub from '$lib/domain/ui/dropdown-menu/dropdown-menu-sub.svelte'
+    import { DropdownMenuItem, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger } from '$lib/domain/ui/dropdown-menu'
 
     const theme = useTheme()
 

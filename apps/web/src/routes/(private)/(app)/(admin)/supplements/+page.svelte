@@ -11,7 +11,7 @@
     import { useCatalogQuery } from '$lib/domain/catalog/queries/use-catalog-query.svelte'
     import PageHeader from '$lib/domain/layout/components/page-header.svelte'
     import PageScrollarea from '$lib/domain/layout/components/page-scrollarea.svelte'
-    import Button from '$lib/domain/ui/button/button.svelte'
+    import { Button } from '$lib/domain/ui/button'
 
     type DialogState<T> = { item: T | undefined, open: boolean }
 

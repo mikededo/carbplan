@@ -3,11 +3,7 @@
 
     import type { WithElementRef } from '$lib/utils.js'
 
-    import SheetContent from '$lib/domain/ui/sheet/sheet-content.svelte'
-    import SheetDescription from '$lib/domain/ui/sheet/sheet-description.svelte'
-    import SheetHeader from '$lib/domain/ui/sheet/sheet-header.svelte'
-    import SheetTitle from '$lib/domain/ui/sheet/sheet-title.svelte'
-    import SheetRoot from '$lib/domain/ui/sheet/sheet.svelte'
+    import { SheetContent, SheetDescription, SheetHeader, SheetRoot, SheetTitle } from '$lib/domain/ui/sheet'
     import { cn } from '$lib/utils.js'
 
     import { SIDEBAR_WIDTH_MOBILE } from './constants.js'

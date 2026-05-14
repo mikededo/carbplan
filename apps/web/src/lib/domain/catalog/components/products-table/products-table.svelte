@@ -12,12 +12,7 @@
     } from '@lucide/svelte'
 
     import ProductFormBadge from '$lib/domain/product/components/product-form-badge.svelte'
-    import TableBody from '$lib/domain/ui/table/table-body.svelte'
-    import TableCell from '$lib/domain/ui/table/table-cell.svelte'
-    import TableHead from '$lib/domain/ui/table/table-head.svelte'
-    import TableHeader from '$lib/domain/ui/table/table-header.svelte'
-    import TableRow from '$lib/domain/ui/table/table-row.svelte'
-    import TableRoot from '$lib/domain/ui/table/table.svelte'
+    import { TableBody, TableCell, TableHead, TableHeader, TableRoot, TableRow } from '$lib/domain/ui/table'
     import { cn } from '$lib/utils'
 
     import { createProductsTableContext, TABLE_COLUMNS } from '../../context/products-table.svelte'

@@ -1,7 +1,7 @@
 <script lang="ts">
-    import type { BadgeVariant } from '$lib/domain/ui/badge/badge.svelte'
+    import type { BadgeVariant } from '$lib/domain/ui/badge'
 
-    import Badge from '$lib/domain/ui/badge/badge.svelte'
+    import { Badge } from '$lib/domain/ui/badge'
 
     type Props = {
         caffeine: null | number
