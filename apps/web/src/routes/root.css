@@ -124,6 +124,8 @@
   --text-sm: 0.8125rem;
   --text-base: 0.9375rem;
   --text-lg: 1.125rem;
+
+  --transition-duration-sidebar: 250ms;
 }
 
 @layer base {
