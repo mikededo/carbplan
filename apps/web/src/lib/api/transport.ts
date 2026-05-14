@@ -85,6 +85,14 @@ const isApiSuccess = <T>(value: unknown): value is ApiSuccess<T> => {
   return 'data' in value
 }
 
+const parseResponsePayload = (payload: string): unknown => {
+  try {
+    return JSON.parse(payload)
+  } catch {
+    return payload
+  }
+}
+
 type IsEmptyResponseParams = { method: RequestMethod, response: Response }
 const isEmptyResponse = ({ response }: IsEmptyResponseParams) =>
   response.status === 204 || response.status === 205 || response.status === 304
@@ -166,7 +174,7 @@ export const createTransport = ({
       }
 
       return ResultAsync
-        .fromPromise<unknown, TransportError>(
+        .fromPromise<string, TransportError>(
           response.json(),
           () => ({
             code: TransportErrorValues.PARSER_ERROR,
@@ -174,7 +182,9 @@ export const createTransport = ({
             status: response.status
           })
         )
-        .andThen((payload) => {
+        .andThen((rawPayload) => {
+          const payload = parseResponsePayload(rawPayload)
+
           if (!response.ok) {
             return errAsync(
               toApiError({
