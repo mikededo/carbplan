@@ -13,7 +13,7 @@ export const tailwindConfig = (entryPoint) => ({
   },
   settings: {
     'better-tailwindcss': {
-      callees: ['tv', 'twMerge'],
+      callees: ['tv', 'twMerge', 'cn'],
       entryPoint
     }
   }
