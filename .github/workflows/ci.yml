@@ -54,8 +54,9 @@ jobs:
       - name: Typecheck and lint affected projects
         run: bunx turbo run typecheck lint --filter="...[$BASE_SHA]"
 
-      # TODO: Ignore web until api is finished
-      # --filter="@carbplan/web...[$BASE_SHA]"
+      - name: Build affected projects
+        run: bunx turbo run build --filter="...[$BASE_SHA]"
+
       - name: Detect affected test tasks
         id: detect_tests
         shell: bash
@@ -65,6 +66,7 @@ jobs:
             --filter="@carbplan/api...[$BASE_SHA]" \
             --filter="@carbplan/auth...[$BASE_SHA]" \
             --filter="@carbplan/contracts...[$BASE_SHA]" \
+            --filter="@carbplan/web...[$BASE_SHA]" \
             --filter="@carbplan/vitest-neverthrow...[$BASE_SHA]" | jq '.tasks | length')"
           echo "count=$count" >> "$GITHUB_OUTPUT"
       - name: Test affected projects
@@ -73,4 +75,5 @@ jobs:
             --filter="@carbplan/api...[$BASE_SHA]" \
             --filter="@carbplan/auth...[$BASE_SHA]" \
             --filter="@carbplan/contracts...[$BASE_SHA]" \
+            --filter="@carbplan/web...[$BASE_SHA]" \
             --filter="@carbplan/vitest-neverthrow...[$BASE_SHA]"

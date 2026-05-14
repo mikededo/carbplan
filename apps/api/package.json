@@ -24,9 +24,12 @@
     "@carbplan/utils": "workspace:*",
     "@elysiajs/cors": "^1.4.2",
     "@elysiajs/openapi": "^1.4.15",
+    "@logtape/elysia": "^2.0.7",
+    "@logtape/logtape": "^2.0.7",
     "drizzle-orm": "catalog:",
     "elysia": "1.4.28",
     "es-toolkit": "1.46.1",
+    "neverthrow": "catalog:",
     "pg-error-enum": "2.0.1",
     "zod": "catalog:"
   },
@@ -34,11 +37,8 @@
     "@carbplan/eslint": "workspace:*",
     "@carbplan/vitest-neverthrow": "workspace:*",
     "@elysiajs/eden": "1.4.9",
-    "@logtape/elysia": "^2.0.7",
-    "@logtape/logtape": "^2.0.7",
     "bun-types": "1.3.14",
     "eslint": "catalog:",
-    "neverthrow": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }

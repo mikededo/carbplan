@@ -25,6 +25,7 @@
   "dependencies": {
     "@carbplan/contracts": "workspace:*",
     "@carbplan/domain": "workspace:*",
+    "@carbplan/utils": "workspace:*",
     "@lucide/svelte": "1.14.0",
     "@tanstack/svelte-query": "6.1.29",
     "@tanstack/svelte-query-devtools": "6.1.29",
