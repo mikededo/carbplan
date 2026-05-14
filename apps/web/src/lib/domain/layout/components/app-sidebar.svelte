@@ -14,7 +14,7 @@
 </script>
 
 <SidebarRoot collapsible="icon" variant="inset" {...restProps}>
-    <SidebarHeader class="flex h-12 flex-row items-center justify-start gap-0 px-4 transition-[width,height]">
+    <SidebarHeader class="mt-2 flex h-12 flex-row items-center justify-start gap-0 px-4 transition-[width,height]">
         <div class="flex size-4 items-center justify-center rounded-lg text-foreground">
             <Logo />
         </div>
