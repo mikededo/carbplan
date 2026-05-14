@@ -13,7 +13,9 @@
 
     let inputRef = $state<HTMLInputElement | null>(null)
     const table = getProductsTableContext()
-    const selectedProductForms = $derived([...table.formFilter])
+    const selectedProductForms = $derived(
+        table.formFilter.size > 0 ? [...table.formFilter] : [ALL_TYPES_OPTION.value]
+    )
 
     $effect(() => {
         const onKeyDown = (event: KeyboardEvent) => {
@@ -66,7 +68,7 @@
             {#if selectedProductForms.length > 0}
                 <span class="w-28 truncate text-left">
                     {selectedProductForms
-                        .map((filter) => formOptions.find((option) => option.value === filter)?.label)
+                        .map((filter) => [ALL_TYPES_OPTION, ...formOptions].find((option) => option.value === filter)?.label)
                         .filter(Boolean)
                         .join(', ')}
                 </span>

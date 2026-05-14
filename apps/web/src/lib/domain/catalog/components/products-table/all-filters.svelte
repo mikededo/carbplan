@@ -32,8 +32,6 @@
 </script>
 
 <script lang="ts">
-    import type { ProductForm } from '@carbplan/domain/product'
-
     import { BuildingIcon, SlidersHorizontalIcon } from '@lucide/svelte'
 
     import { Button } from '$lib/domain/ui/button'
@@ -77,10 +75,6 @@
             ? 'Any'
             : `${sodiumRange[0]}mg - ${sodiumRange[1]}mg`
     )
-
-    const onToggleProductForm = (value: ProductForm) => () => {
-        table.onToggleProductForm(value)
-    }
 
     const onCaffeineRangeChange = (value: number[]) => {
         caffeineRange = value
@@ -143,10 +137,9 @@
                 <div class="flex flex-wrap gap-1">
                     {#each formOptions as option (option.value)}
                         <Toggle
-                            pressed={table.formFilter.has(option.value)}
+                            bind:pressed={() => table.isProductFormPressed(option.value), table.setProductFormPressed(option.value)}
                             size="sm"
                             variant="outline"
-                            onclick={onToggleProductForm(option.value)}
                         >
                             <option.Icon class="size-3.5" />
                             {option.label}

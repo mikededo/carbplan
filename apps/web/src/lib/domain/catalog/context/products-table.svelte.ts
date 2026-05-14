@@ -144,7 +144,22 @@ const createProductsTableState = (getBrands: () => CatalogResult) => {
   const filteredProductsCount = $derived(filteredBrands.reduce((acc, b) => acc + b.products.length, 0))
 
   const onProductFormChange = (value: string[]) => {
-    state.formFilter = new SvelteSet(value as ('' | ProductForm)[])
+    if (value.includes('') && state.formFilter.size > 0) {
+      state.formFilter = new SvelteSet()
+      return
+    }
+
+    state.formFilter = new SvelteSet(value.filter(Boolean) as ProductForm[])
+  }
+
+  const isProductFormPressed = (form: ProductForm) => state.formFilter.has(form)
+
+  const setProductFormPressed = (form: ProductForm) => (pressed: boolean) => {
+    if (pressed) {
+      state.formFilter.add(form)
+    } else {
+      state.formFilter.delete(form)
+    }
   }
 
   const onToggleProductForm = (form: '' | ProductForm) => {
@@ -247,6 +262,7 @@ const createProductsTableState = (getBrands: () => CatalogResult) => {
     set globalFilter(value: string) {
       state.globalFilter = value
     },
+    isProductFormPressed,
     get maxCaffeine() {
       return state.maxCaffeine
     },
@@ -281,6 +297,7 @@ const createProductsTableState = (getBrands: () => CatalogResult) => {
     onSortColumn,
     onToggleCollapseBrand,
     onToggleProductForm,
+    setProductFormPressed,
     get sortColumn() {
       return state.sortColumn
     },
