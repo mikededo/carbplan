@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { resolve } from '$app/paths'
     import { ROUTES } from '$lib/constants/routes'
     import { getAuthUserOrNull } from '$lib/domain/auth/context'
     import Button from '$lib/domain/ui/button/button.svelte'
@@ -9,7 +10,7 @@
 
 <nav class="fixed inset-x-0 top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md">
     <div class="mx-auto grid h-16 max-w-6xl grid-cols-2 items-center justify-between px-6 md:grid-cols-3">
-        <a class="flex items-center gap-2" href={ROUTES.landing}>
+        <a class="flex items-center gap-2" href={resolve(ROUTES.landing)}>
             <div class="flex size-8 items-center justify-center rounded-lg bg-primary">
                 <Logo class="size-5 text-primary-foreground" />
             </div>

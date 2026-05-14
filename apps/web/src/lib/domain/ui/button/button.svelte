@@ -58,6 +58,8 @@
     }: ButtonProps = $props()
 </script>
 
+<!-- eslint-disable svelte/no-navigation-without-resolve -->
+
 {#if href}
     <a
         class={cn(buttonVariants({ size, variant }), className)}

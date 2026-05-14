@@ -2,6 +2,7 @@
     import type { ActionData } from './$types'
 
     import { enhance } from '$app/forms'
+    import { resolve } from '$app/paths'
     import { ROUTES } from '$lib/constants/routes'
     import Button from '$lib/domain/ui/button/button.svelte'
     import CardContent from '$lib/domain/ui/card/card-content.svelte'
@@ -65,7 +66,7 @@
 
         <p class="text-center text-sm">
             Don't have an account?
-            <a class="text-primary hover:underline" href={ROUTES.auth.signup}>Sign up</a>
+            <a class="text-primary hover:underline" href={resolve(ROUTES.auth.signup)}>Sign up</a>
         </p>
     </CardContent>
 </Card>

@@ -80,7 +80,7 @@
                         <a
                             class="inline-flex items-center gap-1 text-xs text-primary hover:underline"
                             href={currentModelInfo.referenceUrl}
-                            rel="noopener noreferrer"
+                            rel="external noopener noreferrer"
                             target="_blank"
                         >
                             Learn more <ExternalLinkIcon class="size-3" />
@@ -94,7 +94,7 @@
                 </SelectTrigger>
                 <SelectPortal>
                     <SelectContent>
-                        {#each modelOptions as option}
+                        {#each modelOptions as option (option.value)}
                             <SelectItem value={option.value}>
                                 {option.label}
                             </SelectItem>
@@ -109,7 +109,7 @@
         <ZoneBar zones={zones.zones} />
 
         <div class="divide-y divide-border">
-            {#each zones.zones as zone, i}
+            {#each zones.zones as zone, i (zone.name)}
                 <ZoneListItem
                     color={zone.color}
                     description={currentPreset[i]?.description}

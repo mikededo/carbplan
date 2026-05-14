@@ -18,7 +18,9 @@ export const svelteConfig = (args) => baseConfig({ ...args, svelte: true })
         'error',
         { multiline: 1, singleline: 3 }
       ],
-      'svelte/no-inspect': ['error']
+      'svelte/no-inspect': ['error'],
+      // Need to disable because there are too many false positives
+      'svelte/prefer-svelte-reactivity': ['off']
     }
   })
   .append(

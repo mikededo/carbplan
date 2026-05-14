@@ -1,6 +1,7 @@
 <script lang="ts">
     import { LayoutDashboardIcon, PillIcon, SettingsIcon } from '@lucide/svelte'
 
+    import { resolve } from '$app/paths'
     import { page } from '$app/state'
     import { ROUTES } from '$lib/constants/routes'
     import { getAuthContext } from '$lib/domain/auth/context'
@@ -46,7 +47,7 @@
             <SidebarMenuItem>
                 <SidebarMenuButton isActive={isActive(item.href)} tooltipContent={item.title}>
                     {#snippet child({ props })}
-                        <a href={item.href} {...props}>
+                        <a href={resolve(item.href)} {...props}>
                             <item.icon />
                             <span>{item.title}</span>
                         </a>
@@ -65,7 +66,7 @@
                 <SidebarMenuItem>
                     <SidebarMenuButton isActive={isActive(item.href)} tooltipContent={item.title}>
                         {#snippet child({ props })}
-                            <a href={item.href} {...props}>
+                            <a href={resolve(item.href)} {...props}>
                                 <item.icon />
                                 <span>{item.title}</span>
                             </a>

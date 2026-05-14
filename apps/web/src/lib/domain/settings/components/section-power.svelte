@@ -29,9 +29,7 @@
         weight = $bindable()
     }: Props = $props()
 
-    // svelte-ignore state_referenced_locally
-    let powerZones = $state<Maybe<PowerZonesData>>(initialPowerZones)
-
+    let powerZones = $derived<Maybe<PowerZonesData>>(initialPowerZones)
     const mutate = $derived(createAthletePowerZonesMutation(athleteId))
 
     const onModelChange = (data: PowerZonesData) => {

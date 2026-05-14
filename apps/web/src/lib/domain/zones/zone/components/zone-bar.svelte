@@ -24,7 +24,7 @@
 </script>
 
 <div class="flex h-8 w-full overflow-hidden rounded-md">
-    {#each zones as zone, i}
+    {#each zones as zone, i (zone.name)}
         <TooltipRoot>
             <TooltipTrigger
                 class="flex items-center justify-center text-xs font-medium text-white transition-opacity hover:opacity-80"

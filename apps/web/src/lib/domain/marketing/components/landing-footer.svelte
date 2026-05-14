@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { resolve } from '$app/paths'
     import { ROUTES } from '$lib/constants/routes'
     import Logo from '$lib/domain/ui/logo/logo.svelte'
 
@@ -9,7 +10,7 @@
     <div class="mx-auto max-w-6xl">
         <div class="grid gap-8 md:grid-cols-3">
             <div class="space-y-4">
-                <a class="flex items-center gap-2" href={ROUTES.landing}>
+                <a class="flex items-center gap-2" href={resolve(ROUTES.landing)}>
                     <div class="flex size-8 items-center justify-center rounded-lg bg-primary">
                         <Logo class="size-5 text-primary-foreground" />
                     </div>
@@ -25,7 +26,7 @@
                 <ul class="space-y-2 text-sm text-muted-foreground">
                     {#each FOOTER_LINKS.product as link (link.label)}
                         <li>
-                            <a class="transition-colors hover:text-foreground" href={link.href}>
+                            <a class="transition-colors hover:text-foreground" href={resolve(link.href)}>
                                 {link.label}
                             </a>
                         </li>
@@ -38,7 +39,7 @@
                 <ul class="space-y-2 text-sm text-muted-foreground">
                     {#each FOOTER_LINKS.legal as link (link.label)}
                         <li>
-                            <a class="transition-colors hover:text-foreground" href={link.href}>
+                            <a class="transition-colors hover:text-foreground" href={resolve(link.href)}>
                                 {link.label}
                             </a>
                         </li>

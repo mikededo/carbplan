@@ -3,6 +3,7 @@
     import LogOutIcon from '@lucide/svelte/icons/log-out'
     import SettingsIcon from '@lucide/svelte/icons/settings'
 
+    import { resolve } from '$app/paths'
     import { ROUTES } from '$lib/constants/routes'
     import { useAthleteQuery } from '$lib/domain/settings/queries/use-athlete.svelte'
     import ThemeToggle from '$lib/domain/theme/components/theme-toggle.svelte'
@@ -73,7 +74,7 @@
                 <DropdownMenuGroup>
                     <DropdownMenuItem>
                         {#snippet child({ props })}
-                            <a href={ROUTES.settings} {...props}>
+                            <a href={resolve(ROUTES.settings)} {...props}>
                                 <SettingsIcon />
                                 Settings
                             </a>

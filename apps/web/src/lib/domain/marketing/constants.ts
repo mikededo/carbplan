@@ -1,5 +1,6 @@
 import type { Icon } from '@lucide/svelte'
 
+import type { Pathname } from '$app/types'
 import type { ButtonVariant } from '$lib/domain/ui/button/button.svelte'
 
 import {
@@ -199,13 +200,14 @@ export const PRODUCT_SHOWCASES: Record<'dashboard' | 'planner' | 'supplements', 
   }
 }
 
-export const FOOTER_LINKS = {
+type Footer = Record<string, { href: Pathname, label: string }[]>
+export const FOOTER_LINKS: Footer = {
   legal: [
-    { href: '#', label: 'Privacy' },
-    { href: '#', label: 'Terms' }
+    { href: '/' as Pathname, label: 'Privacy' },
+    { href: '/', label: 'Terms' }
   ],
   product: [
-    { href: '#features', label: 'Features' },
-    { href: '#pricing', label: 'Pricing' }
+    { href: '/', label: 'Features' },
+    { href: '/', label: 'Pricing' }
   ]
 }

@@ -29,9 +29,7 @@
         hrZones: initialHRZones
     }: Props = $props()
 
-    // svelte-ignore state_referenced_locally
-    let hrZones = $state<Maybe<HRZonesData>>(initialHRZones)
-
+    let hrZones = $derived<Maybe<HRZonesData>>(initialHRZones)
     const mutate = $derived(createAthleteHRZonesMutation(athleteId))
 
     const onModelChange = (data: HRZonesData) => {

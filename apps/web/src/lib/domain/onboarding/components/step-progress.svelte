@@ -18,7 +18,7 @@
 </script>
 
 <div class="mb-2 flex justify-center gap-2">
-    {#each ONBOARDING_STEPS as _, i}
+    {#each ONBOARDING_STEPS as _, i (i)}
         <div class={stepClasses({ lt: i < current })}></div>
     {/each}
 </div>
