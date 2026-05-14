@@ -44,7 +44,7 @@
 <TooltipProvider delayDuration={0}>
     <div
         class={cn(
-            'group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full',
+            'group/sidebar-wrapper flex min-h-svh w-full has-data-[variant=inset]:bg-sidebar',
             className
         )}
         bind:this={ref}

@@ -15,7 +15,7 @@
 
 <div
     class={cn(
-        'bg-card text-card-foreground flex flex-col gap-6 rounded-lg border py-6',
+        'flex flex-col gap-6 rounded-lg border bg-card py-6 text-card-foreground',
         className
     )}
     bind:this={ref}

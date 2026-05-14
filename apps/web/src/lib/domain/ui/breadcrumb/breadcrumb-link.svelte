@@ -18,7 +18,7 @@
     } & WithElementRef<HTMLAnchorAttributes> = $props()
 
     const attrs = $derived({
-        class: cn('hover:text-foreground transition-colors', className),
+        class: cn('transition-colors hover:text-foreground', className),
         'data-slot': 'breadcrumb-link',
         href,
         ...restProps

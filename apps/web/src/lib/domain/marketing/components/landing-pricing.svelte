@@ -36,7 +36,7 @@
                         {tier.name}
                     </h3>
 
-                    <div class={cn('flex flex-1 flex-col gap-4 border rounded-xl bg-card px-4 py-3', tier.popular && 'border-primary')}>
+                    <div class={cn('flex flex-1 flex-col gap-4 rounded-xl border bg-card px-4 py-3', tier.popular && 'border-primary')}>
                         <div>
                             <p class="text-sm text-muted-foreground">{tier.description}</p>
                             <span class="text-4xl font-bold">{tier.price}</span>

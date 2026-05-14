@@ -13,7 +13,7 @@
 </script>
 
 <div
-    class={cn('bg-accent animate-pulse rounded-md', className)}
+    class={cn('animate-pulse rounded-md bg-accent', className)}
     bind:this={ref}
     data-slot="skeleton"
     {...restProps}

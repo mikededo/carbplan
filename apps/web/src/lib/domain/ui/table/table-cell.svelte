@@ -15,7 +15,7 @@
 
 <td
     class={cn(
-        'bg-clip-padding p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0',
+        'bg-clip-padding p-2 align-middle whitespace-nowrap has-[[role=checkbox]]:pe-0',
         className
     )}
     bind:this={ref}

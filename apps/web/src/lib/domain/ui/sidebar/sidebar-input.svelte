@@ -13,7 +13,7 @@
 </script>
 
 <Input
-    class={cn('bg-background h-8 w-full shadow-none', className)}
+    class={cn('h-8 w-full bg-background shadow-none', className)}
     bind:ref
     bind:value
     data-sidebar="input"

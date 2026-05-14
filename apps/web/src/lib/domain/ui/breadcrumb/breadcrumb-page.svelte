@@ -14,7 +14,7 @@
 </script>
 
 <span
-    class={cn('text-foreground font-normal', className)}
+    class={cn('font-normal text-foreground', className)}
     bind:this={ref}
     role="link"
     aria-current="page"

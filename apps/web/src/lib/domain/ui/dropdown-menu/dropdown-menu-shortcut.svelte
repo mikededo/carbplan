@@ -14,7 +14,7 @@
 </script>
 
 <span
-    class={cn('text-muted-foreground ms-auto text-xs tracking-widest', className)}
+    class={cn('ms-auto text-xs tracking-widest text-muted-foreground', className)}
     bind:this={ref}
     data-slot="dropdown-menu-shortcut"
     {...restProps}
