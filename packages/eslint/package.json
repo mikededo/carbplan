@@ -20,10 +20,10 @@
     "eslint-plugin-format": "2.0.1",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-perfectionist": "5.9.0",
-    "eslint-plugin-svelte": "3.17.1",
+    "eslint-plugin-svelte": "3.19.0",
     "eslint-plugin-svelte-sort-attributes": "^2.0.0",
-    "eslint-plugin-zod": "4.4.0",
-    "svelte-eslint-parser": "1.6.1",
-    "typescript-eslint": "8.59.3"
+    "eslint-plugin-zod": "4.7.0",
+    "svelte-eslint-parser": "1.8.0",
+    "typescript-eslint": "8.60.1"
   }
 }
