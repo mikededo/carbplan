@@ -1,12 +1,14 @@
 <script lang="ts">
     import type { ZonePreset } from '../types'
 
-    import { TooltipContent, TooltipRoot, TooltipTrigger } from '$lib/domain/ui/tooltip'
+    import { createTether, TooltipContent, TooltipRoot, TooltipTrigger } from '$lib/domain/ui/tooltip'
 
     type Props = {
         zones: ZonePreset[]
     }
     const { zones }: Props = $props()
+
+    const tooltipTether = createTether<ZonePreset>()
 
     const zoneWidths = $derived(() => {
         const totalRange = zones.reduce((acc, zone) => {
@@ -22,17 +24,21 @@
 </script>
 
 <div class="flex h-8 w-full overflow-hidden rounded-md">
-    {#each zones as zone, i (zone.name)}
-        <TooltipRoot>
-            <TooltipTrigger
-                class="flex items-center justify-center text-xs font-medium text-white transition-opacity hover:opacity-80"
-                style="width: {zoneWidths()[i]}%; background-color: {zone.color};"
-            >
-                <span class="truncate px-1">Z{i + 1}</span>
-            </TooltipTrigger>
+    <TooltipRoot tether={tooltipTether}>
+        {#snippet children({ payload })}
+            {#each zones as zone, i (zone.name)}
+                <TooltipTrigger
+                    class="flex items-center justify-center text-xs text-white transition-opacity hover:opacity-80"
+                    payload={zone}
+                    style="width: {zoneWidths()[i]}%; background-color: {zone.color};"
+                >
+                    <span class="truncate px-1">Z{i + 1}</span>
+                </TooltipTrigger>
+            {/each}
+
             <TooltipContent>
-                <p class="font-medium">{zone.name}</p>
+                <p>{payload?.name ?? 'Zone'}</p>
             </TooltipContent>
-        </TooltipRoot>
-    {/each}
+        {/snippet}
+    </TooltipRoot>
 </div>

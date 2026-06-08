@@ -5,7 +5,7 @@
     import { ExternalLinkIcon, HeartIcon, InfoIcon } from '@lucide/svelte'
 
     import { SelectContent, SelectItem, SelectPortal, SelectRoot, SelectTrigger } from '$lib/domain/ui/select'
-    import { TooltipContent, TooltipRoot, TooltipTrigger } from '$lib/domain/ui/tooltip'
+    import { createTether, TooltipContent, TooltipRoot, TooltipTrigger } from '$lib/domain/ui/tooltip'
     import ZoneBar from '$lib/domain/zones/zone/components/zone-bar.svelte'
     import ZoneListItem from '$lib/domain/zones/zone/components/zone-list-item.svelte'
     import ZonePlaceholder from '$lib/domain/zones/zone/components/zone-placeholder.svelte'
@@ -31,6 +31,7 @@
 
     const currentModelInfo = $derived(HR_MODEL_INFO[model])
     const currentPreset = $derived(HR_ZONE_PRESETS[model])
+    const descriptionTooltipTether = createTether()
 
     const zones: HRZonesData | null = $derived.by(() => {
         if (!hrMax) {
@@ -107,6 +108,7 @@
                 <ZoneListItem
                     color={zone.color}
                     description={currentPreset[i]?.description}
+                    descriptionTether={descriptionTooltipTether}
                     index={i}
                     maxPercent={zone.maxPercent}
                     minPercent={zone.minPercent}

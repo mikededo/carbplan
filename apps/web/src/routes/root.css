@@ -32,7 +32,7 @@
   --chart-5: oklch(0.269 0 0);
   --radius: 0.45rem;
   --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.35 0 0);
+  --sidebar-foreground: oklch(0.45 0 0);
   --sidebar-primary: oklch(0.596 0.145 163.225);
   --sidebar-primary-foreground: oklch(0.979 0.021 166.113);
   --sidebar-accent: oklch(0.955 0 0);

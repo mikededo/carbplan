@@ -75,9 +75,7 @@
                 'relative w-(--sidebar-width) bg-transparent transition-[width] duration-sidebar ease-in-out',
                 'group-data-[collapsible=offcanvas]:w-0',
                 'group-data-[side=right]:rotate-180',
-                variant === 'floating' || variant === 'inset'
-                    ? 'group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]'
-                    : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon)'
+                'group-data-[collapsible=icon]:w-(--sidebar-width-icon)'
             )}
             data-slot="sidebar-gap"
         ></div>
@@ -85,11 +83,11 @@
             class={cn(
                 'fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-sidebar ease-in-out md:flex',
                 side === 'left'
-                    ? 'start-0 group-data-[collapsible=offcanvas]:start-[calc(var(--sidebar-width)*-1)]'
-                    : 'end-0 group-data-[collapsible=offcanvas]:end-[calc(var(--sidebar-width)*-1)]',
+                    ? 'inset-s-0 group-data-[collapsible=offcanvas]:-inset-s-(--sidebar-width)'
+                    : 'inset-e-0 group-data-[collapsible=offcanvas]:-inset-e-(--sidebar-width)',
                 // Adjust the padding for floating and inset variants.
                 variant === 'floating' || variant === 'inset'
-                    ? 'p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]'
+                    ? 'p-0 group-data-[collapsible=icon]:w-(--sidebar-width-icon)'
                     : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-e group-data-[side=right]:border-s',
                 className
             )}

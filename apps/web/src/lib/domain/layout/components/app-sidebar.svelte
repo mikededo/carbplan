@@ -13,15 +13,13 @@
     const { onLogOut, ...restProps }: Props = $props()
 </script>
 
-<SidebarRoot collapsible="icon" {...restProps}>
-    <SidebarHeader
-        class="flex h-16 flex-row items-center justify-start gap-0 border-b transition-[width,height] group-has-data-[collapsible=icon]/sidebar-wrapper:h-12"
-    >
-        <div class="flex size-8 items-center justify-center rounded-lg text-foreground">
+<SidebarRoot collapsible="icon" variant="inset" {...restProps}>
+    <SidebarHeader class="flex h-12 flex-row items-center justify-start gap-0 px-4 transition-[width,height]">
+        <div class="flex size-4 items-center justify-center rounded-lg text-foreground">
             <Logo />
         </div>
-        <div class="ml-1 grid flex-1 text-start leading-tight group-has-data-[collapsible=icon]/sidebar-wrapper:hidden">
-            <span class="truncate font-semibold">CarbPlan</span>
+        <div class="grid flex-1 pl-1 text-start text-sm/tight group-has-data-[collapsible=icon]/sidebar-wrapper:hidden">
+            <span class="truncate font-medium">CarbPlan</span>
         </div>
     </SidebarHeader>
     <SidebarContent class="gap-0">

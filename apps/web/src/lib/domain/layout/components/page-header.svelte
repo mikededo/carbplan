@@ -25,9 +25,7 @@
     const isLink = (crumb: Crumb): crumb is LinkCrumb => !isString(crumb) && !isIcon(crumb)
 </script>
 
-<header
-    class="flex h-16 w-full shrink-0 items-center gap-2 border-b transition-[width,height] ease-out group-has-data-[collapsible=icon]/sidebar-wrapper:h-12"
->
+<header class="flex h-12 w-full shrink-0 items-center gap-2 border-b transition-[width,height] ease-out">
     <div class="flex w-full items-center gap-2 px-4">
         <SidebarTrigger class="-ms-1" />
         <Separator class="me-2 data-[orientation=vertical]:h-4" orientation="vertical" />

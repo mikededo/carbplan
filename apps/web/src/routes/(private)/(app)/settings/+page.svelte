@@ -82,7 +82,7 @@
         {:else}
             <SaveIcon />
         {/if}
-        {isPending ? 'Saving' : 'Save changes'}
+        {isPending ? 'Saving' : 'Save'}
     </Button>
 </PageHeader>
 

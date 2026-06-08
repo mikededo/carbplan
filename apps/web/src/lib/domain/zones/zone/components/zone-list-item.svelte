@@ -1,7 +1,12 @@
 <script lang="ts">
-    import { TooltipContent, TooltipRoot, TooltipTrigger } from '$lib/domain/ui/tooltip'
+    import { createTether, TooltipContent, TooltipRoot, TooltipTrigger } from '$lib/domain/ui/tooltip'
 
     import { formatPercentRange } from '../types'
+
+    export type ZoneListItemDescriptionPayload = {
+        description: string
+        name: string
+    }
 
     type Props = {
         color: string
@@ -10,9 +15,12 @@
         minPercent: number
         name: string
         range: string
+        descriptionTether?: ReturnType<typeof createTether<ZoneListItemDescriptionPayload>>
         description?: string
     }
-    const { color, description, index, maxPercent, minPercent, name, range }: Props = $props()
+    const { color, description, descriptionTether, index, maxPercent, minPercent, name, range }: Props = $props()
+
+    const descriptionPayload = $derived(description ? { description, name } : undefined)
 </script>
 
 <div class="flex items-center justify-between py-2 text-sm">
@@ -20,8 +28,11 @@
         <div class="size-3 rounded-full" style="background-color: {color};"></div>
         <span class="font-medium">Z{index + 1}</span>
         {#if description}
-            <TooltipRoot>
-                <TooltipTrigger class="cursor-help text-muted-foreground underline decoration-dotted underline-offset-2">
+            <TooltipRoot tether={descriptionTether}>
+                <TooltipTrigger
+                    class="cursor-help text-muted-foreground underline decoration-dotted underline-offset-2"
+                    payload={descriptionPayload}
+                >
                     {name}
                 </TooltipTrigger>
                 <TooltipContent class="max-w-xs">

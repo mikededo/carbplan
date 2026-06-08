@@ -1,3 +1,5 @@
+import { Tooltip as BaseTooltip } from 'bits-ui'
+
 export { default as TooltipContent } from './tooltip-content.svelte'
 export * from './tooltip-content.svelte'
 export { default as TooltipPortal } from './tooltip-portal.svelte'
@@ -8,3 +10,5 @@ export { default as TooltipTrigger } from './tooltip-trigger.svelte'
 export * from './tooltip-trigger.svelte'
 export { default as Tooltip, default as TooltipRoot } from './tooltip.svelte'
 export * from './tooltip.svelte'
+
+export const createTether = BaseTooltip.createTether

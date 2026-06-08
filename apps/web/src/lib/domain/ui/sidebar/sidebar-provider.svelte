@@ -41,7 +41,7 @@
 
 <svelte:window onkeydown={sidebar.handleShortcutKeydown} />
 
-<TooltipProvider delayDuration={0}>
+<TooltipProvider delayDuration={0} skipDelayDuration={500}>
     <div
         class={cn(
             'group/sidebar-wrapper flex min-h-svh w-full has-data-[variant=inset]:bg-sidebar',

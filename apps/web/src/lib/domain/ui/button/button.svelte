@@ -9,7 +9,7 @@
     import { cn } from '$lib/utils.js'
 
     export const buttonVariants = tv({
-        base: `inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4`,
+        base: 'inline-flex shrink-0 items-center justify-center gap-2 rounded-full text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=\'size-\'])]:size-4 cursor-pointer',
         defaultVariants: {
             size: 'default',
             variant: 'default'
@@ -20,8 +20,8 @@
                 icon: 'size-9',
                 'icon-lg': 'size-10',
                 'icon-sm': 'size-8',
-                lg: 'h-10 rounded-md px-6 text-base has-[>svg]:px-4',
-                sm: 'h-8 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5'
+                lg: 'h-10 rounded-full px-6 text-base has-[>svg]:px-4',
+                sm: 'h-8 gap-1.5 rounded-full px-3 has-[>svg]:px-2.5'
             },
             variant: {
                 default: 'bg-primary text-primary-foreground hover:bg-primary/90',
