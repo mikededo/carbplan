@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { CatalogProduct } from '$lib/api/endpoint-types'
+    import type { CatalogProduct } from '$lib/domain/catalog/service'
 
     import { LoaderCircleIcon, SaveIcon, Trash2Icon } from '@lucide/svelte'
 

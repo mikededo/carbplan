@@ -1,10 +1,10 @@
 import type {
   CatalogProduct,
-  CreateBrandRequest,
-  CreateProductRequest,
-  UpdateBrandRequest,
-  UpdateProductRequest
-} from '$lib/api/endpoint-types'
+  CreateBrandInput,
+  CreateProductInput,
+  UpdateBrandInput,
+  UpdateProductInput
+} from '$lib/domain/catalog/service'
 
 import type { CatalogResult } from './catalog'
 
@@ -27,7 +27,7 @@ export const createBrandMutation = () => {
   const queryClient = useQueryClient()
 
   return createMutation(() => ({
-    mutationFn: async (input: CreateBrandRequest) => {
+    mutationFn: async (input: CreateBrandInput) => {
       if (service.isErr()) {
         throw new Error('Catalog service not available')
       }
@@ -75,7 +75,7 @@ export const updateBrandMutation = (brandId?: string) => {
   const queryClient = useQueryClient()
 
   return createMutation(() => ({
-    mutationFn: async (input: UpdateBrandRequest) => {
+    mutationFn: async (input: UpdateBrandInput) => {
       if (service.isErr() || !brandId) {
         throw new Error('Catalog service or brand ID not available')
       }
@@ -121,7 +121,7 @@ export const createProductMutation = () => {
   const queryClient = useQueryClient()
 
   return createMutation(() => ({
-    mutationFn: async (input: CreateProductRequest) => {
+    mutationFn: async (input: CreateProductInput) => {
       if (service.isErr()) {
         throw new Error('Catalog service not available')
       }
@@ -178,7 +178,7 @@ export const updateProductMutation = (productId?: string) => {
   const queryClient = useQueryClient()
 
   return createMutation(() => ({
-    mutationFn: async (input: UpdateProductRequest) => {
+    mutationFn: async (input: UpdateProductInput) => {
       if (service.isErr() || !productId) {
         throw new Error('Catalog service or product ID not available')
       }

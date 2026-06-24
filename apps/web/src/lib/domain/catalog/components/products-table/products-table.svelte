@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { CatalogProduct } from '$lib/api/endpoint-types'
+    import type { CatalogProduct } from '$lib/domain/catalog/service'
 
     import type { CatalogBrand, CatalogResult } from '../../queries/catalog'
 

@@ -1,7 +1,7 @@
 import type { AthleteId } from '@carbplan/domain/athlete'
 import type { HRZonesData } from '@carbplan/domain/hr'
 
-import type { CurrentAthleteResponse, UpdateHRZonesRequest } from '$lib/api/endpoint-types'
+import type { CurrentAthlete, UpdateHRZonesInput } from '$lib/domain/me/service'
 
 import { createMutation, useQueryClient } from '@tanstack/svelte-query'
 import { err, ok } from 'neverthrow'
@@ -11,7 +11,7 @@ import { getPrivateServicesContext } from '$lib/domain/services/context'
 import { requireServicesWith } from '$lib/domain/services/helpers'
 import { athleteOptions } from '$lib/domain/settings/queries/athlete'
 
-type MutateContext = { previous?: CurrentAthleteResponse }
+type MutateContext = { previous?: CurrentAthlete }
 
 export const createAthleteHRZonesMutation = (athleteId?: AthleteId) => {
   const privateServicesResult = getPrivateServicesContext()
@@ -24,7 +24,7 @@ export const createAthleteHRZonesMutation = (athleteId?: AthleteId) => {
   const services = isEnabled ? privateServicesResult.value : null
 
   return createMutation(() => ({
-    mutationFn: async (input: UpdateHRZonesRequest) => {
+    mutationFn: async (input: UpdateHRZonesInput) => {
       requireServicesWith(services, !!athleteId)
       return resultAsyncValueOrThrow(services.me.updateHRZones(input))
     },
