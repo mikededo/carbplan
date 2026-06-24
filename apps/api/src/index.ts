@@ -1,6 +1,5 @@
 import { createAppFromEnv } from '$bootstrap/app'
 
-export type { ApiRoutes } from './eden'
 export { createApp } from '$bootstrap/app'
 export type { AppServices, PublicServices } from '$bootstrap/services'
 
