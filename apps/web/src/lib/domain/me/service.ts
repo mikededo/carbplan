@@ -1,31 +1,21 @@
-import type { Transport } from '$lib/api/transport'
+import type { ApiClient } from '$lib/api/eden'
+import type {
+  CurrentAthleteResponse,
+  UpdateCurrentAthleteRequest,
+  UpdateCurrentAthleteResponse,
+  UpdateHRZonesRequest,
+  UpdateHRZonesResponse,
+  UpdatePowerZonesRequest,
+  UpdatePowerZonesResponse
+} from '$lib/api/endpoint-types'
 
-import * as MeContracts from '@carbplan/contracts/me'
+import { unwrapEden } from '$lib/api/eden'
 
-import { getApiRoute } from '$lib/api/routes'
-
-const getMeRoute = getApiRoute.prefixed('/me')
-
-export const createMeService = (transport: Transport) => ({
-  getCurrentAthlete: () => transport.get({
-    path: getMeRoute(''),
-    schema: MeContracts.GetCurrentAthleteResponseSchema
-  }),
-  updateCurrentAthlete: (body: MeContracts.UpdateCurrentAthleteRequest) => transport.patch({
-    body,
-    path: getMeRoute(''),
-    schema: MeContracts.UpdateCurrentAthleteResponseSchema
-  }),
-  updateHRZones: (body: MeContracts.UpdateHRZonesRequest) => transport.patch({
-    body,
-    path: getMeRoute('/hr'),
-    schema: MeContracts.UpdateHRZonesResponseSchema
-  }),
-  updatePowerZones: (body: MeContracts.UpdatePowerZonesRequest) => transport.patch({
-    body,
-    path: getMeRoute('/power'),
-    schema: MeContracts.UpdatePowerZonesResponseSchema
-  })
+export const createMeService = (api: ApiClient) => ({
+  getCurrentAthlete: () => unwrapEden<CurrentAthleteResponse>(api.v1.me.get()),
+  updateCurrentAthlete: (body: UpdateCurrentAthleteRequest) => unwrapEden<UpdateCurrentAthleteResponse>(api.v1.me.patch(body)),
+  updateHRZones: (body: UpdateHRZonesRequest) => unwrapEden<UpdateHRZonesResponse>(api.v1.me.hr.patch(body)),
+  updatePowerZones: (body: UpdatePowerZonesRequest) => unwrapEden<UpdatePowerZonesResponse>(api.v1.me.power.patch(body))
 })
 
 export type MeService = ReturnType<typeof createMeService>

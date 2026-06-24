@@ -1,21 +1,21 @@
 import type { Maybe } from '@carbplan/domain/utils'
 
-import type { Transport } from '$lib/api/transport'
+import type { ApiClient } from '$lib/api/eden'
 import type { PrivateServices } from '$lib/domain/services/context'
 
 import { createCatalogService, createPublicCatalogService } from '$lib/domain/catalog/service'
 import { createDashboardService } from '$lib/domain/dashboard/service'
 import { createMeService } from '$lib/domain/me/service'
 
-export const createPrivateServices = (transport: Transport) => ({
-  catalog: createCatalogService(transport),
-  dashboard: createDashboardService(transport),
-  me: createMeService(transport),
-  publicCatalog: createPublicCatalogService(transport)
+export const createPrivateServices = (api: ApiClient) => ({
+  catalog: createCatalogService(api),
+  dashboard: createDashboardService(api),
+  me: createMeService(api),
+  publicCatalog: createPublicCatalogService(api)
 })
 
-export const createPublicServices = (transport: Transport) => ({
-  catalog: createPublicCatalogService(transport)
+export const createPublicServices = (api: ApiClient) => ({
+  catalog: createPublicCatalogService(api)
 })
 
 // eslint-disable-next-line func-style

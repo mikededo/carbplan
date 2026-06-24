@@ -25,6 +25,7 @@ export type TransportResponse<T> = {
   headers: Headers
   status: number
 }
+export type TransportFetch = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
 
 export const RequestInputSchema = z.object({
   body: z.unknown().optional(),
@@ -62,7 +63,7 @@ export type Transport = {
 type CreateTransportInput = {
   baseUrl?: string
   getHeaders?: () => Promise<Record<string, string> | undefined> | Record<string, string> | undefined
-  fetch: typeof fetch
+  fetch: TransportFetch
 }
 
 const withBase = (baseUrl: string, path: string): string => {

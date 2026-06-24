@@ -1,5 +1,4 @@
-import type { NutritionPlanListItem } from '@carbplan/contracts/nutrition-plans'
-import type { FavoriteProductsListResponse } from '@carbplan/contracts/products'
+import type { FavoriteProductsListResponse, NutritionPlanListItem } from '$lib/api/endpoint-types'
 
 export type DashboardPlan = NutritionPlanListItem
 export type DashboardFavoriteProduct = FavoriteProductsListResponse[number]

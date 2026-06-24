@@ -1,15 +1,14 @@
 import type { LayoutLoad } from './$types'
 
-import { createTransport } from '$lib/api/transport'
+import { createApiClient } from '$lib/api/eden'
 import { createPrivateServices } from '$lib/domain/services/helpers'
 
 export const prerender = false
 
 export const load: LayoutLoad = async ({ fetch }) => {
-  const transport = createTransport({ fetch })
+  const api = createApiClient({ fetch })
 
   return {
-    privateServices: createPrivateServices(transport),
-    transport
+    privateServices: createPrivateServices(api)
   }
 }

@@ -1,13 +1,12 @@
 <script lang="ts">
-    import type { GetCurrentAthleteResponse } from '@carbplan/contracts/me'
-
+    import type { CurrentAthleteResponse } from '$lib/api/endpoint-types'
     import type { DashboardPlan } from '$lib/domain/dashboard/types'
 
     import { CircleCheckBigIcon, CoffeeIcon, TriangleAlertIcon, ZapIcon } from '@lucide/svelte'
 
     import { AlertDescription, AlertRoot, AlertTitle } from '$lib/domain/ui/alert'
 
-    type AthleteData = Pick<GetCurrentAthleteResponse, 'maxCarbIntakeGPerHr'>
+    type AthleteData = Pick<CurrentAthleteResponse, 'maxCarbIntakeGPerHr'>
 
     type Props = {
         athlete: AthleteData | null
