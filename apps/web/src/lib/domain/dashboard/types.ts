@@ -1,4 +1,4 @@
-import type { FavoriteProductsListResponse, NutritionPlanListItem } from '$lib/api/endpoint-types'
+import type { FavoriteProducts, NutritionPlanListItem } from '$lib/domain/dashboard/service'
 
 export type DashboardPlan = NutritionPlanListItem
-export type DashboardFavoriteProduct = FavoriteProductsListResponse[number]
+export type DashboardFavoriteProduct = FavoriteProducts[number]

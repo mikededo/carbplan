@@ -1,6 +1,6 @@
 import type { AthleteId } from '@carbplan/domain/athlete'
 
-import type { CurrentAthleteResponse, UpdatePowerZonesRequest } from '$lib/api/endpoint-types'
+import type { CurrentAthlete, UpdatePowerZonesInput } from '$lib/domain/me/service'
 
 import { createMutation, useQueryClient } from '@tanstack/svelte-query'
 import { err, ok } from 'neverthrow'
@@ -10,7 +10,7 @@ import { getPrivateServicesContext } from '$lib/domain/services/context'
 import { requireServicesWith } from '$lib/domain/services/helpers'
 import { athleteOptions } from '$lib/domain/settings/queries/athlete'
 
-type MutateContext = { previous?: CurrentAthleteResponse }
+type MutateContext = { previous?: CurrentAthlete }
 
 export const createAthletePowerZonesMutation = (athleteId?: AthleteId) => {
   const privateServicesResult = getPrivateServicesContext()
@@ -23,7 +23,7 @@ export const createAthletePowerZonesMutation = (athleteId?: AthleteId) => {
   const services = isEnabled ? privateServicesResult.value : null
 
   return createMutation(() => ({
-    mutationFn: async (input: UpdatePowerZonesRequest) => {
+    mutationFn: async (input: UpdatePowerZonesInput) => {
       requireServicesWith(services, !!athleteId)
       return resultAsyncValueOrThrow(services.me.updatePowerZones(input))
     },
@@ -32,7 +32,7 @@ export const createAthletePowerZonesMutation = (athleteId?: AthleteId) => {
         queryClient.setQueryData(options.queryKey, context.previous)
       }
     },
-    onMutate: async (input: UpdatePowerZonesRequest) => {
+    onMutate: async (input: UpdatePowerZonesInput) => {
       await queryClient.cancelQueries({ queryKey: options.queryKey })
 
       const previous = queryClient.getQueryData(options.queryKey)

@@ -1,5 +1,6 @@
 import type { ApiRoutes } from '@carbplan/api/eden'
 import type { ApiError } from '@carbplan/contracts/api'
+import type { Treaty } from '@elysiajs/eden'
 
 import type { TransportApiError, TransportError, TransportFetch, TransportResponse } from './transport'
 
@@ -24,6 +25,10 @@ export const createApiClient = ({ baseUrl = '/api', fetch, getHeaders }: CreateA
 
 export type ApiClient = ReturnType<typeof createApiClient>
 
+type ApiMethod = (...args: any[]) => Promise<Treaty.TreatyResponse<Record<number, unknown>>>
+export type ApiBody<T extends ApiMethod> = NonNullable<Parameters<T>[0]>
+export type ApiData<T extends ApiMethod> = Treaty.Data<T>
+
 type EdenResponse<T> = {
   data: null | T | undefined
   error: { status: number, value: unknown } | null
@@ -44,7 +49,7 @@ const toTransportError = ({ status, value }: { status: number, value: unknown })
   }
 }
 
-export const unwrapEden = <T>(request: Promise<EdenResponse<T>>) => ResultAsync
+export const unwrapEden = <T = void>(request: Promise<EdenResponse<T>>) => ResultAsync
   .fromPromise(request, (): TransportError => ({
     code: TransportErrorValues.NETWORK_ERROR,
     message: 'Network request failed',
@@ -58,7 +63,7 @@ export const unwrapEden = <T>(request: Promise<EdenResponse<T>>) => ResultAsync
     return okAsync(response.data as T)
   })
 
-export const unwrapEdenWithMeta = <T>(request: Promise<EdenResponse<T>>) => ResultAsync
+export const unwrapEdenWithMeta = <T = void>(request: Promise<EdenResponse<T>>) => ResultAsync
   .fromPromise(request, (): TransportError => ({
     code: TransportErrorValues.NETWORK_ERROR,
     message: 'Network request failed',

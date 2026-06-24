@@ -1,6 +1,6 @@
 import type { ProductForm } from '@carbplan/domain/product'
 
-import type { CatalogProduct } from '$lib/api/endpoint-types'
+import type { CatalogProduct } from '$lib/domain/catalog/service'
 
 import type { CatalogResult } from '../queries/catalog'
 

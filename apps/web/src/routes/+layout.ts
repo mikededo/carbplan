@@ -7,8 +7,8 @@ import { createApiClient } from '$lib/api/eden'
 import { QUERY_STALE_TIME_DEFAULT } from '$lib/domain/query/times'
 import { createPublicServices } from '$lib/domain/services/helpers'
 
-export const load: LayoutLoad = async ({ data, fetch }) => {
-  const api = createApiClient({ fetch })
+export const load: LayoutLoad = async ({ data, fetch, url }) => {
+  const api = createApiClient({ baseUrl: `${url.origin}/api`, fetch })
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -19,6 +19,7 @@ export const load: LayoutLoad = async ({ data, fetch }) => {
   })
 
   return {
+    api,
     publicServices: createPublicServices(api),
     queryClient,
     session: data.session,

@@ -1,21 +1,17 @@
-import type { ApiClient } from '$lib/api/eden'
-import type {
-  CurrentAthleteResponse,
-  UpdateCurrentAthleteRequest,
-  UpdateCurrentAthleteResponse,
-  UpdateHRZonesRequest,
-  UpdateHRZonesResponse,
-  UpdatePowerZonesRequest,
-  UpdatePowerZonesResponse
-} from '$lib/api/endpoint-types'
+import type { ApiBody, ApiClient, ApiData } from '$lib/api/eden'
 
 import { unwrapEden } from '$lib/api/eden'
 
+export type CurrentAthlete = ApiData<ApiClient['v1']['me']['get']>
+export type UpdateCurrentAthleteInput = ApiBody<ApiClient['v1']['me']['patch']>
+export type UpdateHRZonesInput = ApiBody<ApiClient['v1']['me']['hr']['patch']>
+export type UpdatePowerZonesInput = ApiBody<ApiClient['v1']['me']['power']['patch']>
+
 export const createMeService = (api: ApiClient) => ({
-  getCurrentAthlete: () => unwrapEden<CurrentAthleteResponse>(api.v1.me.get()),
-  updateCurrentAthlete: (body: UpdateCurrentAthleteRequest) => unwrapEden<UpdateCurrentAthleteResponse>(api.v1.me.patch(body)),
-  updateHRZones: (body: UpdateHRZonesRequest) => unwrapEden<UpdateHRZonesResponse>(api.v1.me.hr.patch(body)),
-  updatePowerZones: (body: UpdatePowerZonesRequest) => unwrapEden<UpdatePowerZonesResponse>(api.v1.me.power.patch(body))
+  getCurrentAthlete: () => unwrapEden(api.v1.me.get()),
+  updateCurrentAthlete: (body: UpdateCurrentAthleteInput) => unwrapEden(api.v1.me.patch(body)),
+  updateHRZones: (body: UpdateHRZonesInput) => unwrapEden(api.v1.me.hr.patch(body)),
+  updatePowerZones: (body: UpdatePowerZonesInput) => unwrapEden(api.v1.me.power.patch(body))
 })
 
 export type MeService = ReturnType<typeof createMeService>

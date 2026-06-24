@@ -1,4 +1,4 @@
-import type { CurrentAthleteResponse, UpdateCurrentAthleteRequest } from '$lib/api/endpoint-types'
+import type { CurrentAthlete, UpdateCurrentAthleteInput } from '$lib/domain/me/service'
 
 import { createMutation, createQuery, useQueryClient } from '@tanstack/svelte-query'
 import { err, ok } from 'neverthrow'
@@ -16,7 +16,7 @@ export const useAthleteQuery = () => {
   ))
 }
 
-type MutateContext = { previous?: CurrentAthleteResponse }
+type MutateContext = { previous?: CurrentAthlete }
 
 export const createAthleteMutation = (athleteId?: string) => {
   const privateServicesResult = getPrivateServicesContext()
@@ -29,7 +29,7 @@ export const createAthleteMutation = (athleteId?: string) => {
   const services = isEnabled ? privateServicesResult.value : null
 
   return createMutation(() => ({
-    mutationFn: async (input: UpdateCurrentAthleteRequest) => {
+    mutationFn: async (input: UpdateCurrentAthleteInput) => {
       requireServicesWith(services, !!athleteId)
 
       const result = await services.me.updateCurrentAthlete(input)
