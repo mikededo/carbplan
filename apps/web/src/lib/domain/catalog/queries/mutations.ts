@@ -4,7 +4,7 @@ import type {
   CreateProductRequest,
   UpdateBrandRequest,
   UpdateProductRequest
-} from '@carbplan/contracts/catalog'
+} from '$lib/api/endpoint-types'
 
 import type { CatalogResult } from './catalog'
 

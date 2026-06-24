@@ -1,51 +1,33 @@
-import type { Transport } from '$lib/api/transport'
+import type { ApiClient } from '$lib/api/eden'
+import type {
+  CatalogListResponse,
+  CreateBrandRequest,
+  CreateBrandResponse,
+  CreateProductRequest,
+  CreateProductResponse,
+  DeactivateProductResponse,
+  PublicCatalogResponse,
+  UpdateBrandRequest,
+  UpdateBrandResponse,
+  UpdateProductRequest,
+  UpdateProductResponse
+} from '$lib/api/endpoint-types'
 
-import * as CatalogContracts from '@carbplan/contracts/catalog'
-import * as PublicCatalogContracts from '@carbplan/contracts/public-catalog'
+import { unwrapEden } from '$lib/api/eden'
 
-import { getApiRoute } from '$lib/api/routes'
-
-const getPublicCatalogRoute = getApiRoute.prefixed('/public/catalogs')
-const getProductCatalogRoute = getApiRoute.prefixed('/catalogs/products')
-const getBrandCatalogRoute = getApiRoute.prefixed('/catalogs/brands')
-
-export const createPublicCatalogService = (transport: Transport) => ({
-  getCatalog: () => transport.get({
-    includeMeta: false,
-    path: getPublicCatalogRoute(''),
-    schema: PublicCatalogContracts.CatalogProductsListResponseSchema
-  })
+export const createPublicCatalogService = (api: ApiClient) => ({
+  getCatalog: () => unwrapEden<PublicCatalogResponse>(api.v1.public.catalogs.get({
+    query: { limit: 20, offset: 0, sort: 'name:asc' }
+  }))
 })
 export type PublicCatalogService = ReturnType<typeof createPublicCatalogService>
 
-export const createCatalogService = (transport: Transport) => ({
-  createBrand: (body: CatalogContracts.CreateBrandRequest) => transport.post({
-    body,
-    path: getBrandCatalogRoute(''),
-    schema: CatalogContracts.CreateBrandResponseSchema
-  }),
-  createProduct: (body: CatalogContracts.CreateProductRequest) => transport.post({
-    body,
-    path: getProductCatalogRoute(''),
-    schema: CatalogContracts.CreateProductResponseSchema
-  }),
-  deactivateProduct: (id: string) => transport.patch({
-    path: getProductCatalogRoute(`/${id}/deactivate`),
-    schema: CatalogContracts.DeactivateProductResponseSchema
-  }),
-  getCatalog: () => transport.get({
-    path: getApiRoute('/catalogs'),
-    schema: CatalogContracts.CatalogListResponseSchema
-  }),
-  updateBrand: (id: string, body: CatalogContracts.UpdateBrandRequest) => transport.patch({
-    body,
-    path: getBrandCatalogRoute(`/${id}`),
-    schema: CatalogContracts.UpdateBrandResponseSchema
-  }),
-  updateProduct: (id: string, body: CatalogContracts.UpdateProductRequest) => transport.patch({
-    body,
-    path: getProductCatalogRoute(`/${id}`),
-    schema: CatalogContracts.UpdateProductResponseSchema
-  })
+export const createCatalogService = (api: ApiClient) => ({
+  createBrand: (body: CreateBrandRequest) => unwrapEden<CreateBrandResponse>(api.v1.catalogs.brands.post(body)),
+  createProduct: (body: CreateProductRequest) => unwrapEden<CreateProductResponse>(api.v1.catalogs.products.post(body)),
+  deactivateProduct: (id: string) => unwrapEden<DeactivateProductResponse>(api.v1.catalogs.products({ productId: id }).deactivate.patch()),
+  getCatalog: () => unwrapEden<CatalogListResponse>(api.v1.catalogs.get()),
+  updateBrand: (id: string, body: UpdateBrandRequest) => unwrapEden<UpdateBrandResponse>(api.v1.catalogs.brands({ brandId: id }).patch(body)),
+  updateProduct: (id: string, body: UpdateProductRequest) => unwrapEden<UpdateProductResponse>(api.v1.catalogs.products({ productId: id }).patch(body))
 })
 export type CatalogService = ReturnType<typeof createCatalogService>

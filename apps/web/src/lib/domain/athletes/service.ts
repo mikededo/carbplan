@@ -1,21 +1,11 @@
-import type { Transport } from '$lib/api/transport'
+import type { ApiClient } from '$lib/api/eden'
+import type { HasCompletedOnboardingResponse, SaveOnboardingRequest, SaveOnboardingResponse } from '$lib/api/endpoint-types'
 
-import * as OnboardingContracts from '@carbplan/contracts/onboarding'
+import { unwrapEden } from '$lib/api/eden'
 
-import { getApiRoute } from '$lib/api/routes'
-
-const getAthletesRoute = getApiRoute.prefixed('/athletes')
-
-export const createAthletesService = (transport: Transport) => ({
-  hasCompletedOnboarding: () => transport.get({
-    path: getAthletesRoute('/me/onboarding'),
-    schema: OnboardingContracts.HasCompletedOnboardingResponseSchema
-  }),
-  saveOnboarding: (data: OnboardingContracts.SaveOnboardingRequest) => transport.post({
-    body: data,
-    path: getAthletesRoute('/me/onboarding'),
-    schema: OnboardingContracts.SaveOnboardingResponseSchema
-  })
+export const createAthletesService = (api: ApiClient) => ({
+  hasCompletedOnboarding: () => unwrapEden<HasCompletedOnboardingResponse>(api.v1.athletes.me.onboarding.get()),
+  saveOnboarding: (data: SaveOnboardingRequest) => unwrapEden<SaveOnboardingResponse>(api.v1.athletes.me.onboarding.post(data))
 })
 
 export type AthletesService = ReturnType<typeof createAthletesService>

@@ -92,7 +92,7 @@ export const createBrandFormContext = (getter: CreateBrandFormContextArgs): Bran
         name: data.name,
         slug: data.slug,
         website: data.website
-      }),
+      }).then(() => undefined),
       (error) => error as Error
     ).match(
       () => onOpenChange(false),

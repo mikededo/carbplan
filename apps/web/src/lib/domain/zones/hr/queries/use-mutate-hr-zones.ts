@@ -1,6 +1,7 @@
-import type * as MeContracts from '@carbplan/contracts/me'
 import type { AthleteId } from '@carbplan/domain/athlete'
 import type { HRZonesData } from '@carbplan/domain/hr'
+
+import type { CurrentAthleteResponse, UpdateHRZonesRequest } from '$lib/api/endpoint-types'
 
 import { createMutation, useQueryClient } from '@tanstack/svelte-query'
 import { err, ok } from 'neverthrow'
@@ -10,7 +11,7 @@ import { getPrivateServicesContext } from '$lib/domain/services/context'
 import { requireServicesWith } from '$lib/domain/services/helpers'
 import { athleteOptions } from '$lib/domain/settings/queries/athlete'
 
-type MutateContext = { previous?: MeContracts.GetCurrentAthleteResponse }
+type MutateContext = { previous?: CurrentAthleteResponse }
 
 export const createAthleteHRZonesMutation = (athleteId?: AthleteId) => {
   const privateServicesResult = getPrivateServicesContext()
@@ -23,7 +24,7 @@ export const createAthleteHRZonesMutation = (athleteId?: AthleteId) => {
   const services = isEnabled ? privateServicesResult.value : null
 
   return createMutation(() => ({
-    mutationFn: async (input: MeContracts.UpdateHRZonesRequest) => {
+    mutationFn: async (input: UpdateHRZonesRequest) => {
       requireServicesWith(services, !!athleteId)
       return resultAsyncValueOrThrow(services.me.updateHRZones(input))
     },

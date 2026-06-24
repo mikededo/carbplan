@@ -1,6 +1,6 @@
-import type { CatalogProduct } from '@carbplan/contracts/catalog'
 import type { ProductForm } from '@carbplan/domain/product'
 
+import type { CatalogProduct } from '$lib/api/endpoint-types'
 import type { CatalogBrand } from '$lib/domain/catalog/queries/catalog'
 
 import { ResultAsync } from 'neverthrow'
@@ -155,7 +155,7 @@ export const createProductFormContext = (getter: CreateProductFormContextArgs): 
         slug: data.slug,
         sodiumMg: data.sodiumMg,
         sugarG: data.sugarG
-      }),
+      }).then(() => undefined),
       (error) => error as Error
     ).match(
       () => onOpenChange(false),

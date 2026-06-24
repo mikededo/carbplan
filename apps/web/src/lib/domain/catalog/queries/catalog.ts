@@ -1,6 +1,6 @@
-import type { CatalogBrand, CatalogListResponse } from '@carbplan/contracts/catalog'
 import type { Result } from 'neverthrow'
 
+import type { CatalogListResponse } from '$lib/api/endpoint-types'
 import type { CatalogService, PublicCatalogService } from '$lib/domain/catalog/service'
 
 import { queryOptions, skipToken } from '@tanstack/svelte-query'
@@ -22,4 +22,4 @@ export const catalogOptions = (maybeService: Result<CatalogService, void>) => qu
 })
 
 export type CatalogResult = CatalogListResponse
-export type { CatalogBrand }
+export type CatalogBrand = CatalogResult[number]

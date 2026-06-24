@@ -1,6 +1,5 @@
 <script lang="ts">
-    import type { CatalogProduct } from '@carbplan/contracts/catalog'
-
+    import type { CatalogProduct } from '$lib/api/endpoint-types'
     import type { CatalogBrand } from '$lib/domain/catalog/queries/catalog'
 
     import { PackagePlusIcon, PlusIcon } from '@lucide/svelte'

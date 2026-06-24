@@ -1,40 +1,25 @@
-import type { Transport } from '$lib/api/transport'
+import type { ApiClient } from '$lib/api/eden'
+import type { FavoriteProductsListResponse, NutritionPlansListResult } from '$lib/api/endpoint-types'
 
-import * as NutritionPlansContracts from '@carbplan/contracts/nutrition-plans'
-import * as ProductsContracts from '@carbplan/contracts/products'
+import { unwrapEden } from '$lib/api/eden'
 
-import { getApiRoute } from '$lib/api/routes'
-
-const getNutritionPlansRoute = getApiRoute.prefixed('/nutrition-plans')
-const getMeRoute = getApiRoute.prefixed('/me')
-
-const withQuery = (path: string, query: Record<string, string>) => {
-  const params = new URLSearchParams(query)
-  return `${path}?${params.toString()}`
-}
-
-export const createDashboardService = (transport: Transport) => ({
-  getFavoriteProducts: (limit: number) => transport.get({
-    path: getMeRoute('/favorites/products'),
-    schema: ProductsContracts.FavoriteProductsListResponseSchema
-  }).map((products) => products.slice(0, limit)),
-  getNextPlan: (today: string) => transport.get({
-    path: withQuery(getNutritionPlansRoute('/me'), {
+export const createDashboardService = (api: ApiClient) => ({
+  getFavoriteProducts: (limit: number) => unwrapEden<FavoriteProductsListResponse>(api.v1.me.favorites.products.get()).map((products) => products.slice(0, limit)),
+  getNextPlan: (today: string) => unwrapEden<NutritionPlansListResult>(api.v1['nutrition-plans'].me.get({
+    query: {
       dateGte: today,
-      limit: '1',
-      offset: '0',
+      limit: 1,
+      offset: 0,
       sort: 'date:asc'
-    }),
-    schema: NutritionPlansContracts.NutritionPlansListResultSchema
-  }).map((result) => result.data[0] ?? null),
-  getRecentPlans: (limit: number) => transport.get({
-    path: withQuery(getNutritionPlansRoute('/me'), {
-      limit: String(limit),
-      offset: '0',
+    }
+  })).map((result) => result.data[0] ?? null),
+  getRecentPlans: (limit: number) => unwrapEden<NutritionPlansListResult>(api.v1['nutrition-plans'].me.get({
+    query: {
+      limit,
+      offset: 0,
       sort: 'date:desc'
-    }),
-    schema: NutritionPlansContracts.NutritionPlansListResultSchema
-  }).map((result) => result.data)
+    }
+  })).map((result) => result.data)
 })
 
 export type DashboardService = ReturnType<typeof createDashboardService>
