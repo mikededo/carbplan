@@ -1,16 +1,47 @@
 <script lang="ts">
-    import type { ActionData } from './$types'
-
-    import { enhance } from '$app/forms'
+    import { goto } from '$app/navigation'
     import { resolve } from '$app/paths'
     import { ROUTES } from '$lib/constants/routes'
+    import { authClient } from '$lib/domain/auth/client'
     import { Button } from '$lib/domain/ui/button'
     import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/domain/ui/card'
     import { Input } from '$lib/domain/ui/input'
     import { Label } from '$lib/domain/ui/label'
 
-    type Props = { form: ActionData }
-    const { form }: Props = $props()
+    let email = $state('')
+    let errors = $state<{ email?: string, password?: string }>({})
+    let message = $state<string>()
+    let pending = $state(false)
+
+    const onSubmit = async (event: SubmitEvent) => {
+        event.preventDefault()
+        pending = true
+        errors = {}
+        message = undefined
+
+        const formData = new FormData(event.currentTarget as HTMLFormElement)
+        email = formData.get('email')?.toString() ?? ''
+        const password = formData.get('password')?.toString() ?? ''
+
+        if (!email.includes('@') || password.length < 8) {
+            errors = {
+                email: email.includes('@') ? undefined : 'Invalid email address',
+                password: password.length >= 8 ? undefined : 'Password must be at least 8 characters'
+            }
+            pending = false
+            return
+        }
+
+        const response = await authClient.signUp.email({ email, name: email, password })
+        pending = false
+
+        if (response.error) {
+            message = response.error.message ?? 'Unable to sign up'
+            return
+        }
+
+        await goto(resolve(ROUTES.onboarding))
+    }
 </script>
 
 <svelte:head>
@@ -23,9 +54,9 @@
         <CardDescription>Create your account to get started</CardDescription>
     </CardHeader>
     <CardContent class="space-y-4">
-        <form class="flex flex-col gap-4" use:enhance method="POST">
-            {#if form?.message}
-                <p class="text-sm text-destructive">{form.message}</p>
+        <form class="flex flex-col gap-4" method="POST" onsubmit={onSubmit}>
+            {#if message}
+                <p class="text-sm text-destructive">{message}</p>
             {/if}
 
             <div class="flex flex-col gap-1.5">
@@ -34,12 +65,12 @@
                     id="email"
                     name="email"
                     type="email"
-                    value={form?.values?.email ?? ''}
+                    value={email}
                     required
-                    aria-invalid={form?.errors?.email ? 'true' : 'false'}
+                    aria-invalid={errors.email ? 'true' : 'false'}
                 />
-                {#if form?.errors?.email}
-                    <p class="text-sm text-destructive">{form.errors.email}</p>
+                {#if errors.email}
+                    <p class="text-sm text-destructive">{errors.email}</p>
                 {/if}
             </div>
 
@@ -50,14 +81,14 @@
                     name="password"
                     type="password"
                     required
-                    aria-invalid={form?.errors?.password ? 'true' : 'false'}
+                    aria-invalid={errors.password ? 'true' : 'false'}
                 />
-                {#if form?.errors?.password}
-                    <p class="text-sm text-destructive">{form.errors?.password}</p>
+                {#if errors.password}
+                    <p class="text-sm text-destructive">{errors.password}</p>
                 {/if}
             </div>
 
-            <Button class="mt-2" type="submit">Sign up</Button>
+            <Button class="mt-2" disabled={pending} type="submit">Sign up</Button>
         </form>
 
         <p class="text-center text-sm">
