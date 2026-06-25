@@ -2,17 +2,26 @@ import type { ApiRoutes } from '@carbplan/api/eden'
 import type { ApiError } from '@carbplan/contracts/api'
 import type { Treaty } from '@elysiajs/eden'
 
-import type { TransportApiError, TransportError, TransportFetch, TransportResponse } from './transport'
-
 import { ApiErrorSchema } from '@carbplan/contracts/api'
 import { treaty } from '@elysiajs/eden'
 import { errAsync, okAsync, ResultAsync } from 'neverthrow'
 
-import { TransportErrorValues } from './transport'
+const ApiClientErrorValues = {
+  HTTP_ERROR: 'HTTP_ERROR',
+  NETWORK_ERROR: 'NETWORK_ERROR'
+} as const
+
+type ApiClientFetch = typeof fetch
+type ApiClientError = {
+  code: typeof ApiClientErrorValues[keyof typeof ApiClientErrorValues]
+  message: string
+  status: number
+}
+type ApiClientApiError = { status: number } & ApiError
 
 type CreateApiClientInput = {
   baseUrl?: string
-  fetch: TransportFetch
+  fetch: ApiClientFetch
   getHeaders?: () => Promise<Record<string, string> | undefined> | Record<string, string> | undefined
 }
 
@@ -36,47 +45,29 @@ type EdenResponse<T> = {
   status: number
 }
 
-const toTransportError = ({ status, value }: { status: number, value: unknown }): TransportApiError | TransportError => {
+const toApiClientError = ({ status, value }: { status: number, value: unknown }): ApiClientApiError | ApiClientError => {
   const apiError = ApiErrorSchema.safeParse(value)
   if (apiError.success) {
     return { ...apiError.data, status } satisfies { status: number } & ApiError
   }
 
   return {
-    code: TransportErrorValues.HTTP_ERROR,
+    code: ApiClientErrorValues.HTTP_ERROR,
     message: `Request failed with status ${status}`,
     status
   }
 }
 
 export const unwrapEden = <T = void>(request: Promise<EdenResponse<T>>) => ResultAsync
-  .fromPromise(request, (): TransportError => ({
-    code: TransportErrorValues.NETWORK_ERROR,
+  .fromPromise(request, (): ApiClientError => ({
+    code: ApiClientErrorValues.NETWORK_ERROR,
     message: 'Network request failed',
     status: 0
   }))
   .andThen((response) => {
     if (response.error) {
-      return errAsync(toTransportError(response.error))
+      return errAsync(toApiClientError(response.error))
     }
 
     return okAsync(response.data as T)
-  })
-
-export const unwrapEdenWithMeta = <T = void>(request: Promise<EdenResponse<T>>) => ResultAsync
-  .fromPromise(request, (): TransportError => ({
-    code: TransportErrorValues.NETWORK_ERROR,
-    message: 'Network request failed',
-    status: 0
-  }))
-  .andThen((response) => {
-    if (response.error) {
-      return errAsync(toTransportError(response.error))
-    }
-
-    return okAsync({
-      data: response.data as T,
-      headers: new Headers(response.headers),
-      status: response.status
-    } satisfies TransportResponse<T>)
   })

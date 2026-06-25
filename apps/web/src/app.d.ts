@@ -4,7 +4,6 @@ import type { ComponentProps } from 'svelte'
 
 import type { Pathname } from '$app/types'
 import type { AthletesService } from '$lib/domain/athletes/service'
-import type { AuthService } from '$lib/domain/auth/service'
 
 declare global {
   type LucideIcon = typeof IconType
@@ -19,10 +18,7 @@ declare global {
 
   namespace App {
     interface Locals {
-      authService: AuthService
-      services: {
-        athletes: AthletesService
-      }
+      athletes: AthletesService
     }
     interface PageData {
       session?: null | Session

@@ -4,12 +4,12 @@ import * as AuthContracts from '@carbplan/contracts/auth'
 import { fail, redirect } from '@sveltejs/kit'
 import * as z from 'zod'
 
+import { PRIVATE_API_ORIGIN } from '$env/static/private'
 import { ROUTES } from '$lib/constants/routes'
-import { AUTH_TOKEN_COOKIE_NAME } from '$lib/domain/auth/constants'
 import { forwardResponseCookies, getSharedCookieDomain } from '$lib/domain/auth/cookies.server'
 
 export const actions = {
-  default: async ({ cookies, locals: { authService }, request, url }) => {
+  default: async ({ cookies, fetch, request, url }) => {
     const formData = await request.formData()
     const email = formData.get('email')?.toString()
     const result = AuthContracts.SignInRequestSchema.safeParse({
@@ -28,26 +28,21 @@ export const actions = {
       })
     }
 
-    const response = await authService.signIn(result.data)
-    if (response.isErr()) {
-      return fail(response.error.status, {
-        message: response.error.message,
+    const response = await fetch(`${PRIVATE_API_ORIGIN}/api/v1/auth/sign-in/email`, {
+      body: JSON.stringify(result.data),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST'
+    })
+    if (!response.ok) {
+      const error = await response.json().catch(() => undefined) as { message?: string } | undefined
+      return fail(response.status, {
+        message: error?.message ?? 'Unable to sign in',
         values: { email: result.data.email }
       })
     }
 
     const cookieDomain = getSharedCookieDomain(url.hostname)
-    const authToken = response.value.headers.get('set-auth-token') ?? response.value.data.token
-
-    forwardResponseCookies({ cookies, domain: cookieDomain, headers: response.value.headers })
-
-    cookies.set(AUTH_TOKEN_COOKIE_NAME, authToken, {
-      domain: cookieDomain,
-      httpOnly: true,
-      maxAge: 60 * 60 * 24 * 7,
-      path: '/',
-      sameSite: 'lax'
-    })
+    forwardResponseCookies({ cookies, domain: cookieDomain, headers: response.headers })
 
     redirect(303, ROUTES.onboarding)
   }
