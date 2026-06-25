@@ -32,7 +32,8 @@
             return
         }
 
-        const response = await authClient.signIn.email({ email, password })
+        const callbackURL = resolve(ROUTES.onboarding)
+        const response = await authClient.signIn.email({ callbackURL, email, password })
         pending = false
 
         if (response.error) {
@@ -40,7 +41,7 @@
             return
         }
 
-        await goto(resolve(ROUTES.onboarding))
+        await goto(callbackURL)
     }
 </script>
 

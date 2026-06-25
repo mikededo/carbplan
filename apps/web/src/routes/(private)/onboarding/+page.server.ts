@@ -11,7 +11,7 @@ import { OnboardingSchema, SavedOnboardingSchema } from '$lib/domain/onboarding/
 const ONBOARDING_COOKIE = 'onboarding_data'
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 
-export const load: PageServerLoad = async ({ cookies, locals }) => await locals.services.athletes
+export const load: PageServerLoad = async ({ cookies, locals }) => await locals.athletes
   .hasCompletedOnboarding()
   .match(
     ({ completed }) => {
@@ -52,7 +52,7 @@ export const actions = {
       return fail(400, { errors: errors.fieldErrors })
     }
 
-    return await locals.services.athletes.saveOnboarding(result.data)
+    return await locals.athletes.saveOnboarding(result.data)
       .match(
         () => {
           cookies.delete(ONBOARDING_COOKIE, { path: '/' })
@@ -79,4 +79,3 @@ export const actions = {
     return { success: true }
   }
 } satisfies Actions
-

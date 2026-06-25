@@ -12,7 +12,7 @@ export const load: LayoutServerLoad = async ({ locals, parent, url }) => {
     redirect(303, ROUTES.auth.signup)
   }
 
-  await locals.services.athletes.hasCompletedOnboarding().match(
+  await locals.athletes.hasCompletedOnboarding().match(
     ({ completed }) => {
       const onboardingRoute = isOnboardingRoute(url.pathname)
       if (onboardingRoute === completed) {

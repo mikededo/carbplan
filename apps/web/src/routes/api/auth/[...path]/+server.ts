@@ -2,15 +2,30 @@ import type { RequestHandler } from './$types'
 
 import { PRIVATE_API_ORIGIN } from '$env/static/private'
 
+const REQUEST_HEADERS = ['accept', 'content-type', 'cookie', 'origin', 'referer'] as const
+
+const getProxyHeaders = (request: Request) => {
+  const headers = new Headers()
+
+  for (const header of REQUEST_HEADERS) {
+    const value = request.headers.get(header)
+    if (value) {
+      headers.set(header, value)
+    }
+  }
+
+  return headers
+}
+
 const proxy: RequestHandler = async ({ params, request, url }) => {
-  const targetUrl = new URL(`/api/auth/${params.path ?? ''}${url.search}`, PRIVATE_API_ORIGIN)
+  const targetUrl = new URL(`/api/v1/auth/${params.path ?? ''}${url.search}`, PRIVATE_API_ORIGIN)
   const body = request.method === 'GET' || request.method === 'HEAD'
     ? undefined
     : await request.arrayBuffer()
 
   const response = await globalThis.fetch(targetUrl, {
     body,
-    headers: request.headers,
+    headers: getProxyHeaders(request),
     method: request.method
   })
 
