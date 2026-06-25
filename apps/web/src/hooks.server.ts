@@ -10,7 +10,7 @@ import { AUTH_SESSION_COOKIE_NAME, AUTH_TOKEN_COOKIE_NAME } from '$lib/domain/au
 import { createAuthService } from '$lib/domain/auth/service'
 
 export const handle: Handle = async ({ event, resolve }) => {
-  event.locals.serverTransport = createTransport({
+  const serverTransport = createTransport({
     baseUrl: PRIVATE_API_ORIGIN,
     fetch: event.fetch,
     getHeaders: () => {
@@ -27,7 +27,7 @@ export const handle: Handle = async ({ event, resolve }) => {
       }
     }
   })
-  event.locals.authService = createAuthService(event.locals.serverTransport)
+  event.locals.authService = createAuthService(serverTransport)
   const api = createApiClient({
     baseUrl: `${normalizeURL(PRIVATE_API_ORIGIN)}/api`,
     fetch: event.fetch,
@@ -45,7 +45,6 @@ export const handle: Handle = async ({ event, resolve }) => {
       }
     }
   })
-  // TODO: Remove since we are using private services
   event.locals.services = {
     athletes: createAthletesService(api)
   }

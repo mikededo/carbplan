@@ -3,7 +3,6 @@ import type { Icon as IconType } from '@lucide/svelte'
 import type { ComponentProps } from 'svelte'
 
 import type { Pathname } from '$app/types'
-import type { Transport } from '$lib/api/transport'
 import type { AthletesService } from '$lib/domain/athletes/service'
 import type { AuthService } from '$lib/domain/auth/service'
 
@@ -21,7 +20,6 @@ declare global {
   namespace App {
     interface Locals {
       authService: AuthService
-      serverTransport: Transport
       services: {
         athletes: AthletesService
       }
