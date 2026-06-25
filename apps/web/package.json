@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@carbplan/api": "workspace:*",
+    "@carbplan/auth": "workspace:*",
     "@carbplan/contracts": "workspace:*",
     "@carbplan/domain": "workspace:*",
     "@carbplan/utils": "workspace:*",

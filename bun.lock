@@ -45,6 +45,7 @@
       "version": "0.0.0",
       "dependencies": {
         "@carbplan/api": "workspace:*",
+        "@carbplan/auth": "workspace:*",
         "@carbplan/contracts": "workspace:*",
         "@carbplan/domain": "workspace:*",
         "@carbplan/utils": "workspace:*",

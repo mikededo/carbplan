@@ -17,14 +17,19 @@ export const handle: Handle = async ({ event, resolve }) => {
       const sessionToken = event.cookies.get(AUTH_SESSION_COOKIE_NAME)
       const authToken = event.cookies.get(AUTH_TOKEN_COOKIE_NAME)
 
-      if (!sessionToken || !authToken) {
+      if (!sessionToken && !authToken) {
         return undefined
       }
 
-      return {
-        Authorization: `Bearer ${authToken}`,
-        Cookie: `${AUTH_SESSION_COOKIE_NAME}=${sessionToken}`
+      const headers: Record<string, string> = {}
+      if (authToken) {
+        headers.Authorization = `Bearer ${authToken}`
       }
+      if (sessionToken) {
+        headers.Cookie = `${AUTH_SESSION_COOKIE_NAME}=${sessionToken}`
+      }
+
+      return headers
     }
   })
   event.locals.authService = createAuthService(serverTransport)
@@ -35,14 +40,19 @@ export const handle: Handle = async ({ event, resolve }) => {
       const sessionToken = event.cookies.get(AUTH_SESSION_COOKIE_NAME)
       const authToken = event.cookies.get(AUTH_TOKEN_COOKIE_NAME)
 
-      if (!sessionToken || !authToken) {
+      if (!sessionToken && !authToken) {
         return undefined
       }
 
-      return {
-        Authorization: `Bearer ${authToken}`,
-        Cookie: `${AUTH_SESSION_COOKIE_NAME}=${sessionToken}`
+      const headers: Record<string, string> = {}
+      if (authToken) {
+        headers.Authorization = `Bearer ${authToken}`
       }
+      if (sessionToken) {
+        headers.Cookie = `${AUTH_SESSION_COOKIE_NAME}=${sessionToken}`
+      }
+
+      return headers
     }
   })
   event.locals.services = {
