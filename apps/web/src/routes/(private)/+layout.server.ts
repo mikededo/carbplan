@@ -1,10 +1,10 @@
 import type { LayoutServerLoad } from './$types'
 
+import { noop } from '@carbplan/utils/noop'
 import { redirect } from '@sveltejs/kit'
 
 import { isOnboardingRoute, ROUTES } from '$lib/constants/routes'
 import { isSessionExpired } from '$lib/domain/auth/utils'
-import { noop } from '$lib/utils'
 
 export const load: LayoutServerLoad = async ({ locals, parent, url }) => {
   const { session, user } = await parent()

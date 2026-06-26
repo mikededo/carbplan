@@ -3,6 +3,8 @@
 
     import type { CatalogBrand, CatalogResult } from '../../queries/catalog'
 
+    import { TableBody, TableCell, TableHead, TableHeader, TableRoot, TableRow } from '@carbplan/ui/table'
+    import { cn } from '@carbplan/ui/utils'
     import {
         ArrowDownIcon,
         ArrowUpDownIcon,
@@ -12,8 +14,6 @@
     } from '@lucide/svelte'
 
     import ProductFormBadge from '$lib/domain/product/components/product-form-badge.svelte'
-    import { TableBody, TableCell, TableHead, TableHeader, TableRoot, TableRow } from '$lib/domain/ui/table'
-    import { cn } from '$lib/utils'
 
     import { createProductsTableContext, TABLE_COLUMNS } from '../../context/products-table.svelte'
     import CaffeineCell from './caffeine-cell.svelte'

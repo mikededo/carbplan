@@ -1,8 +1,8 @@
 <script lang="ts">
     import type { ComponentProps } from 'svelte'
 
-    import { Logo } from '$lib/domain/ui/logo'
-    import { SidebarContent, SidebarFooter, SidebarHeader, SidebarRail, SidebarRoot } from '$lib/domain/ui/sidebar'
+    import { Logo } from '@carbplan/ui/logo'
+    import { SidebarContent, SidebarFooter, SidebarHeader, SidebarRail, SidebarRoot } from '@carbplan/ui/sidebar'
 
     import SidebarNav from './sidebar-nav.svelte'
     import SidebarUser from './sidebar-user.svelte'

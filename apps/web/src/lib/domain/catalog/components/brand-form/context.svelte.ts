@@ -1,11 +1,11 @@
 import type { CatalogBrand } from '$lib/domain/catalog/queries/catalog'
 
+import { noop } from '@carbplan/utils/noop'
 import { ResultAsync } from 'neverthrow'
 import { getContext, setContext } from 'svelte'
 
 import { createBrandMutation, updateBrandMutation } from '$lib/domain/catalog/queries/mutations'
 import { BrandSchema, generateSlug } from '$lib/domain/catalog/schemas'
-import { noop } from '$lib/utils'
 
 const BRAND_FORM_CONTEXT_KEY = Symbol('brand-form')
 

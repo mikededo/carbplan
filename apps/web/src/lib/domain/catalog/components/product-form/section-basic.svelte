@@ -2,11 +2,11 @@
     import type { ProductForm } from '@carbplan/domain/product'
 
     import { ProductFormSchema } from '@carbplan/domain/product'
+    import { FieldDescription, FieldError, FieldLabel, FieldRoot } from '@carbplan/ui/field'
+    import { Input } from '@carbplan/ui/input'
+    import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from '@carbplan/ui/select'
 
     import { PRODUCT_FORM_LABELS } from '$lib/domain/catalog/schemas'
-    import { FieldDescription, FieldError, FieldLabel, FieldRoot } from '$lib/domain/ui/field'
-    import { Input } from '$lib/domain/ui/input'
-    import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from '$lib/domain/ui/select'
 
     import { getProductFormContext } from './context.svelte'
 

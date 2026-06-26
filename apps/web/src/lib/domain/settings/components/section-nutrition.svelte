@@ -1,10 +1,9 @@
 <script lang="ts">
     import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
+    import { Alert, AlertDescription, AlertTitle } from '@carbplan/ui/alert'
+    import { Label } from '@carbplan/ui/label'
+    import { Slider } from '@carbplan/ui/slider'
     import { Clock2Icon, Clock3Icon, Clock6Icon, InfoIcon } from '@lucide/svelte'
-
-    import { Alert, AlertDescription, AlertTitle } from '$lib/domain/ui/alert'
-    import { Label } from '$lib/domain/ui/label'
-    import { Slider } from '$lib/domain/ui/slider'
 
     import MetricCard from './metric-card.svelte'
     import SettingsSection from './settings-section.svelte'

@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { ZonePreset } from '../types'
 
-    import { createTether, TooltipContent, TooltipRoot, TooltipTrigger } from '$lib/domain/ui/tooltip'
+    import { createTether, TooltipContent, TooltipRoot, TooltipTrigger } from '@carbplan/ui/tooltip'
 
     type Props = {
         zones: ZonePreset[]

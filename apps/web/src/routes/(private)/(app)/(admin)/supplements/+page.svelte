@@ -2,6 +2,7 @@
     import type { CatalogBrand } from '$lib/domain/catalog/queries/catalog'
     import type { CatalogProduct } from '$lib/domain/catalog/service'
 
+    import { Button } from '@carbplan/ui/button'
     import { PackagePlusIcon, PlusIcon } from '@lucide/svelte'
 
     import BrandFormDialog from '$lib/domain/catalog/components/brand-form/brand-form-dialog.svelte'
@@ -10,7 +11,6 @@
     import { useCatalogQuery } from '$lib/domain/catalog/queries/use-catalog-query.svelte'
     import PageHeader from '$lib/domain/layout/components/page-header.svelte'
     import PageScrollarea from '$lib/domain/layout/components/page-scrollarea.svelte'
-    import { Button } from '$lib/domain/ui/button'
 
     type DialogState<T> = { item: T | undefined, open: boolean }
 

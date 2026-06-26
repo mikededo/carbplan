@@ -2,6 +2,7 @@
     import type { PageData } from './$types'
 
     import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
+    import { Button } from '@carbplan/ui/button'
     import { LoaderCircleIcon, SaveIcon } from '@lucide/svelte'
 
     import PageHeader from '$lib/domain/layout/components/page-header.svelte'
@@ -11,7 +12,6 @@
     import SectionPersonal from '$lib/domain/settings/components/section-personal.svelte'
     import SectionPower from '$lib/domain/settings/components/section-power.svelte'
     import { createAthleteMutation, useAthleteQuery } from '$lib/domain/settings/queries/use-athlete.svelte'
-    import { Button } from '$lib/domain/ui/button'
 
     type Props = { data: PageData }
     const { data }: Props = $props()

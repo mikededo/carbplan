@@ -1,4 +1,8 @@
 <script lang="ts">
+    import { AvatarFallback, AvatarImage, AvatarRoot } from '@carbplan/ui/avatar'
+    import { Button } from '@carbplan/ui/button'
+    import { DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuRoot, DropdownMenuSeparator, DropdownMenuTrigger } from '@carbplan/ui/dropdown-menu'
+    import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@carbplan/ui/sidebar'
     import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down'
     import LogOutIcon from '@lucide/svelte/icons/log-out'
     import SettingsIcon from '@lucide/svelte/icons/settings'
@@ -7,10 +11,6 @@
     import { ROUTES } from '$lib/constants/routes'
     import { useAthleteQuery } from '$lib/domain/settings/queries/use-athlete.svelte'
     import ThemeToggle from '$lib/domain/theme/components/theme-toggle.svelte'
-    import { AvatarFallback, AvatarImage, AvatarRoot } from '$lib/domain/ui/avatar'
-    import { Button } from '$lib/domain/ui/button'
-    import { DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuRoot, DropdownMenuSeparator, DropdownMenuTrigger } from '$lib/domain/ui/dropdown-menu'
-    import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '$lib/domain/ui/sidebar'
 
     type Props = {
         onLogOut: () => void

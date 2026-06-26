@@ -1,12 +1,11 @@
 <script lang="ts">
     import type { CatalogProduct } from '$lib/domain/catalog/service'
 
+    import { Alert, AlertDescription } from '@carbplan/ui/alert'
+    import { Button } from '@carbplan/ui/button'
+    import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogRoot, DialogTitle } from '@carbplan/ui/dialog'
+    import { ScrollArea } from '@carbplan/ui/scroll-area'
     import { LoaderCircleIcon, SaveIcon, Trash2Icon } from '@lucide/svelte'
-
-    import { Alert, AlertDescription } from '$lib/domain/ui/alert'
-    import { Button } from '$lib/domain/ui/button'
-    import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogRoot, DialogTitle } from '$lib/domain/ui/dialog'
-    import { ScrollArea } from '$lib/domain/ui/scroll-area'
 
     import { createProductFormContext } from './context.svelte'
     import DeactivateProductAlert from './deactivate-product-alert.svelte'

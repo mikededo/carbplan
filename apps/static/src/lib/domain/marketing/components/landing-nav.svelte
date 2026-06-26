@@ -1,0 +1,44 @@
+<script lang="ts">
+    import { Button } from '@carbplan/ui/button'
+    import { Logo } from '@carbplan/ui/logo'
+
+    import { resolve } from '$app/paths'
+    import { ROUTES } from '$lib/constants/routes'
+</script>
+
+<nav class="fixed inset-x-0 top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md">
+    <div class="mx-auto grid h-16 max-w-6xl grid-cols-2 items-center justify-between px-6 md:grid-cols-3">
+        <a class="flex items-center gap-2" href={resolve(ROUTES.landing)}>
+            <div class="flex size-8 items-center justify-center rounded-lg bg-primary">
+                <Logo class="size-5 text-primary-foreground" />
+            </div>
+            <span class="text-lg font-bold">CarbPlan</span>
+        </a>
+
+        <div class="hidden items-center justify-center gap-8 md:flex">
+            <a
+                class="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                href="#features"
+            >
+                Features
+            </a>
+            <a
+                class="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                href="#product"
+            >
+                Product
+            </a>
+            <a
+                class="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                href="#pricing"
+            >
+                Pricing
+            </a>
+        </div>
+
+        <div class="flex items-center justify-end gap-3">
+            <Button href={ROUTES.auth.signin} size="sm" variant="ghost">Sign in</Button>
+            <Button href={ROUTES.auth.signup} size="sm">Get Started</Button>
+        </div>
+    </div>
+</nav>

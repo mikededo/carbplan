@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createTether, TooltipContent, TooltipRoot, TooltipTrigger } from '$lib/domain/ui/tooltip'
+    import { createTether, TooltipContent, TooltipRoot, TooltipTrigger } from '@carbplan/ui/tooltip'
 
     import { formatPercentRange } from '../types'
 

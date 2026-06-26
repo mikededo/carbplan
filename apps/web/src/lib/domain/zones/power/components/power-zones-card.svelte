@@ -2,10 +2,10 @@
     import type { PowerZoneModel, PowerZonesData } from '@carbplan/domain/power'
 
     import { POWER_MODEL_INFO, POWER_MODEL_LABELS, POWER_ZONE_PRESETS } from '@carbplan/domain/power'
+    import { SelectContent, SelectItem, SelectPortal, SelectRoot, SelectTrigger } from '@carbplan/ui/select'
+    import { createTether, TooltipContent, TooltipRoot, TooltipTrigger } from '@carbplan/ui/tooltip'
     import { ExternalLinkIcon, InfoIcon, ZapIcon } from '@lucide/svelte'
 
-    import { SelectContent, SelectItem, SelectPortal, SelectRoot, SelectTrigger } from '$lib/domain/ui/select'
-    import { createTether, TooltipContent, TooltipRoot, TooltipTrigger } from '$lib/domain/ui/tooltip'
     import ZoneBar from '$lib/domain/zones/zone/components/zone-bar.svelte'
     import ZoneListItem from '$lib/domain/zones/zone/components/zone-list-item.svelte'
     import ZonePlaceholder from '$lib/domain/zones/zone/components/zone-placeholder.svelte'

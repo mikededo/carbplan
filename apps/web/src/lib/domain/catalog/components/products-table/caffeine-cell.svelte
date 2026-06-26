@@ -1,7 +1,7 @@
 <script lang="ts">
-    import type { BadgeVariant } from '$lib/domain/ui/badge'
+    import type { BadgeVariant } from '@carbplan/ui/badge'
 
-    import { Badge } from '$lib/domain/ui/badge'
+    import { Badge } from '@carbplan/ui/badge'
 
     type Props = {
         caffeine: null | number

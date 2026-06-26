@@ -4,11 +4,11 @@
     import type { Maybe } from '@carbplan/domain/utils'
 
     import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
+    import { Button } from '@carbplan/ui/button'
+    import { Input } from '@carbplan/ui/input'
+    import { Label } from '@carbplan/ui/label'
     import { ActivityIcon, BatteryFullIcon, BatteryLowIcon, LoaderCircleIcon, ZapIcon } from '@lucide/svelte'
 
-    import { Button } from '$lib/domain/ui/button'
-    import { Input } from '$lib/domain/ui/input'
-    import { Label } from '$lib/domain/ui/label'
     import PowerZonesCard from '$lib/domain/zones/power/components/power-zones-card.svelte'
     import { createAthletePowerZonesMutation } from '$lib/domain/zones/power/queries/use-mutate-power-zones'
 

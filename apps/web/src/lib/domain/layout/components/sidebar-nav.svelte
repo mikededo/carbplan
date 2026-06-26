@@ -1,11 +1,11 @@
 <script lang="ts">
+    import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@carbplan/ui/sidebar'
     import { LayoutDashboardIcon, PillIcon, SettingsIcon } from '@lucide/svelte'
 
     import { resolve } from '$app/paths'
     import { page } from '$app/state'
     import { ROUTES } from '$lib/constants/routes'
     import { getAuthContext } from '$lib/domain/auth/context'
-    import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '$lib/domain/ui/sidebar'
 
     const BASE_ROUTES = [
         { href: ROUTES.dashboard, icon: LayoutDashboardIcon, title: 'Dashboard' },

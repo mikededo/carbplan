@@ -9,9 +9,9 @@
 <script lang="ts">
     import type { Snippet } from 'svelte'
 
-    import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '$lib/domain/ui/breadcrumb'
-    import { Separator } from '$lib/domain/ui/separator'
-    import { SidebarTrigger } from '$lib/domain/ui/sidebar'
+    import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@carbplan/ui/breadcrumb'
+    import { Separator } from '@carbplan/ui/separator'
+    import { SidebarTrigger } from '@carbplan/ui/sidebar'
 
     type Props = {
         crumbs: Crumb[]

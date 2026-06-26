@@ -4,6 +4,8 @@
     import type { ActionData, PageData } from './$types'
 
     import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
+    import { Button } from '@carbplan/ui/button'
+    import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@carbplan/ui/card'
     import { CircleCheckBigIcon, MoveLeftIcon, MoveRightIcon } from '@lucide/svelte'
     import { sineOut } from 'svelte/easing'
     import { fade } from 'svelte/transition'
@@ -14,8 +16,6 @@
     import StepProgress from '$lib/domain/onboarding/components/step-progress.svelte'
     import StepTraining from '$lib/domain/onboarding/components/step-training.svelte'
     import { ONBOARDING_STEPS } from '$lib/domain/onboarding/types'
-    import { Button } from '$lib/domain/ui/button'
-    import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$lib/domain/ui/card'
 
     type Props = { data: PageData, form: ActionData }
     const { data, form }: Props = $props()

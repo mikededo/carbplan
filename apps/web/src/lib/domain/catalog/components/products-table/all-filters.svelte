@@ -32,14 +32,13 @@
 </script>
 
 <script lang="ts">
+    import { Button } from '@carbplan/ui/button'
+    import { Label } from '@carbplan/ui/label'
+    import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from '@carbplan/ui/select'
+    import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@carbplan/ui/sheet'
+    import { Slider } from '@carbplan/ui/slider'
+    import { Toggle } from '@carbplan/ui/toggle'
     import { BuildingIcon, SlidersHorizontalIcon } from '@lucide/svelte'
-
-    import { Button } from '$lib/domain/ui/button'
-    import { Label } from '$lib/domain/ui/label'
-    import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from '$lib/domain/ui/select'
-    import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '$lib/domain/ui/sheet'
-    import { Slider } from '$lib/domain/ui/slider'
-    import { Toggle } from '$lib/domain/ui/toggle'
 
     import { getProductsTableContext } from '../../context/products-table.svelte'
 

@@ -1,12 +1,11 @@
 <script lang="ts">
+    import { Input } from '@carbplan/ui/input'
+    import { Kbd, KbdGroup } from '@carbplan/ui/kbd'
+    import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from '@carbplan/ui/select'
     import {
         ComponentIcon,
         SearchIcon
     } from '@lucide/svelte'
-
-    import { Input } from '$lib/domain/ui/input'
-    import { Kbd, KbdGroup } from '$lib/domain/ui/kbd'
-    import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from '$lib/domain/ui/select'
 
     import { getProductsTableContext } from '../../context/products-table.svelte'
     import AllFilters, { ALL_TYPES_OPTION, formOptions } from './all-filters.svelte'

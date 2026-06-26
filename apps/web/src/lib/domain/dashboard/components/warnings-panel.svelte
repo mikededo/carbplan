@@ -2,9 +2,8 @@
     import type { DashboardPlan } from '$lib/domain/dashboard/types'
     import type { CurrentAthlete } from '$lib/domain/me/service'
 
+    import { AlertDescription, AlertRoot, AlertTitle } from '@carbplan/ui/alert'
     import { CircleCheckBigIcon, CoffeeIcon, TriangleAlertIcon, ZapIcon } from '@lucide/svelte'
-
-    import { AlertDescription, AlertRoot, AlertTitle } from '$lib/domain/ui/alert'
 
     type AthleteData = Pick<CurrentAthlete, 'maxCarbIntakeGPerHr'>
 

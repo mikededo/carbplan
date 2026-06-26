@@ -1,10 +1,11 @@
 <script lang="ts">
     import type { StepOneData } from '$lib/domain/onboarding/types'
 
+    import { Input } from '@carbplan/ui/input'
+    import { Label } from '@carbplan/ui/label'
+    import { RadioGroup, RadioGroupItem } from '@carbplan/ui/radio-group'
+
     import { SexEnum } from '$lib/domain/onboarding/schemas'
-    import { Input } from '$lib/domain/ui/input'
-    import { Label } from '$lib/domain/ui/label'
-    import { RadioGroup, RadioGroupItem } from '$lib/domain/ui/radio-group'
 
     type Props = {
         // Allow sex to be an empty string since radiogroup expects the binded

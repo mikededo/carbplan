@@ -3,9 +3,10 @@
 
     import type { LayoutData } from './$types'
 
+    import { SidebarInset, SidebarProvider } from '@carbplan/ui/sidebar'
+
     import AppSidebar from '$lib/domain/layout/components/app-sidebar.svelte'
     import { createPrivateServicesContext } from '$lib/domain/services/context'
-    import { SidebarInset, SidebarProvider } from '$lib/domain/ui/sidebar'
 
     type Props = {
         children: Snippet

@@ -1,8 +1,7 @@
 <script lang="ts">
+    import { AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogRoot, AlertDialogTitle } from '@carbplan/ui/alert-dialog'
+    import { Button } from '@carbplan/ui/button'
     import { LoaderCircleIcon } from '@lucide/svelte'
-
-    import { AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogRoot, AlertDialogTitle } from '$lib/domain/ui/alert-dialog'
-    import { Button } from '$lib/domain/ui/button'
 
     import { getProductFormContext } from './context.svelte'
 

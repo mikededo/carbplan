@@ -3,13 +3,13 @@ import type { ProductForm } from '@carbplan/domain/product'
 import type { CatalogBrand } from '$lib/domain/catalog/queries/catalog'
 import type { CatalogProduct } from '$lib/domain/catalog/service'
 
+import { noop } from '@carbplan/utils/noop'
 import { ResultAsync } from 'neverthrow'
 import { getContext, setContext } from 'svelte'
 
 import { createProductMutation, deactivateProductMutation, updateProductMutation } from '$lib/domain/catalog/queries/mutations'
 import { useCatalogQuery } from '$lib/domain/catalog/queries/use-catalog-query.svelte'
 import { generateSlug, ProductSchema } from '$lib/domain/catalog/schemas'
-import { noop } from '$lib/utils'
 
 const PRODUCT_FORM_CONTEXT_KEY = Symbol('product-form')
 

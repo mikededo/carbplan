@@ -1,12 +1,12 @@
 <script lang="ts">
     import type { DashboardPlan } from '$lib/domain/dashboard/types'
 
+    import { Button } from '@carbplan/ui/button'
+    import { CardContent, CardHeader, CardRoot, CardTitle } from '@carbplan/ui/card'
     import { CalendarIcon, ClockIcon, PenIcon, ZapIcon } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'
     import PageSection from '$lib/domain/layout/components/page-section.svelte'
-    import { Button } from '$lib/domain/ui/button'
-    import { CardContent, CardHeader, CardRoot, CardTitle } from '$lib/domain/ui/card'
 
     type Props = { plan: DashboardPlan | null }
     const { plan }: Props = $props()

@@ -1,11 +1,10 @@
 <script lang="ts">
     import type { CatalogBrand } from '$lib/domain/catalog/queries/catalog'
 
+    import { Alert, AlertDescription } from '@carbplan/ui/alert'
+    import { Button } from '@carbplan/ui/button'
+    import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogRoot, DialogTitle } from '@carbplan/ui/dialog'
     import { LoaderCircleIcon, SaveIcon } from '@lucide/svelte'
-
-    import { Alert, AlertDescription } from '$lib/domain/ui/alert'
-    import { Button } from '$lib/domain/ui/button'
-    import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogRoot, DialogTitle } from '$lib/domain/ui/dialog'
 
     import BrandFormFields from './brand-form-fields.svelte'
     import { createBrandFormContext } from './context.svelte'

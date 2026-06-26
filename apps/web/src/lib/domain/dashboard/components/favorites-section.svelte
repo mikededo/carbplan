@@ -1,13 +1,13 @@
 <script lang="ts">
     import type { DashboardFavoriteProduct } from '$lib/domain/dashboard/types'
 
+    import { Button } from '@carbplan/ui/button'
+    import { CardContent, CardRoot } from '@carbplan/ui/card'
     import { HeartIcon } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'
     import PageSection from '$lib/domain/layout/components/page-section.svelte'
     import ProductFormBadge from '$lib/domain/product/components/product-form-badge.svelte'
-    import { Button } from '$lib/domain/ui/button'
-    import { CardContent, CardRoot } from '$lib/domain/ui/card'
 
     type Props = { products: DashboardFavoriteProduct[] }
     const { products }: Props = $props()

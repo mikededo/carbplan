@@ -1,12 +1,13 @@
 <script lang="ts">
+    import { Button } from '@carbplan/ui/button'
+    import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@carbplan/ui/card'
+    import { Input } from '@carbplan/ui/input'
+    import { Label } from '@carbplan/ui/label'
+
     import { goto } from '$app/navigation'
     import { resolve } from '$app/paths'
     import { ROUTES } from '$lib/constants/routes'
     import { authClient } from '$lib/domain/auth/client'
-    import { Button } from '$lib/domain/ui/button'
-    import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/domain/ui/card'
-    import { Input } from '$lib/domain/ui/input'
-    import { Label } from '$lib/domain/ui/label'
 
     let email = $state('')
     let errors = $state<{ email?: string, password?: string }>({})
