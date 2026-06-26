@@ -1,4 +1,4 @@
-import type { PowerZone } from '@carbplan/domain/power'
+import type { PowerZone } from '@kilo/domain/power'
 
 import { describe, expect, it } from 'vitest'
 

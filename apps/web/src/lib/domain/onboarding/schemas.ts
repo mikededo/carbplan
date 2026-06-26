@@ -1,4 +1,4 @@
-import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
+import { PROFILE_FIELD_CONSTRAINTS } from '@kilo/domain/profile'
 import * as z from 'zod'
 
 export const SexSchema = z.enum(['male', 'female'], 'Please select your sex')

@@ -1,8 +1,8 @@
-import type { AthleteId as DomainAthleteId } from '@carbplan/domain/athlete'
-import type { HRZonesData } from '@carbplan/domain/hr'
-import type { PowerZonesData } from '@carbplan/domain/power'
+import type { AthleteId as DomainAthleteId } from '@kilo/domain/athlete'
+import type { HRZonesData } from '@kilo/domain/hr'
+import type { PowerZonesData } from '@kilo/domain/power'
 
-import { SexSchema } from '@carbplan/domain/profile'
+import { SexSchema } from '@kilo/domain/profile'
 import { sql } from 'drizzle-orm'
 import {
   boolean,

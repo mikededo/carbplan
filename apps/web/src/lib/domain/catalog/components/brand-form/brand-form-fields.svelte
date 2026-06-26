@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { FieldDescription, FieldError, FieldLabel, FieldRoot } from '@carbplan/ui/field'
-    import { Input } from '@carbplan/ui/input'
+    import { FieldDescription, FieldError, FieldLabel, FieldRoot } from '@kilo/ui/field'
+    import { Input } from '@kilo/ui/input'
 
     import { getBrandFormContext } from './context.svelte'
 

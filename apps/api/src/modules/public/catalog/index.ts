@@ -2,7 +2,7 @@ import type { PublicCatalogService } from '$modules/public/catalog/service'
 import type { EndpointHeaderPolicy } from '$modules/public/utils/headers'
 import type { EndpointRateLimiter, EndpointRateLimitPolicy } from '$modules/public/utils/rate-limit'
 
-import * as PublicCatalogContracts from '@carbplan/contracts/public-catalog'
+import * as PublicCatalogContracts from '@kilo/contracts/public-catalog'
 import { Elysia } from 'elysia'
 
 import { CatalogQueryValidationError } from '$modules/public/catalog/model'

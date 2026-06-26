@@ -1,9 +1,9 @@
-import type { AthleteId, Db } from '@carbplan/db'
+import type { AthleteId, Db } from '@kilo/db'
 
 import type { OnboardingStatus, SaveAthleteOnboardingData } from '$modules/onboarding/model'
 import type { DatabaseQueryError } from '$utils/db-error'
 
-import { athletes } from '@carbplan/db'
+import { athletes } from '@kilo/db'
 import { eq } from 'drizzle-orm'
 import { noop } from 'es-toolkit'
 import { ResultAsync } from 'neverthrow'

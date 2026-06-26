@@ -1,11 +1,11 @@
-import type { AthleteId, Db } from '@carbplan/db'
-import type { HRZonesData } from '@carbplan/domain/hr'
-import type { PowerZonesData } from '@carbplan/domain/power'
+import type { AthleteId, Db } from '@kilo/db'
+import type { HRZonesData } from '@kilo/domain/hr'
+import type { PowerZonesData } from '@kilo/domain/power'
 
 import type { CurrentAthleteData, GetCurrentAthleteError, UpdateCurrentAthlete, UpdateCurrentAthleteError } from '$modules/me/model'
 import type { DatabaseQueryError } from '$utils/db-error'
 
-import { athletes } from '@carbplan/db'
+import { athletes } from '@kilo/db'
 import { eq } from 'drizzle-orm'
 import { head } from 'es-toolkit'
 import { err, ok, ResultAsync } from 'neverthrow'

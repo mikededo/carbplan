@@ -6,8 +6,8 @@
   },
   "aliases": {
     "components": "$lib/domain",
-    "utils": "@carbplan/ui/utils",
-    "ui": "@carbplan/ui",
+    "utils": "@kilo/ui/utils",
+    "ui": "@kilo/ui",
     "hooks": "$lib/hooks",
     "lib": "$lib"
   },

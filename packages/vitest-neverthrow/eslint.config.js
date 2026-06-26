@@ -1,3 +1,3 @@
-import { baseConfig } from '@carbplan/eslint'
+import { baseConfig } from '@kilo/eslint'
 
 export default baseConfig()

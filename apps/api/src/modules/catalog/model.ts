@@ -1,5 +1,5 @@
-import type { Brand, BrandId, Product, ProductId } from '@carbplan/db'
-import type { ProductForm } from '@carbplan/domain/product'
+import type { Brand, BrandId, Product, ProductId } from '@kilo/db'
+import type { ProductForm } from '@kilo/domain/product'
 
 import type { DatabaseQueryError, EntityNotFound, EntityNotInserted } from '$utils/db-error'
 

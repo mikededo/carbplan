@@ -1,5 +1,5 @@
 declare global {
-  type CarbplanApiEnv = {
+  type KiloApiEnv = {
     AUTH_BASE_URL: string
     BETTER_AUTH_SECRET: string
     BETTER_AUTH_TRUSTED_ORIGINS: string
@@ -12,7 +12,7 @@ declare global {
 }
 
 declare module 'bun' {
-  interface Env extends CarbplanApiEnv {}
+  interface Env extends KiloApiEnv {}
 }
 
 export {}

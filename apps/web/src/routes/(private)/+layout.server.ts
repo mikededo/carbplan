@@ -1,6 +1,6 @@
 import type { LayoutServerLoad } from './$types'
 
-import { noop } from '@carbplan/utils/noop'
+import { noop } from '@kilo/utils/noop'
 import { redirect } from '@sveltejs/kit'
 
 import { isOnboardingRoute, ROUTES } from '$lib/constants/routes'

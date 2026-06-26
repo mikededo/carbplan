@@ -1,5 +1,5 @@
-import { ProductFormSchema } from '@carbplan/domain/product'
-import { atLeastOneProperty } from '@carbplan/utils/validation'
+import { ProductFormSchema } from '@kilo/domain/product'
+import { atLeastOneProperty } from '@kilo/utils/validation'
 import * as z from 'zod'
 
 import { ApiEmptyResponseSchema } from '../api'

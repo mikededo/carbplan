@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@carbplan/ui/sidebar'
+    import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@kilo/ui/sidebar'
     import { LayoutDashboardIcon, PillIcon, SettingsIcon } from '@lucide/svelte'
 
     import { resolve } from '$app/paths'

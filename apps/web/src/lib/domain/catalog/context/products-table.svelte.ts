@@ -1,4 +1,4 @@
-import type { ProductForm } from '@carbplan/domain/product'
+import type { ProductForm } from '@kilo/domain/product'
 
 import type { CatalogProduct } from '$lib/domain/catalog/service'
 

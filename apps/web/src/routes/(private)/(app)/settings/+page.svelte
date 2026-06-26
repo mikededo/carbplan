@@ -1,8 +1,8 @@
 <script lang="ts">
     import type { PageData } from './$types'
 
-    import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
-    import { Button } from '@carbplan/ui/button'
+    import { PROFILE_FIELD_CONSTRAINTS } from '@kilo/domain/profile'
+    import { Button } from '@kilo/ui/button'
     import { LoaderCircleIcon, SaveIcon } from '@lucide/svelte'
 
     import PageHeader from '$lib/domain/layout/components/page-header.svelte'
@@ -66,7 +66,7 @@
 </script>
 
 <svelte:head>
-    <title>Settings — CarbPlan</title>
+    <title>Settings — Kilo</title>
 </svelte:head>
 
 <PageHeader crumbs={['Settings']}>

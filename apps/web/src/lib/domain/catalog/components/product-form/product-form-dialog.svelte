@@ -1,10 +1,10 @@
 <script lang="ts">
     import type { CatalogProduct } from '$lib/domain/catalog/service'
 
-    import { Alert, AlertDescription } from '@carbplan/ui/alert'
-    import { Button } from '@carbplan/ui/button'
-    import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogRoot, DialogTitle } from '@carbplan/ui/dialog'
-    import { ScrollArea } from '@carbplan/ui/scroll-area'
+    import { Alert, AlertDescription } from '@kilo/ui/alert'
+    import { Button } from '@kilo/ui/button'
+    import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogRoot, DialogTitle } from '@kilo/ui/dialog'
+    import { ScrollArea } from '@kilo/ui/scroll-area'
     import { LoaderCircleIcon, SaveIcon, Trash2Icon } from '@lucide/svelte'
 
     import { createProductFormContext } from './context.svelte'

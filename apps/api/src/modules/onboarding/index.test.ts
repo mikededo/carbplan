@@ -1,6 +1,6 @@
 
-import * as OnboardingContracts from '@carbplan/contracts/onboarding'
 import { treaty } from '@elysiajs/eden'
+import * as OnboardingContracts from '@kilo/contracts/onboarding'
 import { okAsync } from 'neverthrow'
 
 import { onboardingModule } from '$modules/onboarding'

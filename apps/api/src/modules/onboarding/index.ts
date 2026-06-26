@@ -1,9 +1,9 @@
-import type { AuthServer } from '@carbplan/auth'
+import type { AuthServer } from '@kilo/auth'
 
 import type { OnboardingService } from '$modules/onboarding/service'
 
-import * as OnboardingContracts from '@carbplan/contracts/onboarding'
-import { parseAthleteId } from '@carbplan/domain/athlete'
+import * as OnboardingContracts from '@kilo/contracts/onboarding'
+import { parseAthleteId } from '@kilo/domain/athlete'
 import { Elysia } from 'elysia'
 
 import { getMeAthletesPath } from '$modules/athletes/routes'

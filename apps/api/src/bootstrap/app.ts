@@ -13,7 +13,7 @@ type CreateAppOptions = {
   services: AppServices
 }
 
-export const createApp = async (options: CreateAppOptions) => new Elysia({ name: 'carbplan-api-root', prefix: '/api' })
+export const createApp = async (options: CreateAppOptions) => new Elysia({ name: 'kilo-api-root', prefix: '/api' })
   .use(await createApiRoutes(options))
 
 export const createAppFromEnv = async () => {

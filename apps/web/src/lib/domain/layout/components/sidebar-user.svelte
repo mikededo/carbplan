@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { AvatarFallback, AvatarImage, AvatarRoot } from '@carbplan/ui/avatar'
-    import { Button } from '@carbplan/ui/button'
-    import { DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuRoot, DropdownMenuSeparator, DropdownMenuTrigger } from '@carbplan/ui/dropdown-menu'
-    import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@carbplan/ui/sidebar'
+    import { AvatarFallback, AvatarImage, AvatarRoot } from '@kilo/ui/avatar'
+    import { Button } from '@kilo/ui/button'
+    import { DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuRoot, DropdownMenuSeparator, DropdownMenuTrigger } from '@kilo/ui/dropdown-menu'
+    import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@kilo/ui/sidebar'
     import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down'
     import LogOutIcon from '@lucide/svelte/icons/log-out'
     import SettingsIcon from '@lucide/svelte/icons/settings'

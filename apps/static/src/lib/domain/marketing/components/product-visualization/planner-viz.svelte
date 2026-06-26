@@ -1,8 +1,8 @@
 <script lang="ts">
     import type { Icon } from '@lucide/svelte'
 
-    import { Badge } from '@carbplan/ui/badge'
-    import { cn } from '@carbplan/ui/utils'
+    import { Badge } from '@kilo/ui/badge'
+    import { cn } from '@kilo/ui/utils'
     import {
         CircleCheckIcon,
         CoffeeIcon,

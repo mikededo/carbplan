@@ -1,11 +1,11 @@
-import type { AthleteId, Db } from '@carbplan/db'
+import type { AthleteId, Db } from '@kilo/db'
 import type { SQL } from 'drizzle-orm'
 import type { PgColumn } from 'drizzle-orm/pg-core'
 
 import type { NutritionPlanListQuery, NutritionPlanListResult } from '$modules/nutrition-plans/model'
 import type { DatabaseQueryError } from '$utils/db-error'
 
-import { nutritionPlans, planItems, products } from '@carbplan/db'
+import { nutritionPlans, planItems, products } from '@kilo/db'
 import { and, asc, count, desc, eq, gte, inArray, lte, sql } from 'drizzle-orm'
 import { errAsync, ResultAsync } from 'neverthrow'
 

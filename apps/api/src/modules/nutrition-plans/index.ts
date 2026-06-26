@@ -1,9 +1,9 @@
-import type { AuthServer } from '@carbplan/auth'
+import type { AuthServer } from '@kilo/auth'
 
 import type { NutritionPlansService } from '$modules/nutrition-plans/service'
 
-import * as NutritionPlansContracts from '@carbplan/contracts/nutrition-plans'
-import { parseAthleteId } from '@carbplan/domain/athlete'
+import * as NutritionPlansContracts from '@kilo/contracts/nutrition-plans'
+import { parseAthleteId } from '@kilo/domain/athlete'
 import Elysia from 'elysia'
 
 import { authModule } from '$modules/auth'

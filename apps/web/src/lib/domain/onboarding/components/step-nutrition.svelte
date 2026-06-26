@@ -1,9 +1,9 @@
 <script lang="ts">
     import type { StepThreeData } from '$lib/domain/onboarding/types'
 
-    import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
-    import { Label } from '@carbplan/ui/label'
-    import { Slider } from '@carbplan/ui/slider'
+    import { PROFILE_FIELD_CONSTRAINTS } from '@kilo/domain/profile'
+    import { Label } from '@kilo/ui/label'
+    import { Slider } from '@kilo/ui/slider'
 
     type Props = Partial<StepThreeData>
     let { maxCarbIntake = $bindable() }: Props = $props()

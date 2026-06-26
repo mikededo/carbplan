@@ -1,5 +1,5 @@
-import { createRepositoryDbMock } from '@carbplan/auth/testing'
-import { parseAthleteId } from '@carbplan/domain/athlete'
+import { createRepositoryDbMock } from '@kilo/auth/testing'
+import { parseAthleteId } from '@kilo/domain/athlete'
 
 import { DbAthleteFavoritesRepository } from '$modules/favorites/repository'
 import { DatabaseErrorCodeEnum, DatabaseQueryError } from '$utils/db-error'

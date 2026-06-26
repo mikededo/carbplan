@@ -1,10 +1,10 @@
-import type { AuthServer } from '@carbplan/auth'
-import type { Db } from '@carbplan/db'
+import type { AuthServer } from '@kilo/auth'
+import type { Db } from '@kilo/db'
 
 import type { AppRepositories } from '$bootstrap/repositories'
 
-import { createAuthServer } from '@carbplan/auth'
-import { createDb } from '@carbplan/db'
+import { createAuthServer } from '@kilo/auth'
+import { createDb } from '@kilo/db'
 
 import { createRepositories } from '$bootstrap/repositories'
 import { AthleteProvisioningServiceImpl, upsertAthleteForUser } from '$modules/auth/provision-athlete'

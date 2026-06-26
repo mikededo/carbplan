@@ -1,4 +1,4 @@
-import type { HRZone } from '@carbplan/domain/hr'
+import type { HRZone } from '@kilo/domain/hr'
 
 import { describe, expect, it } from 'vitest'
 

@@ -1,5 +1,5 @@
-import type { SortDirection, SortOptions } from '@carbplan/contracts/pagination'
-import type { AthleteId } from '@carbplan/db'
+import type { SortDirection, SortOptions } from '@kilo/contracts/pagination'
+import type { AthleteId } from '@kilo/db'
 
 import type { PaginationModel, PaginationWithTotal } from '$utils/pagination'
 

@@ -1,6 +1,6 @@
-import type { SortDirection, SortOptions } from '@carbplan/contracts/pagination'
-import type * as PublicCatalogContracts from '@carbplan/contracts/public-catalog'
-import type { ProductForm } from '@carbplan/domain/product'
+import type { SortDirection, SortOptions } from '@kilo/contracts/pagination'
+import type * as PublicCatalogContracts from '@kilo/contracts/public-catalog'
+import type { ProductForm } from '@kilo/domain/product'
 
 import type { PaginationModel, PaginationWithTotal } from '$utils/pagination'
 

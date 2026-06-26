@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { Badge } from '@carbplan/ui/badge'
-    import { Button } from '@carbplan/ui/button'
+    import { Badge } from '@kilo/ui/badge'
+    import { Button } from '@kilo/ui/button'
     import { ArrowRightIcon, PlayIcon, ZapIcon } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'
@@ -36,7 +36,7 @@
                     class="text-lg/relaxed text-muted-foreground transition-all delay-100 duration-700"
                     style={entryStyles(inView.isInView)}
                 >
-                    CarbPlan helps you create detailed nutrition strategies before every workout. Calculate
+                    Kilo helps you create detailed nutrition strategies before every workout. Calculate
                     exact carb and calorie needs based on your planned duration, power targets, and personal
                     physiology. Review historical data to refine your approach over time.
                 </p>

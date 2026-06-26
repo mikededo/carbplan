@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Logo } from '@carbplan/ui/logo'
+    import { Logo } from '@kilo/ui/logo'
 
     import { resolve } from '$app/paths'
     import { ROUTES } from '$lib/constants/routes'
@@ -15,7 +15,7 @@
                     <div class="flex size-8 items-center justify-center rounded-lg bg-primary">
                         <Logo class="size-5 text-primary-foreground" />
                     </div>
-                    <span class="font-bold">CarbPlan</span>
+                    <span class="font-bold">Kilo</span>
                 </a>
                 <p class="text-sm text-muted-foreground">
                     Precision nutrition planning for endurance athletes.
@@ -50,7 +50,7 @@
         </div>
 
         <div class="mt-12 border-t border-border pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; {new Date().getFullYear()} CarbPlan. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Kilo. All rights reserved.</p>
         </div>
     </div>
 </footer>

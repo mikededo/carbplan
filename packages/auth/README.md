@@ -1,6 +1,6 @@
-# @carbplan/auth
+# @kilo/auth
 
-Shared authentication module for CarbPlan.
+Shared authentication module for Kilo.
 
 This package centralizes Better Auth configuration and helpers so auth behavior is defined once and reused across apps.
 
@@ -33,8 +33,8 @@ Keeping auth logic in this package gives a single source of truth while still le
 ## Server usage 
 
 ```ts
-import { createAuthServer, loadAuthConfig } from '@carbplan/auth'
-import { createDb } from '@carbplan/db'
+import { createAuthServer, loadAuthConfig } from '@kilo/auth'
+import { createDb } from '@kilo/db'
 
 const { db } = createDb(process.env.DATABASE_URL!)
 
@@ -67,7 +67,7 @@ const authServer = createAuthServer({
 ## Client usage 
 
 ```ts
-import { createAuthClient } from '@carbplan/auth'
+import { createAuthClient } from '@kilo/auth'
 
 export const authClient = createAuthClient({
   basePath: '/api/auth'
@@ -82,7 +82,7 @@ This package performs Better Auth persistence using the injected `db` instance.
 
 That is intentional and not an architectural problem because:
 
-- DB ownership remains in `@carbplan/db` (schema/migrations/connection creation).
+- DB ownership remains in `@kilo/db` (schema/migrations/connection creation).
 - Host apps pass the DB into this package.
 - This package does not open its own DB connection.
 - Domain provisioning (for example upserting `athletes`) should be implemented by consumers through `databaseHooks`.

@@ -1,6 +1,6 @@
-import type { AthleteId } from '@carbplan/domain/athlete'
+import type { AthleteId } from '@kilo/domain/athlete'
 
-import { ProductFormEnum } from '@carbplan/domain/product'
+import { ProductFormEnum } from '@kilo/domain/product'
 import { sql } from 'drizzle-orm'
 import {
   boolean,

@@ -1,5 +1,5 @@
-import type { AthleteId } from '@carbplan/domain/athlete'
-import type { HRZonesData } from '@carbplan/domain/hr'
+import type { AthleteId } from '@kilo/domain/athlete'
+import type { HRZonesData } from '@kilo/domain/hr'
 
 import type { CurrentAthlete, UpdateHRZonesInput } from '$lib/domain/me/service'
 

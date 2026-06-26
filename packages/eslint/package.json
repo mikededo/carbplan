@@ -1,5 +1,5 @@
 {
-  "name": "@carbplan/eslint",
+  "name": "@kilo/eslint",
   "type": "module",
   "version": "0.0.0",
   "private": true,

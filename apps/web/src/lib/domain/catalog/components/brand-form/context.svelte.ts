@@ -1,6 +1,6 @@
 import type { CatalogBrand } from '$lib/domain/catalog/queries/catalog'
 
-import { noop } from '@carbplan/utils/noop'
+import { noop } from '@kilo/utils/noop'
 import { ResultAsync } from 'neverthrow'
 import { getContext, setContext } from 'svelte'
 

@@ -4,8 +4,8 @@ import { getSharedCookieDomain } from './cookies.server'
 
 describe('getSharedCookieDomain', () => {
   it('returns parent domain for subdomains', () => {
-    expect(getSharedCookieDomain('app.carbplan.localhost')).toBe('carbplan.localhost')
-    expect(getSharedCookieDomain('api.carbplan.localhost')).toBe('carbplan.localhost')
+    expect(getSharedCookieDomain('app.kilo.localhost')).toBe('kilo.localhost')
+    expect(getSharedCookieDomain('api.kilo.localhost')).toBe('kilo.localhost')
   })
 
   it('keeps single-host development origins host-only', () => {
@@ -14,7 +14,7 @@ describe('getSharedCookieDomain', () => {
   })
 
   it('keeps apex domains host-only', () => {
-    expect(getSharedCookieDomain('carbplan.localhost')).toBeUndefined()
-    expect(getSharedCookieDomain('carbplan.app')).toBeUndefined()
+    expect(getSharedCookieDomain('kilo.localhost')).toBeUndefined()
+    expect(getSharedCookieDomain('kilo.app')).toBeUndefined()
   })
 })

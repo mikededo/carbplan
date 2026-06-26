@@ -1,11 +1,11 @@
 {
-  "name": "@carbplan/web",
+  "name": "@kilo/web",
   "type": "module",
   "version": "0.0.0",
   "private": true,
   "portless": {
     "appPort": 5173,
-    "name": "app.carbplan",
+    "name": "app.kilo",
     "script": "dev:app"
   },
   "scripts": {
@@ -23,13 +23,13 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@carbplan/api": "workspace:*",
-    "@carbplan/auth": "workspace:*",
-    "@carbplan/contracts": "workspace:*",
-    "@carbplan/domain": "workspace:*",
-    "@carbplan/ui": "workspace:*",
-    "@carbplan/utils": "workspace:*",
     "@elysiajs/eden": "1.4.9",
+    "@kilo/api": "workspace:*",
+    "@kilo/auth": "workspace:*",
+    "@kilo/contracts": "workspace:*",
+    "@kilo/domain": "workspace:*",
+    "@kilo/ui": "workspace:*",
+    "@kilo/utils": "workspace:*",
     "@lucide/svelte": "1.17.0",
     "@tanstack/svelte-query": "6.1.34",
     "@tanstack/svelte-query-devtools": "6.1.34",
@@ -40,7 +40,7 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@carbplan/eslint": "workspace:*",
+    "@kilo/eslint": "workspace:*",
     "@sveltejs/adapter-auto": "7.0.1",
     "@sveltejs/kit": "2.63.1",
     "@sveltejs/vite-plugin-svelte": "7.1.2",

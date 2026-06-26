@@ -1,4 +1,4 @@
-import type { AuthServer } from '@carbplan/auth'
+import type { AuthServer } from '@kilo/auth'
 
 const AUTH_PREFIX = '/api/v1/auth'
 

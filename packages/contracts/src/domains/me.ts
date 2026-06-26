@@ -1,6 +1,6 @@
-import { AthleteIdSchema } from '@carbplan/domain/athlete'
-import { HRZonesDataSchema } from '@carbplan/domain/hr'
-import { PowerZonesDataSchema } from '@carbplan/domain/power'
+import { AthleteIdSchema } from '@kilo/domain/athlete'
+import { HRZonesDataSchema } from '@kilo/domain/hr'
+import { PowerZonesDataSchema } from '@kilo/domain/power'
 import {
   FTPFieldSchema,
   HeightSchema,
@@ -9,7 +9,7 @@ import {
   MaxCarbIntakeFieldSchema,
   SexSchema,
   WeightSchema
-} from '@carbplan/domain/profile'
+} from '@kilo/domain/profile'
 import * as z from 'zod'
 
 import { ApiEmptyResponseSchema } from '../api'

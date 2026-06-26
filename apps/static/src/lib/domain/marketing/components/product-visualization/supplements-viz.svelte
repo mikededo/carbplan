@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { Badge } from '@carbplan/ui/badge'
-    import { cn } from '@carbplan/ui/utils'
+    import { Badge } from '@kilo/ui/badge'
+    import { cn } from '@kilo/ui/utils'
     import { ChevronRightIcon } from '@lucide/svelte'
 
     import { entryStyles } from '../../helpers'

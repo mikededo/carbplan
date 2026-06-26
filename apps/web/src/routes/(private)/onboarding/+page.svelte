@@ -3,9 +3,9 @@
 
     import type { ActionData, PageData } from './$types'
 
-    import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
-    import { Button } from '@carbplan/ui/button'
-    import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@carbplan/ui/card'
+    import { PROFILE_FIELD_CONSTRAINTS } from '@kilo/domain/profile'
+    import { Button } from '@kilo/ui/button'
+    import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@kilo/ui/card'
     import { CircleCheckBigIcon, MoveLeftIcon, MoveRightIcon } from '@lucide/svelte'
     import { sineOut } from 'svelte/easing'
     import { fade } from 'svelte/transition'
@@ -57,11 +57,11 @@
 
 <svelte:head>
     {#if step === 0}
-        <title>Complete your profile — CarbPlan</title>
+        <title>Complete your profile — Kilo</title>
     {:else if step === 1}
-        <title>Performance information — CarbPlan</title>
+        <title>Performance information — Kilo</title>
     {:else}
-        <title>Nutrition information — CarbPlan</title>
+        <title>Nutrition information — Kilo</title>
     {/if}
 
 </svelte:head>

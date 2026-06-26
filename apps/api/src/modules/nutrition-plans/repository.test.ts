@@ -1,7 +1,7 @@
 import type { NutritionPlanItem } from '$modules/nutrition-plans/model'
 
-import { createRepositoryDbMock } from '@carbplan/auth/testing'
-import { parseAthleteId } from '@carbplan/domain/athlete'
+import { createRepositoryDbMock } from '@kilo/auth/testing'
+import { parseAthleteId } from '@kilo/domain/athlete'
 
 import { DbNutritionPlanRepository } from '$modules/nutrition-plans/repository'
 import { DatabaseErrorCodeEnum, DatabaseQueryError } from '$utils/db-error'

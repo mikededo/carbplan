@@ -1,8 +1,8 @@
-import type { Db, UserId } from '@carbplan/db'
+import type { Db, UserId } from '@kilo/db'
 
 import type { IsUserPlatformAdminError } from '$modules/user/model'
 
-import { users } from '@carbplan/db'
+import { users } from '@kilo/db'
 import { eq } from 'drizzle-orm'
 import { head } from 'es-toolkit'
 import { err, ok, ResultAsync } from 'neverthrow'

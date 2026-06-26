@@ -2,8 +2,8 @@ import type { Treaty } from '@elysiajs/eden'
 
 import type { CatalogService } from '$modules/catalog/services'
 
-import * as CatalogContracts from '@carbplan/contracts/catalog'
 import { treaty } from '@elysiajs/eden'
+import * as CatalogContracts from '@kilo/contracts/catalog'
 import { okAsync } from 'neverthrow'
 
 import { catalogModule } from '$modules/catalog'

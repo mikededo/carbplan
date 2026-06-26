@@ -1,4 +1,4 @@
-import type { AthleteId } from '@carbplan/db'
+import type { AthleteId } from '@kilo/db'
 import type { ResultAsync } from 'neverthrow'
 
 import type { OnboardingStatus, SaveAthleteOnboardingData } from '$modules/onboarding/model'

@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
-    import { Alert, AlertDescription, AlertTitle } from '@carbplan/ui/alert'
-    import { Label } from '@carbplan/ui/label'
-    import { Slider } from '@carbplan/ui/slider'
+    import { PROFILE_FIELD_CONSTRAINTS } from '@kilo/domain/profile'
+    import { Alert, AlertDescription, AlertTitle } from '@kilo/ui/alert'
+    import { Label } from '@kilo/ui/label'
+    import { Slider } from '@kilo/ui/slider'
     import { Clock2Icon, Clock3Icon, Clock6Icon, InfoIcon } from '@lucide/svelte'
 
     import MetricCard from './metric-card.svelte'

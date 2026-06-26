@@ -1,9 +1,9 @@
 <script lang="ts">
     import type { StepOneData } from '$lib/domain/onboarding/types'
 
-    import { Input } from '@carbplan/ui/input'
-    import { Label } from '@carbplan/ui/label'
-    import { RadioGroup, RadioGroupItem } from '@carbplan/ui/radio-group'
+    import { Input } from '@kilo/ui/input'
+    import { Label } from '@kilo/ui/label'
+    import { RadioGroup, RadioGroupItem } from '@kilo/ui/radio-group'
 
     import { SexEnum } from '$lib/domain/onboarding/schemas'
 

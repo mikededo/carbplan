@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Snippet } from 'svelte'
 
-    import { cn } from '@carbplan/ui/utils'
+    import { cn } from '@kilo/ui/utils'
 
     type Props = {
         children: Snippet

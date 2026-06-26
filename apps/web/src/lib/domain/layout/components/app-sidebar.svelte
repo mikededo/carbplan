@@ -1,8 +1,8 @@
 <script lang="ts">
     import type { ComponentProps } from 'svelte'
 
-    import { Logo } from '@carbplan/ui/logo'
-    import { SidebarContent, SidebarFooter, SidebarHeader, SidebarRail, SidebarRoot } from '@carbplan/ui/sidebar'
+    import { Logo } from '@kilo/ui/logo'
+    import { SidebarContent, SidebarFooter, SidebarHeader, SidebarRail, SidebarRoot } from '@kilo/ui/sidebar'
 
     import SidebarNav from './sidebar-nav.svelte'
     import SidebarUser from './sidebar-user.svelte'
@@ -19,7 +19,7 @@
             <Logo />
         </div>
         <div class="grid flex-1 pl-1 text-start text-sm/tight group-has-data-[collapsible=icon]/sidebar-wrapper:hidden">
-            <span class="truncate font-medium">CarbPlan</span>
+            <span class="truncate font-medium">Kilo</span>
         </div>
     </SidebarHeader>
     <SidebarContent class="gap-0">

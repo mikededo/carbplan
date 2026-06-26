@@ -1,8 +1,8 @@
 <script lang="ts">
     import type { DashboardPlan } from '$lib/domain/dashboard/types'
 
-    import { Button } from '@carbplan/ui/button'
-    import { CardContent, CardHeader, CardRoot, CardTitle } from '@carbplan/ui/card'
+    import { Button } from '@kilo/ui/button'
+    import { CardContent, CardHeader, CardRoot, CardTitle } from '@kilo/ui/card'
     import { CalendarIcon, ClockIcon, PenIcon, ZapIcon } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'

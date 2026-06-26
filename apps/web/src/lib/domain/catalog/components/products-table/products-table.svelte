@@ -3,8 +3,8 @@
 
     import type { CatalogBrand, CatalogResult } from '../../queries/catalog'
 
-    import { TableBody, TableCell, TableHead, TableHeader, TableRoot, TableRow } from '@carbplan/ui/table'
-    import { cn } from '@carbplan/ui/utils'
+    import { TableBody, TableCell, TableHead, TableHeader, TableRoot, TableRow } from '@kilo/ui/table'
+    import { cn } from '@kilo/ui/utils'
     import {
         ArrowDownIcon,
         ArrowUpDownIcon,

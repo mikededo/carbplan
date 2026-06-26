@@ -11,6 +11,6 @@ export default defineConfig({
     strictPort: true
   },
   ssr: {
-    noExternal: ['@carbplan/ui', 'bits-ui', 'runed', 'svelte-toolbelt']
+    noExternal: ['@kilo/ui', 'bits-ui', 'runed', 'svelte-toolbelt']
   }
 })

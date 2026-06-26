@@ -1,6 +1,6 @@
-import type { ProductForm } from '@carbplan/domain/product'
+import type { ProductForm } from '@kilo/domain/product'
 
-import { ProductFormEnum, ProductFormSchema } from '@carbplan/domain/product'
+import { ProductFormEnum, ProductFormSchema } from '@kilo/domain/product'
 import * as z from 'zod'
 
 const SLUG_INVALID_CHARS_REGEX = /[^a-z0-9\s-]/g

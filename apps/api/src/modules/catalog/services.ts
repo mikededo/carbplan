@@ -1,4 +1,4 @@
-import type { BrandId, ProductId, UserId } from '@carbplan/db'
+import type { BrandId, ProductId, UserId } from '@kilo/db'
 import type { ResultAsync } from 'neverthrow'
 
 import type {

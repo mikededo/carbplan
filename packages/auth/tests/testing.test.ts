@@ -1,4 +1,4 @@
-import { athletes, parseAthleteId } from '@carbplan/db'
+import { athletes, parseAthleteId } from '@kilo/db'
 import { eq } from 'drizzle-orm'
 import { describe, expect, it } from 'vitest'
 

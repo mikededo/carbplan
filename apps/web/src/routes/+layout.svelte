@@ -26,7 +26,7 @@
 </script>
 
 <svelte:head>
-    <title>CarbPlan</title>
+    <title>Kilo</title>
 </svelte:head>
 
 <QueryProvider {queryClient}>

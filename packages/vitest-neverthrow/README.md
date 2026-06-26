@@ -1,4 +1,4 @@
-# @carbplan/vitest-neverthrow
+# @kilo/vitest-neverthrow
 
 Neverthrow matchers for Vitest via `expect.extend`.
 
@@ -21,7 +21,7 @@ Neverthrow matchers for Vitest via `expect.extend`.
 Create a test setup file:
 
 ```ts
-import { neverthrowMatchers } from '@carbplan/vitest-neverthrow'
+import { neverthrowMatchers } from '@kilo/vitest-neverthrow'
 import { expect } from 'vitest'
 
 expect.extend(neverthrowMatchers)

@@ -1,7 +1,7 @@
 import type { FavoriteProductWithBrand } from '$modules/favorites/model'
 import type { AthleteFavoritesRepository } from '$modules/favorites/repository'
 
-import { parseAthleteId } from '@carbplan/domain/athlete'
+import { parseAthleteId } from '@kilo/domain/athlete'
 import { errAsync, okAsync } from 'neverthrow'
 
 import { AthletesFavoritesServiceImpl } from '$modules/favorites/service'

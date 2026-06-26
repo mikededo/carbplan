@@ -1,6 +1,6 @@
-import type { AthleteId } from '@carbplan/db'
-import type { HRZonesData } from '@carbplan/domain/hr'
-import type { PowerZonesData } from '@carbplan/domain/power'
+import type { AthleteId } from '@kilo/db'
+import type { HRZonesData } from '@kilo/domain/hr'
+import type { PowerZonesData } from '@kilo/domain/power'
 import type { ResultAsync } from 'neverthrow'
 
 import type { CurrentAthleteData, GetCurrentAthleteError, UpdateCurrentAthlete, UpdateCurrentAthleteError } from '$modules/me/model'

@@ -1,11 +1,11 @@
 {
-  "name": "@carbplan/static",
+  "name": "@kilo/static",
   "type": "module",
   "version": "0.0.0",
   "private": true,
   "portless": {
     "appPort": 5174,
-    "name": "carbplan.localhost",
+    "name": "kilo.localhost",
     "script": "dev:app"
   },
   "scripts": {
@@ -20,11 +20,11 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "@carbplan/ui": "workspace:*",
+    "@kilo/ui": "workspace:*",
     "@lucide/svelte": "1.17.0"
   },
   "devDependencies": {
-    "@carbplan/eslint": "workspace:*",
+    "@kilo/eslint": "workspace:*",
     "@sveltejs/adapter-auto": "7.0.1",
     "@sveltejs/kit": "2.63.1",
     "@sveltejs/vite-plugin-svelte": "7.1.2",

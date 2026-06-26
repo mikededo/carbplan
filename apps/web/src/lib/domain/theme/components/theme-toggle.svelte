@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { DropdownMenuItem, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger } from '@carbplan/ui/dropdown-menu'
+    import { DropdownMenuItem, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger } from '@kilo/ui/dropdown-menu'
     import CheckIcon from '@lucide/svelte/icons/check'
     import MonitorIcon from '@lucide/svelte/icons/monitor'
     import MoonIcon from '@lucide/svelte/icons/moon'

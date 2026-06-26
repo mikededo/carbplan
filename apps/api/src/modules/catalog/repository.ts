@@ -1,4 +1,4 @@
-import type { BrandId, Db, ProductId } from '@carbplan/db'
+import type { BrandId, Db, ProductId } from '@kilo/db'
 
 import type {
   CatalogBrand,
@@ -15,7 +15,7 @@ import type {
   UpdateProductError
 } from '$modules/catalog/model'
 
-import { brands, products } from '@carbplan/db'
+import { brands, products } from '@kilo/db'
 import { eq } from 'drizzle-orm'
 import { head } from 'es-toolkit'
 import { err, ok, ResultAsync } from 'neverthrow'

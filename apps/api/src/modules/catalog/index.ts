@@ -1,8 +1,8 @@
-import type { AuthServer } from '@carbplan/auth'
+import type { AuthServer } from '@kilo/auth'
 
 import type { CatalogService } from '$modules/catalog/services'
 
-import * as CatalogContracts from '@carbplan/contracts/catalog'
+import * as CatalogContracts from '@kilo/contracts/catalog'
 import Elysia from 'elysia'
 
 import { authModule } from '$modules/auth'

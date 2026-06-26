@@ -1,9 +1,9 @@
 <script lang="ts">
-    import type { HRZoneModel, HRZonesData } from '@carbplan/domain/hr'
+    import type { HRZoneModel, HRZonesData } from '@kilo/domain/hr'
 
-    import { HR_MODEL_INFO, HR_MODEL_LABELS, HR_ZONE_PRESETS } from '@carbplan/domain/hr'
-    import { SelectContent, SelectItem, SelectPortal, SelectRoot, SelectTrigger } from '@carbplan/ui/select'
-    import { createTether, TooltipContent, TooltipRoot, TooltipTrigger } from '@carbplan/ui/tooltip'
+    import { HR_MODEL_INFO, HR_MODEL_LABELS, HR_ZONE_PRESETS } from '@kilo/domain/hr'
+    import { SelectContent, SelectItem, SelectPortal, SelectRoot, SelectTrigger } from '@kilo/ui/select'
+    import { createTether, TooltipContent, TooltipRoot, TooltipTrigger } from '@kilo/ui/tooltip'
     import { ExternalLinkIcon, HeartIcon, InfoIcon } from '@lucide/svelte'
 
     import ZoneBar from '$lib/domain/zones/zone/components/zone-bar.svelte'

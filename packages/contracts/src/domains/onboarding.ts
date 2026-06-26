@@ -6,7 +6,7 @@ import {
   MaxCarbIntakeFieldSchema,
   SexSchema,
   WeightSchema
-} from '@carbplan/domain/profile'
+} from '@kilo/domain/profile'
 import * as z from 'zod'
 
 import { ApiEmptyResponseSchema } from '../api'

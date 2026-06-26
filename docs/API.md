@@ -1,8 +1,8 @@
-# Carbplan Backend API Standard (v2)
+# Kilo Backend API Standard (v2)
 
 ## Purpose and Scope
 
-This document is the source of truth for backend API contract rules in Carbplan.
+This document is the source of truth for backend API contract rules in Kilo.
 
 It defines:
 

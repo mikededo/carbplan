@@ -3,7 +3,7 @@
 
     import type { LayoutData } from './$types'
 
-    import { SidebarInset, SidebarProvider } from '@carbplan/ui/sidebar'
+    import { SidebarInset, SidebarProvider } from '@kilo/ui/sidebar'
 
     import AppSidebar from '$lib/domain/layout/components/app-sidebar.svelte'
     import { createPrivateServicesContext } from '$lib/domain/services/context'

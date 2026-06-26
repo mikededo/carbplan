@@ -1,6 +1,6 @@
 import type { Actions } from './$types'
 
-import * as AuthContracts from '@carbplan/contracts/auth'
+import * as AuthContracts from '@kilo/contracts/auth'
 import { fail, redirect } from '@sveltejs/kit'
 import * as z from 'zod'
 

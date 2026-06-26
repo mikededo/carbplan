@@ -1,6 +1,6 @@
-import type { HRZone, HRZoneModel, HRZonesData } from '@carbplan/domain/hr'
+import type { HRZone, HRZoneModel, HRZonesData } from '@kilo/domain/hr'
 
-import { HR_ZONE_PRESETS, HRZoneModelSchema, HRZonesDataSchema } from '@carbplan/domain/hr'
+import { HR_ZONE_PRESETS, HRZoneModelSchema, HRZonesDataSchema } from '@kilo/domain/hr'
 
 export const isHRPresetZoneModel = (value: unknown): value is HRZoneModel => HRZoneModelSchema.safeParse(value).success
 export const parseHRZones = (data: unknown) => HRZonesDataSchema.safeParse(data)

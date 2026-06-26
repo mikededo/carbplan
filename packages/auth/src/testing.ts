@@ -1,6 +1,6 @@
-import type { Db } from '@carbplan/db'
+import type { Db } from '@kilo/db'
 
-import { schema } from '@carbplan/db'
+import { schema } from '@kilo/db'
 import { drizzle } from 'drizzle-orm/postgres-js'
 
 type MockQueueItem =

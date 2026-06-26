@@ -1,10 +1,10 @@
-# CarbPlan AI Agent Guide
+# Kilo AI Agent Guide
 
-This document provides comprehensive information for AI agents working on the CarbPlan codebase.
+This document provides comprehensive information for AI agents working on the Kilo codebase.
 
 ## Project Overview
 
-CarbPlan is an athlete nutrition planning web app where athletes and coaches configure ride/workout nutrition plans using an admin-curated supplement catalog.
+Kilo is an athlete nutrition planning web app where athletes and coaches configure ride/workout nutrition plans using an admin-curated supplement catalog.
 
 - **Language**: TypeScript (strict, ESM)
 - **Runtime**: Bun
@@ -268,7 +268,7 @@ export const actions = {
 ### API Services
 - **Server**: use `locals.authService`, `locals.serverTransport`, and `locals.services`
 - **Client**: use `getPrivateServicesContext()` or `getPublicServicesContext()`
-- **Types**: prefer contract types from `@carbplan/contracts/*` and branded domain IDs from `@carbplan/domain/*`
+- **Types**: prefer contract types from `@kilo/contracts/*` and branded domain IDs from `@kilo/domain/*`
 - **Query result helper**: `liftResultAsync` / `resultAsyncValueOrThrow`
 
 ### Routes Constants

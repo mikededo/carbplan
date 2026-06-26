@@ -1,4 +1,4 @@
-import type { AuthServer } from '@carbplan/auth'
+import type { AuthServer } from '@kilo/auth'
 
 import type { AppRepositories } from '$bootstrap/repositories'
 import type { CatalogService } from '$modules/catalog/services'

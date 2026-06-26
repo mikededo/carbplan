@@ -1,6 +1,6 @@
 import type { LayoutServerLoad } from './$types'
 
-import * as AuthContracts from '@carbplan/contracts/auth'
+import * as AuthContracts from '@kilo/contracts/auth'
 
 import { PRIVATE_API_ORIGIN } from '$env/static/private'
 import { AUTH_SESSION_COOKIE_NAME } from '$lib/domain/auth/constants'

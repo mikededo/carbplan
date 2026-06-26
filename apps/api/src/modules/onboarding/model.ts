@@ -1,4 +1,4 @@
-import type { Athlete, AthleteId } from '@carbplan/db'
+import type { Athlete, AthleteId } from '@kilo/db'
 
 export type OnboardingStatus = {
   completed: Athlete['onboardingCompleted']

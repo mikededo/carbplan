@@ -1,5 +1,5 @@
 
-import { createRepositoryDbMock } from '@carbplan/auth/testing'
+import { createRepositoryDbMock } from '@kilo/auth/testing'
 import { describe, expect, it } from 'vitest'
 
 import { DbPublicCatalogRepository } from '$modules/public/catalog/repository'

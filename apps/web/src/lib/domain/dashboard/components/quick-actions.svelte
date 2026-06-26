@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { Button } from '@carbplan/ui/button'
-    import { CardDescription, CardFooter, CardHeader, CardRoot, CardTitle } from '@carbplan/ui/card'
+    import { Button } from '@kilo/ui/button'
+    import { CardDescription, CardFooter, CardHeader, CardRoot, CardTitle } from '@kilo/ui/card'
     import { PillIcon, Plus } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'

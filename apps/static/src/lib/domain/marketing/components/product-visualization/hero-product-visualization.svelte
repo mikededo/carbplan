@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { Badge } from '@carbplan/ui/badge'
-    import { cn } from '@carbplan/ui/utils'
+    import { Badge } from '@kilo/ui/badge'
+    import { cn } from '@kilo/ui/utils'
     import {
         BatteryChargingIcon,
         BikeIcon,
@@ -179,7 +179,7 @@
                     <div class="size-3 rounded-full bg-yellow-400"></div>
                     <div class="size-3 rounded-full bg-green-400"></div>
                 </div>
-                <span class="text-sm font-medium">CarbPlan - Nutrition Planner</span>
+                <span class="text-sm font-medium">Kilo - Nutrition Planner</span>
             </div>
             <Badge class="text-xs" variant="secondary">
                 <ClipboardListIcon class="mr-1 size-3" />

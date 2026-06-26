@@ -1,5 +1,5 @@
 <script lang="ts" module>
-    import type { ProductForm } from '@carbplan/domain/product'
+    import type { ProductForm } from '@kilo/domain/product'
 
     import {
         BoxIcon,

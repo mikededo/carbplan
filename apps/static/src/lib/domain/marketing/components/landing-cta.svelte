@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Button } from '@carbplan/ui/button'
+    import { Button } from '@kilo/ui/button'
     import { ArrowRightIcon } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'
@@ -23,7 +23,7 @@
             class="text-lg text-muted-foreground transition-all delay-100 duration-700"
             style={entryStyles(inView.isInView)}
         >
-            Fuel smarter with CarbPlan. Start your free trial today, no credit card required.
+            Fuel smarter with Kilo. Start your free trial today, no credit card required.
         </p>
 
         <div

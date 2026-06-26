@@ -1,4 +1,4 @@
-import type { UserId } from '@carbplan/db'
+import type { UserId } from '@kilo/db'
 
 import type {
   CreateBrandData,

@@ -24,7 +24,7 @@
 </script>
 
 <svelte:head>
-    <title>Dashboard — CarbPlan</title>
+    <title>Dashboard — Kilo</title>
 </svelte:head>
 
 <PageHeader crumbs={['Dashboard']} />

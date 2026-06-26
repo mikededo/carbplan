@@ -1,4 +1,4 @@
-import { parseAthleteId } from '@carbplan/domain/athlete'
+import { parseAthleteId } from '@kilo/domain/athlete'
 import { errAsync, okAsync } from 'neverthrow'
 
 import { OnboardingServiceImpl } from '$modules/onboarding/service'

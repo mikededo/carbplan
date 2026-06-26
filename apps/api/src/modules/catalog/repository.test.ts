@@ -7,7 +7,7 @@ import type {
   UpdateProductData
 } from '$modules/catalog/model'
 
-import { createRepositoryDbMock } from '@carbplan/auth/testing'
+import { createRepositoryDbMock } from '@kilo/auth/testing'
 
 import { DbCatalogRepository } from '$modules/catalog/repository'
 import { entityNotFoundTest } from '$test/utils.test'

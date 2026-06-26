@@ -1,10 +1,10 @@
 import type { FavoriteProductsListResponse } from '$modules/favorites/model'
 
-import * as MeContracts from '@carbplan/contracts/me'
-import * as ProductsContracts from '@carbplan/contracts/products'
-import { parseAthleteId } from '@carbplan/domain/athlete'
-import { HRZoneModelEnum } from '@carbplan/domain/hr'
 import { treaty } from '@elysiajs/eden'
+import * as MeContracts from '@kilo/contracts/me'
+import * as ProductsContracts from '@kilo/contracts/products'
+import { parseAthleteId } from '@kilo/domain/athlete'
+import { HRZoneModelEnum } from '@kilo/domain/hr'
 import { okAsync } from 'neverthrow'
 
 import { meModule } from '$modules/me'

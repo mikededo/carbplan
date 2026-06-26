@@ -1,10 +1,10 @@
-import type { ApiRoutes } from '@carbplan/api/eden'
-import type { ApiError } from '@carbplan/contracts/api'
 import type { Treaty } from '@elysiajs/eden'
+import type { ApiRoutes } from '@kilo/api/eden'
+import type { ApiError } from '@kilo/contracts/api'
 
-import { ApiErrorSchema } from '@carbplan/contracts/api'
-import { getErrorMessageOrDefault } from '@carbplan/utils/errors'
 import { treaty } from '@elysiajs/eden'
+import { ApiErrorSchema } from '@kilo/contracts/api'
+import { getErrorMessageOrDefault } from '@kilo/utils/errors'
 import { errAsync, okAsync, ResultAsync } from 'neverthrow'
 
 const ApiClientErrorValues = {

@@ -1,4 +1,4 @@
-import { normalizeURL } from '@carbplan/utils/url'
+import { normalizeURL } from '@kilo/utils/url'
 
 export type AuthConfig = {
   baseURL: string

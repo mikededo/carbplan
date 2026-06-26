@@ -1,5 +1,5 @@
 {
-  "name": "@carbplan/auth",
+  "name": "@kilo/auth",
   "type": "module",
   "version": "0.0.0",
   "private": true,
@@ -9,7 +9,7 @@
     "./testing": "./src/testing.ts"
   },
   "scripts": {
-    "build": "echo 'No build step for @carbplan/auth'",
+    "build": "echo 'No build step for @kilo/auth'",
     "check": "tsc --noEmit",
     "typecheck": "bun run check",
     "lint": "eslint .",
@@ -18,13 +18,13 @@
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "^1.6.15",
-    "@carbplan/db": "workspace:*",
-    "@carbplan/utils": "workspace:*",
+    "@kilo/db": "workspace:*",
+    "@kilo/utils": "workspace:*",
     "better-auth": "^1.6.15",
     "drizzle-orm": "catalog:"
   },
   "devDependencies": {
-    "@carbplan/eslint": "workspace:*",
+    "@kilo/eslint": "workspace:*",
     "@types/bun": "1.3.14",
     "eslint": "catalog:",
     "typescript": "catalog:",

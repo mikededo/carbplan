@@ -2,7 +2,7 @@
     import type { CatalogBrand } from '$lib/domain/catalog/queries/catalog'
     import type { CatalogProduct } from '$lib/domain/catalog/service'
 
-    import { Button } from '@carbplan/ui/button'
+    import { Button } from '@kilo/ui/button'
     import { PackagePlusIcon, PlusIcon } from '@lucide/svelte'
 
     import BrandFormDialog from '$lib/domain/catalog/components/brand-form/brand-form-dialog.svelte'
@@ -61,7 +61,7 @@
 </script>
 
 <svelte:head>
-    <title>Catalog — CarbPlan</title>
+    <title>Catalog — Kilo</title>
 </svelte:head>
 
 <PageHeader crumbs={['Admin', 'Catalog']}>

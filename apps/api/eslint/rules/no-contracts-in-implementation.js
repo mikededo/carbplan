@@ -1,4 +1,4 @@
-const CONTRACTS_PREFIX = '@carbplan/contracts'
+const CONTRACTS_PREFIX = '@kilo/contracts'
 
 const isContractsImport = (sourceValue) => typeof sourceValue === 'string' &&
   (sourceValue === CONTRACTS_PREFIX || sourceValue.startsWith(`${CONTRACTS_PREFIX}/`))
@@ -45,10 +45,10 @@ export default {
   },
   meta: {
     docs: {
-      description: 'Disallow imports from @carbplan/contracts inside service/repository implementation files'
+      description: 'Disallow imports from @kilo/contracts inside service/repository implementation files'
     },
     messages: {
-      forbiddenContractsImport: 'Do not import @carbplan/contracts from service/repository files. Move contracts usage to the module boundary layer.'
+      forbiddenContractsImport: 'Do not import @kilo/contracts from service/repository files. Move contracts usage to the module boundary layer.'
     },
     schema: [],
     type: 'problem'

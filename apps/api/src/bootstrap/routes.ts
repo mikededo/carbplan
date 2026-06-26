@@ -24,7 +24,7 @@ type CreateApiRoutesOptions = {
 
 const normalizeStatus = (status: number): number => status >= StatusMap.BadRequest ? status : StatusMap.InternalServerError
 
-export const createApiRoutes = async ({ corsOrigins, services }: CreateApiRoutesOptions) => new Elysia({ name: 'carbplan-api' })
+export const createApiRoutes = async ({ corsOrigins, services }: CreateApiRoutesOptions) => new Elysia({ name: 'kilo-api' })
   .model({ ApiError: ApiErrorModelSchema })
   .use(await createLogger())
   .use(cors({
@@ -39,7 +39,7 @@ export const createApiRoutes = async ({ corsOrigins, services }: CreateApiRoutes
     documentation: {
       components: await OpenAPI.components(services.auth),
       info: {
-        title: 'Carbplan API',
+        title: 'Kilo API',
         version: '1.0.0'
       },
       paths: await OpenAPI.getPaths(services.auth)

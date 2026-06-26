@@ -1,9 +1,9 @@
-import { baseConfig } from '@carbplan/eslint'
+import { baseConfig } from '@kilo/eslint'
 
 import noContractsInImplementationRule from './eslint/rules/no-contracts-in-implementation.js'
 
 const internalPlugin = {
-  meta: { name: '@carbplan/api-internal' },
+  meta: { name: '@kilo/api-internal' },
   rules: {
     'no-contracts-in-implementation': noContractsInImplementationRule
   }

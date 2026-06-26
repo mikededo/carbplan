@@ -1,11 +1,11 @@
-import type { Db } from '@carbplan/db'
+import type { Db } from '@kilo/db'
 import type { SQL } from 'drizzle-orm'
 import type { PgColumn } from 'drizzle-orm/pg-core'
 
 import type { CatalogListPageResult, CatalogProductsListQuery, CatalogSortField } from '$modules/public/catalog/model'
 import type { DatabaseQueryError } from '$utils/db-error'
 
-import { brands, products } from '@carbplan/db'
+import { brands, products } from '@kilo/db'
 import {
   and,
   asc,

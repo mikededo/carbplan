@@ -1,5 +1,5 @@
-import { createRepositoryDbMock } from '@carbplan/auth/testing'
-import { parseAthleteId } from '@carbplan/domain/athlete'
+import { createRepositoryDbMock } from '@kilo/auth/testing'
+import { parseAthleteId } from '@kilo/domain/athlete'
 import { describe, expect, it } from 'vitest'
 
 import { DbAthleteProvisioningRepository } from '$modules/auth/provision-athlete'
@@ -13,7 +13,7 @@ describe('athlete provisioning repository', () => {
     const repository = new DbAthleteProvisioningRepository(dbMock.db)
 
     await repository.upsertAthlete({
-      email: 'athlete@carbplan.app',
+      email: 'athlete@kilo.app',
       id: athleteId
     })
   })
@@ -24,7 +24,7 @@ describe('athlete provisioning repository', () => {
     const repository = new DbAthleteProvisioningRepository(dbMock.db)
 
     await expect(repository.upsertAthlete({
-      email: 'athlete@carbplan.app',
+      email: 'athlete@kilo.app',
       id: athleteId
     })).rejects.toThrow('db failed')
   })

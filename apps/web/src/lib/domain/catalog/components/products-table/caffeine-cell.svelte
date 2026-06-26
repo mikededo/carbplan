@@ -1,7 +1,7 @@
 <script lang="ts">
-    import type { BadgeVariant } from '@carbplan/ui/badge'
+    import type { BadgeVariant } from '@kilo/ui/badge'
 
-    import { Badge } from '@carbplan/ui/badge'
+    import { Badge } from '@kilo/ui/badge'
 
     type Props = {
         caffeine: null | number

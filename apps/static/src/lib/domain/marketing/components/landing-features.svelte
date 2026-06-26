@@ -12,7 +12,7 @@
         <div class="mb-16 text-center">
             <h2 class="mb-4 text-3xl font-bold md:text-4xl">Everything you need to fuel right</h2>
             <p class="mx-auto max-w-2xl text-lg text-muted-foreground">
-                From workout analysis to supplement tracking, CarbPlan gives you complete control over your
+                From workout analysis to supplement tracking, Kilo gives you complete control over your
                 nutrition strategy.
             </p>
         </div>

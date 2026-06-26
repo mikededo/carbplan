@@ -1,7 +1,7 @@
-import type { AthleteId, Db } from '@carbplan/db'
+import type { AthleteId, Db } from '@kilo/db'
 
-import { athletes } from '@carbplan/db'
-import { parseAthleteId } from '@carbplan/domain/athlete'
+import { athletes } from '@kilo/db'
+import { parseAthleteId } from '@kilo/domain/athlete'
 
 export type AuthUserPayload = {
   email?: null | string

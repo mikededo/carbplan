@@ -1,6 +1,6 @@
 import type { Handle } from '@sveltejs/kit'
 
-import { normalizeURL } from '@carbplan/utils/url'
+import { normalizeURL } from '@kilo/utils/url'
 
 import { PRIVATE_API_ORIGIN } from '$env/static/private'
 import { createApiClient } from '$lib/api/eden'

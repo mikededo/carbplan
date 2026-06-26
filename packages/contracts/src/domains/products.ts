@@ -1,4 +1,4 @@
-import { ProductFormSchema } from '@carbplan/domain/product'
+import { ProductFormSchema } from '@kilo/domain/product'
 import * as z from 'zod'
 
 import { DateSchema } from './date'

@@ -1,8 +1,8 @@
 <script lang="ts">
     import type { StepTwoData } from '$lib/domain/onboarding/types'
 
-    import { Input } from '@carbplan/ui/input'
-    import { Label } from '@carbplan/ui/label'
+    import { Input } from '@kilo/ui/input'
+    import { Label } from '@kilo/ui/label'
 
     type Props = Partial<StepTwoData>
     let {

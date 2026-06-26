@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { Button } from '@carbplan/ui/button'
-    import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@carbplan/ui/card'
-    import { Input } from '@carbplan/ui/input'
-    import { Label } from '@carbplan/ui/label'
+    import { Button } from '@kilo/ui/button'
+    import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@kilo/ui/card'
+    import { Input } from '@kilo/ui/input'
+    import { Label } from '@kilo/ui/label'
 
     import { goto } from '$app/navigation'
     import { resolve } from '$app/paths'
@@ -47,7 +47,7 @@
 </script>
 
 <svelte:head>
-    <title>Sign Up — CarbPlan</title>
+    <title>Sign Up — Kilo</title>
 </svelte:head>
 
 <Card class="w-full max-w-md">

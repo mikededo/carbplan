@@ -11,7 +11,7 @@ import {
 describe('auth contracts', () => {
   it('validates sign-in request', () => {
     const result = SignInRequestSchema.safeParse({
-      email: 'athlete@carbplan.app',
+      email: 'athlete@kilo.app',
       name: 'Athlete',
       password: 'secret'
     })
@@ -32,7 +32,7 @@ describe('auth contracts', () => {
     const result = GetSessionResponseSchema.safeParse({
       data: {
         user: {
-          email: 'athlete@carbplan.app',
+          email: 'athlete@kilo.app',
           id: crypto.randomUUID()
         }
       }

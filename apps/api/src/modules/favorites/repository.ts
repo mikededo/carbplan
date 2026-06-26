@@ -1,9 +1,9 @@
-import type { AthleteId, Db } from '@carbplan/db'
+import type { AthleteId, Db } from '@kilo/db'
 
 import type { FavoriteProductWithBrand } from '$modules/favorites/model'
 import type { DatabaseQueryError } from '$utils/db-error'
 
-import { athletes, brands, favoriteProducts, products } from '@carbplan/db'
+import { athletes, brands, favoriteProducts, products } from '@kilo/db'
 import { and, eq } from 'drizzle-orm'
 import { ok, ResultAsync } from 'neverthrow'
 

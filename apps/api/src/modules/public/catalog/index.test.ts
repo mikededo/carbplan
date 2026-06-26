@@ -1,7 +1,7 @@
 import type { CatalogListPageResult } from '$modules/public/catalog/model'
 
-import * as PublicCatalogContracts from '@carbplan/contracts/public-catalog'
 import { treaty } from '@elysiajs/eden'
+import * as PublicCatalogContracts from '@kilo/contracts/public-catalog'
 import { okAsync } from 'neverthrow'
 
 import { publicModule } from '$modules/public'

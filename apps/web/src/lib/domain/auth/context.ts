@@ -1,10 +1,10 @@
-import type { User } from '@carbplan/contracts/auth'
+import type { User } from '@kilo/contracts/auth'
 import type { Result } from 'neverthrow'
 
 import { err, ok } from 'neverthrow'
 import { getContext, setContext } from 'svelte'
 
-const CLIENT_CONTEXT_KEY = 'carbplan:auth'
+const CLIENT_CONTEXT_KEY = 'kilo:auth'
 
 export const setAuthContext = (getter: () => null | User) => {
   setContext(CLIENT_CONTEXT_KEY, getter())

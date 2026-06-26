@@ -1,12 +1,12 @@
 <script lang="ts">
-    import type { AthleteId } from '@carbplan/domain/athlete'
-    import type { HRZoneModel, HRZonesData } from '@carbplan/domain/hr'
-    import type { Maybe } from '@carbplan/domain/utils'
+    import type { AthleteId } from '@kilo/domain/athlete'
+    import type { HRZoneModel, HRZonesData } from '@kilo/domain/hr'
+    import type { Maybe } from '@kilo/domain/utils'
 
-    import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
-    import { Button } from '@carbplan/ui/button'
-    import { Input } from '@carbplan/ui/input'
-    import { Label } from '@carbplan/ui/label'
+    import { PROFILE_FIELD_CONSTRAINTS } from '@kilo/domain/profile'
+    import { Button } from '@kilo/ui/button'
+    import { Input } from '@kilo/ui/input'
+    import { Label } from '@kilo/ui/label'
     import { HeartIcon, HeartPlusIcon, HeartPulseIcon, LoaderCircleIcon } from '@lucide/svelte'
 
     import HRZonesCard from '$lib/domain/zones/hr/components/hr-zones-card.svelte'

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { cn } from '@carbplan/ui/utils'
+    import { cn } from '@kilo/ui/utils'
 
     type Props = {
         label: string

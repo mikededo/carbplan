@@ -1,6 +1,6 @@
-import type { PowerZone, PowerZoneModel, PowerZonesData } from '@carbplan/domain/power'
+import type { PowerZone, PowerZoneModel, PowerZonesData } from '@kilo/domain/power'
 
-import { POWER_ZONE_PRESETS, PowerZoneModelSchema, PowerZonesDataSchema } from '@carbplan/domain/power'
+import { POWER_ZONE_PRESETS, PowerZoneModelSchema, PowerZonesDataSchema } from '@kilo/domain/power'
 
 export const isPowerPresetZoneModel = (value: unknown): value is PowerZoneModel =>
   PowerZoneModelSchema.safeParse(value).success

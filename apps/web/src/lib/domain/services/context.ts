@@ -5,7 +5,7 @@ import type { createPrivateServices, createPublicServices } from '$lib/domain/se
 import { err, ok } from 'neverthrow'
 import { getContext, setContext } from 'svelte'
 
-const PRIVATE_SERVICES_CONTEXT_KEY = Symbol.for('carbplan:private-services')
+const PRIVATE_SERVICES_CONTEXT_KEY = Symbol.for('kilo:private-services')
 
 export type PrivateServices = ReturnType<typeof createPrivateServices>
 
@@ -25,7 +25,7 @@ export const getPrivateServicesContext = (): Result<PrivateServices, void> => {
   return ok(context)
 }
 
-const PUBLIC_SERVICES_CONTEXT_KEY = Symbol.for('carbplan:public-services')
+const PUBLIC_SERVICES_CONTEXT_KEY = Symbol.for('kilo:public-services')
 export type PublicServices = ReturnType<typeof createPublicServices>
 
 export const createPublicServicesContext = (getter: () => PublicServices) => {

@@ -1,4 +1,4 @@
-# @carbplan/contracts
+# @kilo/contracts
 
 This package defines the **public wire contracts** used between clients and backend services.
 It is intentionally independent from DB schema details.
@@ -17,11 +17,11 @@ This package solves that by making contract schemas and types explicit, versione
 
 The system is split into 3 layers:
 
-1. Persistence (`@carbplan/db`)
+1. Persistence (`@kilo/db`)
 - Owns database schema, migrations, and DB-level types.
 - Used by repositories/services inside backend.
 
-2. Contracts (`@carbplan/contracts`)
+2. Contracts (`@kilo/contracts`)
 - Owns request/response envelopes and endpoint DTOs.
 - Uses zod for runtime validation + static inference.
 - Does **not** depend on DB internals.
@@ -43,7 +43,7 @@ This keeps persistence concerns and wire concerns decoupled.
                                 |
                                 v
                   +----------------------------+
-                  |  @carbplan/contracts       |
+                  |  @kilo/contracts       |
                   |    - zod request schemas   |
                   |    - zod response schemas  |
                   |    - ApiSuccess / ApiError |
@@ -52,7 +52,7 @@ This keeps persistence concerns and wire concerns decoupled.
                 API returns DTO | parses/validates at boundary
                                 |
                   +-------------+--------------+
-                  |        @carbplan/api       |
+                  |        @kilo/api       |
                   |  HTTP handlers + mapping   |
                   |  internal -> contract DTO  |
                   +-------------+--------------+
@@ -61,7 +61,7 @@ This keeps persistence concerns and wire concerns decoupled.
                                 |
                                 v
                   +----------------------------+
-                  |        @carbplan/db        |
+                  |        @kilo/db        |
                   | Drizzle schema + migrations|
                   | DB row / relation models   |
                   +----------------------------+
@@ -79,12 +79,12 @@ This keeps persistence concerns and wire concerns decoupled.
 
 Use a strict split of responsibilities:
 
-- `@carbplan/contracts` (zod) is the source of truth for wire contracts.
+- `@kilo/contracts` (zod) is the source of truth for wire contracts.
 - Elysia `t`/TypeBox is an adapter layer for route metadata and OpenAPI.
 
 Recommended flow:
 
-1. Define request/response schemas in `@carbplan/contracts` (zod).
+1. Define request/response schemas in `@kilo/contracts` (zod).
 2. Parse/validate payloads with zod in handlers.
 3. Convert zod schema to Elysia model for `response` docs.
 
@@ -101,7 +101,7 @@ export const toApiModel = <T extends z.ZodType>(schema: T) =>
 Example usage in a route:
 
 ```ts
-import { authContracts } from '@carbplan/contracts'
+import { authContracts } from '@kilo/contracts'
 
 use(
   '',
@@ -151,7 +151,7 @@ export type UpdateAthleteProfileResponse = z.infer<typeof UpdateAthleteProfileRe
 ### 2) API route uses the contract
 
 ```ts
-import { athleteContracts } from '@carbplan/contracts'
+import { athleteContracts } from '@kilo/contracts'
 
 const input = athleteContracts.UpdateAthleteProfileRequestSchema.parse(body)
 
@@ -172,7 +172,7 @@ return athleteContracts.UpdateAthleteProfileResponseSchema.parse(response)
 ### 3) Client validates response with same contract
 
 ```ts
-import { athleteContracts } from '@carbplan/contracts'
+import { athleteContracts } from '@kilo/contracts'
 
 const payload = await fetch('/api/v1/athletes/me', {
   body: JSON.stringify({ ftp: 280 }),

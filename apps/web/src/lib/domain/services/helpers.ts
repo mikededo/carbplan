@@ -1,4 +1,4 @@
-import type { Maybe } from '@carbplan/domain/utils'
+import type { Maybe } from '@kilo/domain/utils'
 
 import type { ApiClient } from '$lib/api/eden'
 import type { PrivateServices } from '$lib/domain/services/context'

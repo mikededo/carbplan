@@ -1,4 +1,4 @@
-import type { ButtonVariant } from '@carbplan/ui/button'
+import type { ButtonVariant } from '@kilo/ui/button'
 import type { Icon } from '@lucide/svelte'
 
 import {
@@ -14,7 +14,7 @@ import {
   ZapIcon
 } from '@lucide/svelte'
 
-const APP_ORIGIN = 'https://app.carbplan.com'
+const APP_ORIGIN = 'https://app.kilo.com'
 
 export type Feature = {
   description: string
@@ -181,7 +181,7 @@ export const PRODUCT_SHOWCASES: Record<'dashboard' | 'planner' | 'supplements', 
     ctaHref: `${APP_ORIGIN}/dashboard`,
     ctaText: 'Create Your First Plan',
     description:
-      'Input your workout details and let CarbPlan calculate exact carb and calorie needs. Select from your favorite supplements and hit your targets every time.',
+      'Input your workout details and let Kilo calculate exact carb and calorie needs. Select from your favorite supplements and hit your targets every time.',
     title: 'Build nutrition plans that match your workout'
   },
   supplements: {

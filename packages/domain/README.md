@@ -1,4 +1,4 @@
-# @carbplan/domain
+# @kilo/domain
 
 Shared domain primitives used across layers (`db`, `api`, `web`, and `contracts`).
 
@@ -13,7 +13,7 @@ This package is the source of truth for values that represent domain meaning and
 Some values are not just API concerns or DB concerns. They are domain concerns.
 When those values are duplicated by layer, drift appears quickly.
 
-`@carbplan/domain` keeps those values in one place while preserving clean dependency direction:
+`@kilo/domain` keeps those values in one place while preserving clean dependency direction:
 
 - `contracts` depends on `domain`
 - `db` depends on `domain`
@@ -23,13 +23,13 @@ When those values are duplicated by layer, drift appears quickly.
 ## Usage
 
 ```ts
-import { PROFILE_FIELD_CONSTRAINTS, SEX_VALUES } from '@carbplan/domain/profile'
+import { PROFILE_FIELD_CONSTRAINTS, SEX_VALUES } from '@kilo/domain/profile'
 ```
 
 ### Contracts schema
 
 ```ts
-import { PROFILE_FIELD_CONSTRAINTS, SEX_VALUES } from '@carbplan/domain/profile'
+import { PROFILE_FIELD_CONSTRAINTS, SEX_VALUES } from '@kilo/domain/profile'
 import * as z from 'zod'
 
 const SexSchema = z.enum(SEX_VALUES)
@@ -38,7 +38,7 @@ const SexSchema = z.enum(SEX_VALUES)
 ### DB enum
 
 ```ts
-import { SEX_VALUES } from '@carbplan/domain/profile'
+import { SEX_VALUES } from '@kilo/domain/profile'
 import { pgEnum } from 'drizzle-orm/pg-core'
 
 const sexEnum = pgEnum('sex', [...SEX_VALUES] as [string, ...string[]])

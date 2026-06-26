@@ -1,7 +1,7 @@
-import type { AthleteId } from '@carbplan/db'
-import type { HRZonesData } from '@carbplan/domain/hr'
-import type { PowerZonesData } from '@carbplan/domain/power'
-import type { Sex } from '@carbplan/domain/profile'
+import type { AthleteId } from '@kilo/db'
+import type { HRZonesData } from '@kilo/domain/hr'
+import type { PowerZonesData } from '@kilo/domain/power'
+import type { Sex } from '@kilo/domain/profile'
 
 import type { DatabaseQueryError, EntityNotFound } from '$utils/db-error'
 

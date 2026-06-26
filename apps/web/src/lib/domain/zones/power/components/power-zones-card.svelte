@@ -1,9 +1,9 @@
 <script lang="ts">
-    import type { PowerZoneModel, PowerZonesData } from '@carbplan/domain/power'
+    import type { PowerZoneModel, PowerZonesData } from '@kilo/domain/power'
 
-    import { POWER_MODEL_INFO, POWER_MODEL_LABELS, POWER_ZONE_PRESETS } from '@carbplan/domain/power'
-    import { SelectContent, SelectItem, SelectPortal, SelectRoot, SelectTrigger } from '@carbplan/ui/select'
-    import { createTether, TooltipContent, TooltipRoot, TooltipTrigger } from '@carbplan/ui/tooltip'
+    import { POWER_MODEL_INFO, POWER_MODEL_LABELS, POWER_ZONE_PRESETS } from '@kilo/domain/power'
+    import { SelectContent, SelectItem, SelectPortal, SelectRoot, SelectTrigger } from '@kilo/ui/select'
+    import { createTether, TooltipContent, TooltipRoot, TooltipTrigger } from '@kilo/ui/tooltip'
     import { ExternalLinkIcon, InfoIcon, ZapIcon } from '@lucide/svelte'
 
     import ZoneBar from '$lib/domain/zones/zone/components/zone-bar.svelte'

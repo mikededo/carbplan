@@ -1,4 +1,4 @@
-import type { AthleteId } from '@carbplan/domain/athlete'
+import type { AthleteId } from '@kilo/domain/athlete'
 
 import {
   bigint,

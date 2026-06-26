@@ -1,4 +1,4 @@
-import type { Db } from '@carbplan/db'
+import type { Db } from '@kilo/db'
 
 import type { AthleteProvisioningRepository } from '$modules/auth/provision-athlete'
 import type { CatalogRepository } from '$modules/catalog/repository'

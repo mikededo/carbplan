@@ -3,12 +3,12 @@ import { AthleteProvisioningServiceImpl, toAthletePayload, upsertAthleteForUser 
 describe('athlete provisioning', () => {
   it('creates payload when user has id and email', () => {
     const payload = toAthletePayload({
-      email: 'athlete@carbplan.app',
+      email: 'athlete@kilo.app',
       id: 'f8dbd028-c4ed-4e10-8142-a5c4bd8af83d'
     })
 
     expect(payload).toEqual({
-      email: 'athlete@carbplan.app',
+      email: 'athlete@kilo.app',
       id: 'f8dbd028-c4ed-4e10-8142-a5c4bd8af83d'
     })
   })
@@ -23,7 +23,7 @@ describe('athlete provisioning', () => {
     const service = new AthleteProvisioningServiceImpl({ upsertAthlete })
 
     const upserted = await upsertAthleteForUser(service, {
-      email: 'athlete@carbplan.app',
+      email: 'athlete@kilo.app',
       id: 'f8dbd028-c4ed-4e10-8142-a5c4bd8af83d'
     })
 
@@ -49,7 +49,7 @@ describe('athlete provisioning', () => {
     const service = new AthleteProvisioningServiceImpl({ upsertAthlete })
 
     await expect(upsertAthleteForUser(service, {
-      email: 'athlete@carbplan.app',
+      email: 'athlete@kilo.app',
       id: 'f8dbd028-c4ed-4e10-8142-a5c4bd8af83d'
     })).rejects.toThrow('db failed')
   })

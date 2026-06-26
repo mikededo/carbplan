@@ -1,9 +1,9 @@
-import type { ProductForm } from '@carbplan/domain/product'
+import type { ProductForm } from '@kilo/domain/product'
 
 import type { CatalogBrand } from '$lib/domain/catalog/queries/catalog'
 import type { CatalogProduct } from '$lib/domain/catalog/service'
 
-import { noop } from '@carbplan/utils/noop'
+import { noop } from '@kilo/utils/noop'
 import { ResultAsync } from 'neverthrow'
 import { getContext, setContext } from 'svelte'
 

@@ -1,4 +1,4 @@
-import { loadAuthConfig } from '@carbplan/auth'
+import { loadAuthConfig } from '@kilo/auth'
 
 type RuntimeConfig = {
   authBaseUrl: string
@@ -30,7 +30,7 @@ const parseCorsOrigins = (nodeEnv: string, envValue?: string): string[] => {
   return [...new Set([...configuredOrigins, ...defaults])]
 }
 
-export const loadRuntimeConfig = (env: CarbplanApiEnv = Bun.env): RuntimeConfig => {
+export const loadRuntimeConfig = (env: KiloApiEnv = Bun.env): RuntimeConfig => {
   const nodeEnv = env.ENVIRONMENT ?? 'development'
   const databaseUrl = env.DATABASE_URL
   if (!databaseUrl) {

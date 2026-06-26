@@ -1,4 +1,4 @@
-import type { Session, User } from '@carbplan/contracts/auth'
+import type { Session, User } from '@kilo/contracts/auth'
 import type { Icon as IconType } from '@lucide/svelte'
 import type { ComponentProps } from 'svelte'
 

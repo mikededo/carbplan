@@ -1,9 +1,9 @@
 import type { NutritionPlanListResult } from '$modules/nutrition-plans/model'
 import type { NutritionPlansService } from '$modules/nutrition-plans/service'
 
-import * as NutritionPlansContracts from '@carbplan/contracts/nutrition-plans'
-import { parseAthleteId } from '@carbplan/domain/athlete'
 import { treaty } from '@elysiajs/eden'
+import * as NutritionPlansContracts from '@kilo/contracts/nutrition-plans'
+import { parseAthleteId } from '@kilo/domain/athlete'
 import { okAsync } from 'neverthrow'
 
 import { nutritionPlansModule } from '$modules/nutrition-plans'

@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { Button } from '@carbplan/ui/button'
-    import { Logo } from '@carbplan/ui/logo'
+    import { Button } from '@kilo/ui/button'
+    import { Logo } from '@kilo/ui/logo'
 
     import { resolve } from '$app/paths'
     import { ROUTES } from '$lib/constants/routes'
@@ -12,7 +12,7 @@
             <div class="flex size-8 items-center justify-center rounded-lg bg-primary">
                 <Logo class="size-5 text-primary-foreground" />
             </div>
-            <span class="text-lg font-bold">CarbPlan</span>
+            <span class="text-lg font-bold">Kilo</span>
         </a>
 
         <div class="hidden items-center justify-center gap-8 md:flex">

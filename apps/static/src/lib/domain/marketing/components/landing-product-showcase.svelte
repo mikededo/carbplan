@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { Badge } from '@carbplan/ui/badge'
-    import { Button } from '@carbplan/ui/button'
-    import { cn } from '@carbplan/ui/utils'
+    import { Badge } from '@kilo/ui/badge'
+    import { Button } from '@kilo/ui/button'
+    import { cn } from '@kilo/ui/utils'
     import { ArrowRightIcon, ChevronRightIcon } from '@lucide/svelte'
 
     import { InView } from '$lib/hooks/in-view.svelte'

@@ -66,17 +66,17 @@ jobs:
         run: |
           set -euo pipefail
           count="$(bunx turbo run test --dry=json \
-            --filter="@carbplan/api...[$BASE_SHA]" \
-            --filter="@carbplan/auth...[$BASE_SHA]" \
-            --filter="@carbplan/contracts...[$BASE_SHA]" \
-            --filter="@carbplan/web...[$BASE_SHA]" \
-            --filter="@carbplan/vitest-neverthrow...[$BASE_SHA]" | jq '.tasks | length')"
+            --filter="@kilo/api...[$BASE_SHA]" \
+            --filter="@kilo/auth...[$BASE_SHA]" \
+            --filter="@kilo/contracts...[$BASE_SHA]" \
+            --filter="@kilo/web...[$BASE_SHA]" \
+            --filter="@kilo/vitest-neverthrow...[$BASE_SHA]" | jq '.tasks | length')"
           echo "count=$count" >> "$GITHUB_OUTPUT"
       - name: Test affected projects
         run: |
           bunx turbo run test \
-            --filter="@carbplan/api...[$BASE_SHA]" \
-            --filter="@carbplan/auth...[$BASE_SHA]" \
-            --filter="@carbplan/contracts...[$BASE_SHA]" \
-            --filter="@carbplan/web...[$BASE_SHA]" \
-            --filter="@carbplan/vitest-neverthrow...[$BASE_SHA]"
+            --filter="@kilo/api...[$BASE_SHA]" \
+            --filter="@kilo/auth...[$BASE_SHA]" \
+            --filter="@kilo/contracts...[$BASE_SHA]" \
+            --filter="@kilo/web...[$BASE_SHA]" \
+            --filter="@kilo/vitest-neverthrow...[$BASE_SHA]"

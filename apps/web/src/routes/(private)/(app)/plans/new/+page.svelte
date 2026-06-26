@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-    <title>Creating a new plan... — CarbPlan</title>
+    <title>Creating a new plan... — Kilo</title>
 </svelte:head>
 
 <PageHeader

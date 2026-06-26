@@ -1,7 +1,7 @@
 import type { NutritionPlanListQuery, NutritionPlanListResult } from '$modules/nutrition-plans/model'
 import type { NutritionPlanRepository } from '$modules/nutrition-plans/repository'
 
-import { parseAthleteId } from '@carbplan/domain/athlete'
+import { parseAthleteId } from '@kilo/domain/athlete'
 import { okAsync } from 'neverthrow'
 
 import { NutritionPlanServiceImpl } from '$modules/nutrition-plans/service'

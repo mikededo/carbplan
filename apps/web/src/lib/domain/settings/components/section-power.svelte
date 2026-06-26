@@ -1,12 +1,12 @@
 <script lang="ts">
-    import type { AthleteId } from '@carbplan/domain/athlete'
-    import type { PowerZoneModel, PowerZonesData } from '@carbplan/domain/power'
-    import type { Maybe } from '@carbplan/domain/utils'
+    import type { AthleteId } from '@kilo/domain/athlete'
+    import type { PowerZoneModel, PowerZonesData } from '@kilo/domain/power'
+    import type { Maybe } from '@kilo/domain/utils'
 
-    import { PROFILE_FIELD_CONSTRAINTS } from '@carbplan/domain/profile'
-    import { Button } from '@carbplan/ui/button'
-    import { Input } from '@carbplan/ui/input'
-    import { Label } from '@carbplan/ui/label'
+    import { PROFILE_FIELD_CONSTRAINTS } from '@kilo/domain/profile'
+    import { Button } from '@kilo/ui/button'
+    import { Input } from '@kilo/ui/input'
+    import { Label } from '@kilo/ui/label'
     import { ActivityIcon, BatteryFullIcon, BatteryLowIcon, LoaderCircleIcon, ZapIcon } from '@lucide/svelte'
 
     import PowerZonesCard from '$lib/domain/zones/power/components/power-zones-card.svelte'

@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { Badge } from '@carbplan/ui/badge'
-    import { Button } from '@carbplan/ui/button'
-    import { cn } from '@carbplan/ui/utils'
+    import { Badge } from '@kilo/ui/badge'
+    import { Button } from '@kilo/ui/button'
+    import { cn } from '@kilo/ui/utils'
     import { CheckIcon } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'

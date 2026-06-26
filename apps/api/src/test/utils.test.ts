@@ -1,7 +1,7 @@
-import type { Db } from '@carbplan/db'
+import type { Db } from '@kilo/db'
 import type { ResultAsync } from 'neverthrow'
 
-import { createRepositoryDbMock } from '@carbplan/auth/testing'
+import { createRepositoryDbMock } from '@kilo/auth/testing'
 
 import { EntityNotFound } from '$utils/db-error'
 

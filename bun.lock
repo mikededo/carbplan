@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "@carbplan/root",
+      "name": "@kilo/root",
       "devDependencies": {
         "eslint": "catalog:",
         "portless": "0.14.0",
@@ -11,16 +11,16 @@
       },
     },
     "apps/api": {
-      "name": "@carbplan/api",
+      "name": "@kilo/api",
       "version": "0.0.0",
       "dependencies": {
-        "@carbplan/auth": "workspace:*",
-        "@carbplan/contracts": "workspace:*",
-        "@carbplan/db": "workspace:*",
-        "@carbplan/domain": "workspace:*",
-        "@carbplan/utils": "workspace:*",
         "@elysiajs/cors": "^1.4.2",
         "@elysiajs/openapi": "^1.4.15",
+        "@kilo/auth": "workspace:*",
+        "@kilo/contracts": "workspace:*",
+        "@kilo/db": "workspace:*",
+        "@kilo/domain": "workspace:*",
+        "@kilo/utils": "workspace:*",
         "@logtape/elysia": "^2.1.2",
         "@logtape/logtape": "^2.1.2",
         "drizzle-orm": "catalog:",
@@ -31,9 +31,9 @@
         "zod": "catalog:",
       },
       "devDependencies": {
-        "@carbplan/eslint": "workspace:*",
-        "@carbplan/vitest-neverthrow": "workspace:*",
         "@elysiajs/eden": "1.4.9",
+        "@kilo/eslint": "workspace:*",
+        "@kilo/vitest-neverthrow": "workspace:*",
         "bun-types": "1.3.14",
         "eslint": "catalog:",
         "typescript": "catalog:",
@@ -41,14 +41,14 @@
       },
     },
     "apps/static": {
-      "name": "@carbplan/static",
+      "name": "@kilo/static",
       "version": "0.0.0",
       "dependencies": {
-        "@carbplan/ui": "workspace:*",
+        "@kilo/ui": "workspace:*",
         "@lucide/svelte": "1.17.0",
       },
       "devDependencies": {
-        "@carbplan/eslint": "workspace:*",
+        "@kilo/eslint": "workspace:*",
         "@sveltejs/adapter-auto": "7.0.1",
         "@sveltejs/kit": "2.63.1",
         "@sveltejs/vite-plugin-svelte": "7.1.2",
@@ -64,16 +64,16 @@
       },
     },
     "apps/web": {
-      "name": "@carbplan/web",
+      "name": "@kilo/web",
       "version": "0.0.0",
       "dependencies": {
-        "@carbplan/api": "workspace:*",
-        "@carbplan/auth": "workspace:*",
-        "@carbplan/contracts": "workspace:*",
-        "@carbplan/domain": "workspace:*",
-        "@carbplan/ui": "workspace:*",
-        "@carbplan/utils": "workspace:*",
         "@elysiajs/eden": "1.4.9",
+        "@kilo/api": "workspace:*",
+        "@kilo/auth": "workspace:*",
+        "@kilo/contracts": "workspace:*",
+        "@kilo/domain": "workspace:*",
+        "@kilo/ui": "workspace:*",
+        "@kilo/utils": "workspace:*",
         "@lucide/svelte": "1.17.0",
         "@tanstack/svelte-query": "6.1.34",
         "@tanstack/svelte-query-devtools": "6.1.34",
@@ -84,7 +84,7 @@
         "zod": "4.4.3",
       },
       "devDependencies": {
-        "@carbplan/eslint": "workspace:*",
+        "@kilo/eslint": "workspace:*",
         "@sveltejs/adapter-auto": "7.0.1",
         "@sveltejs/kit": "2.63.1",
         "@sveltejs/vite-plugin-svelte": "7.1.2",
@@ -102,17 +102,17 @@
       },
     },
     "packages/auth": {
-      "name": "@carbplan/auth",
+      "name": "@kilo/auth",
       "version": "0.0.0",
       "dependencies": {
         "@better-auth/drizzle-adapter": "^1.6.15",
-        "@carbplan/db": "workspace:*",
-        "@carbplan/utils": "workspace:*",
+        "@kilo/db": "workspace:*",
+        "@kilo/utils": "workspace:*",
         "better-auth": "^1.6.15",
         "drizzle-orm": "catalog:",
       },
       "devDependencies": {
-        "@carbplan/eslint": "workspace:*",
+        "@kilo/eslint": "workspace:*",
         "@types/bun": "1.3.14",
         "eslint": "catalog:",
         "typescript": "catalog:",
@@ -120,15 +120,15 @@
       },
     },
     "packages/contracts": {
-      "name": "@carbplan/contracts",
+      "name": "@kilo/contracts",
       "version": "0.0.0",
       "dependencies": {
-        "@carbplan/domain": "workspace:*",
-        "@carbplan/utils": "workspace:*",
+        "@kilo/domain": "workspace:*",
+        "@kilo/utils": "workspace:*",
         "zod": "catalog:",
       },
       "devDependencies": {
-        "@carbplan/eslint": "workspace:*",
+        "@kilo/eslint": "workspace:*",
         "@types/bun": "1.3.14",
         "eslint": "catalog:",
         "typescript": "catalog:",
@@ -136,15 +136,15 @@
       },
     },
     "packages/db": {
-      "name": "@carbplan/db",
+      "name": "@kilo/db",
       "version": "0.0.0",
       "dependencies": {
-        "@carbplan/domain": "workspace:*",
+        "@kilo/domain": "workspace:*",
         "drizzle-orm": "catalog:",
         "postgres": "3.4.9",
       },
       "devDependencies": {
-        "@carbplan/eslint": "workspace:*",
+        "@kilo/eslint": "workspace:*",
         "@types/bun": "1.3.14",
         "drizzle-kit": "0.31.10",
         "eslint": "catalog:",
@@ -152,20 +152,20 @@
       },
     },
     "packages/domain": {
-      "name": "@carbplan/domain",
+      "name": "@kilo/domain",
       "version": "0.0.0",
       "dependencies": {
         "zod": "catalog:",
       },
       "devDependencies": {
-        "@carbplan/eslint": "workspace:*",
+        "@kilo/eslint": "workspace:*",
         "@types/bun": "1.3.14",
         "eslint": "catalog:",
         "typescript": "catalog:",
       },
     },
     "packages/eslint": {
-      "name": "@carbplan/eslint",
+      "name": "@kilo/eslint",
       "version": "0.0.0",
       "devDependencies": {
         "@antfu/eslint-config": "9.0.0",
@@ -182,7 +182,7 @@
       },
     },
     "packages/ui": {
-      "name": "@carbplan/ui",
+      "name": "@kilo/ui",
       "version": "0.0.0",
       "dependencies": {
         "@fontsource-variable/inter": "5.2.8",
@@ -196,7 +196,7 @@
         "tw-animate-css": "1.4.0",
       },
       "devDependencies": {
-        "@carbplan/eslint": "workspace:*",
+        "@kilo/eslint": "workspace:*",
         "@sveltejs/kit": "2.63.1",
         "@sveltejs/vite-plugin-svelte": "7.1.2",
         "@tailwindcss/vite": "4.3.0",
@@ -209,26 +209,26 @@
       },
     },
     "packages/utils": {
-      "name": "@carbplan/utils",
+      "name": "@kilo/utils",
       "version": "0.0.0",
       "dependencies": {
         "zod": "catalog:",
       },
       "devDependencies": {
-        "@carbplan/eslint": "workspace:",
+        "@kilo/eslint": "workspace:",
         "@types/bun": "latest",
         "eslint": "catalog:",
         "typescript": "catalog:",
       },
     },
     "packages/vitest-neverthrow": {
-      "name": "@carbplan/vitest-neverthrow",
+      "name": "@kilo/vitest-neverthrow",
       "version": "0.0.0",
       "dependencies": {
         "neverthrow": "8.2.0",
       },
       "devDependencies": {
-        "@carbplan/eslint": "workspace:*",
+        "@kilo/eslint": "workspace:*",
         "@types/bun": "1.3.14",
         "eslint": "catalog:",
         "typescript": "catalog:",
@@ -280,28 +280,6 @@
     "@better-fetch/fetch": ["@better-fetch/fetch@1.1.21", "", {}, "sha512-/ImESw0sskqlVR94jB+5+Pxjf+xBwDZF/N5+y2/q4EqD7IARUTSpPfIo8uf39SYpCxyOCtbyYpUrZ3F/k0zT4A=="],
 
     "@borewit/text-codec": ["@borewit/text-codec@0.2.2", "", {}, "sha512-DDaRehssg1aNrH4+2hnj1B7vnUGEjU6OIlyRdkMd0aUdIUvKXrJfXsy8LVtXAy7DRvYVluWbMspsRhz2lcW0mQ=="],
-
-    "@carbplan/api": ["@carbplan/api@workspace:apps/api"],
-
-    "@carbplan/auth": ["@carbplan/auth@workspace:packages/auth"],
-
-    "@carbplan/contracts": ["@carbplan/contracts@workspace:packages/contracts"],
-
-    "@carbplan/db": ["@carbplan/db@workspace:packages/db"],
-
-    "@carbplan/domain": ["@carbplan/domain@workspace:packages/domain"],
-
-    "@carbplan/eslint": ["@carbplan/eslint@workspace:packages/eslint"],
-
-    "@carbplan/static": ["@carbplan/static@workspace:apps/static"],
-
-    "@carbplan/ui": ["@carbplan/ui@workspace:packages/ui"],
-
-    "@carbplan/utils": ["@carbplan/utils@workspace:packages/utils"],
-
-    "@carbplan/vitest-neverthrow": ["@carbplan/vitest-neverthrow@workspace:packages/vitest-neverthrow"],
-
-    "@carbplan/web": ["@carbplan/web@workspace:apps/web"],
 
     "@clack/core": ["@clack/core@1.4.1", "", { "dependencies": { "fast-wrap-ansi": "^0.2.0", "sisteransi": "^1.0.5" } }, "sha512-FILJa1gGKEFTGZAJE9RpVhrjKz3c3h4ar60dSv6cGuDqufQ84YEIS3GAGvZiN+H6yaLbbvTFNejjCC4tXpZEuw=="],
 
@@ -442,6 +420,28 @@
     "@jridgewell/sourcemap-codec": ["@jridgewell/sourcemap-codec@1.5.5", "", {}, "sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og=="],
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
+
+    "@kilo/api": ["@kilo/api@workspace:apps/api"],
+
+    "@kilo/auth": ["@kilo/auth@workspace:packages/auth"],
+
+    "@kilo/contracts": ["@kilo/contracts@workspace:packages/contracts"],
+
+    "@kilo/db": ["@kilo/db@workspace:packages/db"],
+
+    "@kilo/domain": ["@kilo/domain@workspace:packages/domain"],
+
+    "@kilo/eslint": ["@kilo/eslint@workspace:packages/eslint"],
+
+    "@kilo/static": ["@kilo/static@workspace:apps/static"],
+
+    "@kilo/ui": ["@kilo/ui@workspace:packages/ui"],
+
+    "@kilo/utils": ["@kilo/utils@workspace:packages/utils"],
+
+    "@kilo/vitest-neverthrow": ["@kilo/vitest-neverthrow@workspace:packages/vitest-neverthrow"],
+
+    "@kilo/web": ["@kilo/web@workspace:apps/web"],
 
     "@logtape/elysia": ["@logtape/elysia@2.1.2", "", { "peerDependencies": { "@logtape/logtape": "^2.1.2", "elysia": "^1.4.0" } }, "sha512-zLkAkv8DOOxXbM45iXzLJ4jFmNhj2mGon/SROMrE57OrEg3/KkYb5z5v4aWy2sCGgMtpPyzsIp/NJxFZTRKO+w=="],
 

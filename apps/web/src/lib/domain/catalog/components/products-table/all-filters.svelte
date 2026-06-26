@@ -32,12 +32,12 @@
 </script>
 
 <script lang="ts">
-    import { Button } from '@carbplan/ui/button'
-    import { Label } from '@carbplan/ui/label'
-    import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from '@carbplan/ui/select'
-    import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@carbplan/ui/sheet'
-    import { Slider } from '@carbplan/ui/slider'
-    import { Toggle } from '@carbplan/ui/toggle'
+    import { Button } from '@kilo/ui/button'
+    import { Label } from '@kilo/ui/label'
+    import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from '@kilo/ui/select'
+    import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@kilo/ui/sheet'
+    import { Slider } from '@kilo/ui/slider'
+    import { Toggle } from '@kilo/ui/toggle'
     import { BuildingIcon, SlidersHorizontalIcon } from '@lucide/svelte'
 
     import { getProductsTableContext } from '../../context/products-table.svelte'

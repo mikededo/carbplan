@@ -1,10 +1,10 @@
 <script lang="ts">
-    import type { ProductForm } from '@carbplan/domain/product'
+    import type { ProductForm } from '@kilo/domain/product'
 
-    import { ProductFormSchema } from '@carbplan/domain/product'
-    import { FieldDescription, FieldError, FieldLabel, FieldRoot } from '@carbplan/ui/field'
-    import { Input } from '@carbplan/ui/input'
-    import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from '@carbplan/ui/select'
+    import { ProductFormSchema } from '@kilo/domain/product'
+    import { FieldDescription, FieldError, FieldLabel, FieldRoot } from '@kilo/ui/field'
+    import { Input } from '@kilo/ui/input'
+    import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from '@kilo/ui/select'
 
     import { PRODUCT_FORM_LABELS } from '$lib/domain/catalog/schemas'
 

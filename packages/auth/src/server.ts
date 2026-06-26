@@ -1,8 +1,8 @@
-import type { Db } from '@carbplan/db'
+import type { Db } from '@kilo/db'
 import type { BetterAuthOptions } from 'better-auth'
 
 import { drizzleAdapter } from '@better-auth/drizzle-adapter'
-import { schema, users } from '@carbplan/db'
+import { schema, users } from '@kilo/db'
 import { betterAuth } from 'better-auth'
 import { toNodeHandler } from 'better-auth/node'
 import { bearer, customSession, openAPI } from 'better-auth/plugins'

@@ -10,7 +10,7 @@
 </script>
 
 <svelte:head>
-    <title>CarbPlan — Athlete Nutrition Planning</title>
+    <title>Kilo — Athlete Nutrition Planning</title>
     <meta
         content="Plan your nutrition for every workout. Build custom fueling strategies based on your power, duration, and personal tolerance."
         name="description"

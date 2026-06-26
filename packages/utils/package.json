@@ -1,5 +1,5 @@
 {
-  "name": "@carbplan/utils",
+  "name": "@kilo/utils",
   "type": "module",
   "version": "0.0.0",
   "private": true,
@@ -15,7 +15,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@carbplan/eslint": "workspace:",
+    "@kilo/eslint": "workspace:",
     "@types/bun": "latest",
     "eslint": "catalog:",
     "typescript": "catalog:"

@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { Input } from '@carbplan/ui/input'
-    import { Kbd, KbdGroup } from '@carbplan/ui/kbd'
-    import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from '@carbplan/ui/select'
+    import { Input } from '@kilo/ui/input'
+    import { Kbd, KbdGroup } from '@kilo/ui/kbd'
+    import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from '@kilo/ui/select'
     import {
         ComponentIcon,
         SearchIcon

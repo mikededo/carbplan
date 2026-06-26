@@ -1,9 +1,9 @@
 
 import type { CurrentAthleteData, UpdateCurrentAthlete } from '$modules/me/model'
 
-import { createRepositoryDbMock } from '@carbplan/auth/testing'
-import { parseAthleteId } from '@carbplan/domain/athlete'
-import { HRZoneModelEnum } from '@carbplan/domain/hr'
+import { createRepositoryDbMock } from '@kilo/auth/testing'
+import { parseAthleteId } from '@kilo/domain/athlete'
+import { HRZoneModelEnum } from '@kilo/domain/hr'
 
 import { DbMeRepository } from '$modules/me/repository'
 import { entityNotFoundTest } from '$test/utils.test'
