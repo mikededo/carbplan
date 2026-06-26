@@ -4,7 +4,7 @@
     import { tv } from 'tailwind-variants'
 
     export const sheetVariants = tv({
-        base: 'fixed z-50 flex flex-col gap-4 bg-background shadow-lg transition data-[state=closed]:animate-out data-[state=closed]:duration-200 data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:duration-200 data-[state=open]:fade-in-0',
+        base: 'fixed z-50 flex flex-col gap-4 bg-background shadow-popover transition data-[state=closed]:animate-out data-[state=closed]:duration-200 data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:duration-200 data-[state=open]:fade-in-0',
         defaultVariants: {
             side: 'right'
         },
