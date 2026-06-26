@@ -11,9 +11,10 @@ import type { CatalogResult } from './catalog'
 import { createMutation, useQueryClient } from '@tanstack/svelte-query'
 import { err, ok } from 'neverthrow'
 
-import { queryKeys } from '$lib/domain/query/keys'
 import { resultAsyncValueOrThrow } from '$lib/domain/query/utils'
 import { getPrivateServicesContext } from '$lib/domain/services/context'
+
+import { catalogOptions } from './catalog'
 
 type CatalogMutateContext = { previous?: CatalogResult }
 
@@ -22,8 +23,11 @@ const getCatalogService = () => {
   return services.isOk() ? ok(services.value.catalog) : err()
 }
 
+const getCatalogQueryOptions = () => catalogOptions(getCatalogService())
+
 export const createBrandMutation = () => {
   const service = getCatalogService()
+  const options = getCatalogQueryOptions()
   const queryClient = useQueryClient()
 
   return createMutation(() => ({
@@ -36,14 +40,14 @@ export const createBrandMutation = () => {
     },
     onError: (_, __, context: CatalogMutateContext | undefined) => {
       if (context?.previous) {
-        queryClient.setQueryData(queryKeys.catalog.all, context.previous)
+        queryClient.setQueryData(options.queryKey, context.previous)
       }
     },
     onMutate: async (input) => {
-      await queryClient.cancelQueries({ queryKey: queryKeys.catalog.all })
+      await queryClient.cancelQueries({ queryKey: options.queryKey })
 
-      const previous = queryClient.getQueryData<CatalogResult>(queryKeys.catalog.all)
-      queryClient.setQueryData<CatalogResult>(queryKeys.catalog.all, (old) => {
+      const previous = queryClient.getQueryData(options.queryKey)
+      queryClient.setQueryData(options.queryKey, (old) => {
         if (!old) {
           return old
         }
@@ -65,13 +69,14 @@ export const createBrandMutation = () => {
       return { previous }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.catalog.all })
+      queryClient.invalidateQueries({ queryKey: options.queryKey })
     }
   }))
 }
 
 export const updateBrandMutation = (brandId?: string) => {
   const service = getCatalogService()
+  const options = getCatalogQueryOptions()
   const queryClient = useQueryClient()
 
   return createMutation(() => ({
@@ -84,14 +89,14 @@ export const updateBrandMutation = (brandId?: string) => {
     },
     onError: (_, __, context: CatalogMutateContext | undefined) => {
       if (context?.previous) {
-        queryClient.setQueryData(queryKeys.catalog.all, context.previous)
+        queryClient.setQueryData(options.queryKey, context.previous)
       }
     },
     onMutate: async (input) => {
-      await queryClient.cancelQueries({ queryKey: queryKeys.catalog.all })
+      await queryClient.cancelQueries({ queryKey: options.queryKey })
 
-      const previous = queryClient.getQueryData<CatalogResult>(queryKeys.catalog.all)
-      queryClient.setQueryData<CatalogResult>(queryKeys.catalog.all, (old) => {
+      const previous = queryClient.getQueryData(options.queryKey)
+      queryClient.setQueryData(options.queryKey, (old) => {
         if (!old) {
           return old
         }
@@ -111,13 +116,14 @@ export const updateBrandMutation = (brandId?: string) => {
       return { previous }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.catalog.all })
+      queryClient.invalidateQueries({ queryKey: options.queryKey })
     }
   }))
 }
 
 export const createProductMutation = () => {
   const service = getCatalogService()
+  const options = getCatalogQueryOptions()
   const queryClient = useQueryClient()
 
   return createMutation(() => ({
@@ -130,14 +136,14 @@ export const createProductMutation = () => {
     },
     onError: (_, __, context: CatalogMutateContext | undefined) => {
       if (context?.previous) {
-        queryClient.setQueryData(queryKeys.catalog.all, context.previous)
+        queryClient.setQueryData(options.queryKey, context.previous)
       }
     },
     onMutate: async (input) => {
-      await queryClient.cancelQueries({ queryKey: queryKeys.catalog.all })
+      await queryClient.cancelQueries({ queryKey: options.queryKey })
 
-      const previous = queryClient.getQueryData<CatalogResult>(queryKeys.catalog.all)
-      queryClient.setQueryData<CatalogResult>(queryKeys.catalog.all, (old) => {
+      const previous = queryClient.getQueryData(options.queryKey)
+      queryClient.setQueryData(options.queryKey, (old) => {
         if (!old) {
           return old
         }
@@ -168,13 +174,14 @@ export const createProductMutation = () => {
       return { previous }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.catalog.all })
+      queryClient.invalidateQueries({ queryKey: options.queryKey })
     }
   }))
 }
 
 export const updateProductMutation = (productId?: string) => {
   const service = getCatalogService()
+  const options = getCatalogQueryOptions()
   const queryClient = useQueryClient()
 
   return createMutation(() => ({
@@ -187,14 +194,14 @@ export const updateProductMutation = (productId?: string) => {
     },
     onError: (_, __, context: CatalogMutateContext | undefined) => {
       if (context?.previous) {
-        queryClient.setQueryData(queryKeys.catalog.all, context.previous)
+        queryClient.setQueryData(options.queryKey, context.previous)
       }
     },
     onMutate: async (input) => {
-      await queryClient.cancelQueries({ queryKey: queryKeys.catalog.all })
+      await queryClient.cancelQueries({ queryKey: options.queryKey })
 
-      const previous = queryClient.getQueryData<CatalogResult>(queryKeys.catalog.all)
-      queryClient.setQueryData<CatalogResult>(queryKeys.catalog.all, (old) => {
+      const previous = queryClient.getQueryData(options.queryKey)
+      queryClient.setQueryData(options.queryKey, (old) => {
         if (!old) {
           return old
         }
@@ -210,13 +217,14 @@ export const updateProductMutation = (productId?: string) => {
       return { previous }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.catalog.all })
+      queryClient.invalidateQueries({ queryKey: options.queryKey })
     }
   }))
 }
 
 export const deactivateProductMutation = (productId?: string) => {
   const service = getCatalogService()
+  const options = getCatalogQueryOptions()
   const queryClient = useQueryClient()
 
   return createMutation(() => ({
@@ -229,14 +237,14 @@ export const deactivateProductMutation = (productId?: string) => {
     },
     onError: (_, __, context: CatalogMutateContext | undefined) => {
       if (context?.previous) {
-        queryClient.setQueryData(queryKeys.catalog.all, context.previous)
+        queryClient.setQueryData(options.queryKey, context.previous)
       }
     },
     onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: queryKeys.catalog.all })
+      await queryClient.cancelQueries({ queryKey: options.queryKey })
 
-      const previous = queryClient.getQueryData<CatalogResult>(queryKeys.catalog.all)
-      queryClient.setQueryData<CatalogResult>(queryKeys.catalog.all, (old) => old?.map((brand) => ({
+      const previous = queryClient.getQueryData(options.queryKey)
+      queryClient.setQueryData(options.queryKey, (old) => old?.map((brand) => ({
         ...brand,
         products: brand.products.filter((product) => product.id !== productId)
       })))
@@ -244,7 +252,7 @@ export const deactivateProductMutation = (productId?: string) => {
       return { previous }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.catalog.all })
+      queryClient.invalidateQueries({ queryKey: options.queryKey })
     }
   }))
 }

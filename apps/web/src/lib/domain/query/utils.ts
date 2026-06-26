@@ -14,4 +14,3 @@ export const resultAsyncValueOrThrow = async <T, E>(
 
 export const liftResultAsync = <T, E>(fn: () => ResultAsync<T, E>) =>
   () => resultAsyncValueOrThrow(fn())
-

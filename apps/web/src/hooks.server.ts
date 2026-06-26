@@ -26,6 +26,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   const theme = event.cookies.get('theme') ?? 'light'
 
   return resolve(event, {
+    filterSerializedResponseHeaders: (name) => name === 'content-type',
     transformPageChunk: ({ html }) => html.replace('%theme%', theme)
   })
 }

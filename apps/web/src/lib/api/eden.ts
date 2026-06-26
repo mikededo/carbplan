@@ -3,6 +3,7 @@ import type { ApiError } from '@carbplan/contracts/api'
 import type { Treaty } from '@elysiajs/eden'
 
 import { ApiErrorSchema } from '@carbplan/contracts/api'
+import { getErrorMessageOrDefault } from '@carbplan/utils/errors'
 import { treaty } from '@elysiajs/eden'
 import { errAsync, okAsync, ResultAsync } from 'neverthrow'
 
@@ -59,9 +60,9 @@ const toApiClientError = ({ status, value }: { status: number, value: unknown })
 }
 
 export const unwrapEden = <T = void>(request: Promise<EdenResponse<T>>) => ResultAsync
-  .fromPromise(request, (): ApiClientError => ({
+  .fromPromise(request, (error): ApiClientError => ({
     code: ApiClientErrorValues.NETWORK_ERROR,
-    message: 'Network request failed',
+    message: getErrorMessageOrDefault(error, 'Network request failed'),
     status: 0
   }))
   .andThen((response) => {
