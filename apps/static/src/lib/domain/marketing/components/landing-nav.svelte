@@ -18,19 +18,25 @@
         <div class="hidden items-center justify-center gap-8 md:flex">
             <a
                 class="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                href="#features"
+                href={resolve(`${ROUTES.landing}#features`)}
             >
                 Features
             </a>
             <a
                 class="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                href="#product"
+                href={resolve(ROUTES.tools)}
+            >
+                Tools
+            </a>
+            <a
+                class="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                href={resolve(`${ROUTES.landing}#product`)}
             >
                 Product
             </a>
             <a
                 class="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                href="#pricing"
+                href={resolve(`${ROUTES.landing}#pricing`)}
             >
                 Pricing
             </a>

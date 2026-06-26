@@ -6,5 +6,6 @@ export const ROUTES = {
     signup: `${PUBLIC_APP_ORIGIN}/auth/sign-up`
   },
   dashboard: `${PUBLIC_APP_ORIGIN}/dashboard`,
-  landing: '/'
+  landing: '/',
+  tools: '/tools'
 } as const

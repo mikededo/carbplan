@@ -1,11 +1,13 @@
 <script lang="ts">
+    import { deepMerge, MetaTags } from 'svelte-meta-tags'
+
+    import { page } from '$app/state'
+
     import './root.css'
 
-    const { children } = $props()
+    const { children, data } = $props()
+    const metaTags = $derived(deepMerge(data.baseMetaTags, page.data.pageMetaTags))
 </script>
 
-<svelte:head>
-    <title>Kilo</title>
-</svelte:head>
-
+<MetaTags {...metaTags} />
 {@render children()}

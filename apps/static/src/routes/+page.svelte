@@ -9,14 +9,6 @@
     import LandingStats from '$lib/domain/marketing/components/landing-stats.svelte'
 </script>
 
-<svelte:head>
-    <title>Kilo — Athlete Nutrition Planning</title>
-    <meta
-        content="Plan your nutrition for every workout. Build custom fueling strategies based on your power, duration, and personal tolerance."
-        name="description"
-    />
-</svelte:head>
-
 <div class="min-h-screen bg-background">
     <LandingNav />
 
