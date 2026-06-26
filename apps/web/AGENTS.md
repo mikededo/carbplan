@@ -146,6 +146,8 @@ export const athleteOptions = (maybeService: Result<MeService, void>) =>
   })
 ```
 
+Use the `queryKey` from the specific `queryOptions` object when reading or writing cache data. Do not access cache entries with raw `queryKeys.*` constants inside mutations; deriving the key from options preserves the cached data type and avoids key drift.
+
 ### Query Hook Pattern
 
 ```ts

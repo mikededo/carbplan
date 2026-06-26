@@ -8,8 +8,10 @@ export const queryKeys = {
     current: () => [...queryKeys.athlete.all, 'current'] as const
   },
   catalog: {
+    admin: () => [...queryKeys.catalog.all, 'admin'] as const,
     all: ['catalog'] as const,
-    products: () => [...queryKeys.catalog.all, 'products'] as const
+    products: () => [...queryKeys.catalog.all, 'products'] as const,
+    public: () => [...queryKeys.catalog.all, 'public'] as const
   },
   favorites: {
     all: ['favorites'] as const,
@@ -24,4 +26,3 @@ export const queryKeys = {
     recent: (limit: number) => [...queryKeys.plans.all, 'recent', limit] as const
   }
 } as const
-

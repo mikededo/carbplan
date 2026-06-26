@@ -10,13 +10,13 @@ import { liftResultAsync } from '$lib/domain/query/utils'
 
 export const publicCatalogOptions = (maybeService: Result<PublicCatalogService, void>) => queryOptions({
   queryFn: maybeService.isOk() ? liftResultAsync(maybeService.value.getCatalog) : skipToken,
-  queryKey: queryKeys.catalog.all,
+  queryKey: queryKeys.catalog.public(),
   staleTime: QUERY_STALE_TIME_DEFAULT
 })
 
 export const catalogOptions = (maybeService: Result<CatalogService, void>) => queryOptions({
   queryFn: maybeService.isOk() ? liftResultAsync(maybeService.value.getCatalog) : skipToken,
-  queryKey: queryKeys.catalog.all,
+  queryKey: queryKeys.catalog.admin(),
   staleTime: QUERY_STALE_TIME_DEFAULT
 })
 
