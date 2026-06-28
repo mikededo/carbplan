@@ -2,6 +2,10 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "moduleResolution": "bundler",
+    "paths": {
+      "$lib": ["./src/lib"],
+      "$lib/*": ["./src/lib/*"]
+    },
     "resolveJsonModule": true,
     "allowJs": true,
     "checkJs": true,

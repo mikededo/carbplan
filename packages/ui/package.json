@@ -5,8 +5,8 @@
   "private": true,
   "exports": {
     "./styles.css": "./src/styles.css",
-    "./utils": "./src/utils.ts",
-    "./*": "./src/*/index.ts"
+    "./utils": "./src/lib/utils.ts",
+    "./*": "./src/lib/components/ui/*/index.ts"
   },
   "scripts": {
     "check": "svelte-check --tsconfig ./tsconfig.json",

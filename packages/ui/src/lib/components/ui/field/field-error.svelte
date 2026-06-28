@@ -1,0 +1,65 @@
+<script lang="ts">
+    import type { Snippet } from 'svelte'
+    import type { HTMLAttributes } from 'svelte/elements'
+
+    import type { WithElementRef } from '../../../utils.js'
+
+    import { cn } from '../../../utils.js'
+
+    let {
+        children,
+        class: className,
+        errors,
+        ref = $bindable(null),
+        ...restProps
+    }: {
+        children?: Snippet
+        errors?: { message?: string }[]
+    } & WithElementRef<HTMLAttributes<HTMLDivElement>> = $props()
+
+    const hasContent = $derived.by(() => {
+        // has slotted error
+        if (children) {
+            return true
+        }
+
+        // no errors
+        if (!errors) {
+            return false
+        }
+
+        // has an error but no message
+        if (errors.length === 1 && !errors[0]?.message) {
+            return false
+        }
+
+        return true
+    })
+
+    const isMultipleErrors = $derived(errors && errors.length > 1)
+    const singleErrorMessage = $derived(errors && errors.length === 1 && errors[0]?.message)
+</script>
+
+{#if hasContent}
+    <div
+        class={cn('text-sm font-normal text-destructive', className)}
+        bind:this={ref}
+        role="alert"
+        data-slot="field-error"
+        {...restProps}
+    >
+        {#if children}
+            {@render children()}
+        {:else if singleErrorMessage}
+            {singleErrorMessage}
+        {:else if isMultipleErrors}
+            <ul class="ms-4 flex list-disc flex-col gap-1">
+                {#each errors ?? [] as error, index (index)}
+                    {#if error?.message}
+                        <li>{error.message}</li>
+                    {/if}
+                {/each}
+            </ul>
+        {/if}
+    </div>
+{/if}
