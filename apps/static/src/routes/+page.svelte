@@ -1,32 +1,24 @@
 <script lang="ts">
     import LandingCta from '$lib/domain/marketing/components/landing-cta.svelte'
     import LandingFeatures from '$lib/domain/marketing/components/landing-features.svelte'
-    import LandingFooter from '$lib/domain/marketing/components/landing-footer.svelte'
     import LandingHero from '$lib/domain/marketing/components/landing-hero.svelte'
-    import LandingNav from '$lib/domain/marketing/components/landing-nav.svelte'
     import LandingPricing from '$lib/domain/marketing/components/landing-pricing.svelte'
     import LandingProductShowcase from '$lib/domain/marketing/components/landing-product-showcase.svelte'
     import LandingStats from '$lib/domain/marketing/components/landing-stats.svelte'
 </script>
 
-<div class="min-h-screen bg-background">
-    <LandingNav />
+<LandingHero />
 
-    <LandingHero />
+<LandingFeatures />
 
-    <LandingFeatures />
+<LandingProductShowcase type="dashboard" />
 
-    <LandingProductShowcase type="dashboard" />
+<LandingProductShowcase class="bg-muted/30" type="planner" reverse />
 
-    <LandingProductShowcase class="bg-muted/30" type="planner" reverse />
+<LandingProductShowcase type="supplements" />
 
-    <LandingProductShowcase type="supplements" />
+<LandingStats />
 
-    <LandingStats />
+<LandingPricing />
 
-    <LandingPricing />
-
-    <LandingCta />
-
-    <LandingFooter />
-</div>
+<LandingCta />
