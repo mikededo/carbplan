@@ -3,6 +3,8 @@
   "compilerOptions": {
     "moduleResolution": "bundler",
     "paths": {
+      "@kilo/ui/*": ["./src/lib/components/ui/*/index.ts"],
+      "@kilo/ui/utils": ["./src/lib/utils.ts"],
       "$lib": ["./src/lib"],
       "$lib/*": ["./src/lib/*"]
     },

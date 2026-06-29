@@ -27,7 +27,7 @@
         {#each groups as group, groupIndex (group.category)}
             <div>
                 <h2
-                    class="text-2xl font-bold tracking-tight transition-all duration-500"
+                    class="text-2xl font-medium tracking-tight transition-all duration-500"
                     style={entryStyles(inView.isInView, { delay: groupIndex * 100 })}
                 >
                     {group.category}

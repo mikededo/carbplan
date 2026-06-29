@@ -4,10 +4,9 @@
     import { ArrowRightIcon } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'
+    import { entryStyles } from '$lib/domain/marketing/helpers'
+    import GearRatioPreview from '$lib/domain/tools/components/gear-ratio-preview.svelte'
     import { InView } from '$lib/hooks/in-view.svelte'
-
-    import { entryStyles } from '../../marketing/helpers'
-    import GearRatioPreview from './gear-ratio-preview.svelte'
 
     const inView = new InView({ threshold: 0.1 })
 </script>
@@ -25,7 +24,7 @@
                     Cycling tools that are useful before you sign up.
                 </h1>
                 <p
-                    class="max-w-xl text-lg text-muted-foreground transition-all delay-100 duration-700 md:text-xl"
+                    class="max-w-xl text-lg text-muted-foreground transition-all delay-100 duration-700"
                     style={entryStyles(inView.isInView)}
                 >
                     Free calculators for gearing, tire pressure, and fueling. When a ride needs a full
@@ -37,11 +36,9 @@
                 class="flex flex-col items-start gap-4 transition-all delay-200 duration-700 sm:flex-row"
                 style={entryStyles(inView.isInView)}
             >
-                <Button class="px-8" href="#tools" size="lg">Browse tools</Button>
-                <Button class="bg-transparent px-8"
+                <Button
                     href={ROUTES.auth.signup}
                     size="lg"
-                    variant="outline"
                 >
                     Start with Kilo
                     <ArrowRightIcon class="ml-2 size-4" />
