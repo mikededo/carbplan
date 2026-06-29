@@ -3,6 +3,7 @@
 
     import { resolve } from '$app/paths'
     import { ROUTES } from '$lib/constants/routes'
+    import { m } from '$lib/domain/i18n/messages.js'
 
     import { FOOTER_LINKS } from '../constants'
 </script>
@@ -18,12 +19,12 @@
                     <span class="font-bold">Kilo</span>
                 </a>
                 <p class="text-sm text-muted-foreground">
-                    Precision nutrition planning for endurance athletes.
+                    {m.footer_description()}
                 </p>
             </div>
 
             <div>
-                <h4 class="mb-4 font-semibold">Product</h4>
+                <h4 class="mb-4 font-semibold">{m.footer_product_heading()}</h4>
                 <ul class="space-y-2 text-sm text-muted-foreground">
                     {#each FOOTER_LINKS.product as link (link.label)}
                         <li>
@@ -36,7 +37,7 @@
             </div>
 
             <div>
-                <h4 class="mb-4 font-semibold">Legal</h4>
+                <h4 class="mb-4 font-semibold">{m.footer_legal_heading()}</h4>
                 <ul class="space-y-2 text-sm text-muted-foreground">
                     {#each FOOTER_LINKS.legal as link (link.label)}
                         <li>
@@ -50,7 +51,7 @@
         </div>
 
         <div class="mt-12 border-t border-border pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; {new Date().getFullYear()} Kilo. All rights reserved.</p>
+            <p>&copy; {m.footer_copyright({ year: new Date().getFullYear() })}</p>
         </div>
     </div>
 </footer>

@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { m } from '$lib/domain/i18n/messages.js'
     import { InView } from '$lib/hooks/in-view.svelte'
 
     import { FEATURES } from '../constants'
@@ -10,10 +11,9 @@
 <section class="bg-muted/30 px-6 py-24" bind:this={inView.ref} id="features">
     <div class="mx-auto max-w-6xl">
         <div class="mb-16 text-center">
-            <h2 class="mb-4 text-3xl font-bold md:text-4xl">Everything you need to fuel right</h2>
+            <h2 class="mb-4 text-3xl font-bold md:text-4xl">{m.landing_features_heading()}</h2>
             <p class="mx-auto max-w-2xl text-lg text-muted-foreground">
-                From workout analysis to supplement tracking, Kilo gives you complete control over your
-                nutrition strategy.
+                {m.landing_features_body()}
             </p>
         </div>
 

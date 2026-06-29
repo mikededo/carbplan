@@ -5,6 +5,7 @@
     import { CheckIcon } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'
+    import { m } from '$lib/domain/i18n/messages.js'
     import { InView } from '$lib/hooks/in-view.svelte'
 
     import { PRICING_TIERS } from '../constants'
@@ -19,10 +20,10 @@
             class="mb-16 text-center transition-all duration-700"
             style={entryStyles(inView.isInView)}
         >
-            <Badge class="mb-4" variant="outline">Pricing</Badge>
-            <h2 class="mb-4 text-3xl font-bold md:text-4xl">Simple, transparent pricing</h2>
+            <Badge class="mb-4" variant="outline">{m.pricing_badge()}</Badge>
+            <h2 class="mb-4 text-3xl font-bold md:text-4xl">{m.pricing_heading()}</h2>
             <p class="mx-auto max-w-2xl text-lg text-muted-foreground">
-                Start free and upgrade when you need more. No hidden fees, cancel anytime.
+                {m.pricing_body()}
             </p>
         </div>
 
@@ -40,7 +41,7 @@
                         <div>
                             <p class="text-sm text-muted-foreground">{tier.description}</p>
                             <span class="text-4xl font-bold">{tier.price}</span>
-                            <span class="text-muted-foreground">/month</span>
+                            <span class="text-muted-foreground">/{m.pricing_month()}</span>
                             {#if tier.priceNote}
                                 <p class="text-xs text-muted-foreground">{tier.priceNote}</p>
                             {:else}

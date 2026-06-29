@@ -4,6 +4,7 @@
     import { ArrowRightIcon, PlayIcon, ZapIcon } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'
+    import { m } from '$lib/domain/i18n/messages.js'
     import { InView } from '$lib/hooks/in-view.svelte'
 
     import { HERO_FEATURES } from '../constants'
@@ -20,14 +21,14 @@
                 <div class="space-y-4">
                     <Badge class="px-4 py-1.5" variant="secondary">
                         <ZapIcon class="mr-2 size-3" />
-                        Built for endurance athletes
+                        {m.landing_hero_badge()}
                     </Badge>
                     <h1
                         class="text-4xl font-bold tracking-tight transition-all duration-700 md:text-5xl lg:text-6xl"
                         style={entryStyles(inView.isInView)}
                     >
                         <span class="text-balance">
-                            Plan your <span class="text-primary">race-day nutrition</span> with precision
+                            {m.landing_hero_headline_prefix()} <span class="text-primary">{m.landing_hero_headline_emphasis()}</span> {m.landing_hero_headline_suffix()}
                         </span>
                     </h1>
                 </div>
@@ -36,9 +37,7 @@
                     class="text-lg/relaxed text-muted-foreground transition-all delay-100 duration-700"
                     style={entryStyles(inView.isInView)}
                 >
-                    Kilo helps you create detailed nutrition strategies before every workout. Calculate
-                    exact carb and calorie needs based on your planned duration, power targets, and personal
-                    physiology. Review historical data to refine your approach over time.
+                    {m.landing_hero_body()}
                 </p>
 
                 <div
@@ -65,12 +64,12 @@
                     style={entryStyles(inView.isInView)}
                 >
                     <Button class="px-8" href={ROUTES.auth.signup} size="lg">
-                        Start Free Trial
+                        {m.cta_start_free_trial()}
                         <ArrowRightIcon class="ml-2 size-4" />
                     </Button>
                     <Button class="bg-transparent px-8" size="lg" variant="outline">
                         <PlayIcon class="mr-2 size-4" />
-                        Watch Demo
+                        {m.cta_watch_demo()}
                     </Button>
                 </div>
 

@@ -13,6 +13,7 @@
 
     import { resolve } from '$app/paths'
     import { ROUTES } from '$lib/constants/routes'
+    import { m } from '$lib/domain/i18n/messages.js'
     import { STATIC_TOOLS } from '$lib/domain/tools/tools'
 
     const featuredTools = STATIC_TOOLS.filter((tool) => tool.featured)
@@ -33,13 +34,13 @@
                     <NavigationMenuLink
                         href={resolve(`${ROUTES.landing}#features`)}
                     >
-                        Features
+                        {m.nav_features()}
                     </NavigationMenuLink>
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
                     <NavigationMenuTrigger>
-                        Tools
+                        {m.nav_tools()}
                     </NavigationMenuTrigger>
 
                     <NavigationMenuContent class="-translate-x-2/5 p-0">
@@ -49,10 +50,10 @@
                                     <CalculatorIcon class="size-3" />
                                 </div>
                                 <Button class="mr-auto text-sm font-semibold text-foreground" href={resolve(ROUTES.tools)} variant="link">
-                                    Cycling tools
+                                    {m.nav_tools_title()}
                                 </Button>
                                 <p class="text-xs text-muted-foreground">
-                                    Free tools to help you evaluate cycling performance, fuelling and anything related!
+                                    {m.nav_tools_description()}
                                 </p>
 
                                 <Button
@@ -60,7 +61,7 @@
                                     href={ROUTES.auth.signup}
                                     variant="link"
                                 >
-                                    Try Kilo now!
+                                    {m.nav_tools_cta()}
                                 </Button>
                             </div>
 
@@ -86,21 +87,21 @@
 
                 <NavigationMenuItem>
                     <NavigationMenuLink href={resolve(`${ROUTES.landing}#product`)}>
-                        Product
+                        {m.nav_product()}
                     </NavigationMenuLink>
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
                     <NavigationMenuLink href={resolve(`${ROUTES.landing}#pricing`)}>
-                        Pricing
+                        {m.nav_pricing()}
                     </NavigationMenuLink>
                 </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenuRoot>
 
         <div class="flex items-center justify-end gap-3">
-            <Button href={ROUTES.auth.signin} size="sm" variant="ghost">Sign in</Button>
-            <Button href={ROUTES.auth.signup} size="sm">Get Started</Button>
+            <Button href={ROUTES.auth.signin} size="sm" variant="ghost">{m.nav_sign_in()}</Button>
+            <Button href={ROUTES.auth.signup} size="sm">{m.nav_get_started()}</Button>
         </div>
     </div>
 </nav>

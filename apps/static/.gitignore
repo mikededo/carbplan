@@ -1,2 +1,5 @@
 .svelte-kit
 build
+# Paraglide
+src/lib/paraglide
+project.inlang/cache/

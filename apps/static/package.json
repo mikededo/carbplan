@@ -24,6 +24,7 @@
     "@lucide/svelte": "1.17.0"
   },
   "devDependencies": {
+    "@inlang/paraglide-js": "^2.18.2",
     "@kilo/eslint": "workspace:*",
     "@sveltejs/adapter-auto": "7.0.1",
     "@sveltejs/adapter-static": "^3.0.10",

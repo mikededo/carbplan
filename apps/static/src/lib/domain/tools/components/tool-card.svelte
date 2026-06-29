@@ -4,6 +4,8 @@
     import { Button } from '@kilo/ui/button'
     import { ArrowRightIcon } from '@lucide/svelte'
 
+    import { m } from '$lib/domain/i18n/messages.js'
+
     type Props = {
         tool: Tool
     }
@@ -27,13 +29,13 @@
 
     {#if available}
         <div class="mt-3 flex items-center justify-between gap-3">
-            <span class="text-xs font-medium text-muted-foreground">Free · no account</span>
+            <span class="text-xs font-medium text-muted-foreground">{m.tool_card_free_no_account()}</span>
             <Button href={tool.href ?? undefined} size="sm" variant="outline">
-                Open tool
+                {m.tool_card_open_tool()}
                 <ArrowRightIcon class="ml-2 size-4" />
             </Button>
         </div>
     {:else}
-        <p class="mt-6 text-xs font-medium text-muted-foreground">Coming soon</p>
+        <p class="mt-6 text-xs font-medium text-muted-foreground">{m.tool_card_coming_soon()}</p>
     {/if}
 </article>

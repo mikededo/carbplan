@@ -3,6 +3,7 @@
     import { ArrowRightIcon } from '@lucide/svelte'
 
     import { ROUTES } from '$lib/constants/routes'
+    import { m } from '$lib/domain/i18n/messages.js'
     import { InView } from '$lib/hooks/in-view.svelte'
 
     import { entryStyles } from '../helpers'
@@ -16,14 +17,14 @@
             class="text-3xl font-bold transition-all duration-700 md:text-4xl"
             style={entryStyles(inView.isInView)}
         >
-            Ready to optimize your nutrition?
+            {m.landing_cta_heading()}
         </h2>
 
         <p
             class="text-lg text-muted-foreground transition-all delay-100 duration-700"
             style={entryStyles(inView.isInView)}
         >
-            Fuel smarter with Kilo. Start your free trial today, no credit card required.
+            {m.landing_cta_body()}
         </p>
 
         <div
@@ -31,10 +32,10 @@
             style={entryStyles(inView.isInView)}
         >
             <Button class="px-8" href={ROUTES.auth.signup} size="lg">
-                Start Free Trial
+                {m.cta_start_free_trial()}
                 <ArrowRightIcon class="ml-2 size-4" />
             </Button>
-            <Button class="bg-transparent px-8" size="lg" variant="outline">Contact Sales</Button>
+            <Button class="bg-transparent px-8" size="lg" variant="outline">{m.cta_contact_sales()}</Button>
         </div>
     </div>
 </section>
